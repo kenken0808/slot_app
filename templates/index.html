@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スロット分析</title>
+</head>
+<body>
+  <h1>スロット分析アプリ</h1>
+  <form method="POST">
+    <label>打ち出しゲーム数:
+      <input type="number" name="game" required>
+    </label><br><br>
+
+    <label><input type="radio" name="time" value="朝イチ" checked> 朝イチ</label>
+    <label><input type="radio" name="time" value="朝イチ以外"> 朝イチ以外</label><br><br>
+
+    <input type="submit" value="送信">
+  </form>
+
+  {% if result %}
+    {% if result.error %}
+      <p style="color:red">{{ result.error }}</p>
+    {% else %}
+      <h2>分析結果</h2>
+      <ul>
+        <li>件数: {{ result.count }}</li>
+        <li>平均REGゲーム数: {{ result.avg_reg_game }}</li>
+        <li>平均AT枚数: {{ result.avg_at_coin }}</li>
+        <li>機械割: {{ result.kikaiwari }}%</li>
+        <li>期待値: {{ result.kitaiti }} 円</li>
+      </ul>
+    {% endif %}
+  {% endif %}
+</body>
+</html>
