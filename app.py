@@ -1,71 +1,100 @@
-from flask import Flask, render_template, request
-import pandas as pd
 import os
+import pandas as pd
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-COIN_RATE = 4.1
-COIN_HOLD = 35.0
-EXCLUDE_GAME = 30
+MACHINE_SETTINGS = {
+    "マイジャグラーV": {"through_max": 4, "game_max": 400},
+    "ファンキージャグラー2": {"through_max": 2, "game_max": 600}
+}
+
+DATA_DIR = "data"  # CSVフォルダのパス
+
+EXCLUDE_GAMES = 30
+COIN_MOTI = 35  # コイン持ち
+COIN_RATE = 3   # コインレート（例）
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
 
+    selected_machine = "マイジャグラーV"
+    selected_time = "朝イチ"
+    selected_through = 0
+    input_game = 0
+
     if request.method == "POST":
-        machine = request.form.get("machine")
-        time = request.form.get("time")
-        through = request.form.get("through")
+        selected_machine = request.form.get("machine", selected_machine)
+        selected_time = request.form.get("time", selected_time)  # 朝イチ or 朝イチ以外
         try:
-            game = int(request.form.get("game"))
-        except (TypeError, ValueError):
-            result = {"error": "打ち出しゲーム数が不正です"}
-            return render_template("index.html", result=result)
+            selected_through = int(request.form.get("through", 0))
+        except ValueError:
+            selected_through = 0
+        try:
+            input_game = int(request.form.get("game", 0))
+        except ValueError:
+            input_game = 0
 
-        filename = f"data/{machine}_{time}_{through}.csv"
+        filename = f"{selected_machine}_{selected_time}_{selected_through}.csv"
+        filepath = os.path.join(DATA_DIR, filename)
 
-        if not os.path.isfile(filename):
+        if not os.path.exists(filepath):
             result = {"error": f"ファイルが見つかりません: {filename}"}
-            return render_template("index.html", result=result)
+        else:
+            try:
+                df = pd.read_csv(filepath)
 
-        try:
-            df = pd.read_csv(filename)
-        except Exception as e:
-            result = {"error": f"CSV読み込みエラー: {e}"}
-            return render_template("index.html", result=result)
+                count = 0
+                total_reg_game = 0
+                total_at_game = 0
+                total_reg_coin = 0
+                total_at_coin = 0
 
-        # 必須列チェック
-        required_cols = ["番号", "REGゲーム数", "REG枚数", "ATゲーム数", "AT枚数"]
-        if not all(col in df.columns for col in required_cols):
-            result = {"error": "CSVファイルに必要な列がありません。"}
-            return render_template("index.html", result=result)
+                for _, row in df.iterrows():
+                    reg_game = row["REGゲーム数"]
+                    if reg_game >= input_game + EXCLUDE_GAMES:
+                        count += 1
+                        total_reg_game += (reg_game - input_game)
+                        total_at_game += row["ATゲーム数"]
+                        total_reg_coin += row["REG枚数"]
+                        total_at_coin += row["AT枚数"]
 
-        # 条件に合う行を抽出
-        filtered = df[df["REGゲーム数"] >= game + EXCLUDE_GAME]
-        count = len(filtered)
+                if count > 0:
+                    avg_reg_game = total_reg_game / count
+                    avg_at_game = total_at_game / count
+                    avg_reg_coin = total_reg_coin / count
+                    avg_at_coin = total_at_coin / count
 
-        if count == 0:
-            result = {"error": "条件に合うデータがありません。"}
-            return render_template("index.html", result=result)
+                    samai = avg_reg_coin + avg_at_coin - (avg_reg_game * 50 / COIN_MOTI)
+                    in_coin = (avg_reg_game + avg_at_game) * COIN_RATE
+                    out_coin = samai + in_coin
+                    kikaiwari = out_coin / in_coin * 100  # %
+                    kitaiti = samai * 20
 
-        # 各種平均
-        reg_game_avg = filtered["REGゲーム数"].mean() - EXCLUDE_GAME
-        at_coin_avg = filtered["AT枚数"].mean()
+                    result = {
+                        "count": count,
+                        "avg_reg_game": round(avg_reg_game, 1),
+                        "avg_at_coin": round(avg_at_coin, 1),
+                        "kikaiwari": round(kikaiwari, 2),
+                        "kitaiti": round(kitaiti, 1),
+                    }
+                else:
+                    result = {"error": "条件を満たすデータがありません。"}
+            except Exception as e:
+                result = {"error": f"処理中にエラーが発生しました: {e}"}
 
-        # 機械割計算
-        total_in = (reg_game_avg / COIN_HOLD) * COIN_RATE
-        kikaiwari = ((at_coin_avg + filtered["REG枚数"].mean()) / total_in) * 100
-        kitaiti = ((kikaiwari / 100) - 1) * (game / COIN_HOLD) * COIN_RATE
+    return render_template(
+        "index.html",
+        machines=list(MACHINE_SETTINGS.keys()),
+        settings=MACHINE_SETTINGS,
+        selected_machine=selected_machine,
+        selected_time=selected_time,
+        selected_through=selected_through,
+        input_game=input_game,
+        result=result,
+    )
 
-        result = {
-            "count": count,
-            "avg_reg_game": round(reg_game_avg, 1),
-            "avg_at_coin": round(at_coin_avg, 1),
-            "kikaiwari": round(kikaiwari, 1),
-            "kitaiti": round(kitaiti),
-        }
-
-    return render_template("index.html", result=result)
 
 if __name__ == "__main__":
     pass  # ローカルで動かす場合は app.run() に変更
