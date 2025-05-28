@@ -2,190 +2,144 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スロット分析アプリ</title>
+  <title>スロット分析</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f6f6f6;
+      padding: 15px;
       margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
+      background-color: #f5f5f5;
     }
 
     form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .form-group {
+    label {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: #333;
     }
 
-    .form-group label {
-      width: 150px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    select, input[type="number"] {
-      flex: 1;
-      padding: 10px;
-      font-size: 1em;
+    input[type="number"], select {
+      width: 48%;
+      padding: 8px 10px;
+      font-size: 1rem;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     input[type="submit"] {
-      margin-top: 20px;
-      padding: 10px;
-      font-size: 1em;
-      background-color: #4CAF50;
+      width: 100%;
+      padding: 12px;
+      font-size: 1.2rem;
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     input[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
 
-    .result {
+    /* 結果表示部分 */
+    h2 {
+      text-align: center;
+      color: #444;
       margin-top: 30px;
     }
 
-    .error {
-      color: red;
-      font-weight: bold;
-      text-align: center;
-    }
-
     ul {
+      max-width: 400px;
+      margin: 10px auto 0 auto;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       list-style: none;
-      padding: 0;
+      font-size: 1.1rem;
+      color: #333;
     }
 
     ul li {
-      padding: 5px 0;
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 500px) {
-      .form-group {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .form-group label {
-        width: auto;
-      }
-
-      input[type="submit"] {
-        width: 100%;
-      }
+    /* エラーメッセージ */
+    p[style*="color:red"] {
+      max-width: 400px;
+      margin: 15px auto;
+      padding: 10px;
+      background: #ffe6e6;
+      border: 1px solid #ff4d4d;
+      border-radius: 6px;
+      color: #b30000;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
-
-  <script>
-    function updateOptions() {
-      const machine = document.querySelector('select[name="machine"]').value;
-      const throughSelect = document.querySelector('select[name="through"]');
-      const gameInput = document.querySelector('input[name="game"]');
-
-      throughSelect.innerHTML = "";
-
-      let throughMax = 10;
-      let gameMin = 0;
-      let gameMax = 1000;
-
-      if (machine === "マイジャグラーV") {
-        throughMax = 4;
-        gameMax = 500;
-      } else if (machine === "ファンキージャグラー") {
-        throughMax = 2;
-        gameMax = 800;
-      }
-
-      for (let i = 0; i <= throughMax; i++) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.text = i;
-        throughSelect.appendChild(option);
-      }
-
-      gameInput.min = gameMin;
-      gameInput.max = gameMax;
-      gameInput.value = 0;
-    }
-
-    window.addEventListener("DOMContentLoaded", updateOptions);
-  </script>
 </head>
 <body>
-  <div class="container">
-    <h1>スロット分析アプリ</h1>
-    <form method="POST">
+  <h1 style="text-align:center; color:#222; margin-bottom: 25px;">スロット分析アプリ</h1>
+  <form method="POST">
+    <label for="machine">機種名:
+      <select id="machine" name="machine" required>
+        <option value="マイジャグラーV">マイジャグラーV</option>
+        <option value="他の機種">他の機種</option>
+      </select>
+    </label>
 
-      <div class="form-group">
-        <label>機種名:</label>
-        <select name="machine" onchange="updateOptions()">
-          <option value="マイジャグラーV">マイジャグラーV</option>
-          <option value="ファンキージャグラー">ファンキージャグラー</option>
-        </select>
-      </div>
+    <label for="time">朝一:
+      <select id="time" name="time" required>
+        <option value="朝イチ">朝イチ</option>
+        <option value="朝イチ以外">朝イチ以外</option>
+      </select>
+    </label>
 
-      <div class="form-group">
-        <label>朝イチ / 朝イチ以外:</label>
-        <select name="time">
-          <option value="朝イチ">朝イチ</option>
-          <option value="朝イチ以外">朝イチ以外</option>
-        </select>
-      </div>
+    <label for="skip">スルー回数:
+      <select id="skip" name="skip" required>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </label>
 
-      <div class="form-group">
-        <label>スルー回数:</label>
-        <select name="through"></select>
-      </div>
+    <label for="game">打ち出しゲーム数:
+      <input id="game" type="number" name="game" min="0" max="500" value="0" required>
+    </label>
 
-      <div class="form-group">
-        <label>打ち出しゲーム数:</label>
-        <input type="number" name="game" value="0" required>
-      </div>
+    <input type="submit" value="送信">
+  </form>
 
-      <input type="submit" value="送信">
-    </form>
-
-    {% if result %}
-      <div class="result">
-        {% if result.error %}
-          <p class="error">{{ result.error }}</p>
-        {% else %}
-          <h2>分析結果</h2>
-          <ul>
-            <li>件数: {{ result.count }}</li>
-            <li>平均REGゲーム数: {{ result.avg_reg_game }}</li>
-            <li>平均AT枚数: {{ result.avg_at_coin }}</li>
-            <li>機械割: {{ result.kikaiwari }}%</li>
-            <li>期待値: {{ result.kitaiti }} 円</li>
-          </ul>
-        {% endif %}
-      </div>
+  {% if result %}
+    {% if result.error %}
+      <p style="color:red">{{ result.error }}</p>
+    {% else %}
+      <h2>分析結果</h2>
+      <ul>
+        <li>件数: {{ result.count }}</li>
+        <li>平均REGゲーム数: {{ result.avg_reg_game }}</li>
+        <li>平均AT枚数: {{ result.avg_at_coin }}</li>
+        <li>機械割: {{ result.kikaiwari }}%</li>
+        <li>期待値: {{ result.kitaiti }} 円</li>
+      </ul>
     {% endif %}
-  </div>
+  {% endif %}
 </body>
 </html>
