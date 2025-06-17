@@ -2,202 +2,188 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>スロット分析アプリ</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 20px;
-      padding: 0;
-      background: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
+  <title>設定フォーム</title>
+<style>
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  form {
+    display: grid;
+    grid-template-columns: minmax(130px, 1fr) 2fr;
+    gap: 12px 20px;
+    align-items: center;
+  }
+  label {
+    font-weight: bold;
+    /* white-space: nowrap; 削除 */
+    word-break: break-word;
+    max-width: 150px;
+  }
+  select, input[type="number"] {
+    padding: 4px 8px;
+    font-size: 14px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+  }
+  input[type="submit"] {
+    grid-column: 2 / 3;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #287bde;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  input[type="submit"]:hover {
+    background-color: #1a5bb8;
+  }
+  .result, .error {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  .result {
+    background-color: #e0f7e9;
+    border: 1px solid #60b85c;
+  }
+  .error {
+    background-color: #f9d6d5;
+    border: 1px solid #e55c5a;
+    color: #a00;
+  }
+
+  @media (max-width: 480px) {
     form {
-      background: #fff;
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .form-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
+      grid-template-columns: 1fr;
     }
     label {
-      flex: 1;
-      color: #444;
-      font-weight: 600;
-    }
-    select, input[type="number"] {
-      flex: 1;
-      padding: 6px 8px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-left: 10px;
-      box-sizing: border-box;
+      max-width: 100%;
+      margin-bottom: 4px;
     }
     input[type="submit"] {
-      width: 100%;
-      padding: 12px 0;
-      font-size: 1.1rem;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      grid-column: 1;
     }
-    input[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      max-width: 400px;
-      margin: 20px auto 0;
-      background: #fff;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-    .result h2 {
-      margin-top: 0;
-      color: #222;
-    }
-    .result ul {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
-    .result li {
-      margin-bottom: 8px;
-      font-size: 1rem;
-      color: #333;
-    }
-    .error {
-      color: #d33;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 15px;
-    }
+  }
+</style>
 
-    @media (max-width: 480px) {
-      body {
-        margin: 10px;
-      }
-      form, .result {
-        max-width: 100%;
-        padding: 15px;
-      }
-      .form-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      label {
-        margin-bottom: 5px;
-      }
-      select, input[type="number"] {
-        margin-left: 0;
-        width: 100%;
-      }
-    }
-  </style>
+  
 </head>
 <body>
-  <h1>スロット分析アプリ</h1>
-  <form method="POST">
-    <div class="form-row">
-      <label for="machine">機種名:</label>
-      <select name="machine" id="machine" required onchange="updateThroughOptions()">
-        {% for m in machines %}
-          <option value="{{ m }}" {% if selected_machine == m %}selected{% endif %}>{{ m }}</option>
-        {% endfor %}
-      </select>
-    </div>
+  <h1>データ抽出設定</h1>
+  <form method="POST" action="/">
+    <label for="machine">機種名</label>
+    <select name="machine" id="machine" required onchange="updateMaxGame()">
+      {% for m in machines %}
+        <option value="{{m}}" {% if m == selected_machine %}selected{% endif %}>{{m}}</option>
+      {% endfor %}
+    </select>
 
-    <div class="form-row">
-      <label for="time">朝一:</label>
-      <select name="time" id="time" required>
-        <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
-        <option value="朝イチ以外" {% if selected_time == "朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
-      </select>
-    </div>
+    <label for="time">朝イチ／朝イチ以外</label>
+    <select name="time" id="time" required>
+      <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
+      <option value="朝イチ以外" {% if selected_time == "朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
+    </select>
 
-    <div class="form-row">
-      <label for="through">スルー回数:</label>
-      <select name="through" id="through" required>
-        {% set max_through = settings[selected_machine]['through_max'] %}
-        {% for i in range(max_through + 1) %}
-          <option value="{{ i }}" {% if selected_through == i %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-    </div>
+    <label for="game">打ち出しゲーム数 (最大値: <span id="maxGame">{{max_game}}</span>)</label>
+    <input type="number" id="game" name="game" min="0" max="{{max_game}}" value="{{input_game}}" required>
 
-    <div class="form-row">
-      <label for="game">打ち出しゲーム数:</label>
-      <input
-        type="number"
-        id="game"
-        name="game"
-        min="0"
-        max="{{ settings[selected_machine]['game_max'] }}"
-        value="{{ input_game if input_game is not none else 0 }}"
-        required
-      />
-    </div>
+    <label for="through">スルー回数</label>
+    <select name="through" id="through" required>
+      {% for opt in through_options %}
+        <option value="{{opt}}" {% if opt == selected_through %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
 
-    <input type="submit" value="送信" />
+    <label for="prev_game">前回当選ゲーム数</label>
+    <select name="prev_game" id="prev_game" required>
+      {% for opt in prev_game_options %}
+        <option value="{{opt}}" {% if opt == selected_prev_game %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
+
+    <label for="prev_coin">前回獲得枚数</label>
+    <select name="prev_coin" id="prev_coin" required>
+      {% for opt in prev_coin_options %}
+        <option value="{{opt}}" {% if opt == selected_prev_coin %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
+
+    <label for="prev_diff">前回差枚数</label>
+    <select name="prev_diff" id="prev_diff" required>
+      {% for opt in prev_diff_options %}
+        <option value="{{opt}}" {% if opt == selected_prev_diff %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
+
+    <label for="prev_renchan">前回連荘数</label>
+    <select name="prev_renchan" id="prev_renchan" required>
+      {% for opt in prev_renchan_options %}
+        <option value="{{opt}}" {% if opt == selected_prev_renchan %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
+
+    <label for="prev_type">前回種別</label>
+    <select name="prev_type" id="prev_type" required>
+      {% for opt in prev_type_options %}
+        <option value="{{opt}}" {% if opt == selected_prev_type %}selected{% endif %}>{{opt}}</option>
+      {% endfor %}
+    </select>
+
+    <input type="submit" value="送信">
   </form>
 
-  {% if result %}
+  {% if error_msg %}
+    <div class="error">{{ error_msg }}</div>
+  {% endif %}
+
+  {% if result is not none %}
     <div class="result">
-      {% if result.error %}
-        <p class="error">{{ result.error }}</p>
+      {% if result %}
+        <table>
+          <tbody>
+            <tr><th>件数：</th><td>{{ result["件数"] }}</td></tr>
+            <tr><th>初当たり：</th><td>{{ result["平均REGゲーム数"] }}</td></tr>
+            <tr><th>獲得枚数：</th><td>{{ result["平均AT枚数"] }}</td></tr>
+            <tr><th>機械割：</th><td>{{ result["機械割"] }}</td></tr>
+            <tr><th>期待値：</th><td>{{ result["期待値"] }}</td></tr>
+          </tbody>
+        </table>
       {% else %}
-        <h2>分析結果</h2>
-        <ul>
-          <li>件数: {{ result.count }}</li>
-          <li>平均REGゲーム数: {{ result.avg_reg_game }}</li>
-          <li>平均AT枚数: {{ result.avg_at_coin }}</li>
-          <li>機械割: {{ result.kikaiwari }}%</li>
-          <li>期待値: {{ result.kitaiti }} 円</li>
-        </ul>
+        <p>条件に合致するデータがありません。</p>
       {% endif %}
     </div>
   {% endif %}
 
+
   <script>
-    // スルー回数の選択肢を機種によって動的に変えたい場合のスクリプト例
-    // 今はサーバ側で制御してるので不要ですが、参考までに。
-    const machineSettings = {{ settings | tojson }};
-    const throughSelect = document.getElementById('through');
-    const machineSelect = document.getElementById('machine');
-    const gameInput = document.getElementById('game');
+    const machineSettings = {
+      "北斗の拳": 1000,
+      "モンキーターン": 500
+    };
 
-    function updateThroughOptions() {
-      const selectedMachine = machineSelect.value;
-      const maxThrough = machineSettings[selectedMachine].through_max;
-      const maxGame = machineSettings[selectedMachine].game_max;
-
-      // スルー回数選択肢の更新
-      throughSelect.innerHTML = '';
-      for(let i = 0; i <= maxThrough; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        throughSelect.appendChild(option);
-      }
-
-      // 打ち出しゲーム数のmax更新
-      gameInput.max = maxGame;
-      if (gameInput.value > maxGame) {
-        gameInput.value = maxGame;
+    function updateMaxGame(){
+      const machine = document.getElementById("machine").value;
+      const maxGame = machineSettings[machine];
+      document.getElementById("maxGame").textContent = maxGame;
+      const inputGame = document.getElementById("game");
+      inputGame.max = maxGame;
+      if(inputGame.value > maxGame){
+        inputGame.value = maxGame;
       }
     }
   </script>
