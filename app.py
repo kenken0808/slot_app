@@ -3,10 +3,21 @@ import pandas as pd
 
 app = Flask(__name__)
 
-machines = ["北斗の拳", "モンキーターン"]
+machines = ["マギアレコード", "北斗の拳", "モンキーターン"]
 
 # 各機種ごとの設定値
 machine_settings = {
+    "マギアレコード": {
+        "max_game": 500,
+        "exclude_games": 30,
+        "coin_moti": 32.6,
+        "through_options": ["不問", "0", "1", "2", "3", "4", "5", "6"],
+        "prev_game_options": ["不問", "1～300G", "301～600G", "601G以上"],
+        "prev_coin_options": ["不問", "1～100枚", "1001～2000枚", "2001枚以上"],
+        "prev_diff_options": ["不問", "-2001枚以下", "-2000～-1枚", "1～500枚", "501～1000枚", "1001枚以上"],
+        "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+    },
     "北斗の拳": {
         "max_game": 1000,
         "exclude_games": 30,
@@ -16,7 +27,7 @@ machine_settings = {
         "prev_coin_options": ["不問", "1～400枚", "401～800枚", "801枚以上"],
         "prev_diff_options": ["不問", "-1001枚以下", "-1000～-1枚", "1～400枚", "401～800枚", "801枚以上"],
         "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
-        "prev_type_options": ["不問", "通常", "上位"],
+        "prev_type_options": ["不問", "下位", "上位"],
     },
     "モンキーターン": {
         "max_game": 500,
@@ -27,7 +38,7 @@ machine_settings = {
         "prev_coin_options": ["不問", "1～100枚", "101～200枚", "201枚以上"],
         "prev_diff_options": ["不問", "1～100枚", "101～200枚", "201枚以上"],
         "prev_renchan_options": ["不問", "1～4連", "5～8連", "9連以上"],
-        "prev_type_options": ["不問", "通常"],
+        "prev_type_options": ["不問", "下位"],
     }
 }
 
