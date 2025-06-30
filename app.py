@@ -3,55 +3,66 @@ import pandas as pd
 
 app = Flask(__name__)
 
-machines = ["マギアレコード", "北斗の拳", "モンキーターン"]
+machines = ["L マギアレコード 魔法少女まどか☆マギカ外伝", "L ゴッドイーター リザレクション"]
 
 # 各機種ごとの設定値
 machine_settings = {
-    "マギアレコード": {
-        "max_game": 500,
+    "L マギアレコード 魔法少女まどか☆マギカ外伝": {
         "exclude_games": 30,
         "coin_moti": 32.6,
-        "through_options": ["不問", "0", "1", "2", "3", "4", "5", "6"],
-        "prev_game_options": ["不問", "1～300G", "301～600G", "601G以上"],
-        "prev_coin_options": ["不問", "1～100枚", "1001～2000枚", "2001枚以上"],
-        "prev_diff_options": ["不問", "-2001枚以下", "-2000～-1枚", "1～500枚", "501～1000枚", "1001枚以上"],
+        "file_key": "マギアレコード",
+        "mode_options": ["CZ", "ボーナス"],
+        "through_options": ["不問", "0", "1", "2", "3", "4", "5スルー以上"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],  # ←追加
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001枚以上"],
         "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
         "prev_type_options": ["不問", "下位", "上位"],
+        "labels": {
+            "mode": "CZ／ボナ",
+            "at_gap": "ボナ間ゲーム数",
+            "prev_game": "前回ボナ当選ゲーム数",
+            "prev_coin": "前回ボナ獲得枚数",
+            "prev_diff": "前回ボナ終了時差枚数",
+            "prev_renchan": "前回ボナ連荘数",
+            "prev_type": "前回ボナ種別"
+        }
     },
-    "北斗の拳": {
-        "max_game": 1000,
+    "L ゴッドイーター リザレクション": {
         "exclude_games": 30,
-        "coin_moti": 32.5,
-        "through_options": ["不問", "0", "1", "2", "3"],
-        "prev_game_options": ["不問", "1～300G", "301～600G", "601G以上"],
-        "prev_coin_options": ["不問", "1～400枚", "401～800枚", "801枚以上"],
-        "prev_diff_options": ["不問", "-1001枚以下", "-1000～-1枚", "1～400枚", "401～800枚", "801枚以上"],
+        "coin_moti": 31.0,
+        "file_key": "ゴッドイーター",
+        "mode_options": ["AT"],
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],  # ←追加
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001枚以上"],
         "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
         "prev_type_options": ["不問", "下位", "上位"],
-    },
-    "モンキーターン": {
-        "max_game": 500,
-        "exclude_games": 30,
-        "coin_moti": 32.5,
-        "through_options": ["不問", "0", "1"],
-        "prev_game_options": ["不問", "1～200G", "201～400G", "401G以上"],
-        "prev_coin_options": ["不問", "1～100枚", "101～200枚", "201枚以上"],
-        "prev_diff_options": ["不問", "1～100枚", "101～200枚", "201枚以上"],
-        "prev_renchan_options": ["不問", "1～4連", "5～8連", "9連以上"],
-        "prev_type_options": ["不問", "下位"],
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT間ゲーム数",
+            "prev_game": "前回AT当選ゲーム数",
+            "prev_coin": "前回AT獲得枚数",
+            "prev_diff": "前回AT終了時差枚数",
+            "prev_renchan": "前回AT連荘数",
+            "prev_type": "前回AT種別"
+        }
     }
 }
 
 # 範囲文字列をパースして判定
 def parse_range(value, condition):
     if "～" in condition:
-        low, high = condition.replace("枚", "").replace("G", "").replace("連", "").split("～")
+        low, high = condition.replace(",", "").replace("枚", "").replace("G", "").replace("連", "").replace("スルー", "").split("～")
         return int(low) <= value <= int(high)
     elif "以下" in condition:
-        limit = int(condition.replace("枚", "").replace("G", "").replace("連", "").replace("以下", ""))
+        limit = int(condition.replace(",", "").replace("枚", "").replace("G", "").replace("連", "").replace("スルー", "").replace("以下", ""))
         return value <= limit
     elif "以上" in condition:
-        limit = int(condition.replace("枚", "").replace("G", "").replace("連", "").replace("以上", ""))
+        limit = int(condition.replace(",", "").replace("枚", "").replace("G", "").replace("連", "").replace("スルー", "").replace("以上", ""))
         return value >= limit
     return False
 
@@ -64,6 +75,9 @@ def filter_dataframe(df, form, settings):
     # スルー回数
     if form["through"] != "不問":
         cond &= (df["スルー回数"] == int(form["through"]))
+    # AT間ゲーム数
+    if form["at_gap"] != "不問":
+        cond &= df["AT間ゲーム数"].apply(lambda v: parse_range(int(v), form["at_gap"]))
     # 前回当選ゲーム数
     if form["prev_game"] != "不問":
         cond &= df["前回当選ゲーム数"].apply(lambda v: parse_range(int(v), form["prev_game"]))
@@ -80,27 +94,32 @@ def filter_dataframe(df, form, settings):
     if form["prev_type"] != "不問":
         cond &= (df["前回種別"] == form["prev_type"])
     # 打ち出しゲーム数 + 除外ゲーム数でフィルタ
-    cond &= (df["REGゲーム数"] >= (int(form["game"]) + exclude_games))
+    #cond &= (df["REGゲーム数"] >= (int(form["game"]) + exclude_games))
+    cond &= (df["当該REGゲーム数"] >= (int(form["game"]) + exclude_games))
     return df[cond]
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     # 初期値・POST受け取り
     if request.method == "POST":
-        selected_machine = request.form.get("machine", "北斗の拳")
+        selected_machine = request.form.get("machine", "L マギアレコード 魔法少女まどか☆マギカ外伝")
+        selected_mode = request.form.get("mode", "CZ")  # ←追加
         selected_time = request.form.get("time", "朝イチ")
         input_game = request.form.get("game", "0")
         selected_through = request.form.get("through", "不問")
+        selected_at_gap = request.form.get("at_gap", "不問")  # ←追加
         selected_prev_game = request.form.get("prev_game", "不問")
         selected_prev_coin = request.form.get("prev_coin", "不問")
         selected_prev_diff = request.form.get("prev_diff", "不問")
         selected_prev_renchan = request.form.get("prev_renchan", "不問")
         selected_prev_type = request.form.get("prev_type", "不問")
     else:
-        selected_machine = "北斗の拳"
+        selected_machine = "L マギアレコード 魔法少女まどか☆マギカ外伝"
+        selected_mode = "CZ"  # ←追加
         selected_time = "朝イチ"
         input_game = "0"
         selected_through = "不問"
+        selected_at_gap = "不問"  # ←追加
         selected_prev_game = "不問"
         selected_prev_coin = "不問"
         selected_prev_diff = "不問"
@@ -108,9 +127,16 @@ def index():
         selected_prev_type = "不問"
 
     settings = machine_settings[selected_machine]
+    file_key = settings["file_key"]  # ← 追加
     exclude_games = settings["exclude_games"]
     coin_moti = settings["coin_moti"]
-    csv_path = f"data/{selected_machine}.csv"
+    #csv_path = f"data/{selected_machine}.csv"
+    if selected_mode == "AT":
+        csv_path = f"data/{file_key}_at.csv"
+    elif selected_mode == "CZ":
+        csv_path = f"data/{file_key}_cz.csv"
+    else:
+        csv_path = f"data/{file_key}_rb.csv"
 
     # CSV読み込み
     try:
@@ -122,21 +148,25 @@ def index():
             "index.html",
             machines=machines,
             selected_machine=selected_machine,
+            selected_mode=selected_mode,  # ←追加
             selected_time=selected_time,
             input_game=input_game,
-            max_game=settings["max_game"],
+            mode_options=settings["mode_options"],  # ← これが必要！！
             through_options=settings["through_options"],
+            at_gap_options=settings["at_gap_options"],  # ←追加
             prev_game_options=settings["prev_game_options"],
             prev_coin_options=settings["prev_coin_options"],
             prev_diff_options=settings["prev_diff_options"],
             prev_renchan_options=settings["prev_renchan_options"],
             prev_type_options=settings["prev_type_options"],
             selected_through=selected_through,
+            selected_at_gap=selected_at_gap,             # ←追加
             selected_prev_game=selected_prev_game,
             selected_prev_coin=selected_prev_coin,
             selected_prev_diff=selected_prev_diff,
             selected_prev_renchan=selected_prev_renchan,
             selected_prev_type=selected_prev_type,
+            labels=settings.get("labels", {}),  # ★ ここを追加
             error_msg=error_msg,
             result=None
         )
@@ -145,18 +175,20 @@ def index():
     form = {
         "time": selected_time,
         "through": selected_through,
+        "at_gap": selected_at_gap,  # ←追加
         "prev_game": selected_prev_game,
         "prev_coin": selected_prev_coin,
         "prev_diff": selected_prev_diff,
         "prev_renchan": selected_prev_renchan,
         "prev_type": selected_prev_type,
-        "game": int(input_game) + exclude_games,
+        #"game": int(input_game) + exclude_games,
+        "game": int(input_game),  # exclude_gamesはここでは加えない
     }
 
     filtered_df = filter_dataframe(df, form, settings)
 
     # --- 結果計算 ---
-    if not filtered_df.empty:
+    if not filtered_df.empty and len(filtered_df) >= 10:
         count = len(filtered_df)
         avg_reg_games = filtered_df["REGゲーム数"].mean()
         avg_at_games = filtered_df["ATゲーム数"].mean()
@@ -184,6 +216,8 @@ def index():
             "機械割": f"{payout_rate:,.1f}%",
             "期待値": f"{expected_value:,.0f}円"
         }
+    elif len(filtered_df) < 10:
+        result = "サンプル不足"
     else:
         result = None
 
@@ -195,25 +229,28 @@ def index():
         "index.html",
         machines=machines,
         selected_machine=selected_machine,
+        selected_mode=selected_mode,
         selected_time=selected_time,
         input_game=input_game,
-        max_game=settings["max_game"],
+        mode_options=settings["mode_options"],  # ← これが必要！！
         through_options=settings["through_options"],
+        at_gap_options=settings["at_gap_options"],  # ←追加
         prev_game_options=settings["prev_game_options"],
         prev_coin_options=settings["prev_coin_options"],
         prev_diff_options=settings["prev_diff_options"],
         prev_renchan_options=settings["prev_renchan_options"],
         prev_type_options=settings["prev_type_options"],
         selected_through=selected_through,
+        selected_at_gap=selected_at_gap,             # ←追加
         selected_prev_game=selected_prev_game,
         selected_prev_coin=selected_prev_coin,
         selected_prev_diff=selected_prev_diff,
         selected_prev_renchan=selected_prev_renchan,
         selected_prev_type=selected_prev_type,
+        labels=settings.get("labels", {}),  # ★ ここを追加
         result=result,
         error_msg=None
     )
-
 
 if __name__ == "__main__":
     pass  # ローカルで動かす場合は app.run() に変更
