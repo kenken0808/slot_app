@@ -23,6 +23,7 @@
       grid-template-columns: minmax(180px, 1fr) 2fr;
       gap: 12px 20px;
       align-items: center;
+      overflow-x: hidden; /* 追加！ */
     }
     label {
       font-weight: bold;
@@ -32,11 +33,12 @@
     select,
     input[type="number"] {
       padding: 4px 8px;
-      font-size: 14px;
+      font-size: 16px; /* iOS ズーム対策：16px 以上でズームされにくい */
       border: 1px solid #aaa;
       border-radius: 4px;
       box-sizing: border-box;
       width: 100%;
+      max-width: 100%; /* 追加！ */
       height: 32px;
     }
     input[type="submit"] {
@@ -138,7 +140,7 @@
     </select>
 
     <label for="game">打ち出しゲーム数</label>
-    <input type="number" id="game" name="game" min="0" value="{{input_game}}" required>
+    <input type="number" id="game" name="game" min="0" value="{{input_game}}" required inputmode="numeric" pattern="[0-9]*"> /* 追加！ */
 
     <label for="through">スルー回数</label>
     <select name="through_display" id="through" required>
