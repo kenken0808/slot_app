@@ -107,6 +107,28 @@
     font-weight: bold;
   }
 
+
+
+#advanced-section {
+  grid-column: 1 / -1;
+  display: none;
+  grid-template-columns: inherit;
+  gap: 12px 20px;
+}
+
+.toggle-btn {
+  grid-column: 1 / -1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #eee;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+
   </style>
 </head>
 
@@ -114,6 +136,9 @@
 <body>
   <h1>期待値ツール</h1>
   <form id="myForm" method="POST" action="/">
+
+
+
     <label for="machine">機種名</label>
     <select name="machine" id="machine" required>
       {% for m in machines %}
@@ -149,6 +174,14 @@
       {% endfor %}
     </select>
     <input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
+
+
+  <!-- 項目の開閉ボタン -->
+  <button type="button" onclick="toggleAdvanced()" class="toggle-btn">▼ 詳細条件を表示</button>
+
+
+  <!-- 対象項目 -->
+  <div id="advanced-section" style="display: none;">
 
     <label for="at_gap">{{ labels.get("at_gap", "AT間G数") }}</label>
     <select name="at_gap_display" id="at_gap" required data-selected="{{ selected_at_gap }}">
@@ -197,6 +230,8 @@
       {% endfor %}
     </select>
     <input type="hidden" name="prev_type" id="prev_type_hidden" value="{{ selected_prev_type }}">
+
+  </div>
 
 
     <button type="button" id="reset-btn" class="reset-btn">リセット</button>
@@ -558,6 +593,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 </script>
+
+<script>
+  function toggleAdvanced() {
+    const section = document.getElementById("advanced-section");
+    const button = document.querySelector(".toggle-btn");
+
+    if (section.style.display === "none") {
+      section.style.display = "grid";
+      button.textContent = "▲ 詳細条件を隠す";
+    } else {
+      section.style.display = "none";
+      button.textContent = "▼ 詳細条件を表示";
+    }
+  }
+</script>
+
 
 </body>
 </html>
