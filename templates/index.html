@@ -7,83 +7,47 @@
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
   <style>
 
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
+    /* 全体の基本レイアウトと背景グラデーション、フォント設定 */
     body {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 10px 20px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
-    }
--->
-
-
-  /* 全体の基本レイアウトと背景グラデーション、フォント設定 */
-  body {
-    font-family: 'M PLUS Rounded 1c', sans-serif;  /* 丸みのある日本語フォント */
-    max-width: 800px;           /* コンテンツ幅の上限 */
-    margin: 0 auto;             /* 中央揃え */
-    padding: 20px;              /* 周囲の余白 */
-    margin: 40px auto;         /* ← 上下左右に40px余白を追加（中央寄せも） */
-  }
-
-  .text-red {
-    color: red;
-    font-weight: bold;
-  }
-  .text-blue {
-    color: blue;
-    font-weight: bold;
-  }
-
-
-  /* タイトルのデザイン */
-  h1 {
-    text-align: center;         /* 中央寄せ */
-    margin-bottom: 20px;        /* 下の余白 */
-    margin-top: 0;             /* ← 上の余白なし */
-  }
-
-
-
-  /* 入力フォームの全体設定 */
-  form {
-    display: grid;              /* グリッドレイアウトで2列に配置 */
-    grid-template-columns: minmax(130px, 1fr) 2fr;  /* ラベルと入力の比率 */
-    gap: 14px 20px;             /* 行・列間の余白 */
-    background-color: white;   /* 背景白 */
-    padding: 20px;
-    border-radius: 12px;        /* 角丸 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* 軽い影で浮かせる */
-  }
-
-
-  /* ラベルのデザイン */
-    label {
-      font-weight: bold;
-      word-break: break-word;
-      max-width: 220px; /* ←ラベルの最大幅 */
+      font-family: 'M PLUS Rounded 1c', sans-serif;  /* 丸みのある日本語フォント */
+      max-width: 800px;           /* コンテンツ幅の上限 */
+      margin: 0 auto;             /* 中央揃え */
+      padding: 5px 20px; /* ← ここを調整（上下5px） */
+      margin: 40px auto;         /* ← 上下左右に40px余白を追加（中央寄せも） */
+      margin-top: 10px;   /* 上の余白を縮める */
     }
 
+    /* タイトルのデザイン */
+    h1 {
+      text-align: center;         /* 中央寄せ */
+      margin-bottom: 0;        /* 下の余白 */
+      margin-top: 10px;             /* ← 上の余白なし */
+    }
 
+    /* 入力フォームの全体設定 */
+    form {
+      display: grid;              /* グリッドレイアウトで2列に配置 */
+      grid-template-columns: 160px 1fr;
+      gap: 14px 20px;             /* 行・列間の余白 */
+      background-color: white;   /* 背景白 */
+      padding: 20px;
+      border-radius: 12px;        /* 角丸 */
+      margin-top: 0; /* ← タイトルとの隙間を狭める */
+    }
 
+    /* ラベルのデザイン */
+      label {
+        font-weight: bold;
+        word-break: break-word;
+        max-width: 220px; /* ←ラベルの最大幅 */
+      }
 
-  /* セレクトボックスと数字入力欄の共通設定 */
+    /* セレクトボックスと数字入力欄の共通設定 */
     select,
     input[type="number"] {
       padding: 4px 8px;
@@ -96,83 +60,97 @@
       height: 32px;
     }
 
+    /* ボタン全体を中央に整列 */
+    .form-buttons {
+      grid-column: 1 / -1;        /* グリッド全体を使用 */
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* リセットボタンと送信ボタンの共通デザイン */
+    .reset-btn,
+    input[type="submit"] {
+      padding: 12px 20px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
+
+    /* リセットボタンのカラー */
+    .reset-btn {
+      background-color: #f87171;  /* 赤系 */
+      color: white;
+    }
+
+    /* 出力ボタンのカラー */
+    input[type="submit"] {
+      background-color: #60a5fa;  /* 水色 */
+      color: white;
+    }
+
+    /* 出力結果エリア（成功時）の見た目 */
+    .result {
+      margin-top: 8px; /* ← ここを小さくして詰める（例：8px） */
+      background-color: #f0fdf4;      /* 淡い緑背景 */
+      border-left: 5px solid #34d399; /* 緑の左ライン */
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #065f46;                 /* 緑系文字色 */
+    }
+
+    /* エラー表示エリアの見た目 */
+    .error {
+      background-color: #fef2f2;      /* 淡い赤背景 */
+      border-left: 5px solid #ef4444; /* 赤の左ライン */
+      color: #991b1b;                 /* 赤系文字色 */
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 24px;
+    }
+
+    .text-red {
+      color: red;
+      font-weight: bold;
+    }
+    .text-blue {
+      color: blue;
+      font-weight: bold;
+    }
+
+    /* フォーカス時の強調表示 */
+    select:focus,
+    input[type="number"]:focus {
+      border-color: #6366f1;     /* 青色に変化 */
+      outline: none;
+    }
 
 
-  /* フォーカス時の強調表示 */
-  select:focus,
-  input[type="number"]:focus {
-    border-color: #6366f1;     /* 青色に変化 */
-    outline: none;
-  }
-
-  /* ボタン全体を中央に整列 */
-  .form-buttons {
-    grid-column: 1 / -1;        /* グリッド全体を使用 */
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-  }
-
-
-  /* リセットボタンと送信ボタンの共通デザイン */
-  .reset-btn,
-  input[type="submit"] {
-    padding: 12px 20px;
-    font-size: 15px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
-  }
 
 
 
-  /* リセットボタンのカラーとホバー動作 */
-  .reset-btn {
-    background-color: #f87171;  /* 赤系 */
-    color: white;
-  }
-
-  .reset-btn:hover {
-    background-color: #ef4444;
-    transform: translateY(-2px);  /* 浮くような動き */
-  }
-
-  /* 出力ボタンのカラーとホバー動作 */
-  input[type="submit"] {
-    background-color: #60a5fa;  /* 水色 */
-    color: white;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #3b82f6;
-    transform: translateY(-2px);
-  }
 
 
-  /* 出力結果エリア（成功時）の見た目 */
-  .result {
-    margin-top: 24px;
-    background-color: #f0fdf4;      /* 淡い緑背景 */
-    border-left: 5px solid #34d399; /* 緑の左ライン */
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 15px;
-    color: #065f46;                 /* 緑系文字色 */
-  }
 
-  /* エラー表示エリアの見た目 */
-  .error {
-    background-color: #fef2f2;      /* 淡い赤背景 */
-    border-left: 5px solid #ef4444; /* 赤の左ライン */
-    color: #991b1b;                 /* 赤系文字色 */
-    padding: 16px;
-    border-radius: 8px;
-    margin-top: 24px;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
