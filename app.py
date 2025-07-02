@@ -12,7 +12,7 @@ machine_settings = {
         "coin_moti": 32.6,
         "file_key": "マギアレコード",
         "mode_options": ["CZ", "ボーナス"],
-        "through_options": ["不問", "0", "1", "2", "3", "4", "5スルー以上"],
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
         "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],  # ←追加
         "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2001枚以上"],
@@ -74,7 +74,7 @@ def filter_dataframe(df, form, settings):
     cond &= (df["朝イチ"] == (1 if form["time"] == "朝イチ" else 0))
     # スルー回数
     if form["through"] != "不問":
-        cond &= (df["スルー回数"] == int(form["through"]))
+        cond &= df["スルー回数"].apply(lambda v: parse_range(int(v), form["through"]))
     # AT間ゲーム数
     if form["at_gap"] != "不問":
         cond &= df["AT間ゲーム数"].apply(lambda v: parse_range(int(v), form["at_gap"]))
