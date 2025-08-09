@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <!-- 拡大禁止を外し、iOS安全領域にもフィット -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ログイン | 期待値ツール</title>
 
   <!-- フォント -->
@@ -16,8 +17,16 @@
       --card-bg:#fff; --text:#1f2937; --muted:#6b7280;
       --brand:#60a5fa; --danger:#ef4444; --success:#34d399; --ring:#6366f1;
     }
+
+    /* すべての幅計算を安定化 */
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
     html,body{
-      overflow-x:hidden; max-width:100vw;
+      /* 横スクロールは出さず、描画もクリップして右切れの体感を減らす */
+      overflow-x: clip;
+      max-width: 100vw;
       background:
         radial-gradient(1200px 600px at 80% -100px, rgba(96,165,250,.15), transparent) no-repeat,
         radial-gradient(900px 500px at -200px 20%, rgba(52,211,153,.18), transparent) no-repeat,
@@ -25,17 +34,27 @@
     }
     body{
       font-family:'M PLUS Rounded 1c',sans-serif;
-      color:var(--text); min-height:100svh;
-      display:grid; place-items:center; padding:24px 16px;
+      color:var(--text);
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      /* 右側切れ対策として左右に余白を確保（端末により+αのマージン） */
+      padding:24px 16px;
     }
 
     /* =========================
        カード
     ========================= */
     .card{
-      width:100%; max-width:480px; background:var(--card-bg);
-      border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.08);
-      padding:24px; position:relative; overflow:hidden;
+      width:100%;
+      max-width:480px;
+      background:var(--card-bg);
+      border-radius:16px;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      margin-inline:auto;
     }
     .card::before{
       content:""; position:absolute; inset:-40% auto auto -40%;
@@ -54,7 +73,7 @@
        ヘッダー
     ========================= */
     .header{display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:8px;}
-    .header img{height:32px;}
+    .header img{height:32px; inline-size:auto;}
     .title{font-size:20px; font-weight:800; letter-spacing:.02em;}
     .subtitle{margin:4px 0 0; text-align:center; color:var(--muted); font-size:13px;}
 
@@ -63,7 +82,7 @@
     ========================= */
     form{margin-top:18px; display:grid; gap:12px;}
     .label{font-weight:700; font-size:14px; margin-bottom:2px;}
-    .pin-row{display:flex; gap:10px; justify-content:center;}
+    .pin-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
     .pin-input{
       width:56px; height:60px; text-align:center; font-size:26px; background:#fff;
       border:1px solid #cbd5e1; border-radius:12px; outline:none;
@@ -72,11 +91,17 @@
     .pin-input:focus{border-color:var(--ring); box-shadow:0 0 0 4px rgba(99,102,241,.15); transform:translateY(-1px);}
     .hint{text-align:center; color:var(--muted); font-size:12px; margin-top:2px;}
 
-    .actions{display:flex; gap:10px; margin-top:10px;}
+    .actions{
+      display:flex; gap:10px; margin-top:10px;
+      /* 幅が足りない端末で折り返し可能にして右切れを防ぐ */
+      flex-wrap: wrap;
+    }
     .btn{
-      flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      flex:1 1 160px; /* 最小幅160pxで並び、狭ければ折り返し */
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
       padding:12px 16px; border-radius:10px; border:none; cursor:pointer;
       font-weight:800; letter-spacing:.02em; transition:transform .03s, box-shadow .15s, background .15s;
+      text-decoration:none; /* <a>でもボタン風に */
     }
     .btn:active{transform:translateY(1px);}
     .btn--primary{background:var(--brand); color:#fff; box-shadow:0 6px 16px rgba(96,165,250,.35);}
@@ -98,6 +123,17 @@
        フッター
     ========================= */
     .foot{margin-top:14px; text-align:center; font-size:12px; color:var(--muted);}
+
+    /* =========================
+       追加のレスポンシブ微調整
+    ========================= */
+    @media (max-width: 360px) {
+      .title { font-size: 18px; }
+      .pin-input{ width:48px; height:52px; font-size:22px; }
+      .btn{ padding:10px 14px; }
+      /* 右余白が厳しい端末向けにさらに内側パディングを調整 */
+      body{ padding:24px 12px; }
+    }
   </style>
 </head>
 
