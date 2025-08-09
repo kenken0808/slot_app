@@ -315,7 +315,7 @@ def machine_page(machine_key, plan_type):
             "機械割": f"{payout_rate:,.1f}%",
             "期待値": f"{expected_value:,.0f}円",
         }
-    elif len(filtered_df) < 10:
+    elif len(filtered_df) < 100:
         result = "サンプル不足"
     else:
         result = None
