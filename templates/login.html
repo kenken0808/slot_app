@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>ログイン | 期待値ツール</title>
+
+  <!-- フォント -->
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================
+       ベース / トークン
+    ========================= */
+    :root{
+      --card-bg:#fff; --text:#1f2937; --muted:#6b7280;
+      --brand:#60a5fa; --danger:#ef4444; --success:#34d399; --ring:#6366f1;
+    }
+    html,body{
+      overflow-x:hidden; max-width:100vw;
+      background:
+        radial-gradient(1200px 600px at 80% -100px, rgba(96,165,250,.15), transparent) no-repeat,
+        radial-gradient(900px 500px at -200px 20%, rgba(52,211,153,.18), transparent) no-repeat,
+        #f8fafc;
+    }
+    body{
+      font-family:'M PLUS Rounded 1c',sans-serif;
+      color:var(--text); min-height:100svh;
+      display:grid; place-items:center; padding:24px 16px;
+    }
+
+    /* =========================
+       カード
+    ========================= */
+    .card{
+      width:100%; max-width:480px; background:var(--card-bg);
+      border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.08);
+      padding:24px; position:relative; overflow:hidden;
+    }
+    .card::before{
+      content:""; position:absolute; inset:-40% auto auto -40%;
+      width:240px; height:240px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(96,165,250,.25), transparent); filter:blur(2px);
+      pointer-events:none;
+    }
+    .card::after{
+      content:""; position:absolute; inset:auto -30% -30% auto;
+      width:200px; height:200px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(52,211,153,.25), transparent); filter:blur(1px);
+      pointer-events:none;
+    }
+
+    /* =========================
+       ヘッダー
+    ========================= */
+    .header{display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:8px;}
+    .header img{height:32px;}
+    .title{font-size:20px; font-weight:800; letter-spacing:.02em;}
+    .subtitle{margin:4px 0 0; text-align:center; color:var(--muted); font-size:13px;}
+
+    /* =========================
+       フォーム
+    ========================= */
+    form{margin-top:18px; display:grid; gap:12px;}
+    .label{font-weight:700; font-size:14px; margin-bottom:2px;}
+    .pin-row{display:flex; gap:10px; justify-content:center;}
+    .pin-input{
+      width:56px; height:60px; text-align:center; font-size:26px; background:#fff;
+      border:1px solid #cbd5e1; border-radius:12px; outline:none;
+      transition:border-color .15s, box-shadow .15s, transform .1s;
+    }
+    .pin-input:focus{border-color:var(--ring); box-shadow:0 0 0 4px rgba(99,102,241,.15); transform:translateY(-1px);}
+    .hint{text-align:center; color:var(--muted); font-size:12px; margin-top:2px;}
+
+    .actions{display:flex; gap:10px; margin-top:10px;}
+    .btn{
+      flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 16px; border-radius:10px; border:none; cursor:pointer;
+      font-weight:800; letter-spacing:.02em; transition:transform .03s, box-shadow .15s, background .15s;
+    }
+    .btn:active{transform:translateY(1px);}
+    .btn--primary{background:var(--brand); color:#fff; box-shadow:0 6px 16px rgba(96,165,250,.35);}
+    .btn--primary:disabled{opacity:.6; cursor:not-allowed; box-shadow:none;}
+    .btn--ghost{background:#eef2ff; color:#1e293b; box-shadow:inset 0 0 0 1px #c7d2fe;}
+    .btn--ghost:hover{background:#e0e7ff;}
+
+    /* =========================
+       フラッシュ
+    ========================= */
+    .flash{
+      margin-top:8px; padding:10px 12px; font-size:14px; display:flex; align-items:center; gap:8px;
+      border-radius:10px;
+    }
+    .flash--error{background:#fef2f2; border:1px solid #fecaca; color:#991b1b;}
+    .flash--info{background:#eff6ff; border:1px solid #bfdbfe; color:#1e3a8a;}
+
+    /* =========================
+       フッター
+    ========================= */
+    .foot{margin-top:14px; text-align:center; font-size:12px; color:var(--muted);}
+  </style>
+</head>
+
+<body>
+  <main class="card" role="main" aria-labelledby="loginTitle">
+    <!-- ヘッダー -->
+    <div class="header">
+      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+      <div class="title" id="loginTitle">ログイン</div>
+      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+    </div>
+    <p class="subtitle">有料ページに入るには4桁のPINを入力してください。</p>
+
+    <!-- flashメッセージ -->
+    {% with msgs = get_flashed_messages() %}
+      {% if msgs %}
+        <div class="flash flash--error" role="status" aria-live="polite">
+          {{ msgs|join(' / ') }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- フォーム（4桁PIN） -->
+    <form method="POST" action="">
+      <label class="label" for="pin1">PIN（4桁の数字）</label>
+
+      <div class="pin-row" id="pinRow">
+        <input class="pin-input" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" />
+        <input class="pin-input" id="pin2" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin3" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin4" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+      </div>
+
+      <!-- Flaskは name="password" を受け取る -->
+      <input type="hidden" name="password" id="pinFull" value="" />
+      <div class="hint">※ 数字以外は入力できません。削除キーで1つ前に戻れます。</div>
+
+      <div class="actions">
+        <a class="btn btn--ghost" href="{{ url_for('machine_page', machine_key=machine_key, plan_type='free') }}">無料ページへ</a>
+        <button type="submit" class="btn btn--primary" id="submitBtn" disabled>実行</button>
+      </div>
+    </form>
+
+    <div class="foot">誤入力が続くと一時ロックされます。時間をおいてお試しください。</div>
+  </main>
+
+  <script>
+    // =========================
+    // PIN分割入力 → hidden統合
+    // =========================
+    const inputs = Array.from(document.querySelectorAll('.pin-input'));
+    const pinFull = document.getElementById('pinFull');
+    const submitBtn = document.getElementById('submitBtn');
+
+    inputs.forEach((el, idx) => {
+      el.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0,1);
+        if (e.target.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+        updateHiddenAndButton();
+      });
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus();
+      });
+      el.addEventListener('focus', (e) => e.target.select());
+    });
+
+    function updateHiddenAndButton(){
+      const pin = inputs.map(i => i.value || '').join('');
+      pinFull.value = pin;
+      submitBtn.disabled = (pin.length !== 4);
+    }
+
+    // 4桁ペースト対応
+    document.getElementById('pinRow').addEventListener('paste', (e) => {
+      const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+      const digits = text.replace(/\D/g, '').slice(0,4).split('');
+      inputs.forEach((el, i) => el.value = digits[i] || '');
+      updateHiddenAndButton();
+      inputs[(digits.length >= 4 ? 3 : digits.length)].focus();
+      e.preventDefault();
+    });
+
+    // 初期フォーカス
+    window.addEventListener('DOMContentLoaded', () => {
+      inputs[0].focus();
+      updateHiddenAndButton();
+    });
+  </script>
+</body>
+</html>

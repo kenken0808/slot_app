@@ -2,80 +2,85 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>期待値ツール</title>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
-  <style>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+  />
+  <title>スロット分析ツール</title>
 
+  <!-- フォント -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =====================================================
+       ベース
+    ===================================================== */
     html, body {
       overflow-x: hidden;
       max-width: 100vw;
     }
-
-    /* 全体の基本レイアウトと背景グラデーション、フォント設定 */
     body {
-      font-family: 'M PLUS Rounded 1c', sans-serif;  /* 丸みのある日本語フォント */
-      max-width: 800px;           /* コンテンツ幅の上限 */
-      margin: 0 auto;             /* 中央揃え */
-      padding: 5px 20px; /* ← ここを調整（上下5px） */
-      margin: 40px auto;         /* ← 上下左右に40px余白を追加（中央寄せも） */
-      margin-top: 10px;   /* 上の余白を縮める */
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      max-width: 800px;
+      margin: 10px auto 40px; /* 上10px, 下40px */
+      padding: 5px 20px;
     }
-
-    /* タイトルのデザイン */
     h1 {
-      text-align: center;         /* 中央寄せ */
-      margin-bottom: 0;        /* 下の余白 */
-      margin-top: 10px;             /* ← 上の余白なし */
+      text-align: center;
+      margin: 10px 0 0;
     }
 
-    /* 入力フォームの全体設定 */
+    /* =====================================================
+       フォーム
+    ===================================================== */
     form {
-      display: grid;              /* グリッドレイアウトで2列に配置 */
-      grid-template-columns: 150px 1fr;  /* ← ラベル160px、入力欄は残り全部 */
-      gap: 14px 20px;             /* 行・列間の余白 */
-      background-color: white;   /* 背景白 */
+      display: grid;
+      grid-template-columns: 150px 1fr; /* 左ラベル, 右入力 */
+      gap: 14px 20px;
+      background-color: #fff;
       padding: 20px;
-      border-radius: 12px;        /* 角丸 */
-      margin-top: 10px; /* ← タイトルとの隙間を狭める */
+      border-radius: 12px;
+      margin-top: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-
-    /* ラベルのデザイン */
     label {
-      display: flex;           /* フレックスボックスにする */
-      align-items: center;     /* 縦方向中央寄せ */
+      display: flex;
+      align-items: center;
       font-weight: bold;
       color: #1f2937;
       width: 100%;
       box-sizing: border-box;
-      font-size: 14px; /* iOS ズーム対策：16px 以上でズームされにくい */
+      font-size: 14px;
     }
-
-    /* セレクトボックスと数字入力欄の共通設定 */
     select,
     input[type="number"] {
       padding: 4px 8px;
-      font-size: 14px; /* iOS ズーム対策：16px 以上でズームされにくい */
+      font-size: 14px;
       border: 1px solid #aaa;
       border-radius: 6px;
       box-sizing: border-box;
       width: 100%;
-      max-width: 100%; /* 追加！ */
+      max-width: 100%;
       height: 32px;
-      -webkit-text-size-adjust: 100%; /* iOSズーム対策 */
+      -webkit-text-size-adjust: 100%;
+    }
+    select:focus,
+    input[type="number"]:focus {
+      border-color: #6366f1;
+      outline: none;
     }
 
-    /* ボタン全体を中央に整列 */
+    /* ボタン行 */
     .form-buttons {
-      grid-column: 1 / -1;        /* グリッド全体を使用 */
+      grid-column: 1 / -1;
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-top: 10px; /* ← ここで下にずらす */
+      margin-top: 10px;
     }
-
-    /* リセットボタンと送信ボタンの共通デザイン */
     .reset-btn,
     input[type="submit"] {
       padding: 12px 20px;
@@ -86,106 +91,80 @@
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: all 0.2s ease;
-      width: 140px; /* ✅ ← ボタンの幅を統一する */
+      width: 140px; /* 幅を統一 */
     }
-
-    /* リセットボタンのカラー */
     .reset-btn {
-      background-color: #f87171;  /* 赤系 */
-      color: white;
+      background-color: #f87171; /* 赤 */
+      color: #fff;
     }
-
-    /* 出力ボタンのカラー */
     input[type="submit"] {
-      background-color: #60a5fa;  /* 水色 */
-      color: white;
+      background-color: #60a5fa; /* 青 */
+      color: #fff;
     }
 
-    /* 出力結果エリア（成功時）の見た目 */
+    /* =====================================================
+       結果/エラー表示
+    ===================================================== */
     .result {
-      margin-top: 20px; /* ← ここを小さくして詰める（例：8px） */
-      background-color: #f0fdf4;      /* 淡い緑背景 */
-      border-left: 5px solid #34d399; /* 緑の左ライン */
+      margin-top: 20px;
+      background-color: #f0fdf4;
+      border-left: 5px solid #34d399;
       padding: 16px;
       border-radius: 8px;
       font-size: 15px;
-      color: #065f46;                 /* 緑系文字色 */
+      color: #065f46;
     }
-
-    /* エラー表示エリアの見た目 */
     .error {
-      background-color: #fef2f2;      /* 淡い赤背景 */
-      border-left: 5px solid #ef4444; /* 赤の左ライン */
-      color: #991b1b;                 /* 赤系文字色 */
+      background-color: #fef2f2;
+      border-left: 5px solid #ef4444;
+      color: #991b1b;
       padding: 16px;
       border-radius: 8px;
       margin-top: 24px;
     }
+    .text-red { color: red; font-weight: bold; }
+    .text-blue { color: blue; font-weight: bold; }
 
-    .text-red {
-      color: red;
-      font-weight: bold;
+    /* =====================================================
+       詳細条件（開閉セクション）
+    ===================================================== */
+    #advanced-section {
+      grid-column: 1 / -1;
+      display: none;                 /* 初期は非表示（JSで制御） */
+      grid-template-columns: inherit;
+      gap: 12px 20px;
     }
-    .text-blue {
-      color: blue;
-      font-weight: bold;
+    .toggle-btn {
+      grid-column: 1 / -1;
+      padding: 4px 12px;
+      font-size: 14px;
+      background-color: #eee;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      margin: 4px 0 6px;
     }
-
-    /* フォーカス時の強調表示 */
-    select:focus,
-    input[type="number"]:focus {
-      border-color: #6366f1;     /* 青色に変化 */
-      outline: none;
-    }
-
-
-
-
-
-
-
-
-
-#advanced-section {
-  grid-column: 1 / -1;
-  display: none;
-  grid-template-columns: inherit;
-  gap: 12px 20px;
-}
-
-.toggle-btn {
-  grid-column: 1 / -1;
-  padding: 4px 12px;
-  font-size: 14px;
-  background-color: #eee;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: left;
-  margin-bottom: 6px;
-  margin-top: 4px; /* ← 上の余白が目立つ原因 */
-}
-
-
   </style>
 </head>
 
-
-
-
 <body>
-  <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="左画像" style="height: 30px;">
-    <span>期待値ツール</span>
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="右画像" style="height: 30px;">
+  <!-- タイトル -->
+  <h1 style="display:flex; align-items:center; justify-content:center; gap:10px;">
+    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="左画像" style="height:30px;">
+    <span>スロット分析ツール</span>
+    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="右画像" style="height:30px;">
   </h1>
-  <form id="myForm" method="POST" action="/{{ url_path }}">
 
+  <!-- メインフォーム -->
+  <form id="myForm" method="POST" action="/{{ url_path }}">
+    <!-- 機種名 -->
     <label for="machine">機種名</label>
     <select name="machine" id="machine" required>
       <option value="{{ machine_name }}" selected>{{ machine_name }}</option>
     </select>
 
+    <!-- モード（表示用と送信用hidden） -->
     <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>
     <select name="mode_display" id="mode" required>
       {% for opt in mode_options %}
@@ -194,457 +173,402 @@
     </select>
     <input type="hidden" name="mode" id="mode_hidden" value="{{ selected_mode }}">
 
+    <!-- 朝イチ/朝イチ以外 -->
     <label for="time">朝イチ／朝イチ以外</label>
     <select name="time" id="time" required>
       <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
       <option value="朝イチ以外" {% if selected_time == "朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
     </select>
 
+    <!-- 打ち出しゲーム数 -->
     <label for="game">打ち出しゲーム数</label>
-    <input type="number" id="game" name="game" min="0" value="{{input_game}}" required inputmode="numeric" pattern="[0-9]*">
+    <input
+      type="number"
+      id="game"
+      name="game"
+      min="0"
+      value="{{ input_game }}"
+      required
+      inputmode="numeric"
+      pattern="[0-9]*"
+    >
 
-<!-- スルー回数 -->
-<label for="through">スルー回数</label>
-<select name="through_display" id="through" required data-selected="{{ selected_through }}">
-
-  {% for opt in through_options %}
-    <option value="{{ opt }}" {% if opt == selected_through %}selected{% endif %}>{{ opt }}</option>
-  {% endfor %}
-</select>
-<input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
-
-
-
-
-
-
-
-  <!-- 項目の開閉ボタン -->
-  <button type="button" id="toggle-detail" onclick="toggleAdvanced()" class="toggle-btn">▼ 詳細条件を表示</button>
-
-  <!-- 対象項目 -->
-  <div id="advanced-section" style="{{ 'display: grid;' if request.method == 'POST' else 'display: none;' }}">
-
-
-    <label for="at_gap">{{ labels.get("at_gap", "AT間G数") }}</label>
-    <select name="at_gap_display" id="at_gap" required data-selected="{{ selected_at_gap }}">
-      {% for opt in at_gap_options %}
-        <option value="{{ opt }}" {% if opt == selected_at_gap %}selected{% endif %}>{{ opt }}</option>
+    <!-- スルー回数（表示用＋送信用hidden） -->
+    <label for="through">スルー回数</label>
+    <select name="through_display" id="through" required data-selected="{{ selected_through }}">
+      {% for opt in through_options %}
+        <option value="{{ opt }}" {% if opt == selected_through %}selected{% endif %}>{{ opt }}</option>
       {% endfor %}
     </select>
-    <input type="hidden" name="at_gap" id="at_gap_hidden" value="{{ selected_at_gap }}">
+    <input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
 
-    <label for="prev_game">{{ labels.get("prev_game", "前回当選G数") }}</label>
-    <select name="prev_game_display" id="prev_game" required data-selected="{{ selected_prev_game }}">
-      {% for opt in prev_game_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_game %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="prev_game" id="prev_game_hidden" value="{{ selected_prev_game }}">
+    <!-- 詳細条件の開閉ボタン -->
+    <button type="button" id="toggle-detail" class="toggle-btn">▼ 詳細条件を表示</button>
 
-    <label for="prev_coin">{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
-    <select name="prev_coin_display" id="prev_coin" required data-selected="{{ selected_prev_coin }}">
-      {% for opt in prev_coin_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_coin %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="prev_coin" id="prev_coin_hidden" value="{{ selected_prev_coin }}">
+    <!-- 詳細条件（POST後は開いた状態にする） -->
+    <div id="advanced-section" style="{{ 'display: grid;' if request.method == 'POST' else 'display: none;' }}">
+      <!-- 各詳細項目：表示用select + hidden -->
+      <label for="at_gap">{{ labels.get("at_gap", "AT間G数") }}</label>
+      <select name="at_gap_display" id="at_gap" required data-selected="{{ selected_at_gap }}">
+        {% for opt in at_gap_options %}
+          <option value="{{ opt }}" {% if opt == selected_at_gap %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="at_gap" id="at_gap_hidden" value="{{ selected_at_gap }}">
 
-    <label for="prev_diff">{{ labels.get("prev_diff", "前回差枚数") }}</label>
-    <select name="prev_diff_display" id="prev_diff" required data-selected="{{ selected_prev_diff }}">
-      {% for opt in prev_diff_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_diff %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="prev_diff" id="prev_diff_hidden" value="{{ selected_prev_diff }}">
+      <label for="prev_game">{{ labels.get("prev_game", "前回当選G数") }}</label>
+      <select name="prev_game_display" id="prev_game" required data-selected="{{ selected_prev_game }}">
+        {% for opt in prev_game_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_game %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_game" id="prev_game_hidden" value="{{ selected_prev_game }}">
 
-    <label for="prev_renchan">{{ labels.get("prev_renchan", "前回連荘数") }}</label>
-    <select name="prev_renchan_display" id="prev_renchan" required data-selected="{{ selected_prev_renchan }}">
-      {% for opt in prev_renchan_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_renchan %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="prev_renchan" id="prev_renchan_hidden" value="{{ selected_prev_renchan }}">
+      <label for="prev_coin">{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+      <select name="prev_coin_display" id="prev_coin" required data-selected="{{ selected_prev_coin }}">
+        {% for opt in prev_coin_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_coin %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_coin" id="prev_coin_hidden" value="{{ selected_prev_coin }}">
 
-    <label for="prev_type">{{ labels.get("prev_type", "前回種別") }}</label>
-    <select name="prev_type_display" id="prev_type" required data-selected="{{ selected_prev_type }}">
-      {% for opt in prev_type_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="prev_type" id="prev_type_hidden" value="{{ selected_prev_type }}">
+      <label for="prev_diff">{{ labels.get("prev_diff", "前回差枚数") }}</label>
+      <select name="prev_diff_display" id="prev_diff" required data-selected="{{ selected_prev_diff }}">
+        {% for opt in prev_diff_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_diff %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_diff" id="prev_diff_hidden" value="{{ selected_prev_diff }}">
 
-    <label for="custom_condition">{{ labels.get("custom_condition", "機種別条件") }}</label>
-    <select name="custom_condition_display" id="custom_condition" required data-selected="{{ selected_custom_condition }}">
-      {% for opt in custom_condition_options %}
-        <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-    <input type="hidden" name="custom_condition" id="custom_condition_hidden" value="{{ selected_custom_condition }}">
-  </div>
+      <label for="prev_renchan">{{ labels.get("prev_renchan", "前回連荘数") }}</label>
+      <select name="prev_renchan_display" id="prev_renchan" required data-selected="{{ selected_prev_renchan }}">
+        {% for opt in prev_renchan_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_renchan %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_renchan" id="prev_renchan_hidden" value="{{ selected_prev_renchan }}">
 
+      <label for="prev_type">{{ labels.get("prev_type", "前回種別") }}</label>
+      <select name="prev_type_display" id="prev_type" required data-selected="{{ selected_prev_type }}">
+        {% for opt in prev_type_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_type" id="prev_type_hidden" value="{{ selected_prev_type }}">
 
+      <label for="custom_condition">{{ labels.get("custom_condition", "機種別条件") }}</label>
+      <select name="custom_condition_display" id="custom_condition" required data-selected="{{ selected_custom_condition }}">
+        {% for opt in custom_condition_options %}
+          <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="custom_condition" id="custom_condition_hidden" value="{{ selected_custom_condition }}">
+    </div>
 
-  <div class="form-buttons">
-    <button type="button" id="reset-btn" class="reset-btn">リセット</button>
-    <input type="submit" value="出力">
-  </div>
+    <!-- ボタン群 -->
+    <div class="form-buttons">
+      <button type="button" id="reset-btn" class="reset-btn">リセット</button>
+      <input type="submit" value="出力">
+    </div>
   </form>
 
-<!-- エラーメッセージ表示領域 -->
-{% if error_msg %}
-  <div id="error-area" style="color: red;">{{ error_msg }}</div>
-{% endif %}
-
-<!-- 出力結果表示領域 -->
-<div class="result" id="result-area">
-  <p id="result-title"><strong>【出力結果】</strong></p>
-
-  {% if result == "サンプル不足" %}
-    <p>サンプル不足のため、出力できません。</p>
-
-  {% elif result %}
-    <table id="result-table">
-      <tbody>
-        <tr><th>件数：</th><td>{{ result["件数"] }}</td></tr>
-        <tr><th>初当たり：</th><td>{{ result["平均REGゲーム数"] }}</td></tr>
-        <tr><th>獲得枚数：</th><td>{{ result["平均AT枚数"] }}</td></tr>
-        <tr>
-          <th>機械割：</th>
-          <td>
-            <span class="{{ 'text-red' if result['機械割'] | replace('%', '') | float < 100 else 'text-blue' }}">
-              {{ result["機械割"] }}
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <th>期待値：</th>
-          <td>
-            <span class="{{ 'text-red' if result['期待値'] | replace('円', '') | replace(',', '') | int < 0 else 'text-blue' }}">
-              {{ result["期待値"] }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-  {% else %}
-    <p>ここに出力結果が表示されます。</p>
+  <!-- エラーメッセージ -->
+  {% if error_msg %}
+    <div id="error-area" class="error">{{ error_msg }}</div>
   {% endif %}
-</div>
 
-
-
-
-<!-- ▼ リセットボタンを押したときに各選択肢を初期化し、出力結果エリアをリセットする処理 -->
-<script>
-document.getElementById("reset-btn").addEventListener("click", (e) => {
-  e.preventDefault();
-  const ids = ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if(el) {
-      el.value = "不問";  // リセット時に「不問」に戻す
-      document.getElementById(`${id}_hidden`).value = "不問";  // hiddenもリセット
-    }
-  });
-
-  // 出力結果の内容をリセット（ただしエラーメッセージとは分離）
-  const resultArea = document.getElementById("result-area");
-  resultArea.innerHTML = `
+  <!-- 出力結果 -->
+  <div class="result" id="result-area">
     <p id="result-title"><strong>【出力結果】</strong></p>
-    <p>ここに出力結果が表示されます。</p>
-  `;
-});
 
-</script>
+    {% if result == "サンプル不足" %}
+      <p>サンプル不足のため、出力できません。</p>
 
+    {% elif result %}
+      <table id="result-table">
+        <tbody>
+          <tr><th>件数：</th><td>{{ result["件数"] }}</td></tr>
+          <tr><th>初当たり：</th><td>{{ result["平均REGゲーム数"] }}</td></tr>
+          <tr><th>獲得枚数：</th><td>{{ result["平均AT枚数"] }}</td></tr>
+          <tr>
+            <th>機械割：</th>
+            <td>
+              <span class="{{ 'text-red' if result['機械割'] | replace('%', '') | float < 100 else 'text-blue' }}">
+                {{ result["機械割"] }}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <th>期待値：</th>
+            <td>
+              <span class="{{ 'text-red' if result['期待値'] | replace('円', '') | replace(',', '') | int < 0 else 'text-blue' }}">
+                {{ result["期待値"] }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    {% else %}
+      <p>ここに出力結果が表示されます。</p>
+    {% endif %}
+  </div>
 
-<!-- ▼ スルー回数が「0」のときにAT間ゲーム数の選択肢を「不問」で固定し、グレーアウトする処理 -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const atGapSelect = document.getElementById("at_gap");
-  const throughSelect = document.getElementById("through");
+  <!-- =====================================================
+       JS：リセット（選択肢＆結果表示を初期化）
+  ====================================================== -->
+  <script>
+    document.getElementById("reset-btn").addEventListener("click", (e) => {
+      e.preventDefault();
 
-  // 初期選択肢を保存
-  const originalAtGapOptions = Array.from(atGapSelect.options).map(opt => {
-    return { value: opt.value, text: opt.text };
-  });
+      const ids = [
+        "through","at_gap","prev_game","prev_coin",
+        "prev_diff","prev_renchan","prev_type","custom_condition"
+      ];
 
-  function updateAtGapBasedOnThrough() {
-    const throughValue = throughSelect.value;
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "不問";
+        const hidden = document.getElementById(`${id}_hidden`);
+        if (hidden) hidden.value = "不問";
+      });
 
-    if (throughValue === "0スルー") {
-      // 不問にしてロック
-      atGapSelect.innerHTML = "";
-      const option = document.createElement("option");
-      option.value = "不問";
-      option.textContent = "不問";
-      atGapSelect.appendChild(option);
-      atGapSelect.disabled = true;
-    } else {
-      // 元に戻す
-      atGapSelect.innerHTML = "";
-      originalAtGapOptions.forEach(opt => {
+      const resultArea = document.getElementById("result-area");
+      resultArea.innerHTML = `
+        <p id="result-title"><strong>【出力結果】</strong></p>
+        <p>ここに出力結果が表示されます。</p>
+      `;
+    });
+  </script>
+
+  <!-- =====================================================
+       JS：0スルー時は AT間G数 を不問固定
+  ====================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const atGapSelect = document.getElementById("at_gap");
+      const throughSelect = document.getElementById("through");
+      if (!atGapSelect || !throughSelect) return;
+
+      // 初期選択肢を保存
+      const originalAtGapOptions = Array.from(atGapSelect.options).map(opt => ({
+        value: opt.value, text: opt.text
+      }));
+
+      function updateAtGapBasedOnThrough() {
+        const throughValue = throughSelect.value;
+
+        if (throughValue === "0スルー") {
+          atGapSelect.innerHTML = "";
+          const option = document.createElement("option");
+          option.value = "不問";
+          option.textContent = "不問";
+          atGapSelect.appendChild(option);
+          atGapSelect.disabled = true;
+        } else {
+          atGapSelect.innerHTML = "";
+          originalAtGapOptions.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt.value;
+            option.textContent = opt.text;
+            if (opt.value === atGapSelect.dataset.selected) option.selected = true;
+            atGapSelect.appendChild(option);
+          });
+          atGapSelect.disabled = false;
+        }
+      }
+
+      updateAtGapBasedOnThrough();
+      throughSelect.addEventListener("change", updateAtGapBasedOnThrough);
+    });
+  </script>
+
+  <!-- =====================================================
+       JS：モード選択肢（Flask → JS へ受け渡し）
+  ====================================================== -->
+  <script>
+    const modeOptionsByMachine = {{ mode_options_map | tojson }};
+  </script>
+
+  <!-- =====================================================
+       JS：ロック対象（機種ごと）＋ 朝イチ時の制御
+  ====================================================== -->
+  <script>
+    const lockedFieldMap = {{ locked_field_map | tojson }};
+    const asaichiTargets = ["prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+    const originalOptions = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      [...asaichiTargets, "through", "at_gap"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          originalOptions[id] = Array.from(el.options).map(opt => ({
+            value: opt.value, text: opt.text
+          }));
+        }
+      });
+
+      updateFieldLocking(document.getElementById("machine").value);
+      updateAsaichiLocking(document.getElementById("time").value);
+    });
+
+    // 機種ごとのロック
+    function updateFieldLocking(machineName) {
+      const lockTargets = lockedFieldMap[machineName] || [];
+      const allTargets = ["through","at_gap","custom_condition"];
+
+      allTargets.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (lockTargets.includes(id) && id !== "through") {
+          el.disabled = true;
+          restoreSingleOption(el, "不問");
+        } else {
+          restoreOriginalOptions(id, el);
+          el.disabled = false;
+        }
+      });
+
+      const modeEl = document.getElementById("mode");
+      if (modeEl) modeEl.disabled = lockTargets.includes("mode");
+    }
+
+    // 朝イチのときは一部項目を不問固定
+    function updateAsaichiLocking(timeValue) {
+      const isAsaichi = (timeValue === "朝イチ");
+
+      asaichiTargets.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (isAsaichi && id !== "through") {
+          el.disabled = true;
+          restoreSingleOption(el, "不問");
+        } else {
+          restoreOriginalOptions(id, el);
+          el.disabled = false;
+        }
+      });
+    }
+
+    // Selectを「不問」1択にする
+    function restoreSingleOption(selectEl, value) {
+      selectEl.innerHTML = "";
+      const opt = document.createElement("option");
+      opt.value = value;
+      opt.textContent = value;
+      selectEl.appendChild(opt);
+      selectEl.value = value;
+    }
+
+    // Selectの元の選択肢を復元
+    function restoreOriginalOptions(id, selectEl) {
+      if (!originalOptions[id]) return;
+      const selected = selectEl.dataset.selected;
+      selectEl.innerHTML = "";
+      originalOptions[id].forEach(opt => {
         const option = document.createElement("option");
         option.value = opt.value;
         option.textContent = opt.text;
-        if (opt.value === atGapSelect.dataset.selected) {
-          option.selected = true;
-        }
-        atGapSelect.appendChild(option);
+        if (opt.value === selected) option.selected = true;
+        selectEl.appendChild(option);
       });
-      atGapSelect.disabled = false;
     }
-  }
 
-  // 初回と変更時に反映
-  updateAtGapBasedOnThrough();
-  throughSelect.addEventListener("change", updateAtGapBasedOnThrough);
-});
-</script>
-
-
-
-<!-- ▼ 機種ごとに対応した「モード（CZ / ボーナス / ATなど）」の選択肢を表示する処理 -->
-<script>
-  // Flask → JavaScript へ渡す
-  const modeOptionsByMachine = {{ mode_options_map | tojson }};
-</script>
-
-
-
-<!-- ▼ ロック（変更不可）にする処理 -->
-<script>
-  // 🔐 機種ごとのロック対象フィールド設定（Flaskから受け取る）
-  const lockedFieldMap = {{ locked_field_map | tojson }};
-
-  // 🔁 朝イチによる制御対象
-  const asaichiTargets = [
-    "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type"
-  ];
-
-  // 🔁 全フィールドの初期選択肢を保存（朝イチ・機種ロック兼用）
-  const originalOptions = {};
-  document.addEventListener("DOMContentLoaded", () => {
-    [...asaichiTargets, "through", "at_gap"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        originalOptions[id] = Array.from(el.options).map(opt => ({
-          value: opt.value,
-          text: opt.text
-        }));
-      }
+    // イベント
+    document.getElementById("machine").addEventListener("change", function () {
+      updateFieldLocking(this.value);
     });
-
-    // 初回実行
-    updateFieldLocking(document.getElementById("machine").value);
-    updateAsaichiLocking(document.getElementById("time").value);
-  });
-
-  // 🔁 機種ロック処理
-  function updateFieldLocking(machineName) {
-    const lockTargets = lockedFieldMap[machineName] || [];
-    const allTargets = ["through", "at_gap", "custom_condition"];
-
-    allTargets.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      if (lockTargets.includes(id) && id !== "through") {  // `through` を除外
-        el.disabled = true;
-        restoreSingleOption(el, "不問"); // 「不問」に設定
-      } else {
-        restoreOriginalOptions(id, el);
-        el.disabled = false;
-      }
+    document.getElementById("time").addEventListener("change", function () {
+      updateAsaichiLocking(this.value);
     });
+  </script>
 
-    // mode は不問にしないがロックはする
-    const modeEl = document.getElementById("mode");
-    if (modeEl) {
-      modeEl.disabled = lockTargets.includes("mode");
-    }
-  }
-
-  // 🔁 朝イチロック処理
-  function updateAsaichiLocking(timeValue) {
-    const isAsaichi = timeValue === "朝イチ";
-
-    asaichiTargets.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      if (isAsaichi && id !== "through") {  // `through` を除外
-        el.disabled = true;
-        restoreSingleOption(el, "不問"); // 「不問」に設定
-      } else {
-        restoreOriginalOptions(id, el);
-        el.disabled = false;
-      }
-    });
-  }
-
-
-  // 🔄 特定の選択肢だけにする（「不問」のみ）
-  function restoreSingleOption(selectEl, value) {
-    selectEl.innerHTML = "";
-    const opt = document.createElement("option");
-    opt.value = value;
-    opt.textContent = value;
-    selectEl.appendChild(opt);
-    selectEl.value = value;
-  }
-
-  // 🔄 元の選択肢を復元（data-selected による初期値復元も可能）
-  function restoreOriginalOptions(id, selectEl) {
-    if (!originalOptions[id]) return;
-    const selected = selectEl.dataset.selected;
-    selectEl.innerHTML = "";
-    originalOptions[id].forEach(opt => {
-      const option = document.createElement("option");
-      option.value = opt.value;
-      option.textContent = opt.text;
-      if (opt.value === selected) {
-        option.selected = true;
-      }
-      selectEl.appendChild(option);
-    });
-  }
-
-  // 🔁 イベントリスナー
-  document.getElementById("machine").addEventListener("change", function () {
-    updateFieldLocking(this.value);
-  });
-
-  document.getElementById("time").addEventListener("change", function () {
-    updateAsaichiLocking(this.value);
-  });
-</script>
-
-
-
-
-
-<!-- ▼ 機種を変更したときに、スルーや前回条件などの選択肢を「不問」に戻す処理 -->
-<script>
-  const resetFieldsOnMachineChange = () => {
-    // modeはリセットしない
-    const resetTargets = [
-      "through",
-      "at_gap",
-      "prev_game",
-      "prev_coin",
-      "prev_diff",
-      "prev_renchan",
-      "prev_type"
-    ];
-
-    resetTargets.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        // 「不問」があれば選択、なければ追加して選択
+  <!-- =====================================================
+       JS：機種変更時に各条件を「不問」に戻す
+  ====================================================== -->
+  <script>
+    function resetFieldsOnMachineChange() {
+      const resetTargets = ["through","at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+      resetTargets.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
         let option = Array.from(el.options).find(opt => opt.value === "不問");
-        if (!option) {
-          option = new Option("不問", "不問");
-          el.add(option);
-        }
+        if (!option) el.add(new Option("不問", "不問"));
         el.value = "不問";
-      }
-    });
-
-    // 打ち出しゲーム数を0にリセット
-    const gameInput = document.getElementById("game");
-    if (gameInput) {
-      gameInput.value = "0";
-    }
-  };
-
-  document.getElementById("machine").addEventListener("change", () => {
-    resetFieldsOnMachineChange();
-  });
-</script>
-
-
-<!-- ▼ 出力ボタンを押したときの画面スクロール位置を記録し、ページ再表示後に復元する処理 -->
-<script>
-  document.getElementById("myForm").addEventListener("submit", function () {
-    const scrollY = window.scrollY;
-    sessionStorage.setItem("scrollPosition", scrollY);
-  });
-
-  window.addEventListener("load", function () {
-    const savedY = sessionStorage.getItem("scrollPosition");
-    if (savedY !== null) {
-      window.scrollTo(0, parseInt(savedY));
-      sessionStorage.removeItem("scrollPosition");
-    }
-  });
-</script>
-
-
-<!-- ▼ 詳細条件トグル状態を保持しながら開閉する処理 -->
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const section = document.getElementById("advanced-section");
-    const button = document.querySelector(".toggle-btn");
-
-    // 🔁 状態を sessionStorage から読み取り（true/false）
-    const keepOpen = sessionStorage.getItem("keepAdvancedOpen") === "true";
-
-    // 初期表示（起動時は閉じた状態がデフォルト）
-    section.style.display = keepOpen ? "grid" : "none";
-    if (button) {
-      button.textContent = keepOpen ? "▲ 詳細条件を隠す" : "▼ 詳細条件を表示";
-    }
-
-    // ボタンをクリックしたときに状態を保存
-    if (button) {
-      button.addEventListener("click", () => {
-        const isVisible = section.style.display === "grid";
-        section.style.display = isVisible ? "none" : "grid";
-        button.textContent = isVisible ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
-
-        // 🔄 状態を保存
-        sessionStorage.setItem("keepAdvancedOpen", String(!isVisible));
       });
+
+      const gameInput = document.getElementById("game");
+      if (gameInput) gameInput.value = "0";
     }
-  });
-</script>
+    document.getElementById("machine").addEventListener("change", () => {
+      resetFieldsOnMachineChange();
+    });
+  </script>
 
-
-
-<!-- ▼ 各selectタグの値を対応するhiddenフィールドにコピーしてform送信時に使えるようにする処理 -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("myForm").addEventListener("submit", function (e) {
-    e.preventDefault();  // ページ遷移を防ぐ
-
-    const syncFields = [
-      "mode", "through", "at_gap", 
-      "prev_game", "prev_coin", "prev_diff", 
-      "prev_renchan", "prev_type", "custom_condition"
-    ];
-    
-    syncFields.forEach(id => {
-      const select = document.getElementById(id);
-      const hidden = document.getElementById(`${id}_hidden`);
-      
-      if (select && hidden) {
-        hidden.value = select.value;  // hiddenフィールドに反映
+  <!-- =====================================================
+       JS：送信後のスクロール位置を復元
+  ====================================================== -->
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function () {
+      const scrollY = window.scrollY;
+      sessionStorage.setItem("scrollPosition", scrollY);
+    });
+    window.addEventListener("load", function () {
+      const savedY = sessionStorage.getItem("scrollPosition");
+      if (savedY !== null) {
+        window.scrollTo(0, parseInt(savedY));
+        sessionStorage.removeItem("scrollPosition");
       }
     });
+  </script>
 
-    // 手動でフォーム送信を行う
-    this.submit();  // フォーム送信を実行
-  });
-});
+  <!-- =====================================================
+       JS：詳細条件トグル（状態保持）
+  ====================================================== -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const section = document.getElementById("advanced-section");
+      const button  = document.getElementById("toggle-detail");
+      const keepOpen = sessionStorage.getItem("keepAdvancedOpen") === "true";
 
-</script>
+      section.style.display = keepOpen ? "grid" : "none";
+      if (button) button.textContent = keepOpen ? "▲ 詳細条件を隠す" : "▼ 詳細条件を表示";
 
+      if (button) {
+        button.addEventListener("click", () => {
+          const isVisible = section.style.display === "grid";
+          section.style.display = isVisible ? "none" : "grid";
+          button.textContent = isVisible ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
+          sessionStorage.setItem("keepAdvancedOpen", String(!isVisible));
+        });
+      }
+    });
+  </script>
 
+  <!-- =====================================================
+       JS：select値をhiddenへコピーして送信（name整合のため）
+  ====================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("myForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // 一旦止める
 
+        const syncFields = [
+          "mode","through","at_gap",
+          "prev_game","prev_coin","prev_diff",
+          "prev_renchan","prev_type","custom_condition"
+        ];
+
+        syncFields.forEach(id => {
+          const select = document.getElementById(id);
+          const hidden = document.getElementById(`${id}_hidden`);
+          if (select && hidden) hidden.value = select.value;
+        });
+
+        this.submit(); // コピー後に送信
+      });
+    });
+  </script>
 </body>
 </html>
-
-
