@@ -8,11 +8,13 @@ from werkzeug.security import generate_password_hash
 machine_configs = {
     "magireco": {
         "display_name": "L マギアレコード 魔法少女まどか☆マギカ外伝",
-        "file_key": "magireco"
+        "file_key": "magireco",
+        "link_url": "https://note.com/kenslodata/n/nf73890fb871e"
     },
     "godeater": {
         "display_name": "L ゴッドイーター リザレクション",
-        "file_key": "godeater"
+        "file_key": "godeater",
+        "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
     }
 }
 

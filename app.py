@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import pandas as pd
 from werkzeug.security import check_password_hash
 from config import machine_configs, machine_settings, TOOL_PASSWORDS, apply_free_custom_label_override
+from bs4 import BeautifulSoup
+import requests
 import re
 import time
 import os
@@ -122,6 +124,52 @@ def tool_login(machine_key, plan_type):
     # GET はテンプレートを返す
     return render_template("login.html", machine_key=machine_key, plan_type=plan_type)
 
+# ======================================================================
+# 外部リンクの OGP / Twitter Card を取得してプレビュー用情報に整形
+# ======================================================================
+def fetch_link_preview(url: str, timeout: int = 6):
+    if not url:
+        return None
+    try:
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/119.0.0.0 Safari/537.36"
+            )
+        }
+        resp = requests.get(url, headers=headers, timeout=timeout)
+        resp.raise_for_status()
+        html = resp.text
+        soup = BeautifulSoup(html, "html.parser")
+
+        def pick(*names):
+            # og:* / twitter:* / 汎用meta の順で探す
+            for n in names:
+                el = soup.find("meta", attrs={"property": n}) or soup.find("meta", attrs={"name": n})
+                if el and el.get("content"):
+                    return el["content"].strip()
+            return None
+
+        title = pick("og:title", "twitter:title") or (soup.title.string.strip() if soup.title else None)
+        desc  = pick("og:description", "twitter:description", "description")
+        image = pick("og:image", "twitter:image")
+        site  = pick("og:site_name", "twitter:site")
+
+        # 簡単な正規化
+        if image and image.startswith("//"):
+            image = "https:" + image
+
+        return {
+            "url": url,
+            "title": title or url,
+            "description": desc or "",
+            "image": image,          # 画像が無い場合は None のまま
+            "site_name": site or "",
+        }
+    except Exception:
+        return {"url": url, "title": url, "description": "", "image": None, "site_name": ""}
+
 # ==============================================================================
 # ユーティリティ：条件文字列のパース
 # ==============================================================================
@@ -217,8 +265,10 @@ def machine_page(machine_key, plan_type):
     config = machine_configs[machine_key]
     display_name = config["display_name"]
     file_key = config["file_key"]
+    link_url = config.get("link_url")
     settings = machine_settings[display_name]
     settings = apply_free_custom_label_override(settings, display_name, plan_type)
+    link_preview = fetch_link_preview(link_url) if link_url else None
 
     # テンプレート切替
     template_name = "index_paid.html" if plan_type == "paid" else "index_free.html"
@@ -355,6 +405,8 @@ def machine_page(machine_key, plan_type):
         selected_prev_renchan=selected_prev_renchan,
         selected_prev_type=selected_prev_type,
         labels=settings.get("labels", {}),
+        link_url=link_url,
+        link_preview=link_preview,
         result=result,
         error_msg=None,
         selected_custom_condition=selected_custom_condition,
