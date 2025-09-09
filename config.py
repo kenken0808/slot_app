@@ -152,7 +152,7 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$D4Pjt3aUzUqWz1L3$59d03a3616fcf2e16587479d3b1409f22c35b352b01c990a4365252f5d19fe1972e982371e04c1c2a8097dc7f8227ff42806326569d76c7dda9a653a6c8f520d"
     },
     "franxx": {
-        "paid": "scrypt:32768:8:1$uIx5yraV4IWiXaDP$931cfd8a261e1bd16a76fc82d50059c0e5277701f237dac332c2caa024beff874c1e2f19bbbcbcc13ff2388ff4476d03a0f1ec3fafd8c6e20887e1ffcda8dfd9"
+        "paid": "scrypt:32768:8:1$5fU98Y7AfIci9tIq$b921b1182bfdb1da0e432ab4650c47d91c8fd3cce6fcc31be0718466c2daf2397208e80da712e9e0c748918d983bc1db4216af5d2265c287ab43566df4770343"
     }
 }
 
