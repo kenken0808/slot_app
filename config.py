@@ -15,6 +15,11 @@ machine_configs = {
         "display_name": "L ゴッドイーター リザレクション",
         "file_key": "godeater",
         "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
+    },
+    "franxx": {
+        "display_name": "L ダーリン・イン・ザ・フランキス",
+        "file_key": "franxx",
+        "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
     }
 }
 
@@ -79,6 +84,36 @@ machine_settings = {
 
         # ロックする項目
         "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
+    },
+
+    "L ダーリン・イン・ザ・フランキス": {
+        "exclude_games": 40,   # 除外ゲーム数
+        "coin_moti": 30.8,     # コイン持ち
+        "mode_options": ["ボーナス", "AT"],
+
+        # 各プルダウンの選択肢
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001枚以上"],
+        "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        # ラベル設定
+        "labels": {
+            "mode": "ボナ／AT",
+            "at_gap": "AT間ゲーム数",
+            "prev_game": "前回AT当選ゲーム数",
+            "prev_coin": "前回AT獲得枚数",
+            "prev_diff": "前回AT終了時差枚数",
+            "prev_renchan": "前回AT連荘数",
+            "prev_type": "前回AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_type_options", "custom_condition_options"]  # ロックしない項目
     }
 }
 
@@ -115,6 +150,9 @@ TOOL_PASSWORDS = {
     },
     "godeater": {
         "paid": "scrypt:32768:8:1$D4Pjt3aUzUqWz1L3$59d03a3616fcf2e16587479d3b1409f22c35b352b01c990a4365252f5d19fe1972e982371e04c1c2a8097dc7f8227ff42806326569d76c7dda9a653a6c8f520d"
+    },
+    "franxx": {
+        "paid": "scrypt:32768:8:1$cusq9wQpim8dd3Lg$96342d53947a17b2478358de96f301b5e368ebe45d5ca0b93f31902b37334e2c31eabd365f3a2a555199d7105f128649fd6cfbf8c81b3063ddca45bb76574947"
     }
 }
 
