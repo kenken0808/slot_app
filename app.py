@@ -376,8 +376,8 @@ def machine_page(machine_key, plan_type):
 
     # 機種別ロック対象（テンプレートで使用）
     locked_field_map = {
-        key: machine_settings[machine_configs[key]["display_name"]].get("locked_fields", [])
-        for key in machine_configs
+        cfg["display_name"]: machine_settings[cfg["display_name"]].get("locked_fields", [])
+        for cfg in machine_configs.values()
     }
 
     # レンダリング

@@ -472,7 +472,7 @@
     const originalOptions = {};
 
     document.addEventListener("DOMContentLoaded", () => {
-      [...asaichiTargets, "through", "at_gap"].forEach(id => {
+      [...asaichiTargets, "through", "at_gap", "custom_condition"].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           originalOptions[id] = Array.from(el.options).map(opt => ({

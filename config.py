@@ -113,7 +113,7 @@ machine_settings = {
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["prev_type_options", "custom_condition_options"]  # ロックしない項目
+        "locked_fields": ["prev_type", "custom_condition"]  # ロックしない項目
     }
 }
 
