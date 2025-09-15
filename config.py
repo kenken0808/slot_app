@@ -20,6 +20,16 @@ machine_configs = {
         "display_name": "L ダーリン・イン・ザ・フランキス",
         "file_key": "franxx",
         "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
+    },
+    "azurlane": {
+        "display_name": "L アズールレーン THE ANIMETION",
+        "file_key": "azurlane",
+        "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
+    },
+    "saki": {
+        "display_name": "L 咲-Saki-頂上決戦",
+        "file_key": "saki",
+        "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
     }
 }
 
@@ -114,6 +124,65 @@ machine_settings = {
         },
 
         "locked_fields": ["prev_type", "custom_condition"]  # ロックしない項目
+
+    },
+
+    "L アズールレーン THE ANIMETION": {
+        "exclude_games": 40,
+        "coin_moti": 25.8,
+        "mode_options": ["ボーナス", "AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1～3連", "4～7連", "8連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ／AT",
+            "at_gap": "AT間ゲーム数",
+            "prev_game": "前回AT当選ゲーム数",
+            "prev_coin": "前回AT獲得枚数",
+            "prev_diff": "前回AT終了時差枚数",
+            "prev_renchan": "前回AT連荘数",
+            "prev_type": "前回AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_type", "custom_condition"]
+
+    },
+
+    "L 咲-Saki-頂上決戦": {
+        "exclude_games": 40,
+        "coin_moti": 32.1,
+        "mode_options": ["CZ", "AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～200G", "201～400G", "401～600G", "601G以上"],
+        "prev_game_options": ["不問", "1～300G", "301～600G", "601～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "CZ／AT",
+            "at_gap": "AT間ゲーム数",
+            "prev_game": "前回AT当選ゲーム数",
+            "prev_coin": "前回AT獲得枚数",
+            "prev_diff": "前回AT終了時差枚数",
+            "prev_renchan": "前回AT連荘数",
+            "prev_type": "前回AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_type", "custom_condition"]
+
     }
 }
 
@@ -153,6 +222,12 @@ TOOL_PASSWORDS = {
     },
     "franxx": {
         "paid": "scrypt:32768:8:1$5fU98Y7AfIci9tIq$b921b1182bfdb1da0e432ab4650c47d91c8fd3cce6fcc31be0718466c2daf2397208e80da712e9e0c748918d983bc1db4216af5d2265c287ab43566df4770343"
+    },
+    "azurlane": {
+        "paid": "scrypt:32768:8:1$PFBegCB04fHOgHF0$e710ae5a7fbea8429be66079386589a52d173fc972d45996937d61d45b8c7206db3393ddf501fafe3c08e1035251fd711f687ac81257300c82f6ab85659eeb5d"
+    },
+    "saki": {
+        "paid": "scrypt:32768:8:1$T2kCZh0dXCl8alN2$479722165dcf0228f71bba801906880f231693bddb644ff25b7eaec0956376c150b818851202440702b7642d8666c235461bb6cc9df1453592eab1e35b892d11"
     }
 }
 
