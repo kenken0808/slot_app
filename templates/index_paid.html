@@ -272,6 +272,14 @@
       </select>
       <input type="hidden" name="at_gap" id="at_gap_hidden" value="{{ selected_at_gap }}">
 
+      <label for="prev_diff">{{ labels.get("prev_diff", "前回差枚数") }}</label>
+      <select name="prev_diff_display" id="prev_diff" required data-selected="{{ selected_prev_diff }}">
+        {% for opt in prev_diff_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_diff %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="prev_diff" id="prev_diff_hidden" value="{{ selected_prev_diff }}">
+
       <label for="prev_game">{{ labels.get("prev_game", "前回当選G数") }}</label>
       <select name="prev_game_display" id="prev_game" required data-selected="{{ selected_prev_game }}">
         {% for opt in prev_game_options %}
@@ -287,14 +295,6 @@
         {% endfor %}
       </select>
       <input type="hidden" name="prev_coin" id="prev_coin_hidden" value="{{ selected_prev_coin }}">
-
-      <label for="prev_diff">{{ labels.get("prev_diff", "前回差枚数") }}</label>
-      <select name="prev_diff_display" id="prev_diff" required data-selected="{{ selected_prev_diff }}">
-        {% for opt in prev_diff_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_diff %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_diff" id="prev_diff_hidden" value="{{ selected_prev_diff }}">
 
       <label for="prev_renchan">{{ labels.get("prev_renchan", "前回連荘数") }}</label>
       <select name="prev_renchan_display" id="prev_renchan" required data-selected="{{ selected_prev_renchan }}">

@@ -143,10 +143,10 @@ machine_settings = {
 
         "labels": {
             "mode": "ボナ／AT",
-            "at_gap": "AT間ゲーム数",
-            "prev_game": "前回AT当選ゲーム数",
+            "at_gap": "前回AT(ボナ)終了時AT間G数",
+            "prev_game": "前回AT当選G数",
             "prev_coin": "前回AT獲得枚数",
-            "prev_diff": "前回AT終了時差枚数",
+            "prev_diff": "前回AT(ボナ)終了時差枚数",
             "prev_renchan": "前回AT連荘数",
             "prev_type": "前回AT種別",
             "custom_condition": "機種別条件"
