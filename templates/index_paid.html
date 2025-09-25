@@ -54,7 +54,7 @@
       color: #1f2937;
       width: 100%;
       box-sizing: border-box;
-      font-size: 12px;
+      font-size: 14px;
     }
     select,
     input[type="number"] {
@@ -259,7 +259,7 @@
     <input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
 
     <!-- 詳細条件の開閉ボタン -->
-    <button type="button" id="toggle-detail" class="toggle-btn">▼ 詳細条件を表示</button>
+    <button type="button" id="toggle-detail" class="toggle-btn">▼ 詳細条件を表示（前回条件）</button>
 
     <!-- 詳細条件（POST後は開いた状態にする） -->
     <div id="advanced-section" style="{{ 'display: grid;' if request.method == 'POST' else 'display: none;' }}">
