@@ -612,13 +612,13 @@
       const keepOpen = sessionStorage.getItem("keepAdvancedOpen") === "true";
 
       section.style.display = keepOpen ? "grid" : "none";
-      if (button) button.textContent = keepOpen ? "▲ 詳細条件を隠す" : "▼ 詳細条件を表示";
+      if (button) button.textContent = keepOpen ? "▲ 詳細条件を隠す（前回条件）" : "▼ 詳細条件を表示（前回条件）";
 
       if (button) {
         button.addEventListener("click", () => {
           const isVisible = section.style.display === "grid";
           section.style.display = isVisible ? "none" : "grid";
-          button.textContent = isVisible ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
+          button.textContent = isVisible ? "▼ 詳細条件を表示（前回条件）" : "▲ 詳細条件を隠す（前回条件）";
           sessionStorage.setItem("keepAdvancedOpen", String(!isVisible));
         });
       }
