@@ -6,27 +6,27 @@ from werkzeug.security import generate_password_hash
 # 機種ごとのURLキー・表示名・CSV読み込み用キー
 # =========================================================
 machine_configs = {
-    "●●●magireco": {
+    "abc_magireco": {
         "display_name": "L マギアレコード 魔法少女まどか☆マギカ外伝",
         "file_key": "magireco",
         "link_url": "https://note.com/kenslodata/n/nf73890fb871e"
     },
-    "●●●godeater": {
+    "abc_godeater": {
         "display_name": "L ゴッドイーター リザレクション",
         "file_key": "godeater",
         "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
     },
-    "●●●franxx": {
+    "abc_franxx": {
         "display_name": "L ダーリン・イン・ザ・フランキス",
         "file_key": "franxx",
         "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
     },
-    "●●●azurlane": {
+    "abc_azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
         "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
     },
-    "●●●saki": {
+    "abc_saki": {
         "display_name": "L 咲-Saki-頂上決戦",
         "file_key": "saki",
         "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
@@ -262,6 +262,9 @@ TOOL_PASSWORDS = {
     },
     "saki": {
         "paid": "scrypt:32768:8:1$T2kCZh0dXCl8alN2$479722165dcf0228f71bba801906880f231693bddb644ff25b7eaec0956376c150b818851202440702b7642d8666c235461bb6cc9df1453592eab1e35b892d11"
+    },
+    "hokuto": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
 
