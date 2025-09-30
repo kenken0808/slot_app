@@ -6,30 +6,35 @@ from werkzeug.security import generate_password_hash
 # 機種ごとのURLキー・表示名・CSV読み込み用キー
 # =========================================================
 machine_configs = {
-    "magireco": {
+    "●●●magireco": {
         "display_name": "L マギアレコード 魔法少女まどか☆マギカ外伝",
         "file_key": "magireco",
         "link_url": "https://note.com/kenslodata/n/nf73890fb871e"
     },
-    "godeater": {
+    "●●●godeater": {
         "display_name": "L ゴッドイーター リザレクション",
         "file_key": "godeater",
         "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
     },
-    "franxx": {
+    "●●●franxx": {
         "display_name": "L ダーリン・イン・ザ・フランキス",
         "file_key": "franxx",
         "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
     },
-    "azurlane": {
+    "●●●azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
         "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
     },
-    "saki": {
+    "●●●saki": {
         "display_name": "L 咲-Saki-頂上決戦",
         "file_key": "saki",
         "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
+    },
+    "hokuto": {
+        "display_name": "L 北斗の拳",
+        "file_key": "hokuto",
+        "link_url": "https://note.com/kenslodata"
     }
 }
 
@@ -182,6 +187,35 @@ machine_settings = {
         },
 
         "locked_fields": ["prev_type", "custom_condition"]
+
+    },
+
+    "L 北斗の拳": {
+        "exclude_games": 40,
+        "coin_moti": 35.0,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,000G", "1,001～1,300G", "1,301G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
 
     }
 }
