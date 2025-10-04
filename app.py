@@ -412,6 +412,7 @@ def machine_page(machine_key, plan_type):
         selected_custom_condition=selected_custom_condition,
         custom_condition_options=settings.get("custom_condition_options", ["不問"]),
         locked_field_map=locked_field_map,
+        og_url=request.url,
     )
 
 # ==============================================================================
