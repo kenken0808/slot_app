@@ -98,7 +98,12 @@ def tool_login(machine_key, plan_type):
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
         # GET はテンプレートを返す（ここでリダイレクトするとループの原因）
-        return render_template("login.html", machine_key=machine_key, plan_type=plan_type)
+        return render_template(
+            "login.html",
+            machine_key=machine_key,
+            plan_type=plan_type,
+            og_url=request.url,
+        )
 
     if request.method == "POST":
         input_pw = request.form.get("password", "").strip()
@@ -107,7 +112,12 @@ def tool_login(machine_key, plan_type):
         if not re.fullmatch(r"\d{4}", input_pw):
             flash("4桁の数字を入力してください。")
             record_fail(key)
-            return render_template("login.html", machine_key=machine_key, plan_type=plan_type)
+            return render_template(
+                "login.html",
+                machine_key=machine_key,
+                plan_type=plan_type,
+                og_url=request.url,
+            )
 
         # ハッシュ照合
         if check_password_hash(tool_pw_hash, input_pw):
@@ -119,10 +129,20 @@ def tool_login(machine_key, plan_type):
         else:
             record_fail(key)
             flash("パスワードが違います。")
-            return render_template("login.html", machine_key=machine_key, plan_type=plan_type)
+            return render_template(
+                "login.html",
+                machine_key=machine_key,
+                plan_type=plan_type,
+                og_url=request.url,
+            )
 
     # GET はテンプレートを返す
-    return render_template("login.html", machine_key=machine_key, plan_type=plan_type)
+    return render_template(
+        "login.html",
+        machine_key=machine_key,
+        plan_type=plan_type,
+        og_url=request.url,
+    )
 
 # ======================================================================
 # 外部リンクの OGP / Twitter Card を取得してプレビュー用情報に整形
