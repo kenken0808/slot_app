@@ -179,7 +179,10 @@
       <div class="title" id="loginTitle">ログイン</div>
       <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
     </div>
-    <p class="subtitle">有料ページに入るには4桁のPINを入力してください。</p>
+    <p class="subtitle">
+      有料ページに入るには<br>
+      4桁のPINを入力してください。
+    </p>
 
     <!-- flashメッセージ -->
     {% with msgs = get_flashed_messages() %}
@@ -203,7 +206,10 @@
 
       <!-- Flask用のhiddenフィールド（4桁結合） -->
       <input type="hidden" name="password" id="pinFull" value="" />
-      <div class="hint">※ 数字以外は入力できません。削除キーで1つ前に戻れます。</div>
+      <div class="hint">
+        ※ 数字以外は入力できません。<br>
+        削除キーで1つ前に戻れます。
+      </div>
 
       <!-- ボタン：左が無料ページへ（小）、右が実行（大） -->
       <div class="actions">
@@ -212,7 +218,11 @@
       </div>
     </form>
 
-    <div class="foot">誤入力が続くと一時ロックされます。時間をおいてお試しください。</div>
+    <div class="foot">
+      誤入力が続くと一時ロックされます。<br>
+      時間をおいてお試しください。
+    </div>
+
   </main>
 
   <script>
