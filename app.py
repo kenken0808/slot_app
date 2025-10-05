@@ -102,11 +102,15 @@ def tool_login(machine_key, plan_type):
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
         # GET はテンプレートを返す（ここでリダイレクトするとループの原因）
+        og_image = url_for("static", filename="ogp.jpg", _external=True)
+        print("[DEBUG] og_image_url =", og_image)
+
         return render_template(
             "login.html",
             machine_key=machine_key,
             plan_type=plan_type,
             og_url=request.url,
+            og_image=og_image,   # ← ★追加
         )
 
     if request.method == "POST":
@@ -117,11 +121,15 @@ def tool_login(machine_key, plan_type):
             print("[DEBUG] branch=bad_format_password")
             flash("4桁の数字を入力してください。")
             record_fail(key)
+            og_image = url_for("static", filename="ogp.jpg", _external=True)
+            print("[DEBUG] og_image_url =", og_image)
+
             return render_template(
                 "login.html",
                 machine_key=machine_key,
                 plan_type=plan_type,
                 og_url=request.url,
+                og_image=og_image,   # ← ★追加
             )
 
         # ハッシュ照合
@@ -136,20 +144,28 @@ def tool_login(machine_key, plan_type):
             print("[DEBUG] branch=wrong_password")
             record_fail(key)
             flash("パスワードが違います。")
+            og_image = url_for("static", filename="ogp.jpg", _external=True)
+            print("[DEBUG] og_image_url =", og_image)
+
             return render_template(
                 "login.html",
                 machine_key=machine_key,
                 plan_type=plan_type,
                 og_url=request.url,
+                og_image=og_image,   # ← ★追加
             )
 
     # GET はテンプレートを返す
     print("[DEBUG] branch=get_request")
+    og_image = url_for("static", filename="ogp.jpg", _external=True)
+    print("[DEBUG] og_image_url =", og_image)
+
     return render_template(
         "login.html",
         machine_key=machine_key,
         plan_type=plan_type,
         og_url=request.url,
+        og_image=og_image,   # ← ★追加
     )
 
 # ======================================================================
