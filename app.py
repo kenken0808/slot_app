@@ -80,13 +80,16 @@ def tool_login(machine_key, plan_type):
       - paid はツールごとの PIN（4桁）を検証
       - 試行上限で短時間ロック
     """
+    print(f"[DEBUG] login route start: {machine_key}/{plan_type} method={request.method} url={request.url}")
     # 無料ページは認証不要
     if plan_type == "free":
+        print("[DEBUG] branch=free_redirect")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
 
     # ツールごとの PIN（ハッシュ）を取得
     tool_pw_hash = (TOOL_PASSWORDS.get(machine_key) or {}).get(plan_type)
     if tool_pw_hash is None:
+        print("[DEBUG] branch=no_tool_pw_hash → free redirect")
         flash("このツールは現在ロック中です。")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
 
@@ -95,6 +98,7 @@ def tool_login(machine_key, plan_type):
     # ロック中チェック
     unlock_at = is_locked(key)
     if unlock_at:
+        print("[DEBUG] branch=locked")
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
         # GET はテンプレートを返す（ここでリダイレクトするとループの原因）
@@ -110,6 +114,7 @@ def tool_login(machine_key, plan_type):
 
         # 4桁の数字のみ許可（総当たり対策は試行制限で担保）
         if not re.fullmatch(r"\d{4}", input_pw):
+            print("[DEBUG] branch=bad_format_password")
             flash("4桁の数字を入力してください。")
             record_fail(key)
             return render_template(
@@ -121,12 +126,14 @@ def tool_login(machine_key, plan_type):
 
         # ハッシュ照合
         if check_password_hash(tool_pw_hash, input_pw):
+            print("[DEBUG] branch=correct_password")
             access = session.get("tool_access", {})
             access[key] = True
             session["tool_access"] = access
             record_success(key)
             return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
         else:
+            print("[DEBUG] branch=wrong_password")
             record_fail(key)
             flash("パスワードが違います。")
             return render_template(
@@ -137,6 +144,7 @@ def tool_login(machine_key, plan_type):
             )
 
     # GET はテンプレートを返す
+    print("[DEBUG] branch=get_request")
     return render_template(
         "login.html",
         machine_key=machine_key,
