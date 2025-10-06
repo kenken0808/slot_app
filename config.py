@@ -236,7 +236,7 @@ machine_settings = {
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
         "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
         "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
+        "prev_type_options": ["不問", "下位", "上位"],
         "custom_condition_options": ["不問"],
 
         "labels": {
