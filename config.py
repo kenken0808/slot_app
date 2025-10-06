@@ -35,6 +35,11 @@ machine_configs = {
         "display_name": "L 咲-Saki-頂上決戦",
         "file_key": "saki",
         "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
+    },
+    "onimusya": {
+        "display_name": "L 新鬼武者3",
+        "file_key": "onimusya",
+        "link_url": "https://note.com/kenslodata/n/n592917017aae"
     }
 }
 
@@ -218,6 +223,35 @@ machine_settings = {
 
         "locked_fields": ["prev_type", "custom_condition"]
 
+    },
+
+    "L 新鬼武者3": {
+        "exclude_games": 40,
+        "coin_moti": 33.0,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
+
     }
 }
 
@@ -266,6 +300,9 @@ TOOL_PASSWORDS = {
     },
     "saki": {
         "paid": "scrypt:32768:8:1$T2kCZh0dXCl8alN2$479722165dcf0228f71bba801906880f231693bddb644ff25b7eaec0956376c150b818851202440702b7642d8666c235461bb6cc9df1453592eab1e35b892d11"
+    },
+    "onimusya": {
+        "paid": "scrypt:32768:8:1$HXVhXY4Co3eDcFe3$3947c9a3df4088cf2c5db5d799d4f557835787c4e655f6088bec17410d6ffceda627de56707ff650d8a98edac57eee5274ad29ab9907546a3872d4d781ec7b29"
     }
 }
 
