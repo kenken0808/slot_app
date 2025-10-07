@@ -309,6 +309,7 @@ def machine_page(machine_key, plan_type):
     config = machine_configs[machine_key]
     display_name = config["display_name"]
     file_key = config["file_key"]
+    og_image = url_for("static", filename=config.get("og_image", "ogp.jpg"), _external=True)
     link_url = config.get("link_url")
     settings = machine_settings[display_name]
     settings = apply_free_custom_label_override(settings, display_name, plan_type)

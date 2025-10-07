@@ -9,36 +9,43 @@ machine_configs = {
     "abc_magireco": {
         "display_name": "L マギアレコード 魔法少女まどか☆マギカ外伝",
         "file_key": "magireco",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata/n/nf73890fb871e"
     },
     "abc_godeater": {
         "display_name": "L ゴッドイーター リザレクション",
         "file_key": "godeater",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
     },
     "hokuto": {
         "display_name": "L 北斗の拳",
         "file_key": "hokuto",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata"
     },
     "azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
     },
     "franxx": {
         "display_name": "L ダーリン・イン・ザ・フランキス",
         "file_key": "franxx",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
     },
     "saki": {
         "display_name": "L 咲-Saki-頂上決戦",
         "file_key": "saki",
+        "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
     },
     "onimusya": {
         "display_name": "L 新鬼武者3",
         "file_key": "onimusya",
+        "og_image": "onimusya.jpg",
         "link_url": "https://note.com/kenslodata/n/n592917017aae"
     }
 }
