@@ -102,7 +102,7 @@ def tool_login(machine_key, plan_type):
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
         # GET はテンプレートを返す（ここでリダイレクトするとループの原因）
-        og_image = url_for("static", filename="ogp.jpg", _external=True)
+        og_image = url_for("static", filename=cfg.get("og_image", "ogp.jpg"), _external=True)
         print("[DEBUG] og_image_url =", og_image)
 
         return render_template(
@@ -458,6 +458,7 @@ def machine_page(machine_key, plan_type):
         custom_condition_options=settings.get("custom_condition_options", ["不問"]),
         locked_field_map=locked_field_map,
         og_url=request.url,
+        og_image=og_image,   # ★ここを追加
     )
 
 # ==============================================================================
