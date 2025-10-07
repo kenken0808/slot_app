@@ -45,7 +45,7 @@ machine_configs = {
     "onimusya": {
         "display_name": "L 新鬼武者3",
         "file_key": "onimusya",
-        "og_image": "onimusya2.jpg",
+        "og_image": "onimusya.jpg",
         "link_url": "https://note.com/kenslodata/n/n592917017aae"
     }
 }

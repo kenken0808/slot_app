@@ -94,6 +94,9 @@ def tool_login(machine_key, plan_type):
     og_image = url_for("static", filename=og_filename, _external=True)
     print(f"[DEBUG] og_image for {machine_key} -> {og_filename} ({og_image})")
 
+    ASSET_REV = os.environ.get("ASSET_REV", "20251007")
+    tw_image = f"{og_image}?v={ASSET_REV}"
+
     key = _access_key(machine_key, plan_type)
 
     # ロック中チェック
@@ -108,6 +111,7 @@ def tool_login(machine_key, plan_type):
             plan_type=plan_type,
             og_url=request.url,
             og_image=og_image,
+            tw_image=tw_image,  # ← 追加
         )
 
     if request.method == "POST":
@@ -124,6 +128,7 @@ def tool_login(machine_key, plan_type):
                 plan_type=plan_type,
                 og_url=request.url,
                 og_image=og_image,
+                tw_image=tw_image,  # ← 追加
             )
 
         # ハッシュ照合
@@ -144,6 +149,7 @@ def tool_login(machine_key, plan_type):
                 plan_type=plan_type,
                 og_url=request.url,
                 og_image=og_image,
+                tw_image=tw_image,  # ← 追加
             )
 
     # GET はテンプレートを返す
@@ -154,6 +160,7 @@ def tool_login(machine_key, plan_type):
         plan_type=plan_type,
         og_url=request.url,
         og_image=og_image,
+        tw_image=tw_image,  # ← 追加
     )
 
 # ======================================================================
@@ -303,6 +310,10 @@ def machine_page(machine_key, plan_type):
     settings = apply_free_custom_label_override(settings, display_name, plan_type)
     link_preview = fetch_link_preview(link_url) if link_url else None
 
+    # 追加（X用キャッシュバスター）
+    ASSET_REV = os.environ.get("ASSET_REV", "20251007")  # 任意。更新したい時に変える
+    tw_image = f"{og_image}?v={ASSET_REV}"
+
     # テンプレート切替
     template_name = "index_paid.html" if plan_type == "paid" else "index_free.html"
 
@@ -447,6 +458,7 @@ def machine_page(machine_key, plan_type):
         locked_field_map=locked_field_map,
         og_url=request.url,
         og_image=og_image,   # ★ここを追加
+        tw_image=tw_image,   # ← 追加
     )
 
 # ==============================================================================
