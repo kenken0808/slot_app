@@ -74,24 +74,25 @@ def record_success(key: str) -> None:
 # ==============================================================================
 @app.route("/<machine_key>/<plan_type>/login", methods=["GET", "POST"])
 def tool_login(machine_key, plan_type):
-    """
-    /<machine_key>/<plan_type>/login
-      - free はログイン不要 → 本体へリダイレクト
-      - paid はツールごとの PIN（4桁）を検証
-      - 試行上限で短時間ロック
-    """
     print(f"[DEBUG] login route start: {machine_key}/{plan_type} method={request.method} url={request.url}")
-    # 無料ページは認証不要
+
+    # freeは認証不要
     if plan_type == "free":
         print("[DEBUG] branch=free_redirect")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
 
-    # ツールごとの PIN（ハッシュ）を取得
+    # ツールPINの存在確認
     tool_pw_hash = (TOOL_PASSWORDS.get(machine_key) or {}).get(plan_type)
     if tool_pw_hash is None:
         print("[DEBUG] branch=no_tool_pw_hash → free redirect")
         flash("このツールは現在ロック中です。")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
+
+    # ★ 機種別 og_image を一度だけ決定して全経路で使う
+    cfg = machine_configs.get(machine_key, {})
+    og_filename = cfg.get("og_image", "ogp.jpg")
+    og_image = url_for("static", filename=og_filename, _external=True)
+    print(f"[DEBUG] og_image for {machine_key} -> {og_filename} ({og_image})")
 
     key = _access_key(machine_key, plan_type)
 
@@ -101,35 +102,28 @@ def tool_login(machine_key, plan_type):
         print("[DEBUG] branch=locked")
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
-        # GET はテンプレートを返す（ここでリダイレクトするとループの原因）
-        og_image = url_for("static", filename=cfg.get("og_image", "ogp.jpg"), _external=True)
-        print("[DEBUG] og_image_url =", og_image)
-
         return render_template(
             "login.html",
             machine_key=machine_key,
             plan_type=plan_type,
             og_url=request.url,
-            og_image=og_image,   # ← ★追加
+            og_image=og_image,
         )
 
     if request.method == "POST":
         input_pw = request.form.get("password", "").strip()
 
-        # 4桁の数字のみ許可（総当たり対策は試行制限で担保）
+        # 4桁数字チェク
         if not re.fullmatch(r"\d{4}", input_pw):
             print("[DEBUG] branch=bad_format_password")
             flash("4桁の数字を入力してください。")
             record_fail(key)
-            og_image = url_for("static", filename="ogp.jpg", _external=True)
-            print("[DEBUG] og_image_url =", og_image)
-
             return render_template(
                 "login.html",
                 machine_key=machine_key,
                 plan_type=plan_type,
                 og_url=request.url,
-                og_image=og_image,   # ← ★追加
+                og_image=og_image,
             )
 
         # ハッシュ照合
@@ -144,28 +138,22 @@ def tool_login(machine_key, plan_type):
             print("[DEBUG] branch=wrong_password")
             record_fail(key)
             flash("パスワードが違います。")
-            og_image = url_for("static", filename="ogp.jpg", _external=True)
-            print("[DEBUG] og_image_url =", og_image)
-
             return render_template(
                 "login.html",
                 machine_key=machine_key,
                 plan_type=plan_type,
                 og_url=request.url,
-                og_image=og_image,   # ← ★追加
+                og_image=og_image,
             )
 
     # GET はテンプレートを返す
     print("[DEBUG] branch=get_request")
-    og_image = url_for("static", filename="ogp.jpg", _external=True)
-    print("[DEBUG] og_image_url =", og_image)
-
     return render_template(
         "login.html",
         machine_key=machine_key,
         plan_type=plan_type,
         og_url=request.url,
-        og_image=og_image,   # ← ★追加
+        og_image=og_image,
     )
 
 # ======================================================================
