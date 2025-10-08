@@ -47,6 +47,12 @@ machine_configs = {
         "file_key": "onimusya",
         "og_image": "onimusya.jpg",
         "link_url": "https://note.com/kenslodata/n/n592917017aae"
+    },
+    "zenigata5": {
+        "display_name": "L 主役は銭形5",
+        "file_key": "zenigata5",
+        "og_image": "zenigata5.jpg",
+        "link_url": "https://note.com/kenslodata/n/n14c453aae356"
     }
 }
 
@@ -259,6 +265,35 @@ machine_settings = {
 
         "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
 
+    },
+
+    "L 主役は銭形5": {
+        "exclude_games": 40,
+        "coin_moti": 32.2,
+        "mode_options": ["ボーナス"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ",
+            "at_gap": "ボナ終了時ボナ間G数",
+            "prev_game": "ボナ当選G数",
+            "prev_coin": "ボナ獲得枚数",
+            "prev_diff": "ボナ終了時差枚数",
+            "prev_renchan": "ボナ連荘数",
+            "prev_type": "ボナ種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
+
     }
 }
 
@@ -310,6 +345,9 @@ TOOL_PASSWORDS = {
     },
     "onimusya": {
         "paid": "scrypt:32768:8:1$HXVhXY4Co3eDcFe3$3947c9a3df4088cf2c5db5d799d4f557835787c4e655f6088bec17410d6ffceda627de56707ff650d8a98edac57eee5274ad29ab9907546a3872d4d781ec7b29"
+    },
+    "zenigata5": {
+        "paid": "scrypt:32768:8:1$pdyOc5wpwFfSCZKK$644e7ea858b3cb98db61a4e42b90e2cb10a60ab25d644aedd8abe4ed37411ad2411733ce63e4d92d0e0db42e2d257ac26a9d4192ddba55880bc5e54ef0309f0e"
     }
 }
 
