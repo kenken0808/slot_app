@@ -239,7 +239,7 @@ machine_settings = {
     },
 
     "L 新鬼武者3": {
-        "exclude_games": 40,
+        "exclude_games": 80,
         "coin_moti": 33.0,
         "mode_options": ["AT"],
 
