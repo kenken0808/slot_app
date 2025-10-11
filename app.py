@@ -464,8 +464,6 @@ def machine_page(machine_key, plan_type):
 # ================================
 # 🔹 ツール一覧ページ（/list）
 # ================================
-from flask import render_template  # 既にあれば省略可
-
 @app.route("/list")
 def tool_list():
     return render_template("tool_list.html")

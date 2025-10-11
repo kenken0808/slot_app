@@ -5,141 +5,240 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>けんけんスロット分析ツール 一覧</title>
 
-  <!-- OGP / Twitterカード設定 -->
+  <!-- OGP / Twitterカード -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="けんけんスロット分析ツール 一覧">
   <meta property="og:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
-  <meta property="og:url" content="https://slot-app.onrender.com/list">
+  <meta property="og:url" content="https://kenkentools.com/list">
   <meta property="og:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="けんけんスロット分析ツール 一覧">
   <meta name="twitter:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
   <meta name="twitter:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
 
+  <!-- ✅ GA4：ページビューのみ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HXM85ZV043', { 'page_path': '/list', 'page_title': 'ツール一覧' });
+  </script>
+
   <style>
     body {
-      font-family: "M PLUS Rounded 1c", sans-serif;
+      font-family: "M PLUS Rounded 1c", system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
       background: #f9fafb;
-      margin: 40px;
+      margin: 40px 16px 60px;
       color: #333;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
+
+    .title-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
     }
-    input[type="search"] {
+
+    .title-wrap img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 2px 5px rgba(0,0,0,.15);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: .3px;
+      text-align: center;
+    }
+
+    #search {
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto 18px;
       padding: 10px 12px;
       width: 100%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      max-width: 520px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      font-size: 14px;
     }
+
+    .table-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,.06);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,.05);
     }
-    th, td {
-      border-bottom: 1px solid #eee;
-      padding: 12px 16px;
+
+    thead th {
+      background: #f3f4f6;
+      text-align: left;
+      font-weight: 700;
+      font-size: 13px;
+      color: #374151;
+      padding: 12px 14px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    tbody td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 14px;
+      font-size: 14px;
+      vertical-align: middle;
       text-align: center;
     }
-    th {
-      background: #f3f4f6;
+
+    tbody tr:hover {
+      background: #fafafa;
     }
-    a {
+
+    .name {
+      font-weight: 600;
+      text-align: left;
+    }
+
+    a.link {
+      display: inline-block;
+      padding: 8px 12px;
+      border: 1px solid #2563eb;
       color: #2563eb;
       text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
     }
-    a:hover {
-      text-decoration: underline;
+
+    a.link:hover {
+      transform: translateY(-1px);
     }
-    @media (max-width: 600px) {
-      table, thead, tbody, tr, td, th {
-        display: block;
-      }
-      tr {
-        margin-bottom: 16px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      td {
+
+    @media (max-width:680px){
+      thead { display: none; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      tbody tr { border-bottom: 1px solid #e5e7eb; }
+      tbody td {
         border: none;
-        padding: 10px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
       }
-      td::before {
+      tbody td[data-label]::before {
         content: attr(data-label);
         display: block;
-        font-weight: bold;
-        color: #555;
+        font-size: 12px;
+        color: #6b7280;
         margin-bottom: 4px;
+      }
+      .title-wrap img {
+        width: 32px;
+        height: 32px;
+      }
+      h1 {
+        font-size: 20px;
       }
     }
   </style>
 </head>
+
 <body>
-  <h1>🎰 けんけんスロット分析ツール 一覧</h1>
+  <!-- タイトル両側にアイコン -->
+  <div class="title-wrap">
+    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon left">
+    <h1>🎰 けんけんスロット分析ツール 一覧</h1>
+    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon right">
+  </div>
 
-  <input type="search" id="search" placeholder="機種名で検索...">
+  <input id="search" type="search" placeholder="機種名で検索">
 
-  <table id="tool-table">
-    <thead>
-      <tr>
-        <th>機種名</th>
-        <th>紹介記事</th>
-        <th>ツール</th>
-      </tr>
-    </thead>
-    <tbody id="tool-tbody"></tbody>
-  </table>
+  <div class="table-wrap">
+    <table id="tool-table" aria-label="ツール一覧">
+      <thead>
+        <tr>
+          <th style="width:48%">機種名</th>
+          <th style="width:22%">紹介記事</th>
+          <th style="width:30%">ツール</th>
+        </tr>
+      </thead>
+      <tbody id="tool-tbody"></tbody>
+    </table>
+  </div>
 
   <script>
-    // ===== ツール情報一覧 =====
     const toolsData = [
       {
-        name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
-        note: "https://note.com/xxxx",
-        url: "https://slot-app.onrender.com/magireco/paid"
+        name: "L 新鬼武者3",
+        note: "https://note.com/kenslodata/n/n592917017aae",
+        url:  "https://kenkentools.com/onimusya/paid",
       },
       {
-        name: "L ゴッドイーター リザレクション",
-        note: "https://note.com/yyyy",
-        url: "https://slot-app.onrender.com/godeater/free"
+        name: "L 主役は銭形5",
+        note: "https://note.com/kenslodata/n/n14c453aae356",
+        url:  "https://kenkentools.com/zenigata5/paid",
+      },
+      {
+        name: "L アズールレーン THE ANIMETION",
+        note: "https://note.com/kenslodata/n/n38b6be48a9da",
+        url:  "https://kenkentools.com/azurlane/paid",
       },
       {
         name: "L ダーリン・イン・ザ・フランキス",
-        note: "https://note.com/zzzz",
-        url: "https://slot-app.onrender.com/franxx/paid"
+        note: "https://note.com/kenslodata/n/n6139b4291e69",
+        url:  "https://kenkentools.com/franxx/paid",
+      },
+      {
+        name: "L 咲-Saki-頂上決戦",
+        note: "https://note.com/kenslodata/n/nda1d15f56223",
+        url:  "https://kenkentools.com/saki/paid",
+      },
+      {
+        name: "L 北斗の拳",
+        note: "https://note.com/kenslodata",
+        url:  "https://kenkentools.com/hokuto/paid",
       }
-      // ここに追加
     ];
 
     const tbody = document.getElementById("tool-tbody");
     const search = document.getElementById("search");
 
-    function renderTable(filterText = "") {
+    function makeLink(href, label) {
+      return `<a class="link" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    }
+
+    function renderTable(query = "") {
       tbody.innerHTML = "";
-      const q = filterText.toLowerCase();
+      const q = query.trim().toLowerCase();
+
       toolsData
         .filter(item => !q || item.name.toLowerCase().includes(q))
         .forEach(item => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td data-label="機種名">${item.name}</td>
-            <td data-label="紹介記事"><a href="${item.note}" target="_blank">note記事</a></td>
-            <td data-label="ツール"><a href="${item.url}" target="_blank">ツールを開く</a></td>
+            <td class="name" data-label="機種名">${item.name}</td>
+            <td data-label="紹介記事">
+              <a class="link" href="${item.note}" target="_blank">note記事を見る</a>
+            </td>
+            <td data-label="ツール">
+              <a class="link" href="${item.url}" target="_blank">ツールを開く</a>
+            </td>
           `;
           tbody.appendChild(tr);
         });
     }
 
-    search.addEventListener("input", (e) => renderTable(e.target.value));
+    search.addEventListener("input", e => renderTable(e.target.value));
     renderTable();
   </script>
 </body>
