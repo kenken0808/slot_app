@@ -82,6 +82,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      text-align: center;  /* ✅ 中央揃えを追加 */
     }
 
     thead th {
@@ -92,6 +93,7 @@
       color: #374151;
       padding: 12px 14px;
       border-bottom: 1px solid #e5e7eb;
+      text-align: center;  /* ✅ 中央揃え */
     }
 
     tbody td {
@@ -99,11 +101,11 @@
       padding: 12px 14px;
       font-size: 14px;
       vertical-align: middle;
-      text-align: center;
+      text-align: center;  /* ✅ 中央揃え維持 */
     }
 
     tbody tr:hover {
-      background: #fafafa;
+      background: #f9fafc;
     }
 
     .name {
@@ -157,7 +159,7 @@
   <!-- タイトル両側にアイコン -->
   <div class="title-wrap">
     <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon left">
-    <h1>🎰 けんけんスロット分析ツール 一覧</h1>
+    <h1>けんけんスロット分析ツール 一覧</h1>
     <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon right">
   </div>
 
