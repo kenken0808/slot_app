@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>けんけんスロット分析ツール 一覧</title>
+  <title>けんけんスロット分析ツール一覧</title>
 
   <!-- OGP / Twitterカード -->
   <meta property="og:type" content="website">
@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://kenkentools.com/tool/list">
   <meta property="og:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="けんけんスロット分析ツール 一覧">
+  <meta name="twitter:title" content="けんけんスロット分析ツール一覧">
   <meta name="twitter:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
   <meta name="twitter:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
 
@@ -114,15 +114,15 @@
     /* リンクボタン共通 */
     a.link {
       display: inline-block;
-      width: 90px;            /* ✅ note／ツール幅を固定 */
+      width: 75px;             /* ✅ 幅をやや小さく */
       text-align: center;
-      padding: 6px 0;
+      padding: 4px 0;          /* ✅ 上下の余白も少し減らす */
       border: 1px solid #2563eb;
       color: #2563eb;
       text-decoration: none;
-      border-radius: 10px;
+      border-radius: 8px;      /* ✅ 少し角も小さくして一体感 */
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12.5px;       /* ✅ 若干文字もコンパクトに */
       transition: 0.1s;
     }
     a.link:hover {
@@ -161,7 +161,7 @@
   <!-- タイトル両側にアイコン -->
   <div class="title-wrap">
     <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon left">
-    <h1>けんけんスロット分析ツール 一覧</h1>
+    <h1>けんけんスロット分析ツール一覧</h1>
     <img src="{{ url_for('static', filename='icon.jpg') }}" alt="icon right">
   </div>
 
