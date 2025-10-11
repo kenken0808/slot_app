@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>けんけんスロット分析ツール一覧</title>
+  <title>けんけんスロット分析ツール 一覧</title>
 
   <!-- OGP / Twitterカード -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="けんけんスロット分析ツール一覧">
   <meta property="og:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
-  <!-- ★ og:url を /tool/list に修正 -->
   <meta property="og:url" content="https://kenkentools.com/tool/list">
   <meta property="og:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
   <meta name="twitter:card" content="summary_large_image">
@@ -17,7 +16,7 @@
   <meta name="twitter:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
   <meta name="twitter:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
 
-  <!-- ✅ GA4：ページビューのみ（page_path を /tool/list に修正） -->
+  <!-- ✅ GA4：ページビューのみ -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -34,7 +33,7 @@
       color: #333;
     }
 
-    /* タイトル */
+    /* タイトル部分 */
     .title-wrap {
       display: flex;
       justify-content: center;
@@ -51,12 +50,12 @@
     }
     h1 {
       margin: 0;
-      font-size: 20px;
+      font-size: 18px; /* ✅ 少し小さく */
       letter-spacing: .3px;
       text-align: center;
     }
 
-    /* 検索 */
+    /* 検索欄 */
     #search {
       display: block;
       margin: 0 auto 18px;
@@ -70,7 +69,7 @@
       font-size: 14px;
     }
 
-    /* 表 */
+    /* テーブル全体 */
     .table-wrap {
       max-width: 1080px;
       margin: 0 auto;
@@ -83,7 +82,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      text-align: center; /* 全体中央揃え */
+      text-align: center;
     }
     thead th {
       background: #f3f4f6;
@@ -104,51 +103,56 @@
     tbody tr:hover {
       background: #f9fafc;
     }
+
+    /* 機種名 */
     .name {
       font-weight: 600;
-      text-align: center; /* 機種名も中央に統一 */
+      text-align: center;
+      font-size: 14px; /* ✅ 少し小さく */
     }
+
+    /* リンクボタン共通 */
     a.link {
       display: inline-block;
-      padding: 8px 12px;
+      width: 90px;            /* ✅ note／ツール幅を固定 */
+      text-align: center;
+      padding: 6px 0;
       border: 1px solid #2563eb;
       color: #2563eb;
       text-decoration: none;
       border-radius: 10px;
       font-weight: 600;
       font-size: 13px;
-      transition: .1s;
+      transition: 0.1s;
     }
     a.link:hover {
       background: #2563eb;
       color: #fff;
     }
 
-    /* ★ スマホでも横一列を維持する修正 */
+    /* スマホでも横並び維持 */
     @media (max-width:680px){
-      thead { display: none; }          /* ヘッダーは隠す（行を軽く） */
+      thead { display: none; }
 
       table {
-        display: table;                 /* テーブル表示を維持 */
+        display: table;
         width: 100%;
         border-collapse: collapse;
       }
       tbody tr {
-        display: table-row;             /* 行を維持（縦積み防止） */
+        display: table-row;
         border-bottom: 1px solid #e5e7eb;
       }
       tbody td {
-        display: table-cell;            /* セルを維持（縦積み防止） */
+        display: table-cell;
         text-align: center;
         padding: 12px 8px;
         border-bottom: 1px solid #e5e7eb;
       }
-      /* 擬似ラベルは不要（横並びのまま） */
       tbody td[data-label]::before { display: none; }
 
-      /* タイトル縮小 */
       .title-wrap img { width: 32px; height: 32px; }
-      h1 { font-size: 20px; }
+      h1 { font-size: 16px; } /* ✅ モバイルではさらに少し小さく */
     }
   </style>
 </head>
@@ -227,8 +231,8 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td class="name" data-label="機種名">${item.name}</td>
-            <td data-label="紹介記事">${makeLink(item.note, "note記事を見る")}</td>
-            <td data-label="ツール">${makeLink(item.url, "ツールを開く")}</td>
+            <td data-label="紹介記事">${makeLink(item.note, "note")}</td>
+            <td data-label="ツール">${makeLink(item.url, "ツール")}</td>
           `;
           tbody.appendChild(tr);
         });
