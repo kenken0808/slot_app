@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>けんけんスロット分析ツール 一覧</title>
+  <title>けんけんスロット分析ツール一覧</title>
 
   <!-- OGP / Twitterカード -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="けんけんスロット分析ツール一覧">
   <meta property="og:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
-  <meta property="og:url" content="https://kenkentools.com/list">
+  <!-- ★ og:url を /tool/list に修正 -->
+  <meta property="og:url" content="https://kenkentools.com/tool/list">
   <meta property="og:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="けんけんスロット分析ツール 一覧">
   <meta name="twitter:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
   <meta name="twitter:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
 
-  <!-- ✅ GA4：ページビューのみ -->
+  <!-- ✅ GA4：ページビューのみ（page_path を /tool/list に修正） -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-HXM85ZV043', { 'page_path': '/list', 'page_title': 'ツール一覧' });
+    gtag('config', 'G-HXM85ZV043', { 'page_path': '/tool/list', 'page_title': 'ツール一覧' });
   </script>
 
   <style>
@@ -33,6 +34,7 @@
       color: #333;
     }
 
+    /* タイトル */
     .title-wrap {
       display: flex;
       justify-content: center;
@@ -40,7 +42,6 @@
       gap: 12px;
       margin-bottom: 24px;
     }
-
     .title-wrap img {
       width: 40px;
       height: 40px;
@@ -48,14 +49,14 @@
       object-fit: cover;
       box-shadow: 0 2px 5px rgba(0,0,0,.15);
     }
-
     h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 20px;
       letter-spacing: .3px;
       text-align: center;
     }
 
+    /* 検索 */
     #search {
       display: block;
       margin: 0 auto 18px;
@@ -69,6 +70,7 @@
       font-size: 14px;
     }
 
+    /* 表 */
     .table-wrap {
       max-width: 1080px;
       margin: 0 auto;
@@ -78,41 +80,34 @@
       overflow: hidden;
       box-shadow: 0 6px 20px rgba(0,0,0,.06);
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      text-align: center;  /* ✅ 中央揃えを追加 */
+      text-align: center; /* 全体中央揃え */
     }
-
     thead th {
       background: #f3f4f6;
-      text-align: left;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 14px;
       color: #374151;
-      padding: 12px 14px;
+      padding: 14px 12px;
       border-bottom: 1px solid #e5e7eb;
-      text-align: center;  /* ✅ 中央揃え */
+      text-align: center;
     }
-
     tbody td {
       border-bottom: 1px solid #e5e7eb;
-      padding: 12px 14px;
-      font-size: 14px;
+      padding: 14px 12px;
+      font-size: 15px;
       vertical-align: middle;
-      text-align: center;  /* ✅ 中央揃え維持 */
+      text-align: center;
     }
-
     tbody tr:hover {
       background: #f9fafc;
     }
-
     .name {
       font-weight: 600;
-      text-align: center;  /* ✅ 中央揃えに変更 */
+      text-align: center; /* 機種名も中央に統一 */
     }
-
     a.link {
       display: inline-block;
       padding: 8px 12px;
@@ -122,35 +117,38 @@
       border-radius: 10px;
       font-weight: 600;
       font-size: 13px;
+      transition: .1s;
     }
-
     a.link:hover {
-      transform: translateY(-1px);
+      background: #2563eb;
+      color: #fff;
     }
 
+    /* ★ スマホでも横一列を維持する修正 */
     @media (max-width:680px){
-      thead { display: none; }
-      table, tbody, tr, td { display: block; width: 100%; }
-      tbody tr { border-bottom: 1px solid #e5e7eb; }
-      tbody td {
-        border: none;
+      thead { display: none; }          /* ヘッダーは隠す（行を軽く） */
+
+      table {
+        display: table;                 /* テーブル表示を維持 */
+        width: 100%;
+        border-collapse: collapse;
+      }
+      tbody tr {
+        display: table-row;             /* 行を維持（縦積み防止） */
         border-bottom: 1px solid #e5e7eb;
-        text-align: left;
       }
-      tbody td[data-label]::before {
-        content: attr(data-label);
-        display: block;
-        font-size: 12px;
-        color: #6b7280;
-        margin-bottom: 4px;
+      tbody td {
+        display: table-cell;            /* セルを維持（縦積み防止） */
+        text-align: center;
+        padding: 12px 8px;
+        border-bottom: 1px solid #e5e7eb;
       }
-      .title-wrap img {
-        width: 32px;
-        height: 32px;
-      }
-      h1 {
-        font-size: 20px;
-      }
+      /* 擬似ラベルは不要（横並びのまま） */
+      tbody td[data-label]::before { display: none; }
+
+      /* タイトル縮小 */
+      .title-wrap img { width: 32px; height: 32px; }
+      h1 { font-size: 20px; }
     }
   </style>
 </head>
@@ -169,9 +167,9 @@
     <table id="tool-table" aria-label="ツール一覧">
       <thead>
         <tr>
-          <th style="width:48%">機種名</th>
-          <th style="width:22%">紹介記事</th>
-          <th style="width:30%">ツール</th>
+          <th>機種名</th>
+          <th>紹介記事</th>
+          <th>ツール</th>
         </tr>
       </thead>
       <tbody id="tool-tbody"></tbody>
@@ -183,32 +181,32 @@
       {
         name: "L 新鬼武者3",
         note: "https://note.com/kenslodata/n/n592917017aae",
-        url:  "https://kenkentools.com/onimusya/paid",
+        url:  "https://kenkentools.com/onimusya/paid"
       },
       {
         name: "L 主役は銭形5",
         note: "https://note.com/kenslodata/n/n14c453aae356",
-        url:  "https://kenkentools.com/zenigata5/paid",
+        url:  "https://kenkentools.com/zenigata5/paid"
       },
       {
         name: "L アズールレーン THE ANIMETION",
         note: "https://note.com/kenslodata/n/n38b6be48a9da",
-        url:  "https://kenkentools.com/azurlane/paid",
+        url:  "https://kenkentools.com/azurlane/paid"
       },
       {
         name: "L ダーリン・イン・ザ・フランキス",
         note: "https://note.com/kenslodata/n/n6139b4291e69",
-        url:  "https://kenkentools.com/franxx/paid",
+        url:  "https://kenkentools.com/franxx/paid"
       },
       {
         name: "L 咲-Saki-頂上決戦",
         note: "https://note.com/kenslodata/n/nda1d15f56223",
-        url:  "https://kenkentools.com/saki/paid",
+        url:  "https://kenkentools.com/saki/paid"
       },
       {
         name: "L 北斗の拳",
         note: "https://note.com/kenslodata",
-        url:  "https://kenkentools.com/hokuto/paid",
+        url:  "https://kenkentools.com/hokuto/paid"
       }
     ];
 
@@ -229,12 +227,8 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td class="name" data-label="機種名">${item.name}</td>
-            <td data-label="紹介記事">
-              <a class="link" href="${item.note}" target="_blank">note記事を見る</a>
-            </td>
-            <td data-label="ツール">
-              <a class="link" href="${item.url}" target="_blank">ツールを開く</a>
-            </td>
+            <td data-label="紹介記事">${makeLink(item.note, "note記事を見る")}</td>
+            <td data-label="ツール">${makeLink(item.url, "ツールを開く")}</td>
           `;
           tbody.appendChild(tr);
         });
