@@ -66,7 +66,8 @@
       border-radius: 10px;
       background: #fff;
       outline: none;
-      font-size: 14px;
+      font-size: 16px;      /* ✅ ズーム防止（14→16） */
+      -webkit-text-size-adjust: 100%; /* ✅ iOS対策（念のため） */
     }
 
     /* テーブル全体 */
