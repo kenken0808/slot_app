@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>けんけんスロット分析ツール 一覧</title>
+
+  <!-- OGP / Twitterカード設定 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="けんけんスロット分析ツール 一覧">
+  <meta property="og:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
+  <meta property="og:url" content="https://slot-app.onrender.com/list">
+  <meta property="og:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="けんけんスロット分析ツール 一覧">
+  <meta name="twitter:description" content="機種ごとのnote紹介記事とツールへのリンクをまとめたポータルページです。">
+  <meta name="twitter:image" content="{{ url_for('static', filename='ogp.jpg', _external=True) }}">
+
+  <style>
+    body {
+      font-family: "M PLUS Rounded 1c", sans-serif;
+      background: #f9fafb;
+      margin: 40px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    input[type="search"] {
+      display: block;
+      margin: 0 auto 20px;
+      padding: 10px 12px;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,.05);
+    }
+    th, td {
+      border-bottom: 1px solid #eee;
+      padding: 12px 16px;
+      text-align: center;
+    }
+    th {
+      background: #f3f4f6;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      table, thead, tbody, tr, td, th {
+        display: block;
+      }
+      tr {
+        margin-bottom: 16px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      td {
+        border: none;
+        padding: 10px;
+      }
+      td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎰 けんけんスロット分析ツール 一覧</h1>
+
+  <input type="search" id="search" placeholder="機種名で検索...">
+
+  <table id="tool-table">
+    <thead>
+      <tr>
+        <th>機種名</th>
+        <th>紹介記事</th>
+        <th>ツール</th>
+      </tr>
+    </thead>
+    <tbody id="tool-tbody"></tbody>
+  </table>
+
+  <script>
+    // ===== ツール情報一覧 =====
+    const toolsData = [
+      {
+        name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
+        note: "https://note.com/xxxx",
+        url: "https://slot-app.onrender.com/magireco/paid"
+      },
+      {
+        name: "L ゴッドイーター リザレクション",
+        note: "https://note.com/yyyy",
+        url: "https://slot-app.onrender.com/godeater/free"
+      },
+      {
+        name: "L ダーリン・イン・ザ・フランキス",
+        note: "https://note.com/zzzz",
+        url: "https://slot-app.onrender.com/franxx/paid"
+      }
+      // ここに追加
+    ];
+
+    const tbody = document.getElementById("tool-tbody");
+    const search = document.getElementById("search");
+
+    function renderTable(filterText = "") {
+      tbody.innerHTML = "";
+      const q = filterText.toLowerCase();
+      toolsData
+        .filter(item => !q || item.name.toLowerCase().includes(q))
+        .forEach(item => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td data-label="機種名">${item.name}</td>
+            <td data-label="紹介記事"><a href="${item.note}" target="_blank">note記事</a></td>
+            <td data-label="ツール"><a href="${item.url}" target="_blank">ツールを開く</a></td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    search.addEventListener("input", (e) => renderTable(e.target.value));
+    renderTable();
+  </script>
+</body>
+</html>
