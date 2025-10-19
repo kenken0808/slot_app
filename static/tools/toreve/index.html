@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>トレヴカウンター</title>
+  <title>東リベツール</title>
   <style>
     :root{
       --gap: 10px;
@@ -15,56 +15,63 @@
       --red: #ef4444;
     }
     *{box-sizing:border-box}
+    html, body {height:100%;}
     body{margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif; color:var(--ink); background:#f8fafc}
 
-    .wrap{max-width:1100px; margin:0 auto; padding:16px}
-    header{display:flex; align-items:center; justify-content:space-between; gap:var(--gap); flex-wrap:wrap; margin-bottom:16px}
-    h1{font-size: clamp(18px, 2.4vw, 24px); margin:0; font-weight:700}
+    /* 1画面に収めるためのレイアウトラッパ */
+    .page{height:100dvh; display:grid; grid-template-rows:auto 1fr;}
 
-    .toolbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+    .wrap{max-width:1100px; margin:0 auto; padding:12px}
+    header{display:flex; align-items:center; justify-content:space-between; gap:var(--gap); flex-wrap:wrap; margin-bottom:8px}
+    h1{font-size: clamp(18px, 2.2vw, 22px); margin:0; font-weight:700}
+
+    .toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
     .seg{display:flex; border:1px solid var(--ring); border-radius:12px; overflow:hidden; background:#fff}
-    .seg button{appearance:none; border:0; background:transparent; padding:10px 16px; font-size:16px; cursor:pointer; min-width:64px}
+    .seg button{appearance:none; border:0; background:transparent; padding:8px 12px; font-size:15px; cursor:pointer; min-width:56px}
     .seg button + button{border-left:1px solid var(--ring)}
     .seg button.active{background:#111827; color:#fff}
 
-    .btn{appearance:none; border:1px solid var(--ring); background:#fff; padding:10px 16px; border-radius:12px; cursor:pointer; font-size:15px}
+    .btn{appearance:none; border:1px solid var(--ring); background:#fff; padding:8px 12px; border-radius:12px; cursor:pointer; font-size:14px}
     .btn:active{transform:translateY(1px)}
 
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px}
-    @media (max-width: 850px){ .grid{grid-template-columns: repeat(2, 1fr);} }
-    @media (max-width: 560px){ .grid{grid-template-columns: 1fr;} }
+    /* デフォはPC想定：3列 */
+    .grid{height:100%; display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
 
-    .card{background:var(--card); border:1px solid var(--ring); border-radius:14px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.02)}
-    .imgbox{aspect-ratio: 1.2 / 1; background:#f1f5f9; display:flex; align-items:center; justify-content:center}
+    /* スマホ：横2 × 縦3 を1画面に収める */
+    @media (max-width: 560px){
+      .wrap{padding:8px}
+      .grid{grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap:8px}
+    }
+
+    .card{background:var(--card); border:1px solid var(--ring); border-radius:12px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.02); display:flex; flex-direction:column; min-height:0}
+    .imgbox{flex:1; min-height:0; background:#f1f5f9; display:flex; align-items:center; justify-content:center}
     .imgbox img{width:100%; height:100%; object-fit:cover}
 
-    .bar{display:grid; grid-template-columns:repeat(3, 1fr);}
-    .chip{display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 0; cursor:pointer; user-select:none; font-weight:700; font-variant-numeric: tabular-nums}
+    .bar{display:grid; grid-template-columns:repeat(3, 1fr);} 
+    .chip{display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 0; cursor:pointer; user-select:none; font-weight:700; font-variant-numeric: tabular-nums; font-size:14px}
     .chip.white{background:#fff; border-top:1px solid var(--ring)}
     .chip.blue{background:var(--blue); color:#fff}
     .chip.red{background:var(--red); color:#fff}
     .chip:active{filter:brightness(.95)}
 
-    .sub{color:var(--muted); font-size:12px}
-    .footer{display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-top:1px dashed var(--ring); font-size:12px; color:var(--muted)}
-
     button, .chip{touch-action: manipulation}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>トレヴ 白・青・赤カウンター</h1>
-      <div class="toolbar">
-        <div class="seg" id="modeSeg">
-          <button type="button" data-mode="plus" class="active">＋</button>
-          <button type="button" data-mode="minus">－</button>
+  <div class="page">
+    <div class="wrap">
+      <header>
+        <h1>東リベツール</h1>
+        <div class="toolbar">
+          <div class="seg" id="modeSeg">
+            <button type="button" data-mode="plus" class="active">＋</button>
+            <button type="button" data-mode="minus">－</button>
+          </div>
+          <button type="button" class="btn" id="resetBtn">リセット</button>
         </div>
-        <button type="button" class="btn" id="resetBtn">リセット</button>
-      </div>
-    </header>
-
-    <div class="grid" id="grid"></div>
+      </header>
+      <div class="grid" id="grid"></div>
+    </div>
   </div>
 
   <script>
@@ -88,13 +95,12 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <div class="imgbox"><img src="${c.img}" alt="${c.name}" onerror="this.closest('.imgbox').textContent='画像を読み込めません';"/></div>
-          <div class="bar">
-            <div class="chip white" data-idx="${i}" data-color="white">${counts[i].white}</div>
-            <div class="chip blue"  data-idx="${i}" data-color="blue">${counts[i].blue}</div>
-            <div class="chip red"   data-idx="${i}" data-color="red">${counts[i].red}</div>
+          <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"${c.name}\" onerror=\"this.closest(' .imgbox ').textContent='画像を読み込めません';\"/></div>
+          <div class=\"bar\">
+            <div class=\"chip white\" data-idx=\"${i}\" data-color=\"white\">${counts[i].white}</div>
+            <div class=\"chip blue\"  data-idx=\"${i}\" data-color=\"blue\">${counts[i].blue}</div>
+            <div class=\"chip red\"   data-idx=\"${i}\" data-color=\"red\">${counts[i].red}</div>
           </div>
-          <div class="footer"><span>${c.name}</span><span class="sub">タップで${mode==='plus' ? '加算' : '減算'}</span></div>
         `;
         grid.appendChild(card);
       });
@@ -108,7 +114,6 @@
       mode = btn.dataset.mode;
       [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      grid.querySelectorAll('.footer .sub').forEach(el => el.textContent = `タップで${mode==='plus' ? '加算' : '減算'}`);
     });
 
     grid.addEventListener('click', (e) => {
