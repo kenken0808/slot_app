@@ -35,6 +35,7 @@
                  radial-gradient(1200px 600px at 80% 110%, rgba(155,81,255,.20), transparent 60%),
                  #0a0d18;
       --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --green: #10b981;
     }
     *{box-sizing:border-box}
     html, body {height:100%;}
@@ -48,29 +49,25 @@
 
     .toolbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
     .seg{display:flex; border:1px solid var(--ring); border-radius:14px; overflow:hidden; background:var(--panel); box-shadow: var(--shadow)}
-    .seg button{appearance:none; border:0; background:transparent; padding:10px 14px; font-size:15px; cursor:pointer; min-width:64px; color:var(--ink)}
+    .seg button{appearance:none; border:0; background:transparent; padding:10px 14px; font-size:15px; cursor:pointer; min-width:64px; color:var(--ink); display:flex; align-items:center; gap:6px}
     .seg button + button{border-left:1px solid var(--ring)}
-    .seg button.active{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)); color:#fff}
+    .seg button.active{color:#fff}
+    .seg button[data-mode="plus"].active{background:linear-gradient(180deg, rgba(16,185,129,.6), rgba(16,185,129,.25));}
+    .seg button[data-mode="minus"].active{background:linear-gradient(180deg, rgba(239,68,68,.65), rgba(239,68,68,.25));}
 
     .btn{appearance:none; border:1px solid var(--ring); background:var(--panel); padding:10px 14px; border-radius:14px; cursor:pointer; font-size:14px; color:var(--ink); box-shadow: var(--shadow)}
     .btn:active{transform:translateY(1px)}
 
-    /* モードインジケータ（右上に浮かせる） */
-    .mode-ind{position:fixed; right:12px; top:12px; z-index:10; padding:6px 10px; border-radius:999px; background:var(--panel); border:1px solid var(--ring); font-size:12px; color:var(--muted); box-shadow: var(--shadow)}
-    .mode-ind strong{color:#fff}
+    .mode-pill{padding:6px 10px; border-radius:999px; background:var(--panel); border:1px solid var(--ring); font-size:12px; color:var(--muted); box-shadow: var(--shadow)}
+    .mode-pill strong{color:#fff}
 
-    /* デフォ（小〜中画面）：横2×縦3 */
-    .grid{height:calc(100dvh - 84px); display:grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap:10px}
+    .grid{height:calc(100dvh - 96px); display:grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap:10px}
 
-    /* 幅600px以上の画面では：横3×縦2 に自動切替 */
     @media (min-width: 600px){
       .grid{grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap:12px}
     }
 
     .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--ring); border-radius:16px; overflow:hidden; box-shadow: var(--shadow); display:flex; flex-direction:column; min-height:0; position:relative}
-
-    /* 名前バッジ（左上） */
-    .badge{position:absolute; left:10px; top:10px; padding:4px 8px; border-radius:999px; background:rgba(0,0,0,.45); color:#fff; font-size:12px; border:1px solid rgba(255,255,255,.1); backdrop-filter: blur(4px)}
 
     .imgbox{flex:1; min-height:0; background:#0e1427; display:flex; align-items:center; justify-content:center}
     .imgbox img{width:100%; height:100%; object-fit:cover; filter:contrast(1.05) saturate(1.02)}
@@ -83,7 +80,6 @@
     .chip.purple{background:var(--purple); color:#fff}
     .chip:active{transform:scale(.98); filter:brightness(.95)}
 
-    /* カウントが変わった瞬間のポップ演出 */
     .pop{animation: pop .18s ease}
     @keyframes pop{0%{transform:scale(.94)}100%{transform:scale(1)}}
 
@@ -97,25 +93,29 @@
         <h1>東リベツール</h1>
         <div class="toolbar">
           <div class="seg" id="modeSeg">
-            <button type="button" data-mode="plus" class="active">＋</button>
-            <button type="button" data-mode="minus">－</button>
+            <button type="button" data-mode="plus" class="active" aria-pressed="true" aria-label="加算">
+              <span>＋</span><span>加算</span>
+            </button>
+            <button type="button" data-mode="minus" aria-pressed="false" aria-label="減算">
+              <span>－</span><span>減算</span>
+            </button>
           </div>
+          <span class="mode-pill" id="modeInd">モード：<strong>加算</strong></span>
           <button type="button" class="btn" id="resetBtn">リセット</button>
         </div>
       </header>
       <div class="grid" id="grid"></div>
     </div>
-    <div class="mode-ind" id="modeInd">モード：<strong>加算</strong></div>
   </div>
 
   <script>
     const characters = [
-      { name: "キャラ1", img: "img/char1.jpg", colors: ["white", "blue", "red"] },
-      { name: "キャラ2", img: "img/char2.jpg", colors: ["white", "blue", "red"] },
-      { name: "キャラ3", img: "img/char3.jpg", colors: ["blue", "red"] },
-      { name: "キャラ4", img: "img/char4.jpg", colors: ["blue", "red"] },
-      { name: "キャラ5", img: "img/char5.jpg", colors: ["white", "blue", "purple"] },
-      { name: "キャラ6", img: "img/char6.jpg", colors: ["red"] },
+      { img: "img/char1.jpg", colors: ["white", "blue", "red"] },
+      { img: "img/char2.jpg", colors: ["white", "blue", "red"] },
+      { img: "img/char3.jpg", colors: ["blue", "red"] },
+      { img: "img/char4.jpg", colors: ["blue", "red"] },
+      { img: "img/char5.jpg", colors: ["white", "blue", "purple"] },
+      { img: "img/char6.jpg", colors: ["red"] },
     ];
 
     const ALLOW_NEGATIVES = false;
@@ -132,8 +132,7 @@
         card.className = 'card';
         const chips = c.colors.map(color => `<div class=\"chip ${color}\" data-idx=\"${i}\" data-color=\"${color}\">${counts[i][color]}</div>`).join('');
         card.innerHTML = `
-          <div class=\"badge\">${c.name}</div>
-          <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"${c.name}\" onerror=\"this.closest(' .imgbox ').textContent='画像を読み込めません';\"/></div>
+          <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"\"></div>
           <div class=\"bar\">${chips}</div>
         `;
         grid.appendChild(card);
@@ -146,8 +145,12 @@
       const btn = e.target.closest('button[data-mode]');
       if(!btn) return;
       mode = btn.dataset.mode;
-      [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
+      const plusBtn = e.currentTarget.querySelector('button[data-mode="plus"]');
+      const minusBtn = e.currentTarget.querySelector('button[data-mode="minus"]');
+      plusBtn.classList.toggle('active', mode==='plus');
+      minusBtn.classList.toggle('active', mode==='minus');
+      plusBtn.setAttribute('aria-pressed', mode==='plus');
+      minusBtn.setAttribute('aria-pressed', mode==='minus');
       modeInd.innerHTML = `モード：<strong>${mode==='plus'?'加算':'減算'}</strong>`;
     });
 
@@ -161,15 +164,12 @@
       counts[idx][color] = (ALLOW_NEGATIVES ? next : Math.max(0, next));
       chip.textContent = counts[idx][color];
       chip.classList.remove('pop');
-      // reflow to restart animation
-      void chip.offsetWidth;
+      void chip.offsetWidth; // reflow
       chip.classList.add('pop');
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {
-      characters.forEach((c, i) => {
-        c.colors.forEach(color => counts[i][color] = 0);
-      });
+      characters.forEach((c, i) => { c.colors.forEach(color => counts[i][color] = 0); });
       render();
     });
   </script>
