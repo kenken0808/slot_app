@@ -8,14 +8,14 @@
   <!-- OGP / Twitterカード設定 -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="東リベツール">
-  <meta property="og:description" content="東京リベンジャーズの実践データカウンター。白・青・赤のカウントをワンタップで記録できるツールです。">
+  <meta property="og:description" content="東京リベンジャーズの実践データカウンター。白・青・赤・紫のカウントをワンタップで記録できるツールです。">
   <meta property="og:url" content="https://kenkentools.com/static/tools/toreve/index.html">
   <meta property="og:image" content="https://kenkentools.com/static/toreve.jpg">
   <meta property="og:site_name" content="けんけんスロット分析ツール">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="東リベツール">
-  <meta name="twitter:description" content="東京リベンジャーズの実践データカウンター。白・青・赤のカウントをワンタップで記録できるツールです。">
+  <meta name="twitter:description" content="東京リベンジャーズの実践データカウンター。白・青・赤・紫のカウントをワンタップで記録できるツールです。">
   <meta name="twitter:image" content="https://kenkentools.com/static/toreve.jpg">
 
   <style>
@@ -27,6 +27,7 @@
       --ring: #e5e7eb;
       --blue: #3b82f6;
       --red: #ef4444;
+      --purple: #8b5cf6;
     }
     *{box-sizing:border-box}
     html, body {height:100%;}
@@ -56,11 +57,12 @@
     .imgbox{flex:1; min-height:0; background:#f1f5f9; display:flex; align-items:center; justify-content:center}
     .imgbox img{width:100%; height:100%; object-fit:cover}
 
-    .bar{display:grid; grid-template-columns:repeat(3, 1fr);} 
+    .bar{display:grid; grid-template-columns:repeat(auto-fit, minmax(0, 1fr));}
     .chip{display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 0; cursor:pointer; user-select:none; font-weight:700; font-variant-numeric: tabular-nums; font-size:13px}
     .chip.white{background:#fff; border-top:1px solid var(--ring)}
     .chip.blue{background:var(--blue); color:#fff}
     .chip.red{background:var(--red); color:#fff}
+    .chip.purple{background:var(--purple); color:#fff}
     .chip:active{filter:brightness(.95)}
 
     button, .chip{touch-action: manipulation}
@@ -85,31 +87,29 @@
 
   <script>
     const characters = [
-      { name: "キャラ1", img: "img/char1.jpg" },
-      { name: "キャラ2", img: "img/char2.jpg" },
-      { name: "キャラ3", img: "img/char3.jpg" },
-      { name: "キャラ4", img: "img/char4.jpg" },
-      { name: "キャラ5", img: "img/char5.jpg" },
-      { name: "キャラ6", img: "img/char6.jpg" },
+      { name: "キャラ1", img: "img/char1.jpg", colors: ["white", "blue", "red"] },
+      { name: "キャラ2", img: "img/char2.jpg", colors: ["white", "blue", "red"] },
+      { name: "キャラ3", img: "img/char3.jpg", colors: ["blue", "red"] },
+      { name: "キャラ4", img: "img/char4.jpg", colors: ["blue", "red"] },
+      { name: "キャラ5", img: "img/char5.jpg", colors: ["white", "blue", "purple"] },
+      { name: "キャラ6", img: "img/char6.jpg", colors: ["red"] },
     ];
 
     const ALLOW_NEGATIVES = false;
     let mode = 'plus';
-    const counts = characters.map(() => ({ white: 0, blue: 0, red: 0 }));
+    const counts = characters.map(c => Object.fromEntries(c.colors.map(color => [color, 0])));
 
     const grid = document.getElementById('grid');
+
     function render(){
       grid.innerHTML = '';
       characters.forEach((c, i) => {
         const card = document.createElement('div');
         card.className = 'card';
+        const chips = c.colors.map(color => `<div class=\"chip ${color}\" data-idx=\"${i}\" data-color=\"${color}\">${counts[i][color]}</div>`).join('');
         card.innerHTML = `
           <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"${c.name}\" onerror=\"this.closest(' .imgbox ').textContent='画像を読み込めません';\"/></div>
-          <div class=\"bar\">
-            <div class=\"chip white\" data-idx=\"${i}\" data-color=\"white\">${counts[i].white}</div>
-            <div class=\"chip blue\"  data-idx=\"${i}\" data-color=\"blue\">${counts[i].blue}</div>
-            <div class=\"chip red\"   data-idx=\"${i}\" data-color=\"red\">${counts[i].red}</div>
-          </div>
+          <div class=\"bar\">${chips}</div>
         `;
         grid.appendChild(card);
       });
@@ -137,7 +137,9 @@
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {
-      counts.forEach(c => { c.white = 0; c.blue = 0; c.red = 0; });
+      characters.forEach((c, i) => {
+        c.colors.forEach(color => counts[i][color] = 0);
+      });
       render();
     });
   </script>
