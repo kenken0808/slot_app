@@ -9,7 +9,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="東リベツール">
   <meta property="og:description" content="東京リベンジャーズの実践データカウンター。白・青・赤・紫のカウントをワンタップで記録できるツールです。">
-  <meta property="og:url" content="https://kenkentools.com/static/tools/toreve/index.html">
+  <meta property="og:url" content="https://kenkentools.com/toreve/tools">
   <meta property="og:image" content="https://kenkentools.com/static/toreve.jpg">
   <meta property="og:site_name" content="けんけんスロット分析ツール">
 
@@ -21,49 +21,71 @@
   <style>
     :root{
       --gap: 10px;
-      --card: #ffffff;
-      --ink: #111827;
-      --muted: #6b7280;
-      --ring: #e5e7eb;
+      --card: #0b0f19;
+      --panel: #111627;
+      --ink: #e5e9f5;
+      --muted: #9aa3b2;
+      --ring: #2a3147;
       --blue: #3b82f6;
       --red: #ef4444;
       --purple: #8b5cf6;
+      --whitechip: #ffffff;
+      --accent: linear-gradient(135deg,#5b8cff 0%, #9b51ff 100%);
+      --bg-grad: radial-gradient(1200px 600px at 20% -10%, rgba(91,140,255,.25), transparent 60%),
+                 radial-gradient(1200px 600px at 80% 110%, rgba(155,81,255,.20), transparent 60%),
+                 #0a0d18;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     html, body {height:100%;}
-    body{margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif; color:var(--ink); background:#f8fafc}
+    body{margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif; color:var(--ink); background:var(--bg-grad)}
 
     .page{height:100dvh; display:grid; grid-template-rows:auto 1fr;}
-    .wrap{max-width:1100px; margin:0 auto; padding:10px}
+    .wrap{max-width:1100px; margin:0 auto; padding:12px}
+
     header{display:flex; align-items:center; justify-content:space-between; gap:var(--gap); flex-wrap:wrap; margin-bottom:8px}
-    h1{font-size: clamp(18px, 2.2vw, 22px); margin:0; font-weight:700}
+    h1{font-size: clamp(18px, 2.2vw, 22px); margin:0; font-weight:800; letter-spacing:.02em; background:var(--accent); -webkit-background-clip:text; background-clip:text; color:transparent}
 
     .toolbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-    .seg{display:flex; border:1px solid var(--ring); border-radius:12px; overflow:hidden; background:#fff}
-    .seg button{appearance:none; border:0; background:transparent; padding:8px 12px; font-size:15px; cursor:pointer; min-width:56px}
+    .seg{display:flex; border:1px solid var(--ring); border-radius:14px; overflow:hidden; background:var(--panel); box-shadow: var(--shadow)}
+    .seg button{appearance:none; border:0; background:transparent; padding:10px 14px; font-size:15px; cursor:pointer; min-width:64px; color:var(--ink)}
     .seg button + button{border-left:1px solid var(--ring)}
-    .seg button.active{background:#111827; color:#fff}
+    .seg button.active{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)); color:#fff}
 
-    .btn{appearance:none; border:1px solid var(--ring); background:#fff; padding:8px 12px; border-radius:12px; cursor:pointer; font-size:14px}
+    .btn{appearance:none; border:1px solid var(--ring); background:var(--panel); padding:10px 14px; border-radius:14px; cursor:pointer; font-size:14px; color:var(--ink); box-shadow: var(--shadow)}
     .btn:active{transform:translateY(1px)}
 
-    .grid{height:calc(100dvh - 70px); display:grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap:8px}
+    /* モードインジケータ（右上に浮かせる） */
+    .mode-ind{position:fixed; right:12px; top:12px; z-index:10; padding:6px 10px; border-radius:999px; background:var(--panel); border:1px solid var(--ring); font-size:12px; color:var(--muted); box-shadow: var(--shadow)}
+    .mode-ind strong{color:#fff}
 
+    /* デフォ（小〜中画面）：横2×縦3 */
+    .grid{height:calc(100dvh - 84px); display:grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap:10px}
+
+    /* 幅600px以上の画面では：横3×縦2 に自動切替 */
     @media (min-width: 600px){
-      .grid{grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap:10px}
+      .grid{grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap:12px}
     }
 
-    .card{background:var(--card); border:1px solid var(--ring); border-radius:12px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.02); display:flex; flex-direction:column; min-height:0}
-    .imgbox{flex:1; min-height:0; background:#f1f5f9; display:flex; align-items:center; justify-content:center}
-    .imgbox img{width:100%; height:100%; object-fit:cover}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--ring); border-radius:16px; overflow:hidden; box-shadow: var(--shadow); display:flex; flex-direction:column; min-height:0; position:relative}
+
+    /* 名前バッジ（左上） */
+    .badge{position:absolute; left:10px; top:10px; padding:4px 8px; border-radius:999px; background:rgba(0,0,0,.45); color:#fff; font-size:12px; border:1px solid rgba(255,255,255,.1); backdrop-filter: blur(4px)}
+
+    .imgbox{flex:1; min-height:0; background:#0e1427; display:flex; align-items:center; justify-content:center}
+    .imgbox img{width:100%; height:100%; object-fit:cover; filter:contrast(1.05) saturate(1.02)}
 
     .bar{display:grid; grid-template-columns:repeat(auto-fit, minmax(0, 1fr));}
-    .chip{display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 0; cursor:pointer; user-select:none; font-weight:700; font-variant-numeric: tabular-nums; font-size:13px}
-    .chip.white{background:#fff; border-top:1px solid var(--ring)}
+    .chip{display:flex; align-items:center; justify-content:center; gap:6px; padding:10px 0; cursor:pointer; user-select:none; font-weight:800; font-variant-numeric: tabular-nums; font-size:14px; letter-spacing:.02em; transition: transform .06s ease, filter .12s ease}
+    .chip.white{background:var(--whitechip); color:#111}
     .chip.blue{background:var(--blue); color:#fff}
     .chip.red{background:var(--red); color:#fff}
     .chip.purple{background:var(--purple); color:#fff}
-    .chip:active{filter:brightness(.95)}
+    .chip:active{transform:scale(.98); filter:brightness(.95)}
+
+    /* カウントが変わった瞬間のポップ演出 */
+    .pop{animation: pop .18s ease}
+    @keyframes pop{0%{transform:scale(.94)}100%{transform:scale(1)}}
 
     button, .chip{touch-action: manipulation}
   </style>
@@ -83,6 +105,7 @@
       </header>
       <div class="grid" id="grid"></div>
     </div>
+    <div class="mode-ind" id="modeInd">モード：<strong>加算</strong></div>
   </div>
 
   <script>
@@ -100,6 +123,7 @@
     const counts = characters.map(c => Object.fromEntries(c.colors.map(color => [color, 0])));
 
     const grid = document.getElementById('grid');
+    const modeInd = document.getElementById('modeInd');
 
     function render(){
       grid.innerHTML = '';
@@ -108,6 +132,7 @@
         card.className = 'card';
         const chips = c.colors.map(color => `<div class=\"chip ${color}\" data-idx=\"${i}\" data-color=\"${color}\">${counts[i][color]}</div>`).join('');
         card.innerHTML = `
+          <div class=\"badge\">${c.name}</div>
           <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"${c.name}\" onerror=\"this.closest(' .imgbox ').textContent='画像を読み込めません';\"/></div>
           <div class=\"bar\">${chips}</div>
         `;
@@ -123,6 +148,7 @@
       mode = btn.dataset.mode;
       [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
+      modeInd.innerHTML = `モード：<strong>${mode==='plus'?'加算':'減算'}</strong>`;
     });
 
     grid.addEventListener('click', (e) => {
@@ -134,6 +160,10 @@
       const next = counts[idx][color] + delta;
       counts[idx][color] = (ALLOW_NEGATIVES ? next : Math.max(0, next));
       chip.textContent = counts[idx][color];
+      chip.classList.remove('pop');
+      // reflow to restart animation
+      void chip.offsetWidth;
+      chip.classList.add('pop');
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {

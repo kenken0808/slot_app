@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, abort
 import pandas as pd
 from werkzeug.security import check_password_hash
 from config import machine_configs, machine_settings, TOOL_PASSWORDS, apply_free_custom_label_override
@@ -7,6 +7,7 @@ import requests
 import re
 import time
 import os
+
 
 # ==============================================================================
 # Flask アプリ初期化
@@ -460,6 +461,17 @@ def machine_page(machine_key, plan_type):
         og_image=og_image,   # ★ここを追加
         tw_image=tw_image,   # ← 追加
     )
+
+# ================================
+# 🔹 東リベツール（/toreve/tools）
+# ================================
+@app.route("/toreve/tools")
+def toreve_tools():
+    base = os.path.join(app.root_path, "static", "tools", "toreve")
+    index_path = os.path.join(base, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+    abort(404)
 
 # ================================
 # 🔹 ツール一覧ページ（/list）
