@@ -130,10 +130,10 @@
       characters.forEach((c, i) => {
         const card = document.createElement('div');
         card.className = 'card';
-        const chips = c.colors.map(color => `<div class=\"chip ${color}\" data-idx=\"${i}\" data-color=\"${color}\">${counts[i][color]}</div>`).join('');
+        const chips = c.colors.map(color => `<div class="chip ${color}" data-idx="${i}" data-color="${color}">${counts[i][color]}</div>`).join('');
         card.innerHTML = `
-          <div class=\"imgbox\"><img src=\"${c.img}\" alt=\"\"></div>
-          <div class=\"bar\">${chips}</div>
+          <div class="imgbox"><img src="${c.img}" alt=""></div>
+          <div class="bar">${chips}</div>
         `;
         grid.appendChild(card);
       });
