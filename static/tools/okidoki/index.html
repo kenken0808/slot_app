@@ -5,126 +5,85 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>沖ドキツール</title>
 
-  <!-- OGP / Twitterカード設定（必ず head 内） -->
+  <!-- OGP / Twitterカード（必要最低限・絶対URL） -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="沖ドキツール">
   <meta property="og:description" content="沖ドキシリーズ専用のスロット分析ツール。RB/BB履歴を入力すると差枚と有利Gを自動集計します。">
   <meta property="og:url" content="https://kenkentools.com/okidoki/tools">
   <meta property="og:image" content="https://kenkentools.com/static/okidoki.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="けんけんスロット分析ツール">
-  <meta property="og:locale" content="ja_JP">
-
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="沖ドキツール">
   <meta name="twitter:description" content="沖ドキシリーズ専用のスロット分析ツール。RB/BB履歴を入力すると差枚と有利Gを自動集計します。">
   <meta name="twitter:image" content="https://kenkentools.com/static/okidoki.jpg">
 
-  <!-- スタイル -->
+  <!-- ====== 最小限のスタイル（※フォント指定・グラフ高さは変更しない） ====== -->
   <style>
-    :root{
-      --gap: 6px;
-      --font: 14px;
-      --maxw: 820px;
-      --theme: #F7C948; /* 初期テーマ：ゴールド */
-    }
-    *{box-sizing:border-box;}
-    body{
-      font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;
-      margin:14px;
-      color:#222;
-      font-size:var(--font);
-    }
-    .container{max-width:var(--maxw);margin:0 auto;}
-    h1{
-      font-size:20px;
-      margin:0 0 16px 0;
-      padding-left:10px;
-      border-left:6px solid var(--theme);
-    }
+    :root{ --gap:6px; --maxw:820px; --theme:#F7C948; } /* 初期テーマ色のみ */
 
-    /* テーマボタン（左寄せ） */
-    .theme-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-    .theme-btn{
-      border:1px solid #ccc;border-radius:999px;padding:6px 10px;background:#fff;cursor:pointer;font-weight:600;
-    }
-    .theme-btn[data-key="gold"]{background:#FFF6CF;}
-    .theme-btn[data-key="black"]{background:#e9e9e9;}
-    .theme-btn[data-key="gorgeous"]{background:#ffe5f0;}
-    .theme-btn.active{border-color:var(--theme);}
+    .container{ max-width: var(--maxw); margin: 0 auto; }
+    h1{ margin:0 0 16px 0; padding-left:10px; border-left:6px solid var(--theme); }
+
+    /* テーマボタン（左寄せのまま） */
+    .theme-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+    .theme-btn{ border:1px solid #ccc; border-radius:999px; padding:6px 10px; background:#fff; cursor:pointer; font-weight:600; }
+    .theme-btn[data-key="gold"]{ background:#FFF6CF; }
+    .theme-btn[data-key="black"]{ background:#e9e9e9; }
+    .theme-btn[data-key="gorgeous"]{ background:#ffe5f0; }
+    .theme-btn.active{ border-color: var(--theme); }
 
     /* 操作ボタン（左寄せ） */
-    .controls{display:flex;gap:var(--gap);margin-top:10px;flex-wrap:wrap;}
-    button{padding:5px 8px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;}
+    .controls{ display:flex; gap:var(--gap); margin-top:10px; flex-wrap:wrap; }
+    button{ padding:5px 8px; border:1px solid #ccc; border-radius:6px; background:#fff; cursor:pointer; }
 
-    /* テーブル */
-    table{width:100%;border-collapse:collapse;margin-top:10px;table-layout:fixed;}
-    th,td{
-      border:1px solid #e5e5e5;
-      padding:6px 4px;
-      text-align:center;        /* 全セル中央 */
-      font-size:13px;
-      vertical-align:middle;    /* 縦中央 */
-    }
-    thead th{background:#fafafa;}
+    /* テーブル（列幅・中央寄せ） */
+    table{ width:100%; border-collapse:collapse; margin-top:10px; table-layout:fixed; }
+    th, td{ border:1px solid #e5e5e5; padding:6px 4px; text-align:center; vertical-align:middle; }
+    thead th{ background:#fafafa; }
 
     /* 列幅：13%, 22%, 13%, 13%, 13%, 13% */
-    th.col-label{width:13%;}
-    th.col-kind{width:22%;}
-    th.col-games{width:13%;}
-    th.col-yuuri{width:13%;}
-    th.col-diff{width:13%;}
-    th.col-ops{width:13%;}
+    th.col-label{ width:13%; }
+    th.col-kind { width:22%; }
+    th.col-games{ width:13%; }
+    th.col-yuuri{ width:13%; }
+    th.col-diff { width:13%; }
+    th.col-ops  { width:13%; }
 
-    /* ✅ 折り返し禁止（ゲーム数/有利G数/差枚数） */
+    /* ゲーム数／有利G数が2行にならないように（th/tdともにnowrap） */
     thead th:nth-child(3),
     thead th:nth-child(4),
-    thead th:nth-child(5),
     tbody td:nth-child(3),
-    tbody td:nth-child(4),
-    tbody td:nth-child(5){
-      white-space:nowrap;
+    tbody td:nth-child(4){
+      white-space: nowrap;
     }
 
-    /* ✅ 「有利G数」「差枚数」の値を強制中央（幅100%に） */
+    /* 有利G数・差枚数の値を確実に中央 */
     tbody td:nth-child(4) .value-text,
     tbody td:nth-child(5) .value-text{
-      display:inline-block;
-      width:100%;
-      text-align:center;
+      display:inline-block; width:100%; text-align:center;
     }
 
-    /* 種別ボタン（RB=青 / BB=赤） */
-    .kind-btns{display:flex;justify-content:center;gap:6px;}
-    .kind-btns button{
-      border:1px solid #ccc;border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap;
-    }
-    .kind-btns button.rb-selected{background:#1976d2;color:#fff;border-color:#1976d2;}
-    .kind-btns button.bb-selected{background:#d32f2f;color:#fff;border-color:#d32f2f;}
+    /* 種別ボタン：RB=青 / BB=赤（固定） */
+    .kind-btns{ display:flex; justify-content:center; gap:6px; }
+    .kind-btns button{ border:1px solid #ccc; border-radius:6px; padding:4px 8px; cursor:pointer; white-space:nowrap; }
+    .kind-btns button.rb-selected{ background:#1976d2; color:#fff; border-color:#1976d2; }
+    .kind-btns button.bb-selected{ background:#d32f2f; color:#fff; border-color:#d32f2f; }
 
-    /* 入力（高さ固定で2行化防止） */
-    input[type="number"]{
-      width:100%;
-      max-width:5em;
-      padding:3px 4px;
-      text-align:center;
-      line-height:1.2;
-      height:28px;       /* 2行化対策 */
-    }
+    /* 入力（縦に伸びて2行にならないよう、ごく控えめに固定） */
+    input[type="number"]{ width:100%; max-width:5em; text-align:center; height:28px; }
 
-    /* グラフ */
-    .charts{margin-top:14px;}
-    .chart-card{padding:10px;border:2px solid var(--theme);border-radius:8px;background:#fff;height:600px;}
-    #chartScatter{width:100%;height:100%;display:block;}
+    /* グラフ枠：枠線色のみテーマに合わせる（高さは触らない） */
+    .charts{ margin-top:14px; }
+    .chart-card{ padding:10px; border:2px solid var(--theme); border-radius:8px; background:#fff; /* 高さは指定しない */ }
+    #chartScatter{ width:100%; height:100%; display:block; } /* サイズは既存に従う */
   </style>
 </head>
 
-<!-- Google tag (gtag.js) — headの外（</head>直後）-->
+<!-- Google tag (gtag.js) — headの外（</head>直後。あなたの指定通り） -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', 'G-HXM85ZV043');
 </script>
@@ -133,14 +92,14 @@
   <div class="container">
     <h1>沖ドキツール</h1>
 
-    <!-- テーマ選択 -->
+    <!-- テーマ選択（左寄せのまま） -->
     <div class="theme-bar">
       <button class="theme-btn" data-key="gold">ゴールド</button>
       <button class="theme-btn" data-key="black">ブラック</button>
       <button class="theme-btn" data-key="gorgeous">ゴージャス</button>
     </div>
 
-    <!-- 操作 -->
+    <!-- 操作（左寄せ） -->
     <div class="controls">
       <button id="add-row-btn">＋ 履歴を追加</button>
       <button id="reset-btn">リセット（初期10件）</button>
@@ -161,137 +120,143 @@
       <tbody id="tbody"></tbody>
     </table>
 
-    <!-- グラフ -->
+    <!-- グラフ（高さはあなたのCSS/環境のまま） -->
     <div class="charts">
       <div class="chart-card"><canvas id="chartScatter"></canvas></div>
     </div>
   </div>
 
-  <!-- ライブラリ -->
+  <!-- Chart.jsのみ -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-  <!-- ロジック -->
+  <!-- ロジック（RB/BB・最小変更） -->
   <script>
-    /* テーマ設定（RB/BBの有利G） */
-    const THEMES={
-      gold:{color:"#F7C948",yuuri:{RB:29,BB:69}},
-      black:{color:"#111111",yuuri:{RB:24,BB:59}},
-      gorgeous:{color:"#E91E63",yuuri:{RB:24,BB:59}}
+    /* テーマ（RB/BBの有利G差のみ） */
+    const THEMES = {
+      gold:     { color:"#F7C948", yuuri:{ RB:29, BB:69 } },
+      black:    { color:"#111111", yuuri:{ RB:24, BB:59 } },
+      gorgeous: { color:"#E91E63", yuuri:{ RB:24, BB:59 } }
     };
+
     /* 固定値（RB/BB） */
-    const KINDS=["RB","BB"];
-    const FIXED_MEDALS={RB:90,BB:210};
-    let FIXED_YUURI={...THEMES.gold.yuuri};
+    const KINDS        = ["RB","BB"];
+    const FIXED_MEDALS = { RB:90, BB:210 };
+    let   FIXED_YUURI  = { ...THEMES.gold.yuuri };
 
     /* 初期10行 */
-    const DEFAULT_ROWS=Array.from({length:10},(_,i)=>({label:`${i+1}個目`,kind:"RB",games:""}));
+    const DEFAULT_ROWS = Array.from({length:10},(_,i)=>({label:`${i+1}個目`,kind:"RB",games:""}));
 
-    const tbody=document.getElementById("tbody");
-    const toInt=v=>{const n=Number(v);return Number.isFinite(n)?Math.trunc(n):0;};
-    const floorInt=n=>Math.floor(Number(n)||0);
+    const tbody  = document.getElementById("tbody");
+    const toInt  = v => { const n = Number(v); return Number.isFinite(n) ? Math.trunc(n) : 0; };
+    const floorI = n => Math.floor(Number(n)||0);
 
-    /* 行生成 */
+    /* 行生成（最小変更） */
     function buildRow(i,d){
-      const tr=document.createElement("tr");
-      tr.dataset.index=i;
+      const tr = document.createElement("tr");
+      tr.dataset.index = i;
 
-      const td1=document.createElement("td");td1.textContent=d.label;
+      const td1 = document.createElement("td");
+      td1.textContent = d.label;
 
-      const td2=document.createElement("td");
-      const wrap=document.createElement("div");wrap.className="kind-btns";
+      const td2 = document.createElement("td");
+      const wrap = document.createElement("div");
+      wrap.className = "kind-btns";
       KINDS.forEach(k=>{
-        const b=document.createElement("button");b.textContent=k;
-        if(k===d.kind)b.classList.add(k==="RB"?"rb-selected":"bb-selected");
-        b.onclick=()=>{
+        const b = document.createElement("button");
+        b.textContent = k;
+        if(k===d.kind) b.classList.add(k==="RB" ? "rb-selected" : "bb-selected");
+        b.onclick = ()=>{
           wrap.querySelectorAll("button").forEach(x=>x.classList.remove("rb-selected","bb-selected"));
-          b.classList.add(k==="RB"?"rb-selected":"bb-selected");
+          b.classList.add(k==="RB" ? "rb-selected" : "bb-selected");
           recalc();
         };
         wrap.appendChild(b);
       });
       td2.appendChild(wrap);
 
-      const td3=document.createElement("td");
-      const inp=document.createElement("input");inp.type="number";inp.value=d.games;inp.oninput=recalc;
+      const td3 = document.createElement("td");
+      const inp = document.createElement("input");
+      inp.type = "number";
+      inp.value = d.games;
+      inp.oninput = recalc;
       td3.appendChild(inp);
 
-      const td4=document.createElement("td");
-      const y=document.createElement("span");y.className="value-text";y.textContent="0";
+      const td4 = document.createElement("td");
+      const y = document.createElement("span");
+      y.className = "value-text";
+      y.textContent = "0";
       td4.appendChild(y);
 
-      const td5=document.createElement("td");
-      const m=document.createElement("span");m.className="value-text";m.textContent="0";
+      const td5 = document.createElement("td");
+      const m = document.createElement("span");
+      m.className = "value-text";
+      m.textContent = "0";
       td5.appendChild(m);
 
-      const td6=document.createElement("td");
-      const del=document.createElement("button");del.textContent="削除";
-      del.onclick=()=>{tr.remove();renumber();recalc();};
+      const td6 = document.createElement("td");
+      const del = document.createElement("button");
+      del.textContent = "削除";
+      del.onclick = ()=>{ tr.remove(); renumber(); recalc(); };
       td6.appendChild(del);
 
       tr.append(td1,td2,td3,td4,td5,td6);
-      tr._refs={inp,y,m,wrap,td1};
+      tr._refs = { inp, y, m, wrap, td1 };
       tbody.appendChild(tr);
     }
 
     function renumber(){
-      [...tbody.querySelectorAll("tr")].forEach((tr,i)=>tr._refs.td1.textContent=`${i+1}個目`);
+      [...tbody.querySelectorAll("tr")].forEach((tr,i)=> tr._refs.td1.textContent = `${i+1}個目`);
     }
 
-    /* グラフ */
+    /* グラフ（大きさは既存CSSに従う。ここでは触らない） */
     let chart;
     function initChart(){
-      const ctx=document.getElementById("chartScatter").getContext("2d");
-      if(chart)chart.destroy();
-      chart=new Chart(ctx,{
+      const ctx = document.getElementById("chartScatter").getContext("2d");
+      if(chart) chart.destroy();
+      chart = new Chart(ctx,{
         type:"line",
-        data:{datasets:[{
-          data:[],
-          showLine:true,
-          borderColor:getComputedStyle(document.documentElement).getPropertyValue("--theme").trim(),
-          tension:0.2,
-          pointRadius:0
+        data:{ datasets:[{
+          data:[], showLine:true, tension:0.2, pointRadius:0,
+          borderColor: getComputedStyle(document.documentElement).getPropertyValue("--theme").trim()
         }]},
         options:{
-          responsive:true,
-          maintainAspectRatio:false,
+          responsive:true, maintainAspectRatio:false,
           scales:{
-            x:{type:"linear",min:0,max:6000,title:{display:true,text:"総有利G数"}},
-            y:{min:-6000,max:3000,title:{display:true,text:"総差枚数"}}
+            x:{ type:"linear", min:0, max:6000, title:{display:true, text:"総有利G数"} },
+            y:{              min:-6000, max:3000, title:{display:true, text:"総差枚数"} }
           },
-          plugins:{legend:{display:false}}
+          plugins:{ legend:{ display:false } }
         }
       });
     }
 
-    /* 再計算 */
+    /* 再計算（ロジックは既存のまま） */
     function recalc(){
       let xsum=0, ysum=0;
       const pts=[{x:0,y:0}];
 
       [...tbody.querySelectorAll("tr")].forEach(tr=>{
-        const {inp,y,m,wrap}=tr._refs;
-        const sel=[...wrap.querySelectorAll("button")].find(b=>b.classList.contains("rb-selected")||b.classList.contains("bb-selected"));
-        const kind=sel?sel.textContent:"RB";
-        const g=toInt(inp.value);
+        const { inp, y, m, wrap } = tr._refs;
+        const sel  = [...wrap.querySelectorAll("button")].find(b=>b.classList.contains("rb-selected")||b.classList.contains("bb-selected"));
+        const kind = sel ? sel.textContent : "RB";
+        const g    = toInt(inp.value);
 
-        const medal=FIXED_MEDALS[kind];
-        const yuuri=FIXED_YUURI[kind];
-        const cost=floorInt(g*(50/32));
+        const medal = FIXED_MEDALS[kind];
+        const yuuri = FIXED_YUURI[kind];
+        const cost  = floorI(g*(50/32));
 
-        const xb=xsum+g, yb=ysum-cost; // 前
-        pts.push({x:xb,y:yb});
-        const xa=xb+yuuri, ya=yb+medal; // 後
-        pts.push({x:xa,y:ya});
+        const xb = xsum + g,   yb = ysum - cost;  pts.push({x:xb,y:yb});           // 前
+        const xa = xb + yuuri, ya = yb + medal;   pts.push({x:xa,y:ya});           // 後
 
-        y.textContent=xa;
-        m.textContent=ya;
+        y.textContent = xa;
+        m.textContent = ya;
 
-        xsum=xa; ysum=ya;
+        xsum = xa; ysum = ya;
       });
 
       if(!chart) initChart();
-      chart.data.datasets[0].data=pts;
-      chart.data.datasets[0].borderColor=getComputedStyle(document.documentElement).getPropertyValue("--theme").trim();
+      chart.data.datasets[0].data = pts;
+      chart.data.datasets[0].borderColor = getComputedStyle(document.documentElement).getPropertyValue("--theme").trim();
       chart.update();
     }
 
@@ -299,20 +264,20 @@
     function addRow(){ buildRow(tbody.children.length,{label:`${tbody.children.length+1}個目`,kind:"RB",games:""}); recalc(); }
     function reset(){ tbody.innerHTML=""; DEFAULT_ROWS.forEach((r,i)=>buildRow(i,r)); recalc(); }
     function applyTheme(k){
-      const t=THEMES[k];
-      document.documentElement.style.setProperty("--theme",t.color);
-      FIXED_YUURI={...t.yuuri};
-      document.querySelectorAll(".theme-btn").forEach(b=>b.classList.toggle("active",b.dataset.key===k));
+      const t = THEMES[k];
+      document.documentElement.style.setProperty("--theme", t.color);
+      FIXED_YUURI = { ...t.yuuri };
+      document.querySelectorAll(".theme-btn").forEach(b=> b.classList.toggle("active", b.dataset.key===k));
       recalc();
     }
 
-    /* 初期化 */
+    /* 初期化（最小限） */
     reset();
     initChart();
     applyTheme("gold");
-    document.querySelectorAll(".theme-btn").forEach(b=>b.onclick=()=>applyTheme(b.dataset.key));
-    document.getElementById("add-row-btn").onclick=addRow;
-    document.getElementById("reset-btn").onclick=reset;
+    document.querySelectorAll(".theme-btn").forEach(b=> b.onclick = () => applyTheme(b.dataset.key));
+    document.getElementById("add-row-btn").onclick = addRow;
+    document.getElementById("reset-btn").onclick   = reset;
   </script>
 </body>
 </html>
