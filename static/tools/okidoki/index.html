@@ -2,11 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <!-- スマホ前提：前回の設定を維持 -->
+  <!-- スマホ前提の表示（以前の設定を維持） -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>沖ドキツール</title>
 
-  <!-- OGP / Twitterカード -->
+  <!-- OGP / Twitterカード（以前と同等） -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="沖ドキツール">
   <meta property="og:description" content="沖ドキシリーズ専用ツール。RB/BB履歴から差枚と有利Gを簡単集計。">
@@ -22,10 +22,10 @@
   <style>
     :root{
       --gap: 6px;
-      --font: 12px;          /* スマホ前提の小さめ */
+      --font: 12px;           /* スマホ前提で控えめ */
       --maxw: 820px;
-      --theme: #F7C948;      /* 初期ゴールド */
-      --theme-light: #FFF8DC;/* 初期ヘッダー薄色 */
+      --theme: #F7C948;       /* 初期: ゴールド */
+      --theme-light: #FFF8DC; /* ヘッダー薄色 */
     }
     *{ box-sizing: border-box; }
     body{ margin:12px; font-size:var(--font); color:#222; font-weight:normal; }
@@ -39,6 +39,7 @@
       font-weight:normal;
     }
 
+    /* テーマ切替 */
     .theme-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
     .theme-btn{
       border:1px solid #ccc; border-radius:999px;
@@ -50,20 +51,32 @@
     .theme-btn[data-key="gorgeous"]{ background:#ffe5f0; }
     .theme-btn.active{ border-color:var(--theme); }
 
+    /* 操作ボタン */
     .controls{ display:flex; gap:var(--gap); flex-wrap:wrap; }
     button{ padding:4px 8px; border:1px solid #ccc; border-radius:6px; background:#fff; cursor:pointer; font-size:12px; font-weight:normal; }
 
+    /* テーブル */
     table{ width:100%; border-collapse:collapse; margin-top:8px; table-layout:fixed; }
-    th, td{
+    thead th{
       border:1px solid #e5e5e5; padding:4px 3px;
       text-align:center; vertical-align:middle;
       font-size:12px; font-weight:normal;
-      height:30px !important;           /* ★ セル高さも固定（行高さと一致） */
-      overflow:hidden;                   /* ★ はみ出しは隠す */
+      background: var(--theme-light);
+      height:30px;                 /* ヘッダー高さ */
+      white-space:nowrap;
     }
-    thead th{ background: var(--theme-light); }
+    tbody td{
+      border:1px solid #e5e5e5;
+      padding:0;                   /* 高さブレ防止のため 0 に固定 */
+      text-align:center;           /* table-cell のまま */
+      vertical-align:middle;
+      font-size:12px; font-weight:normal;
+      height:30px;                 /* ★ セル高も行高と合わせて固定 */
+      white-space:nowrap;
+      overflow:hidden;
+    }
 
-    /* 列幅：13/20/17/13/13/13（前回のまま） */
+    /* 列幅：履歴/種別/ゲーム数/有利G/差枚/操作 = 13/20/17/13/13/13 */
     th.col-label{ width:13%; }
     th.col-kind { width:20%; }
     th.col-games{ width:17%; }
@@ -71,36 +84,33 @@
     th.col-diff { width:13%; }
     th.col-ops  { width:13%; }
 
-    /* ゲーム数/有利Gは改行させない */
-    thead th:nth-child(3),
-    thead th:nth-child(4),
-    tbody td:nth-child(3),
-    tbody td:nth-child(4){ white-space: nowrap; }
-
-    /* ★ 行の高さを完全固定（Enter確定時にも揺れない） */
-    tbody tr{
-      height:31px !important;
+    /* tbody の各セルに中央配置用のラッパーを入れて安定表示 */
+    .cell{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:30px; /* 行高と一致 */
     }
 
-    /* ★ セル内要素を行高にフィットさせる（高さ統一） */
+    /* セル内要素の高さを統一（行高30 - 内部要素 22px） */
     input[type="number"],
     .kind-btns button,
     .value-text{
-      height:22px;          /* 30px(行) - 上下padding(4+4) = 22px */
+      height:22px;
       line-height:22px;
+      font-size:12px;
     }
 
-    /* 有利G/差枚の表示は単行・中央固定 */
+    /* 有利G/差枚：単行中央 */
     .value-text{
       display:inline-block;
       width:100%;
       text-align:center;
-      white-space:nowrap;
-      overflow:hidden;
       text-overflow:clip;
     }
 
-    /* 種別ボタン（RB=青 / BB=赤） */
+    /* 種別ボタン（RB=青 / BB=赤 固定） */
     .kind-btns{ display:flex; justify-content:center; gap:6px; }
     .kind-btns button{
       border:1px solid #ccc; border-radius:6px; padding:0 6px; cursor:pointer; white-space:nowrap;
@@ -109,16 +119,14 @@
     .kind-btns button.rb-selected{ background:#1976d2; color:#fff; border-color:#1976d2; }
     .kind-btns button.bb-selected{ background:#d32f2f; color:#fff; border-color:#d32f2f; }
 
-    /* 入力ボックス（前回の大きさ指定を維持） */
+    /* 入力ボックス（広め指定のまま） */
     input[type="number"]{
       width:3.8em; min-width:3.8em; max-width:3.8em;
       text-align:center;
-      font-size:12px;
-      font-weight:normal;
-      border:1px solid #ccc;
-      border-radius:4px;
+      border:1px solid #ccc; border-radius:4px;
       padding:0;
       -moz-appearance:textfield; appearance:textfield;
+      font-weight:normal;
     }
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
@@ -133,7 +141,7 @@
   </style>
 </head>
 
-<!-- Google Analytics（前回位置のまま） -->
+<!-- Google Analytics（</head>直後） -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -176,7 +184,9 @@
     </div>
   </div>
 
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <script>
     /* テーマ（色・薄色・RB/BBの有利G） */
     const THEMES = {
@@ -190,20 +200,26 @@
     let   FIXED_YUURI  = { ...THEMES.gold.yuuri };
 
     const DEFAULT_ROWS = Array.from({length:10},(_,i)=>({label:`${i+1}個目`,kind:"RB",games:""}));
+
     const tbody = document.getElementById("tbody");
     const toInt = v => { const n = Number(v); return Number.isFinite(n) ? Math.trunc(n) : 0; };
     const floorInt = n => Math.floor(Number(n)||0);
 
+    /* 行生成（各セルに .cell ラッパーを入れる） */
     function buildRow(i,d){
       const tr = document.createElement("tr");
       tr.dataset.index = i;
 
+      // 履歴
       const td1 = document.createElement("td");
-      td1.textContent = d.label;
+      const cell1 = document.createElement("div"); cell1.className = "cell";
+      cell1.textContent = d.label;
+      td1.appendChild(cell1);
 
+      // 種別
       const td2 = document.createElement("td");
-      const wrap = document.createElement("div");
-      wrap.className = "kind-btns";
+      const cell2 = document.createElement("div"); cell2.className = "cell";
+      const wrap = document.createElement("div"); wrap.className = "kind-btns";
       KINDS.forEach(k=>{
         const b = document.createElement("button");
         b.textContent = k;
@@ -215,52 +231,53 @@
         };
         wrap.appendChild(b);
       });
-      td2.appendChild(wrap);
+      cell2.appendChild(wrap);
+      td2.appendChild(cell2);
 
+      // ゲーム数
       const td3 = document.createElement("td");
+      const cell3 = document.createElement("div"); cell3.className = "cell";
       const inp = document.createElement("input");
       inp.type = "number";
       inp.value = d.games;
-
-      /* ★ Enterで確定した瞬間に blur して即確定（行高のブレを抑止） */
-      inp.addEventListener("keydown", (e)=>{
-        if(e.key === "Enter"){
-          e.preventDefault();
-          e.currentTarget.blur();
-        }
+      // Enterで確定 → blur（改行による再描画抑止）→ changeで再計算
+      inp.addEventListener("keydown",(e)=>{
+        if(e.key==="Enter"){ e.preventDefault(); e.currentTarget.blur(); }
       });
-      /* ★ 確定時のみ再計算（タイピング中は動かさない） */
       inp.addEventListener("change", recalc);
+      cell3.appendChild(inp);
+      td3.appendChild(cell3);
 
-      td3.appendChild(inp);
-
+      // 有利G
       const td4 = document.createElement("td");
-      const y = document.createElement("span");
-      y.className = "value-text";
-      y.textContent = "0";
-      td4.appendChild(y);
+      const cell4 = document.createElement("div"); cell4.className = "cell";
+      const y = document.createElement("span"); y.className="value-text"; y.textContent="0";
+      cell4.appendChild(y); td4.appendChild(cell4);
 
+      // 差枚
       const td5 = document.createElement("td");
-      const m = document.createElement("span");
-      m.className = "value-text";
-      m.textContent = "0";
-      td5.appendChild(m);
+      const cell5 = document.createElement("div"); cell5.className = "cell";
+      const m = document.createElement("span"); m.className="value-text"; m.textContent="0";
+      cell5.appendChild(m); td5.appendChild(cell5);
 
+      // 操作
       const td6 = document.createElement("td");
+      const cell6 = document.createElement("div"); cell6.className = "cell";
       const del = document.createElement("button");
       del.textContent = "削除";
       del.onclick = ()=>{ tr.remove(); renumber(); recalc(); };
-      td6.appendChild(del);
+      cell6.appendChild(del); td6.appendChild(cell6);
 
       tr.append(td1,td2,td3,td4,td5,td6);
-      tr._refs = { inp, y, m, wrap, td1 };
+      tr._refs = { inp, y, m, wrap, td1LabelCell: cell1 };
       tbody.appendChild(tr);
     }
 
     function renumber(){
-      [...tbody.querySelectorAll("tr")].forEach((tr,i)=> tr._refs.td1.textContent = `${i+1}個目`);
+      [...tbody.querySelectorAll("tr")].forEach((tr,i)=> tr._refs.td1LabelCell.textContent = `${i+1}個目`);
     }
 
+    /* グラフ（線色はテーマ色に同期） */
     let chart;
     function initChart(){
       const ctx = document.getElementById("chartScatter").getContext("2d");
@@ -282,6 +299,7 @@
       });
     }
 
+    /* 再計算（確定時のみ） */
     function recalc(){
       let xsum=0, ysum=0;
       const pts=[{x:0,y:0}];
@@ -296,8 +314,8 @@
         const yuuri = FIXED_YUURI[kind];
         const cost  = floorInt(g*(50/32));
 
-        const xb = xsum + g,   yb = ysum - cost;  pts.push({x:xb,y:yb});
-        const xa = xb + yuuri, ya = yb + medal;   pts.push({x:xa,y:ya});
+        const xb = xsum + g,   yb = ysum - cost;  pts.push({x:xb,y:yb});  // 前
+        const xa = xb + yuuri, ya = yb + medal;   pts.push({x:xa,y:ya});  // 後
 
         y.textContent = xa;
         m.textContent = ya;
@@ -311,6 +329,7 @@
       chart.update();
     }
 
+    /* 追加/リセット・テーマ */
     function addRow(){ buildRow(tbody.children.length,{label:`${tbody.children.length+1}個目`,kind:"RB",games:""}); recalc(); }
     function reset(){ tbody.innerHTML=""; DEFAULT_ROWS.forEach((r,i)=>buildRow(i,r)); recalc(); }
     function applyTheme(key){
@@ -322,6 +341,7 @@
       recalc();
     }
 
+    /* 初期化 */
     reset();
     initChart();
     applyTheme("gold");
