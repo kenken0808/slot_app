@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>沖ドキツール</title>
 
-  <!-- OGP / Twitterカード設定 -->
+  <!-- OGP / Twitterカード設定（必ず head 内） -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="沖ドキツール">
   <meta property="og:description" content="沖ドキシリーズ専用のスロット分析ツール。RB/BB履歴を入力すると差枚と有利Gを自動集計します。">
   <meta property="og:url" content="https://kenkentools.com/okidoki/tools">
   <meta property="og:image" content="https://kenkentools.com/static/okidoki.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="けんけんスロット分析ツール">
+  <meta property="og:locale" content="ja_JP">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="沖ドキツール">
@@ -24,7 +27,7 @@
       --gap: 6px;
       --font: 14px;
       --maxw: 820px;
-      --theme: #F7C948; /* 初期：ゴールド */
+      --theme: #F7C948; /* 初期テーマ：ゴールド */
     }
     *{box-sizing:border-box;}
     body{
@@ -41,7 +44,7 @@
       border-left:6px solid var(--theme);
     }
 
-    /* テーマボタン（左寄せのまま） */
+    /* テーマボタン（左寄せ） */
     .theme-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
     .theme-btn{
       border:1px solid #ccc;border-radius:999px;padding:6px 10px;background:#fff;cursor:pointer;font-weight:600;
@@ -51,14 +54,21 @@
     .theme-btn[data-key="gorgeous"]{background:#ffe5f0;}
     .theme-btn.active{border-color:var(--theme);}
 
-    /* 操作ボタン（左寄せのまま） */
+    /* 操作ボタン（左寄せ） */
     .controls{display:flex;gap:var(--gap);margin-top:10px;flex-wrap:wrap;}
     button{padding:5px 8px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;}
 
-    /* テーブル（th/td中央揃え） */
+    /* テーブル */
     table{width:100%;border-collapse:collapse;margin-top:10px;table-layout:fixed;}
-    th,td{border:1px solid #e5e5e5;padding:6px 4px;text-align:center;font-size:13px;vertical-align:middle;}
+    th,td{
+      border:1px solid #e5e5e5;
+      padding:6px 4px;
+      text-align:center;        /* 全セル中央 */
+      font-size:13px;
+      vertical-align:middle;    /* 縦中央 */
+    }
     thead th{background:#fafafa;}
+
     /* 列幅：13%, 22%, 13%, 13%, 13%, 13% */
     th.col-label{width:13%;}
     th.col-kind{width:22%;}
@@ -67,35 +77,40 @@
     th.col-diff{width:13%;}
     th.col-ops{width:13%;}
 
-    /* ⬇ 折り返し対策：3列目(ゲーム数)・4列目(有利G数)は nowrap に */
-    table td:nth-child(3),
-    table td:nth-child(4){
-      white-space: nowrap;
+    /* ✅ 折り返し禁止（ゲーム数/有利G数/差枚数） */
+    thead th:nth-child(3),
+    thead th:nth-child(4),
+    thead th:nth-child(5),
+    tbody td:nth-child(3),
+    tbody td:nth-child(4),
+    tbody td:nth-child(5){
+      white-space:nowrap;
     }
-    /* 値表示（有利G数/差枚数）を確実に中央寄せ */
-    .value-text{
-      display:block;       /* ブロック化で中央寄せ安定 */
-      min-width:4em;
-      margin:0 auto;
+
+    /* ✅ 「有利G数」「差枚数」の値を強制中央（幅100%に） */
+    tbody td:nth-child(4) .value-text,
+    tbody td:nth-child(5) .value-text{
+      display:inline-block;
+      width:100%;
       text-align:center;
     }
 
-    /* 種別ボタン（RB=青 / BB=赤固定） */
+    /* 種別ボタン（RB=青 / BB=赤） */
     .kind-btns{display:flex;justify-content:center;gap:6px;}
     .kind-btns button{
-      border:1px solid #ccc;border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap; /* 折り返し防止 */
+      border:1px solid #ccc;border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap;
     }
     .kind-btns button.rb-selected{background:#1976d2;color:#fff;border-color:#1976d2;}
     .kind-btns button.bb-selected{background:#d32f2f;color:#fff;border-color:#d32f2f;}
 
-    /* 入力（折り返し・縦伸び防止） */
+    /* 入力（高さ固定で2行化防止） */
     input[type="number"]{
       width:100%;
       max-width:5em;
       padding:3px 4px;
       text-align:center;
       line-height:1.2;
-      height:28px;       /* 固定高で2行化を防止 */
+      height:28px;       /* 2行化対策 */
     }
 
     /* グラフ */
@@ -118,14 +133,14 @@
   <div class="container">
     <h1>沖ドキツール</h1>
 
-    <!-- テーマ選択（左寄せ） -->
+    <!-- テーマ選択 -->
     <div class="theme-bar">
       <button class="theme-btn" data-key="gold">ゴールド</button>
       <button class="theme-btn" data-key="black">ブラック</button>
       <button class="theme-btn" data-key="gorgeous">ゴージャス</button>
     </div>
 
-    <!-- 操作（左寄せ） -->
+    <!-- 操作 -->
     <div class="controls">
       <button id="add-row-btn">＋ 履歴を追加</button>
       <button id="reset-btn">リセット（初期10件）</button>
