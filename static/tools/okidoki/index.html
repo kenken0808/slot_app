@@ -65,12 +65,12 @@
     thead th{ background: var(--theme-light); }
 
     /* 列幅：履歴/種別/ゲーム数/有利G/差枚/操作 = 13/20/15/13/13/13 */
-    th.col-label{ width:13%; }
+    th.col-label{ width:12%; }
     th.col-kind { width:18%; }
     th.col-games{ width:18%; }
-    th.col-yuuri{ width:13%; }
-    th.col-diff { width:13%; }
-    th.col-ops  { width:13%; }
+    th.col-yuuri{ width:12%; }
+    th.col-diff { width:12%; }
+    th.col-ops  { width:12%; }
 
     /* 見出し・値の改行防止（ゲーム数/有利G） */
     thead th:nth-child(3),
@@ -214,7 +214,7 @@
       const inp = document.createElement("input");
       inp.type = "number";
       inp.value = d.games;
-      inp.oninput = recalc;
+      inp.addEventListener("change", recalc);
       td3.appendChild(inp);
 
       const td4 = document.createElement("td");
