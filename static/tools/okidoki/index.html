@@ -5,43 +5,67 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>沖ドキツール</title>
 
-  <!-- OGP / Twitterカード（必要最低限・絶対URL） -->
+  <!-- OGP / Twitterカード（必要最低限） -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="沖ドキツール">
-  <meta property="og:description" content="沖ドキシリーズ専用のスロット分析ツール。RB/BB履歴を入力すると差枚と有利Gを自動集計します。">
+  <meta property="og:description" content="沖ドキシリーズ専用ツール。RB/BB履歴から差枚と有利Gを簡単集計。">
   <meta property="og:url" content="https://kenkentools.com/okidoki/tools">
   <meta property="og:image" content="https://kenkentools.com/static/okidoki.jpg">
   <meta property="og:site_name" content="けんけんスロット分析ツール">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="沖ドキツール">
-  <meta name="twitter:description" content="沖ドキシリーズ専用のスロット分析ツール。RB/BB履歴を入力すると差枚と有利Gを自動集計します。">
+  <meta name="twitter:description" content="沖ドキシリーズ専用ツール。RB/BB履歴から差枚と有利Gを簡単集計。">
   <meta name="twitter:image" content="https://kenkentools.com/static/okidoki.jpg">
 
-  <!-- ====== 最小限のスタイル（※フォント指定・グラフ高さは変更しない） ====== -->
+  <!-- ===== 最小限スタイル（スマホ優先） ===== -->
   <style>
-    :root{ --gap:6px; --maxw:820px; --theme:#F7C948; } /* 初期テーマ色のみ */
-
+    :root{
+      --gap: 6px;
+      --font: 14px;
+      --maxw: 820px;
+      --theme: #F7C948; /* 初期テーマ色（ゴールド） */
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin: 14px;
+      font-size: var(--font);
+      color: #222;
+    }
     .container{ max-width: var(--maxw); margin: 0 auto; }
-    h1{ margin:0 0 16px 0; padding-left:10px; border-left:6px solid var(--theme); }
+    h1{
+      margin: 0 0 12px 0;
+      font-size: 20px;
+      padding-left: 10px;
+      border-left: 6px solid var(--theme);
+    }
 
-    /* テーマボタン（左寄せのまま） */
-    .theme-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
-    .theme-btn{ border:1px solid #ccc; border-radius:999px; padding:6px 10px; background:#fff; cursor:pointer; font-weight:600; }
+    /* テーマ切替ボタン（左寄せのまま・コンパクト） */
+    .theme-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 8px; }
+    .theme-btn{
+      border:1px solid #ccc; border-radius:999px;
+      padding:6px 10px; background:#fff; cursor:pointer; font-weight:600;
+    }
     .theme-btn[data-key="gold"]{ background:#FFF6CF; }
     .theme-btn[data-key="black"]{ background:#e9e9e9; }
     .theme-btn[data-key="gorgeous"]{ background:#ffe5f0; }
     .theme-btn.active{ border-color: var(--theme); }
 
-    /* 操作ボタン（左寄せ） */
-    .controls{ display:flex; gap:var(--gap); margin-top:10px; flex-wrap:wrap; }
+    /* 操作ボタン */
+    .controls{ display:flex; gap:var(--gap); flex-wrap:wrap; }
     button{ padding:5px 8px; border:1px solid #ccc; border-radius:6px; background:#fff; cursor:pointer; }
 
-    /* テーブル（列幅・中央寄せ） */
+    /* テーブル（スマホでも崩れにくい最小指定） */
     table{ width:100%; border-collapse:collapse; margin-top:10px; table-layout:fixed; }
-    th, td{ border:1px solid #e5e5e5; padding:6px 4px; text-align:center; vertical-align:middle; }
+    th, td{
+      border: 1px solid #e5e5e5;
+      padding: 6px 4px;
+      text-align: center;          /* 全セル中央 */
+      vertical-align: middle;      /* 縦中央 */
+      font-size: 13px;
+    }
     thead th{ background:#fafafa; }
 
-    /* 列幅：13%, 22%, 13%, 13%, 13%, 13% */
+    /* 列幅：13%, 22%, 13%, 13%, 13%, 13%（指定通り） */
     th.col-label{ width:13%; }
     th.col-kind { width:22%; }
     th.col-games{ width:13%; }
@@ -49,7 +73,7 @@
     th.col-diff { width:13%; }
     th.col-ops  { width:13%; }
 
-    /* ゲーム数／有利G数が2行にならないように（th/tdともにnowrap） */
+    /* 「ゲーム数」「有利G数」が2行にならないように（見出し・値ともに nowrap） */
     thead th:nth-child(3),
     thead th:nth-child(4),
     tbody td:nth-child(3),
@@ -57,29 +81,55 @@
       white-space: nowrap;
     }
 
-    /* 有利G数・差枚数の値を確実に中央 */
+    /* 「有利G数」「差枚数」の値を確実に中央揃え */
     tbody td:nth-child(4) .value-text,
     tbody td:nth-child(5) .value-text{
-      display:inline-block; width:100%; text-align:center;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
     }
 
-    /* 種別ボタン：RB=青 / BB=赤（固定） */
+    /* 種別ボタン（RB=青 / BB=赤 固定） */
     .kind-btns{ display:flex; justify-content:center; gap:6px; }
-    .kind-btns button{ border:1px solid #ccc; border-radius:6px; padding:4px 8px; cursor:pointer; white-space:nowrap; }
+    .kind-btns button{
+      border:1px solid #ccc; border-radius:6px; padding:4px 8px; cursor:pointer; white-space:nowrap;
+    }
     .kind-btns button.rb-selected{ background:#1976d2; color:#fff; border-color:#1976d2; }
     .kind-btns button.bb-selected{ background:#d32f2f; color:#fff; border-color:#d32f2f; }
 
-    /* 入力（縦に伸びて2行にならないよう、ごく控えめに固定） */
-    input[type="number"]{ width:100%; max-width:5em; text-align:center; height:28px; }
+    /* 入力（モバイルで2行化しない） */
+    input[type="number"]{
+      width: 100%;
+      max-width: 5em;
+      text-align:center;
+      height: 28px;          /* 2行化防止 */
+      line-height: 1.2;
+    }
 
-    /* グラフ枠：枠線色のみテーマに合わせる（高さは触らない） */
-    .charts{ margin-top:14px; }
-    .chart-card{ padding:10px; border:2px solid var(--theme); border-radius:8px; background:#fff; /* 高さは指定しない */ }
-    #chartScatter{ width:100%; height:100%; display:block; } /* サイズは既存に従う */
+    /* グラフ（モバイルは高さを自動調整） */
+    .charts{ margin-top: 12px; }
+    .chart-card{
+      padding:10px; border:1px solid #e5e5e5; border-radius:8px; background:#fff;
+      /* PCは控えめ、モバイルは40vhに */
+      height: 420px;
+    }
+    #chartScatter{ width:100%; height:100%; display:block; }
+
+    /* ===== スマホ最適化（<=640px） ===== */
+    @media (max-width: 640px){
+      :root{ --font: 12px; }           /* 文字を控えめに */
+      body{ margin: 10px; }
+      th, td{ font-size: 12px; padding: 4px 3px; }
+      .theme-btn{ padding:5px 8px; font-size: 12px; }
+      button{ padding:5px 8px; font-size: 12px; }
+      .chart-card{ height: 40vh; min-height: 200px; }  /* モバイルは小さめ表示 */
+      /* iOSのズーム抑止：入力中でも視認性は担保（必要最小限） */
+      input[type="number"]{ font-size: 16px; }
+    }
   </style>
 </head>
 
-<!-- Google tag (gtag.js) — headの外（</head>直後。あなたの指定通り） -->
+<!-- Google tag (gtag.js) — あなたの指示通り、headの外（</head>直後） -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -99,7 +149,7 @@
       <button class="theme-btn" data-key="gorgeous">ゴージャス</button>
     </div>
 
-    <!-- 操作（左寄せ） -->
+    <!-- 操作（左寄せのまま） -->
     <div class="controls">
       <button id="add-row-btn">＋ 履歴を追加</button>
       <button id="reset-btn">リセット（初期10件）</button>
@@ -120,7 +170,7 @@
       <tbody id="tbody"></tbody>
     </table>
 
-    <!-- グラフ（高さはあなたのCSS/環境のまま） -->
+    <!-- グラフ（モバイルは小さめ表示） -->
     <div class="charts">
       <div class="chart-card"><canvas id="chartScatter"></canvas></div>
     </div>
@@ -129,7 +179,7 @@
   <!-- Chart.jsのみ -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-  <!-- ロジック（RB/BB・最小変更） -->
+  <!-- ロジック（最小変更） -->
   <script>
     /* テーマ（RB/BBの有利G差のみ） */
     const THEMES = {
@@ -143,21 +193,23 @@
     const FIXED_MEDALS = { RB:90, BB:210 };
     let   FIXED_YUURI  = { ...THEMES.gold.yuuri };
 
-    /* 初期10行 */
+    /* 初期10行（ゲーム数は空欄） */
     const DEFAULT_ROWS = Array.from({length:10},(_,i)=>({label:`${i+1}個目`,kind:"RB",games:""}));
 
-    const tbody  = document.getElementById("tbody");
-    const toInt  = v => { const n = Number(v); return Number.isFinite(n) ? Math.trunc(n) : 0; };
-    const floorI = n => Math.floor(Number(n)||0);
+    const tbody = document.getElementById("tbody");
+    const toInt = v => { const n = Number(v); return Number.isFinite(n) ? Math.trunc(n) : 0; };
+    const floorInt = n => Math.floor(Number(n)||0);
 
-    /* 行生成（最小変更） */
+    /* 行生成 */
     function buildRow(i,d){
       const tr = document.createElement("tr");
       tr.dataset.index = i;
 
+      // 履歴
       const td1 = document.createElement("td");
       td1.textContent = d.label;
 
+      // 種別（RB/BBボタン）
       const td2 = document.createElement("td");
       const wrap = document.createElement("div");
       wrap.className = "kind-btns";
@@ -174,6 +226,7 @@
       });
       td2.appendChild(wrap);
 
+      // ゲーム数
       const td3 = document.createElement("td");
       const inp = document.createElement("input");
       inp.type = "number";
@@ -181,18 +234,21 @@
       inp.oninput = recalc;
       td3.appendChild(inp);
 
+      // 有利G（累計表示）
       const td4 = document.createElement("td");
       const y = document.createElement("span");
       y.className = "value-text";
       y.textContent = "0";
       td4.appendChild(y);
 
+      // 差枚（累計表示）
       const td5 = document.createElement("td");
       const m = document.createElement("span");
       m.className = "value-text";
       m.textContent = "0";
       td5.appendChild(m);
 
+      // 操作
       const td6 = document.createElement("td");
       const del = document.createElement("button");
       del.textContent = "削除";
@@ -208,7 +264,7 @@
       [...tbody.querySelectorAll("tr")].forEach((tr,i)=> tr._refs.td1.textContent = `${i+1}個目`);
     }
 
-    /* グラフ（大きさは既存CSSに従う。ここでは触らない） */
+    /* グラフ（高さはCSSに任せる） */
     let chart;
     function initChart(){
       const ctx = document.getElementById("chartScatter").getContext("2d");
@@ -230,7 +286,7 @@
       });
     }
 
-    /* 再計算（ロジックは既存のまま） */
+    /* 再計算 */
     function recalc(){
       let xsum=0, ysum=0;
       const pts=[{x:0,y:0}];
@@ -243,10 +299,10 @@
 
         const medal = FIXED_MEDALS[kind];
         const yuuri = FIXED_YUURI[kind];
-        const cost  = floorI(g*(50/32));
+        const cost  = floorInt(g*(50/32));
 
-        const xb = xsum + g,   yb = ysum - cost;  pts.push({x:xb,y:yb});           // 前
-        const xa = xb + yuuri, ya = yb + medal;   pts.push({x:xa,y:ya});           // 後
+        const xb = xsum + g,   yb = ysum - cost;  pts.push({x:xb,y:yb});  // 前
+        const xa = xb + yuuri, ya = yb + medal;   pts.push({x:xa,y:ya});  // 後
 
         y.textContent = xa;
         m.textContent = ya;
@@ -271,7 +327,7 @@
       recalc();
     }
 
-    /* 初期化（最小限） */
+    /* 初期化 */
     reset();
     initChart();
     applyTheme("gold");
