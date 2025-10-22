@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>沖ドキツール</title>
 
-  <!-- OGP / Twitterカード（画像パス修正済み） -->
+  <!-- OGP / Twitterカード（画像パスは tools/okidoki/img/okidoki.jpg） -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="沖ドキツール">
   <meta property="og:description" content="沖ドキシリーズ専用ツール。RB/BB履歴から差枚と有利Gを簡単集計。">
@@ -16,12 +16,10 @@
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="沖ドキツール">
   <meta name="twitter:description" content="沖ドキシリーズ専用ツール。RB/BB履歴から差枚と有利Gを簡単集計。">
   <meta name="twitter:image" content="https://kenkentools.com/static/tools/okidoki/img/okidoki.jpg">
-
   <link rel="canonical" href="https://kenkentools.com/okidoki/tools">
 
   <!-- ===== スタイル（スマホ優先・必要最小限） ===== -->
@@ -67,16 +65,16 @@
     }
     thead th{ background: var(--theme-light); } /* テーマ薄色に同期 */
 
-    /* 列幅（要望：種別を狭く / ゲーム数を広く） */
+    /* ▼列幅（要望反映：種別広め / ゲーム数やや狭め） */
     /* 履歴 / 種別 / ゲーム数 / 有利G / 差枚 / 操作 */
     th.col-label{ width:13%; }
-    th.col-kind { width:18%; } /* 22% → 18% */
-    th.col-games{ width:17%; } /* 13% → 17% */
+    th.col-kind { width:20%; } /* 種別：広げる */
+    th.col-games{ width:15%; } /* ゲーム数：少し狭め */
     th.col-yuuri{ width:13%; }
     th.col-diff { width:13%; }
     th.col-ops  { width:13%; }
 
-    /* 「ゲーム数」「有利G数」を2行化させない（見出し・値ともに nowrap） */
+    /* 「ゲーム数」「有利G数」を2行化させない（見出し・値ともにnowrap） */
     thead th:nth-child(3),
     thead th:nth-child(4),
     tbody td:nth-child(3),
@@ -94,11 +92,12 @@
     .kind-btns button.rb-selected{ background:#1976d2; color:#fff; border-color:#1976d2; }
     .kind-btns button.bb-selected{ background:#d32f2f; color:#fff; border-color:#d32f2f; }
 
-    /* 数字入力：入力で横幅/行高が動かないよう固定 */
+    /* 数字入力：小さく固定（横幅/行高が動かない & 文字サイズは他と同じ） */
     input[type="number"]{
-      width:5.5em; min-width:5.5em; max-width:5.5em;
-      height:28px; line-height:28px;
+      width:3.2em; min-width:3.2em; max-width:3.2em;  /* 小さめ固定 */
+      height:24px; line-height:24px;                  /* 行の高さ固定 */
       text-align:center;
+      font-size:13px;                                  /* ← 他のセルと同じ */
     }
     /* スピンボタン非表示 */
     input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
@@ -116,14 +115,14 @@
     }
     #chartScatter{ width:100%; height:100%; display:block; }
 
-    /* ===== スマホ最適化（<=640px） ===== */
+    /* ===== モバイル最適化（<=640px） ===== */
     @media (max-width: 640px){
       :root{ --font: 12px; }
       body{ margin:10px; }
       th, td{ font-size:12px; padding:4px 3px; }
       .theme-btn, button{ padding:5px 8px; font-size:12px; }
       .chart-card{ height:40vh; min-height:200px; }
-      input[type="number"]{ font-size:16px; } /* iOSズーム抑止 */
+      input[type="number"]{ font-size:16px; } /* iOSズーム抑止（入力中のみ実質適用） */
     }
   </style>
 </head>
