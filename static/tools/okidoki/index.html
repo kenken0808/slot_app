@@ -55,9 +55,9 @@
     .controls{display:flex;gap:var(--gap);margin-top:10px;flex-wrap:wrap;}
     button{padding:5px 8px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;}
 
-    /* テーブル（中央ぞろえ指定はth/tdのみに限定） */
+    /* テーブル（th/td中央揃え） */
     table{width:100%;border-collapse:collapse;margin-top:10px;table-layout:fixed;}
-    th,td{border:1px solid #e5e5e5;padding:6px 4px;text-align:center;font-size:13px;}
+    th,td{border:1px solid #e5e5e5;padding:6px 4px;text-align:center;font-size:13px;vertical-align:middle;}
     thead th{background:#fafafa;}
     /* 列幅：13%, 22%, 13%, 13%, 13%, 13% */
     th.col-label{width:13%;}
@@ -67,17 +67,36 @@
     th.col-diff{width:13%;}
     th.col-ops{width:13%;}
 
+    /* ⬇ 折り返し対策：3列目(ゲーム数)・4列目(有利G数)は nowrap に */
+    table td:nth-child(3),
+    table td:nth-child(4){
+      white-space: nowrap;
+    }
+    /* 値表示（有利G数/差枚数）を確実に中央寄せ */
+    .value-text{
+      display:block;       /* ブロック化で中央寄せ安定 */
+      min-width:4em;
+      margin:0 auto;
+      text-align:center;
+    }
+
     /* 種別ボタン（RB=青 / BB=赤固定） */
     .kind-btns{display:flex;justify-content:center;gap:6px;}
     .kind-btns button{
-      border:1px solid #ccc;border-radius:6px;padding:4px 8px;cursor:pointer;
+      border:1px solid #ccc;border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap; /* 折り返し防止 */
     }
     .kind-btns button.rb-selected{background:#1976d2;color:#fff;border-color:#1976d2;}
     .kind-btns button.bb-selected{background:#d32f2f;color:#fff;border-color:#d32f2f;}
 
-    /* 入力と表示 */
-    input[type="number"]{width:100%;max-width:5em;padding:3px 4px;text-align:center;}
-    .value-text{display:inline-block;min-width:4em;text-align:center;}
+    /* 入力（折り返し・縦伸び防止） */
+    input[type="number"]{
+      width:100%;
+      max-width:5em;
+      padding:3px 4px;
+      text-align:center;
+      line-height:1.2;
+      height:28px;       /* 固定高で2行化を防止 */
+    }
 
     /* グラフ */
     .charts{margin-top:14px;}
