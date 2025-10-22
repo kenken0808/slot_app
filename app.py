@@ -474,6 +474,17 @@ def toreve_tools():
     abort(404)
 
 # ================================
+# 🔹 沖ドキツール（/okidoki/tools）
+# ================================
+@app.route("/okidoki/tools")
+def okidoki_tools():
+    base = os.path.join(app.root_path, "static", "tools", "okidoki")
+    index_path = os.path.join(base, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+    abort(404)
+
+# ================================
 # 🔹 ツール一覧ページ（/list）
 # ================================
 @app.route("/list")
