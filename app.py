@@ -72,49 +72,40 @@ def record_success(key: str) -> None:
     session.pop(_lock_key(key), None)
 
 # ==============================================================================
-# ログインページ（有料ページの前に通過）
+# ログインページ（有料ページの前に通過） — 元のシンプル版へ戻す
 # ==============================================================================
 @app.route("/<machine_key>/<plan_type>/login", methods=["GET", "POST"])
 def tool_login(machine_key, plan_type):
-    import re, time, os, werkzeug, traceback
+    import re, time, os
 
-    print(f"[DEBUG] login route start: {machine_key}/{plan_type} method={request.method} url={request.url}")
-
-    # freeは認証不要
+    # free は認証不要
     if plan_type == "free":
-        print("[DEBUG] branch=free_redirect")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
 
-    # 機種キー妥当性
+    # 機種キー妥当性（任意：不正URLは404）
     if machine_key not in machine_configs:
         return "無効なURLです", 404
 
-    # ツールPINの存在確認
+    # ツール PIN（ハッシュ）を取得（未設定なら free へ誘導）
     tool_pw_hash = (TOOL_PASSWORDS.get(machine_key) or {}).get(plan_type)
-    if not tool_pw_hash:
-        print("[DEBUG] branch=no_tool_pw_hash → free redirect")
+    if tool_pw_hash is None:
         flash("このツールは現在ロック中です。")
         return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
 
-    # ★ 機種別 og_image を一度だけ決定して全経路で使う（未定義で落ちない）
+    # og画像（テンプレの未定義を避けるために毎回用意）
+    cfg = machine_configs.get(machine_key, {}) or {}
+    og_filename = cfg.get("og_image", "ogp.jpg")
     try:
-        cfg = machine_configs.get(machine_key, {}) or {}
-        og_filename = cfg.get("og_image", "ogp.jpg")
         og_image = url_for("static", filename=og_filename, _external=True)
     except Exception:
-        og_filename = "ogp.jpg"
         og_image = None
-    print(f"[DEBUG] og_image for {machine_key} -> {og_filename} ({og_image})")
-
-    ASSET_REV = os.environ.get("ASSET_REV", "20251007")
-    tw_image = f"{og_image}?v={ASSET_REV}" if og_image else None
+    tw_image = og_image
 
     key = _access_key(machine_key, plan_type)
 
     # ロック中チェック
     unlock_at = is_locked(key)
     if unlock_at:
-        print("[DEBUG] branch=locked")
         remain = int(unlock_at - time.time())
         flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
         return render_template(
@@ -126,9 +117,8 @@ def tool_login(machine_key, plan_type):
             tw_image=tw_image,
         )
 
-    # ===== GET：ログイン画面表示 =====
+    # GET：画面表示
     if request.method == "GET":
-        print("[DEBUG] branch=get_request")
         return render_template(
             "login.html",
             machine_key=machine_key,
@@ -138,71 +128,29 @@ def tool_login(machine_key, plan_type):
             tw_image=tw_image,
         )
 
-    # ===== POST：PIN照合 =====
-    try:
-        input_pw = (request.form.get("password") or "").strip()
+    # POST：シンプルな照合
+    input_pw = (request.form.get("password") or "").strip()
+    if not re.fullmatch(r"\d{4}", input_pw):
+        flash("4桁の数字を入力してください。")
+        record_fail(key)
+        return render_template(
+            "login.html",
+            machine_key=machine_key,
+            plan_type=plan_type,
+            og_url=request.url,
+            og_image=og_image,
+            tw_image=tw_image,
+        )
 
-        # 4桁数字チェック
-        if not re.fullmatch(r"\d{4}", input_pw):
-            print("[DEBUG] branch=bad_format_password")
-            flash("4桁の数字を入力してください。")
-            record_fail(key)
-            return render_template(
-                "login.html",
-                machine_key=machine_key,
-                plan_type=plan_type,
-                og_url=request.url,
-                og_image=og_image,
-                tw_image=tw_image,
-            )
-
-        # パスワード照合（環境差での例外を握る）
-        ok = False
-        try:
-            ok = check_password_hash(tool_pw_hash, input_pw)
-        except Exception as e:
-            app.logger.error(f"[login] check_password_hash failed (Werkzeug {werkzeug.__version__}): {e}")
-            app.logger.error(traceback.format_exc())
-            flash("現在の環境で認証方式に問題が発生しました。管理者に連絡してください。")
-            return render_template(
-                "login.html",
-                machine_key=machine_key,
-                plan_type=plan_type,
-                og_url=request.url,
-                og_image=og_image,
-                tw_image=tw_image,
-            )
-
-        if ok:
-            print("[DEBUG] branch=correct_password")
-            access = session.get("tool_access", {})
-            access[key] = True
-            session["tool_access"] = access
-            record_success(key)
-
-            # ▼ デバッグ切り分け：kotobuki を一時的に /free へ逃がすなら有効化
-            # if machine_key == "kotobuki":
-            #     flash("ログイン成功（デバッグ：一時的に /free へ遷移）")
-            #     return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
-
-            return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
-        else:
-            print("[DEBUG] branch=wrong_password")
-            record_fail(key)
-            flash("パスワードが違います。")
-            return render_template(
-                "login.html",
-                machine_key=machine_key,
-                plan_type=plan_type,
-                og_url=request.url,
-                og_image=og_image,
-                tw_image=tw_image,
-            )
-
-    except Exception as e:
-        app.logger.error(f"[login POST] Unexpected: {type(e).__name__}: {e}")
-        app.logger.error(traceback.format_exc())
-        flash(f"ログイン処理でエラーが発生しました: {type(e).__name__}")
+    if check_password_hash(tool_pw_hash, input_pw):
+        access = session.get("tool_access", {})
+        access[key] = True
+        session["tool_access"] = access
+        record_success(key)
+        return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
+    else:
+        record_fail(key)
+        flash("パスワードが違います。")
         return render_template(
             "login.html",
             machine_key=machine_key,
