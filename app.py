@@ -133,13 +133,42 @@ def tool_login(machine_key, plan_type):
             )
 
         # ハッシュ照合
-        if check_password_hash(tool_pw_hash, input_pw):
+        # --- 修正版ここから ---
+        # OGP画像をデフォルト定義（未定義エラー防止）
+        try:
+            default_og = url_for("static", filename="ogp.jpg", _external=True)
+        except Exception:
+            default_og = None
+
+        og_image = default_og
+        tw_image = default_og
+
+        ok = False
+        try:
+            # tool_pw_hash が None でも落ちないようにガード
+            if tool_pw_hash:
+                ok = check_password_hash(tool_pw_hash, input_pw)
+            else:
+                ok = False
+        except Exception as e:
+            # scrypt 未対応などで 500 になるのを防止
+            app.logger.error(f"[login] check_password_hash failed: {e}")
+            flash("現在の環境で認証方式に問題が発生しました。管理者に連絡してください。")
+            return render_template(
+                "login.html",
+                machine_key=machine_key,
+                plan_type=plan_type,
+                og_url=request.url,
+                og_image=og_image,
+                tw_image=tw_image,
+            )
+
+        if ok:
             print("[DEBUG] branch=correct_password")
             access = session.get("tool_access", {})
             access[key] = True
             session["tool_access"] = access
             record_success(key)
-            flash("ログイン成功（暫定：freeへ遷移）")  # ★デバッグ表示
             return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
         else:
             print("[DEBUG] branch=wrong_password")
@@ -151,8 +180,10 @@ def tool_login(machine_key, plan_type):
                 plan_type=plan_type,
                 og_url=request.url,
                 og_image=og_image,
-                tw_image=tw_image,  # ← 追加
+                tw_image=tw_image,
             )
+        # --- 修正版ここまで ---
+
 
     # GET はテンプレートを返す
     print("[DEBUG] branch=get_request")
