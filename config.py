@@ -307,7 +307,7 @@ machine_settings = {
         "coin_moti": 31.9,
         "mode_options": ["ボーナス"],
 
-        "through_options": ["不問"],
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
         "at_gap_options": ["不問"],
         "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,200G", "1,201G以上"],
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
@@ -319,7 +319,7 @@ machine_settings = {
         "labels": {
             "mode": "ボナ",
             "at_gap": "AT終了時AT間G数",
-            "prev_game": "ボナ当選G数",
+            "prev_game": "AT当選G数",
             "prev_coin": "AT獲得枚数",
             "prev_diff": "AT終了時差枚数",
             "prev_renchan": "AT連荘数",
@@ -327,7 +327,7 @@ machine_settings = {
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode", "at_gap", "prev_type", "custom_condition"]
+        "locked_fields": ["mode", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
     }
 }
 
