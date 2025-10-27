@@ -139,6 +139,7 @@ def tool_login(machine_key, plan_type):
             access[key] = True
             session["tool_access"] = access
             record_success(key)
+            flash("ログイン成功（暫定：freeへ遷移）")  # ★デバッグ表示
             return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
         else:
             print("[DEBUG] branch=wrong_password")
