@@ -489,102 +489,102 @@
   <!-- =====================================================
        JS：ロック対象（機種ごと）＋ 朝イチ時の制御
   ====================================================== -->
-  <script>
-    const lockedFieldMap = {{ locked_field_map | tojson }};
-    const asaichiTargets = ["prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
-    const originalOptions = {};
+<script>
+  const lockedFieldMap = {{ locked_field_map | tojson }};
+  const lockableIds = [
+    "through","at_gap","prev_diff","prev_game","prev_coin","prev_renchan","prev_type","custom_condition"
+  ]; // ← ここを唯一の真実にする
+  const asaichiTargets = ["prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+  const originalOptions = {};
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // ① 機種名は常にロック
-      const machineEl = document.getElementById("machine");
-      if (machineEl) machineEl.disabled = true;
+  document.addEventListener("DOMContentLoaded", () => {
+    // 機種名は常にロック
+    const machineEl = document.getElementById("machine");
+    if (machineEl) machineEl.disabled = true;
 
-      // 既存：原本退避（復元に必要）
-      [...asaichiTargets, "through", "at_gap", "custom_condition"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          originalOptions[id] = Array.from(el.options).map(opt => ({
-            value: opt.value, text: opt.text
-          }));
-        }
-      });
-
-      updateFieldLocking(document.getElementById("machine").value);
-      updateAsaichiLocking(document.getElementById("time").value);
+    // ★ 元の選択肢を“ロックし得るIDすべて”で退避（ズレ防止）
+    lockableIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        originalOptions[id] = Array.from(el.options).map(opt => ({
+          value: opt.value, text: opt.text
+        }));
+      }
     });
 
-    // 機種ごとのロック
-    function updateFieldLocking(machineName) {
-      const lockTargets = lockedFieldMap[machineName] || [];
-      const allTargets = ["through","at_gap","prev_diff","prev_game","prev_coin","prev_type","custom_condition"];
+    updateFieldLocking(document.getElementById("machine").value);
+    updateAsaichiLocking(document.getElementById("time").value);
+  });
 
-      allTargets.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
+  // 機種ごとのロック
+  function updateFieldLocking(machineName) {
+    const lockTargets = lockedFieldMap[machineName] || [];
 
-        if (lockTargets.includes(id)) {
-          el.disabled = true;
-          restoreSingleOption(el, "不問");
-        } else {
-          restoreOriginalOptions(id, el);
-          el.disabled = false;
-        }
-      });
+    // ★ allTargets は lockableIds を使う（重複定義をやめる）
+    lockableIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
 
-      const modeEl = document.getElementById("mode");
-      if (modeEl) modeEl.disabled = lockTargets.includes("mode");
-    }
-
-    // 朝イチのときは一部項目を不問固定
-    function updateAsaichiLocking(timeValue) {
-      const isAsaichi = (timeValue === "朝イチ");
-
-      asaichiTargets.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        if (isAsaichi && id !== "through") {
-          el.disabled = true;
-          restoreSingleOption(el, "不問");
-        } else {
-          restoreOriginalOptions(id, el);
-          el.disabled = false;
-        }
-      });
-    }
-
-    // Selectを「不問」1択にする
-    function restoreSingleOption(selectEl, value) {
-      selectEl.innerHTML = "";
-      const opt = document.createElement("option");
-      opt.value = value;
-      opt.textContent = value;
-      selectEl.appendChild(opt);
-      selectEl.value = value;
-    }
-
-    // Selectの元の選択肢を復元
-    function restoreOriginalOptions(id, selectEl) {
-      if (!originalOptions[id]) return;
-      const selected = selectEl.dataset.selected;
-      selectEl.innerHTML = "";
-      originalOptions[id].forEach(opt => {
-        const option = document.createElement("option");
-        option.value = opt.value;
-        option.textContent = opt.text;
-        if (opt.value === selected) option.selected = true;
-        selectEl.appendChild(option);
-      });
-    }
-
-    // イベント
-    document.getElementById("machine").addEventListener("change", function () {
-      updateFieldLocking(this.value);
+      if (lockTargets.includes(id)) {
+        el.disabled = true;
+        restoreSingleOption(el, "不問");
+      } else {
+        restoreOriginalOptions(id, el);
+        el.disabled = false;
+      }
     });
-    document.getElementById("time").addEventListener("change", function () {
-      updateAsaichiLocking(this.value);
+
+    const modeEl = document.getElementById("mode");
+    if (modeEl) modeEl.disabled = lockTargets.includes("mode");
+
+    // デバッグ（必要なら）：現在ロック予定のIDを確認
+    // console.log("lockTargets:", machineName, lockTargets);
+  }
+
+  // 朝イチロック（既存のままでOK）
+  function updateAsaichiLocking(timeValue) {
+    const isAsaichi = (timeValue === "朝イチ");
+    asaichiTargets.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (isAsaichi && id !== "through") {
+        el.disabled = true;
+        restoreSingleOption(el, "不問");
+      } else {
+        restoreOriginalOptions(id, el);
+        el.disabled = false;
+      }
     });
-  </script>
+  }
+
+  function restoreSingleOption(selectEl, value) {
+    selectEl.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = value;
+    selectEl.appendChild(opt);
+    selectEl.value = value;
+  }
+  function restoreOriginalOptions(id, selectEl) {
+    if (!originalOptions[id]) return;
+    const selected = selectEl.dataset.selected;
+    selectEl.innerHTML = "";
+    originalOptions[id].forEach(opt => {
+      const option = document.createElement("option");
+      option.value = opt.value;
+      option.textContent = opt.text;
+      if (opt.value === selected) option.selected = true;
+      selectEl.appendChild(option);
+    });
+  }
+
+  document.getElementById("machine").addEventListener("change", function () {
+    updateFieldLocking(this.value);
+  });
+  document.getElementById("time").addEventListener("change", function () {
+    updateAsaichiLocking(this.value);
+  });
+</script>
 
   <!-- =====================================================
        JS：機種変更時に各条件を「不問」に戻す
