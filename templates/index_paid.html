@@ -456,8 +456,8 @@
     "through","at_gap","prev_diff","prev_game","prev_coin","prev_renchan","prev_type","custom_condition"
   ];
 
-  // 朝イチで不問固定にする対象
-  const asaichiTargets = ["prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+  // ★ 朝イチで不問固定にする対象に at_gap を含める
+  const asaichiTargets = ["at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
 
   // 元の<option>退避
   const originalOptions = {};
@@ -513,7 +513,7 @@
     updateAtGapBasedOnThrough();
   }
 
-  // 朝イチのときは一部項目を不問固定
+  // 朝イチのときは一部項目を不問固定（機種ロックは維持）
   function updateAsaichiLocking(timeValue) {
     const isAsaichi = (timeValue === "朝イチ");
     const lockTargets = getLockTargets();
@@ -534,11 +534,19 @@
     });
   }
 
-  // 0スルー時は AT間G数 を不問固定（ただしロック最優先）
+  // 0スルー時は AT間G数 を不問固定（★ 朝イチ最優先）
   function updateAtGapBasedOnThrough() {
     const atGapSelect = document.getElementById("at_gap");
     const throughSelect = document.getElementById("through");
     if (!atGapSelect || !throughSelect) return;
+
+    // ★ 追加：朝イチなら常に at_gap は不問固定＋disabled
+    const isAsaichi = document.getElementById("time")?.value === "朝イチ";
+    if (isAsaichi) {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+      return;
+    }
 
     const lockTargets = getLockTargets();
     // 機種ロックに at_gap が含まれるなら常に固定
@@ -548,6 +556,7 @@
       return;
     }
 
+    // 通常時：0スルーなら固定、それ以外は選択可
     const throughValue = throughSelect.value;
     if (throughValue === "0スルー") {
       restoreSingleOption(atGapSelect, "不問");
@@ -585,9 +594,11 @@
   // イベント
   document.getElementById("machine").addEventListener("change", function () {
     updateFieldLocking(this.value);
+    updateAtGapBasedOnThrough(); // 念のため再評価
   });
   document.getElementById("time").addEventListener("change", function () {
     updateAsaichiLocking(this.value);
+    updateAtGapBasedOnThrough(); // ★ 朝イチ切替時にも反映
   });
   document.getElementById("through").addEventListener("change", function () {
     updateAtGapBasedOnThrough();

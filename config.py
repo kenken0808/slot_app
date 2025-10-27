@@ -327,7 +327,7 @@ machine_settings = {
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode", "prev_diff", "prev_game", "prev_type", "custom_condition"]
+        "locked_fields": ["mode"]
     }
 }
 
