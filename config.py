@@ -53,6 +53,12 @@ machine_configs = {
         "file_key": "zenigata5",
         "og_image": "zenigata5.jpg",
         "link_url": "https://note.com/kenslodata/n/n14c453aae356"
+    },
+    "babel": {
+        "display_name": "L バベル",
+        "file_key": "babel",
+        "og_image": "babel.jpg",
+        "link_url": "https://note.com/kenslodata/n/n9edc151b54fc"
     }
 }
 
@@ -294,6 +300,34 @@ machine_settings = {
 
         "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
 
+    },
+
+    "L バベル": {
+        "exclude_games": 40,
+        "coin_moti": 31.9,
+        "mode_options": ["ボーナス"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,200G", "1,201G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "ボナ当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "at_gap", "prev_type", "custom_condition"]
     }
 }
 
@@ -348,6 +382,9 @@ TOOL_PASSWORDS = {
     },
     "zenigata5": {
         "paid": "scrypt:32768:8:1$pdyOc5wpwFfSCZKK$644e7ea858b3cb98db61a4e42b90e2cb10a60ab25d644aedd8abe4ed37411ad2411733ce63e4d92d0e0db42e2d257ac26a9d4192ddba55880bc5e54ef0309f0e"
+    },
+    "babel": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
 
