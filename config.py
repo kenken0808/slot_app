@@ -327,7 +327,7 @@ machine_settings = {
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode"]
+        "locked_fields": ["mode", "at_gap", "prev_diff", "prev_type", "custom_condition"]
     }
 }
 
