@@ -438,48 +438,6 @@
   </script>
 
   <!-- =====================================================
-       JS：0スルー時は AT間G数 を不問固定
-  ====================================================== -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const atGapSelect = document.getElementById("at_gap");
-      const throughSelect = document.getElementById("through");
-      if (!atGapSelect || !throughSelect) return;
-
-      // 初期選択肢を保存
-      const originalAtGapOptions = Array.from(atGapSelect.options).map(opt => ({
-        value: opt.value, text: opt.text
-      }));
-
-      function updateAtGapBasedOnThrough() {
-        const throughValue = throughSelect.value;
-
-        if (throughValue === "0スルー") {
-          atGapSelect.innerHTML = "";
-          const option = document.createElement("option");
-          option.value = "不問";
-          option.textContent = "不問";
-          atGapSelect.appendChild(option);
-          atGapSelect.disabled = true;
-        } else {
-          atGapSelect.innerHTML = "";
-          originalAtGapOptions.forEach(opt => {
-            const option = document.createElement("option");
-            option.value = opt.value;
-            option.textContent = opt.text;
-            if (opt.value === atGapSelect.dataset.selected) option.selected = true;
-            atGapSelect.appendChild(option);
-          });
-          atGapSelect.disabled = false;
-        }
-      }
-
-      updateAtGapBasedOnThrough();
-      throughSelect.addEventListener("change", updateAtGapBasedOnThrough);
-    });
-  </script>
-
-  <!-- =====================================================
        JS：モード選択肢（Flask → JS へ受け渡し）
   ====================================================== -->
   <script>
@@ -490,19 +448,32 @@
        JS：ロック対象（機種ごと）＋ 朝イチ時の制御
   ====================================================== -->
 <script>
+  // サーバから渡すロック設定（表示名キー）
   const lockedFieldMap = {{ locked_field_map | tojson }};
+
+  // ロック対象になり得るIDを一元管理
   const lockableIds = [
     "through","at_gap","prev_diff","prev_game","prev_coin","prev_renchan","prev_type","custom_condition"
-  ]; // ← ここを唯一の真実にする
+  ];
+
+  // 朝イチで不問固定にする対象
   const asaichiTargets = ["prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+
+  // 元の<option>退避
   const originalOptions = {};
+
+  // 現在機種のロック対象を取得
+  function getLockTargets() {
+    const m = document.getElementById("machine")?.value;
+    return lockedFieldMap[m] || [];
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     // 機種名は常にロック
     const machineEl = document.getElementById("machine");
     if (machineEl) machineEl.disabled = true;
 
-    // ★ 元の選択肢を“ロックし得るIDすべて”で退避（ズレ防止）
+    // 元の選択肢をロック候補すべてで退避
     lockableIds.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -512,15 +483,16 @@
       }
     });
 
+    // 初期適用
     updateFieldLocking(document.getElementById("machine").value);
     updateAsaichiLocking(document.getElementById("time").value);
+    updateAtGapBasedOnThrough(); // 0スルー→AT間G数の固定
   });
 
-  // 機種ごとのロック
+  // 機種ごとのロック適用
   function updateFieldLocking(machineName) {
     const lockTargets = lockedFieldMap[machineName] || [];
 
-    // ★ allTargets は lockableIds を使う（重複定義をやめる）
     lockableIds.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -537,26 +509,56 @@
     const modeEl = document.getElementById("mode");
     if (modeEl) modeEl.disabled = lockTargets.includes("mode");
 
-    // デバッグ（必要なら）：現在ロック予定のIDを確認
-    // console.log("lockTargets:", machineName, lockTargets);
+    // スルーとの連動は最後に再評価
+    updateAtGapBasedOnThrough();
   }
 
-  // 朝イチロック（既存のままでOK）
+  // 朝イチのときは一部項目を不問固定
   function updateAsaichiLocking(timeValue) {
     const isAsaichi = (timeValue === "朝イチ");
+    const lockTargets = getLockTargets();
+
     asaichiTargets.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
+
       if (isAsaichi && id !== "through") {
         el.disabled = true;
         restoreSingleOption(el, "不問");
       } else {
         restoreOriginalOptions(id, el);
-        el.disabled = false;
+        // 機種ロック対象は解除しない
+        el.disabled = lockTargets.includes(id);
+        if (el.disabled) restoreSingleOption(el, "不問");
       }
     });
   }
 
+  // 0スルー時は AT間G数 を不問固定（ただしロック最優先）
+  function updateAtGapBasedOnThrough() {
+    const atGapSelect = document.getElementById("at_gap");
+    const throughSelect = document.getElementById("through");
+    if (!atGapSelect || !throughSelect) return;
+
+    const lockTargets = getLockTargets();
+    // 機種ロックに at_gap が含まれるなら常に固定
+    if (lockTargets.includes("at_gap")) {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+      return;
+    }
+
+    const throughValue = throughSelect.value;
+    if (throughValue === "0スルー") {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+    } else {
+      restoreOriginalOptions("at_gap", atGapSelect);
+      atGapSelect.disabled = false;
+    }
+  }
+
+  // Select を「不問」1択にする
   function restoreSingleOption(selectEl, value) {
     selectEl.innerHTML = "";
     const opt = document.createElement("option");
@@ -565,6 +567,8 @@
     selectEl.appendChild(opt);
     selectEl.value = value;
   }
+
+  // Select の元の選択肢を復元
   function restoreOriginalOptions(id, selectEl) {
     if (!originalOptions[id]) return;
     const selected = selectEl.dataset.selected;
@@ -578,11 +582,15 @@
     });
   }
 
+  // イベント
   document.getElementById("machine").addEventListener("change", function () {
     updateFieldLocking(this.value);
   });
   document.getElementById("time").addEventListener("change", function () {
     updateAsaichiLocking(this.value);
+  });
+  document.getElementById("through").addEventListener("change", function () {
+    updateAtGapBasedOnThrough();
   });
 </script>
 
