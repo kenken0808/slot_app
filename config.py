@@ -309,9 +309,9 @@ machine_settings = {
 
         "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
         "at_gap_options": ["不問"],
-        "prev_game_options": ["不問"],
+        "prev_diff_options": ["不問"],
+        "prev_game_options": ["不問", "1～1,000G", "1,001～2,000G", "2,001G以上"],
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
         "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
@@ -319,15 +319,15 @@ machine_settings = {
         "labels": {
             "mode": "ボナ",
             "at_gap": "AT終了時AT間G数",
+            "prev_diff": "AT終了時差枚数",
             "prev_game": "AT当選G数",
             "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
             "prev_renchan": "AT連荘数",
             "prev_type": "AT種別",
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
+        "locked_fields": ["mode", "at_gap", "prev_diff", "prev_type", "custom_condition"]
     }
 }
 
