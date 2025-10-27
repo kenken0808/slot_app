@@ -133,47 +133,56 @@ def tool_login(machine_key, plan_type):
             )
 
         # ハッシュ照合
-        # --- 修正版ここから ---
-        # OGP画像をデフォルト定義（未定義エラー防止）
+        # --- ここから置き換え ---
+        # OGP画像（NameError防止）
         try:
             default_og = url_for("static", filename="ogp.jpg", _external=True)
         except Exception:
             default_og = None
-
         og_image = default_og
         tw_image = default_og
 
-        ok = False
         try:
-            # tool_pw_hash が None でも落ちないようにガード
+            # パスワード照合（例外もログ出しして握る）
+            ok = False
             if tool_pw_hash:
                 ok = check_password_hash(tool_pw_hash, input_pw)
             else:
                 ok = False
-        except Exception as e:
-            # scrypt 未対応などで 500 になるのを防止
-            app.logger.error(f"[login] check_password_hash failed: {e}")
-            flash("現在の環境で認証方式に問題が発生しました。管理者に連絡してください。")
-            return render_template(
-                "login.html",
-                machine_key=machine_key,
-                plan_type=plan_type,
-                og_url=request.url,
-                og_image=og_image,
-                tw_image=tw_image,
-            )
 
-        if ok:
-            print("[DEBUG] branch=correct_password")
-            access = session.get("tool_access", {})
-            access[key] = True
-            session["tool_access"] = access
-            record_success(key)
-            return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
-        else:
-            print("[DEBUG] branch=wrong_password")
-            record_fail(key)
-            flash("パスワードが違います。")
+            if ok:
+                print("[DEBUG] branch=correct_password")
+                access = session.get("tool_access", {})
+                access[key] = True
+                session["tool_access"] = access
+                record_success(key)
+
+                # ★ デバッグ目的：/paid が落ちるか検証する前に /free へ逃がす
+                #   問題の機種(kotobuki)だけ当面 detour。動作確認できたら下2行を削除し、元の redirect に戻す。
+                if machine_key == "kotobuki":
+                    flash("ログイン成功（デバッグ：一時的に /free へ遷移）")
+                    return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
+
+                # 通常経路
+                return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
+
+            else:
+                print("[DEBUG] branch=wrong_password")
+                record_fail(key)
+                flash("パスワードが違います。")
+                return render_template(
+                    "login.html",
+                    machine_key=machine_key,
+                    plan_type=plan_type,
+                    og_url=request.url,
+                    og_image=og_image,
+                    tw_image=tw_image,
+                )
+
+        except Exception as e:
+            # ここに来たら「ログイン処理（照合/テンプレ描画）で例外」
+            app.logger.error(f"[login] exception: {type(e).__name__}: {e}")
+            flash(f"ログイン処理でエラーが発生しました: {type(e).__name__}")
             return render_template(
                 "login.html",
                 machine_key=machine_key,
@@ -182,7 +191,8 @@ def tool_login(machine_key, plan_type):
                 og_image=og_image,
                 tw_image=tw_image,
             )
-        # --- 修正版ここまで ---
+        # --- 置き換えここまで ---
+
 
 
     # GET はテンプレートを返す
