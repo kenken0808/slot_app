@@ -7,6 +7,7 @@ import requests
 import re
 import time
 import os
+import traceback, werkzeug
 
 
 # ==============================================================================
@@ -133,23 +134,46 @@ def tool_login(machine_key, plan_type):
             )
 
         # ハッシュ照合
-        # --- ここから置き換え ---
-        # OGP画像（NameError防止）
+        # --- ここから置き換え（/login の POST 全体をガード） ---
         try:
-            default_og = url_for("static", filename="ogp.jpg", _external=True)
-        except Exception:
-            default_og = None
-        og_image = default_og
-        tw_image = default_og
+            # 1) 入力取得＆バリデーション
+            input_pw = request.form.get("password", "").strip()
+            if not re.fullmatch(r"\d{4}", input_pw):
+                flash("4桁の数字を入力してください。")
+                record_fail(key)
+                return render_template("login.html",
+                    machine_key=machine_key, plan_type=plan_type,
+                    og_url=request.url, og_image=None, tw_image=None)
 
-        try:
-            # パスワード照合（例外もログ出しして握る）
+            # 2) 画面用のOG画像（未定義エラー防止）
+            try:
+                default_og = url_for("static", filename="ogp.jpg", _external=True)
+            except Exception:
+                default_og = None
+            og_image = default_og
+            tw_image = default_og
+
+            # 3) デバッグ情報（ログ）
+            app.logger.info(f"[login POST] machine_key={machine_key}, plan_type={plan_type}")
+            import werkzeug
+            app.logger.info(f"[env] Werkzeug={werkzeug.__version__}")
+            app.logger.info(f"[hash] method={str(tool_pw_hash).split(':',1)[0] if tool_pw_hash else 'None'}")
+
+            # 4) パスワード照合（ここで例外を握る）
             ok = False
-            if tool_pw_hash:
-                ok = check_password_hash(tool_pw_hash, input_pw)
-            else:
-                ok = False
+            try:
+                if tool_pw_hash:
+                    ok = check_password_hash(tool_pw_hash, input_pw)
+                else:
+                    raise ValueError("No tool_pw_hash for this tool")
+            except Exception as e:
+                app.logger.exception(f"[login] check_password_hash failed: {e}")
+                flash(f"認証方式エラー: {e.__class__.__name__}")
+                return render_template("login.html",
+                    machine_key=machine_key, plan_type=plan_type,
+                    og_url=request.url, og_image=og_image, tw_image=tw_image)
 
+            # 5) 成否分岐
             if ok:
                 print("[DEBUG] branch=correct_password")
                 access = session.get("tool_access", {})
@@ -157,41 +181,31 @@ def tool_login(machine_key, plan_type):
                 session["tool_access"] = access
                 record_success(key)
 
-                # ★ デバッグ目的：/paid が落ちるか検証する前に /free へ逃がす
-                #   問題の機種(kotobuki)だけ当面 detour。動作確認できたら下2行を削除し、元の redirect に戻す。
+                # ★ kotobuki は一時的に /free へ逃がして原因切り分け
                 if machine_key == "kotobuki":
                     flash("ログイン成功（デバッグ：一時的に /free へ遷移）")
                     return redirect(url_for("machine_page", machine_key=machine_key, plan_type="free"))
 
-                # 通常経路
                 return redirect(url_for("machine_page", machine_key=machine_key, plan_type=plan_type))
-
             else:
                 print("[DEBUG] branch=wrong_password")
                 record_fail(key)
                 flash("パスワードが違います。")
-                return render_template(
-                    "login.html",
-                    machine_key=machine_key,
-                    plan_type=plan_type,
-                    og_url=request.url,
-                    og_image=og_image,
-                    tw_image=tw_image,
-                )
+                return render_template("login.html",
+                    machine_key=machine_key, plan_type=plan_type,
+                    og_url=request.url, og_image=og_image, tw_image=tw_image)
 
         except Exception as e:
-            # ここに来たら「ログイン処理（照合/テンプレ描画）で例外」
-            app.logger.error(f"[login] exception: {type(e).__name__}: {e}")
+            # 6) POST ハンドラ内での想定外例外もここで吸収
+            import traceback
+            app.logger.error(f"[login POST] Unexpected: {type(e).__name__}: {e}")
+            app.logger.error(traceback.format_exc())
             flash(f"ログイン処理でエラーが発生しました: {type(e).__name__}")
-            return render_template(
-                "login.html",
-                machine_key=machine_key,
-                plan_type=plan_type,
-                og_url=request.url,
-                og_image=og_image,
-                tw_image=tw_image,
-            )
+            return render_template("login.html",
+                machine_key=machine_key, plan_type=plan_type,
+                og_url=request.url, og_image=None, tw_image=None)
         # --- 置き換えここまで ---
+
 
 
 
