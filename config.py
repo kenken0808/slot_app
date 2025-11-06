@@ -65,6 +65,18 @@ machine_configs = {
         "file_key": "kotobuki",
         "og_image": "kotobuki.jpg",
         "link_url": "https://note.com/kenslodata/n/n9475b350635e"
+    },
+    "vvv2": {
+        "display_name": "L 革命機ヴァルヴレイヴ2",
+        "file_key": "vvv2",
+        "og_image": "vvv2.jpg",
+        "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
+    },
+    "railgun2": {
+        "display_name": "L とある科学の超電磁砲2",
+        "file_key": "railgun2",
+        "og_image": "railgun2.jpg",
+        "link_url": "https://note.com/kenslodata/n/n471a3dc95649"
     }
 }
 
@@ -363,6 +375,64 @@ machine_settings = {
         },
 
         "locked_fields": ["prev_diff", "custom_condition"]
+
+    },
+
+    "L 革命機ヴァルヴレイヴ2": {
+        "exclude_games": 50,
+        "coin_moti": 32.7,
+        "mode_options": ["CZ", "ボーナス"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_diff_options": ["不問"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,300G", "1,301G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "CZ／ボナ",
+            "at_gap": "ボナ(AT)終了時ボナ間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "ボナ(AT)当選G数",
+            "prev_coin": "ボナ(AT)獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_diff", "prev_type", "custom_condition"]
+
+    },
+
+    "L とある科学の超電磁砲2": {
+        "exclude_games": 30,
+        "coin_moti": 31.8,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～200G", "201～400G", "401～600G", "601～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
     }
 }
 
@@ -422,6 +492,12 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "kotobuki": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "vvv2": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "railgun2": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
