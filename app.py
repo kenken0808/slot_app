@@ -9,6 +9,12 @@ import time
 import os
 import traceback, werkzeug
 
+# 追加インポート（最適化）
+from functools import lru_cache
+from typing import Dict, Tuple, Optional
+from datetime import timedelta
+import time as _time
+
 
 # ==============================================================================
 # Flask アプリ初期化
@@ -24,6 +30,10 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,   # JS から参照不可
     SESSION_COOKIE_SAMESITE="Lax",  # CSRF 軽減
 )
+
+# /static 配下を強キャッシュ（ASSET_REV クエリで破棄可能）
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = timedelta(days=30)
+
 
 # ==============================================================================
 # 認証・レートリミット（セッションベースの簡易実装）
@@ -47,7 +57,7 @@ def _lock_key(key: str) -> str:
     """ロック解除予定時刻（epoch）格納用のセッションキー名。"""
     return f"lock:{key}"
 
-def is_locked(key: str) -> float | None:
+def is_locked(key: str) -> Optional[float]:
     """
     ロック中なら解除予定時刻（epoch）を返す。未ロックなら None。
     ロックが切れていればセッションからロック情報を削除する。
@@ -71,8 +81,9 @@ def record_success(key: str) -> None:
     session.pop(_tries_key(key), None)
     session.pop(_lock_key(key), None)
 
+
 # ==============================================================================
-# ログインページ（有料ページの前に通過） — 元のシンプル版へ戻す
+# ログインページ（有料ページの前に通過） — 元のシンプル版
 # ==============================================================================
 @app.route("/<machine_key>/<plan_type>/login", methods=["GET", "POST"])
 def tool_login(machine_key, plan_type):
@@ -160,9 +171,10 @@ def tool_login(machine_key, plan_type):
             tw_image=tw_image,
         )
 
-# ======================================================================
-# 外部リンクの OGP / Twitter Card を取得してプレビュー用情報に整形
-# ======================================================================
+
+# ==============================================================================
+# 外部リンクの OGP / Twitter Card を取得してプレビュー用情報に整形（+ LRU+TTL）
+# ==============================================================================
 def fetch_link_preview(url: str, timeout: int = 6):
     if not url:
         return None
@@ -206,39 +218,83 @@ def fetch_link_preview(url: str, timeout: int = 6):
     except Exception:
         return {"url": url, "title": url, "description": "", "image": None, "site_name": ""}
 
+# LRU + TTL（1時間）
+_PREVIEW_TTL = 60 * 60  # 1時間
+
+@lru_cache(maxsize=64)
+def _cached_fetch_link_preview(url: str) -> Tuple[float, Optional[dict]]:
+    data = fetch_link_preview(url)
+    return (_time.time(), data)
+
+def get_link_preview_cached(url: str) -> Optional[dict]:
+    ts, data = _cached_fetch_link_preview(url)
+    if _time.time() - ts > _PREVIEW_TTL:
+        _cached_fetch_link_preview.cache_clear()
+        ts, data = _cached_fetch_link_preview(url)
+    return data
+
+
 # ==============================================================================
-# ユーティリティ：条件文字列のパース
+# CSV 読み込み（mtime 監視つきメモリキャッシュ）
 # ==============================================================================
-def parse_range(value, condition):
-    """
-    文字列条件（'100～200', '300以下', '50以上', '3スルー', '120G' 等）を解釈し、
-    数値 value が条件を満たすかを True/False で返す。
-    """
-    condition = (
-        condition.replace(",", "")
-        .replace("枚", "")
-        .replace("G", "")
-        .replace("連", "")
-        .replace("スルー", "")
+DATA_CACHE: Dict[str, Tuple[float, pd.DataFrame]] = {}  # {path: (mtime, df)}
+
+def load_csv_cached(path: str, dtypes: Optional[dict] = None, usecols: Optional[list] = None) -> pd.DataFrame:
+    """ファイルの mtime が変わらない限りメモリ上の DataFrame を返す"""
+    mtime = os.path.getmtime(path)  # FileNotFoundError は上位で拾う
+    cache = DATA_CACHE.get(path)
+    if cache and cache[0] == mtime:
+        return cache[1]
+    # 読み込み最適化
+    df = pd.read_csv(path, dtype=dtypes, usecols=usecols)
+    DATA_CACHE[path] = (mtime, df)
+    return df
+
+
+# ==============================================================================
+# ユーティリティ：条件文字列のパース（ベクトル化用）
+# ==============================================================================
+def _normalize_range_str(s: str) -> str:
+    # 余計な単位・カンマを落として正規化
+    return (
+        s.replace(",", "")
+         .replace("枚", "")
+         .replace("G", "")
+         .replace("連", "")
+         .replace("スルー", "")
+         .strip()
     )
 
-    if "～" in condition:
-        low, high = condition.split("～")
-        return int(low) <= value <= int(high)
-    elif "以下" in condition:
-        limit = int(condition.replace("以下", ""))
-        return value <= limit
-    elif "以上" in condition:
-        limit = int(condition.replace("以上", ""))
-        return value >= limit
-    else:
-        try:
-            return value == int(condition)  # 単一値（例: "3"）
-        except ValueError:
-            return False
+def _to_numeric_condition(cond_str: str):
+    """
+    '100～200' → ('between', 100, 200)
+    '300以下'  → ('le', 300, None)
+    '50以上'   → ('ge', 50, None)
+    '3'        → ('eq', 3, None)
+    """
+    s = _normalize_range_str(cond_str)
+    if "～" in s:
+        low, high = s.split("～")
+        return ("between", int(low), int(high))
+    if s.endswith("以下"):
+        return ("le", int(s[:-2]), None)
+    if s.endswith("以上"):
+        return ("ge", int(s[:-2]), None)
+    return ("eq", int(s), None)
+
+def _apply_numeric_mask(series: pd.Series, cond_str: str) -> pd.Series:
+    op, a, b = _to_numeric_condition(cond_str)
+    if op == "between":
+        return series.between(a, b)
+    if op == "le":
+        return series.le(a)
+    if op == "ge":
+        return series.ge(a)
+    return series.eq(a)
+
 
 # ==============================================================================
-# データ抽出フィルタリング
+# データ抽出フィルタリング（ベクトル化）
 # ==============================================================================
 def filter_dataframe(df, form, settings):
     """
@@ -248,33 +304,36 @@ def filter_dataframe(df, form, settings):
     exclude_games = settings["exclude_games"]
 
     # 条件の積み上げ（全行 True から開始）
-    cond = pd.Series([True] * len(df))
+    mask = pd.Series(True, index=df.index)
 
     # 朝イチ（1）／それ以外（0）
-    cond &= df["朝イチ"] == (1 if form["time"] == "朝イチ" else 0)
+    mask &= df["朝イチ"].eq(1 if form["time"] == "朝イチ" else 0)
 
-    # 各条件（"不問" でなければ適用）
+    # 各条件（"不問" でなければ適用）— ベクトル演算
     if form["through"] != "不問":
-        cond &= df["スルー回数"].apply(lambda v: parse_range(int(v), form["through"]))
+        mask &= _apply_numeric_mask(df["スルー回数"], form["through"])
     if form["at_gap"] != "不問":
-        cond &= df["AT間ゲーム数"].apply(lambda v: parse_range(int(v), form["at_gap"]))
+        mask &= _apply_numeric_mask(df["AT間ゲーム数"], form["at_gap"])
     if form["prev_game"] != "不問":
-        cond &= df["前回当選ゲーム数"].apply(lambda v: parse_range(int(v), form["prev_game"]))
+        mask &= _apply_numeric_mask(df["前回当選ゲーム数"], form["prev_game"])
     if form["prev_coin"] != "不問":
-        cond &= df["前回獲得枚数"].apply(lambda v: parse_range(int(v), form["prev_coin"]))
+        mask &= _apply_numeric_mask(df["前回獲得枚数"], form["prev_coin"])
     if form["prev_diff"] != "不問":
-        cond &= df["前回差枚数"].apply(lambda v: parse_range(int(v), form["prev_diff"]))
+        mask &= _apply_numeric_mask(df["前回差枚数"], form["prev_diff"])
     if form["prev_renchan"] != "不問":
-        cond &= df["前回連荘数"].apply(lambda v: parse_range(int(v), form["prev_renchan"]))
-    if form["prev_type"] != "不問":
-        cond &= df["前回種別"] == form["prev_type"]
-    if form.get("custom_condition") != "不問":
-        cond &= df["機種別条件"].apply(lambda v: parse_range(int(v), form["custom_condition"]))
+        mask &= _apply_numeric_mask(df["前回連荘数"], form["prev_renchan"])
+
+    if form.get("prev_type") != "不問" and "前回種別" in df.columns:
+        mask &= df["前回種別"].eq(form["prev_type"])
+
+    if form.get("custom_condition") not in (None, "不問") and "機種別条件" in df.columns:
+        mask &= _apply_numeric_mask(df["機種別条件"], form["custom_condition"])
 
     # 当該 REG ゲーム数の下限（打ち出し + 除外）
-    cond &= df["当該REGゲーム数"] >= (int(form["game"]) + exclude_games)
+    mask &= df["当該REGゲーム数"].ge(int(form["game"]) + exclude_games)
 
-    return df[cond]
+    return df.loc[mask]
+
 
 # ==============================================================================
 # ツール本体ページ（free / paid）
@@ -305,7 +364,9 @@ def machine_page(machine_key, plan_type):
     link_url = config.get("link_url")
     settings = machine_settings[display_name]
     settings = apply_free_custom_label_override(settings, display_name, plan_type)
-    link_preview = fetch_link_preview(link_url) if link_url else None
+
+    # OGPプレビュー（HTTPは LRU+TTL で節約）
+    link_preview = get_link_preview_cached(link_url) if link_url else None
 
     # 追加（X用キャッシュバスター）
     ASSET_REV = os.environ.get("ASSET_REV", "20251007")  # 任意。更新したい時に変える
@@ -320,10 +381,7 @@ def machine_page(machine_key, plan_type):
         selected_time = request.form.get("time", "朝イチ")
         input_game = request.form.get("game", "0")
 
-        # デバッグ用（必要なければ削除してOK）
         selected_through = request.form.get("through", "不問")
-        print(f"selected_through (POST): {selected_through}")
-
         selected_at_gap = request.form.get("at_gap", "不問")
         selected_prev_game = request.form.get("prev_game", "不問")
         selected_prev_coin = request.form.get("prev_coin", "不問")
@@ -353,9 +411,25 @@ def machine_page(machine_key, plan_type):
     else:
         csv_path = f"data/{file_key}_rb.csv"
 
-    # CSV 読み込み
+    # CSV 読み込み（mtimeキャッシュ）
     try:
-        df = pd.read_csv(csv_path)
+        # よく使う列を指定して省メモリ＆高速化（必要に応じて調整）
+        dtypes = {
+            "朝イチ": "int8",
+            "スルー回数": "int16",
+            "AT間ゲーム数": "int32",
+            "前回当選ゲーム数": "int32",
+            "前回獲得枚数": "int32",
+            "前回差枚数": "int32",
+            "前回連荘数": "int16",
+            "当該REGゲーム数": "int32",
+            "REGゲーム数": "float32",
+            "ATゲーム数": "float32",
+            "REG枚数": "float32",
+            "AT枚数": "float32",
+        }
+        # 列が存在しない場合もあるので usecols は指定しない（柔軟性重視）
+        df = load_csv_cached(csv_path, dtypes=dtypes)
     except Exception as e:
         return render_template(
             template_name,
@@ -454,9 +528,10 @@ def machine_page(machine_key, plan_type):
         custom_condition_options=settings.get("custom_condition_options", ["不問"]),
         locked_field_map=locked_field_map,
         og_url=request.url,
-        og_image=og_image,   # ★ここを追加
-        tw_image=tw_image,   # ← 追加
+        og_image=og_image,   # OGP
+        tw_image=tw_image,   # X/Twitter
     )
+
 
 # ================================
 # 🔹 東リベツール（/toreve/tools）
@@ -486,6 +561,7 @@ def okidoki_tools():
 @app.route("/list")
 def tool_list():
     return render_template("tool_list.html")
+
 
 # ==============================================================================
 # ローカル起動
