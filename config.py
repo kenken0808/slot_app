@@ -394,7 +394,7 @@ machine_settings = {
 
         "labels": {
             "mode": "CZ／ボナ",
-            "at_gap": "ボナ(AT)終了時ボナ間G数",
+            "at_gap": "CZ終了時ボナ間G数",
             "prev_diff": "ボナ(AT)終了時差枚数",
             "prev_game": "ボナ(AT)当選G数",
             "prev_coin": "ボナ(AT)獲得枚数",
