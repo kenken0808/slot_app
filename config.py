@@ -379,7 +379,7 @@ machine_settings = {
     },
 
     "L 革命機ヴァルヴレイヴ2": {
-        "exclude_games": 100,
+        "exclude_games": 50,
         "coin_moti": 32.7,
         "mode_options": ["CZ", "ボーナス"],
 
@@ -387,7 +387,7 @@ machine_settings = {
         "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
         "prev_diff_options": ["不問"],
         "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,300G", "1,301G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
         "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
@@ -408,7 +408,7 @@ machine_settings = {
     },
 
     "L とある科学の超電磁砲2": {
-        "exclude_games": 30,
+        "exclude_games": 40,
         "coin_moti": 31.8,
         "mode_options": ["AT"],
 
