@@ -458,16 +458,16 @@ machine_settings = {
 
         "labels": {
             "mode": "ボナ",
-            "at_gap": "ボナ終了時ボナ間G数",
-            "prev_game": "ボナ当選G数",
-            "prev_coin": "ボナ獲得枚数",
-            "prev_diff": "ボナ終了時差枚数",
-            "prev_renchan": "ボナ連荘数",
-            "prev_type": "ボナ種別",
+            "at_gap": "AT終了時ボナ間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        "locked_fields": ["mode", "at_gap", "prev_game", "prev_type", "custom_condition"]
     }
 }
 
