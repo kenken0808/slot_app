@@ -77,6 +77,12 @@ machine_configs = {
         "file_key": "railgun2",
         "og_image": "railgun2.jpg",
         "link_url": "https://note.com/kenslodata/n/n471a3dc95649"
+    },
+    "syogeki4": {
+        "display_name": "L 絶対衝激Ⅳ",
+        "file_key": "syogeki4",
+        "og_image": "syogeki4.jpg",
+        "link_url": "https://note.com/kenslodata/n/n1a880ae74aff"
     }
 }
 
@@ -433,6 +439,35 @@ machine_settings = {
         },
 
         "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
+
+    },
+
+    "L 絶対衝激Ⅳ": {
+        "exclude_games": 40,
+        "coin_moti": 31.6,
+        "mode_options": ["ボーナス"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～400G", "401～800G", "801G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ",
+            "at_gap": "ボナ終了時ボナ間G数",
+            "prev_game": "ボナ当選G数",
+            "prev_coin": "ボナ獲得枚数",
+            "prev_diff": "ボナ終了時差枚数",
+            "prev_renchan": "ボナ連荘数",
+            "prev_type": "ボナ種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
     }
 }
 
@@ -499,6 +534,9 @@ TOOL_PASSWORDS = {
     },
     "railgun2": {
         "paid": "scrypt:32768:8:1$3XaTBbCRGDWeH1sj$cece3838ab9a441d7f0e7634d34c436b85e910572d2e42c10f77d1d70b4cb55455abb8bfc1a22a88863048d43194021c3f4d3bbb3f3557786389286016adaae0"
+    },
+    "syogeki4": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
 
