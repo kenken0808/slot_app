@@ -24,6 +24,12 @@ machine_configs = {
         "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata"
     },
+    "gobsla": {
+        "display_name": "L ゴブリンスレイヤー",
+        "file_key": "gobsla",
+        "og_image": "gobsla.jpg",
+        "link_url": "https://note.com/kenslodata/n/n32a75e8fe72c"
+    },
     "azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
@@ -185,6 +191,34 @@ machine_settings = {
 
     },
 
+    "L ゴブリンスレイヤー": {
+        "exclude_games": 40,
+        "coin_moti": 31.6,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
+
+    },
     "L アズールレーン THE ANIMETION": {
         "exclude_games": 40,
         "coin_moti": 25.8,
@@ -541,6 +575,9 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$D4Pjt3aUzUqWz1L3$59d03a3616fcf2e16587479d3b1409f22c35b352b01c990a4365252f5d19fe1972e982371e04c1c2a8097dc7f8227ff42806326569d76c7dda9a653a6c8f520d"
     },
     "hokuto": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "gobsla": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "azurlane": {
