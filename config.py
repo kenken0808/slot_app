@@ -36,6 +36,12 @@ machine_configs = {
         "og_image": "zenigata4.jpg",
         "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
     },
+    "sao": {
+        "display_name": "L ソードアート・オンライン",
+        "file_key": "sao",
+        "og_image": "sao.jpg",
+        "link_url": "https://note.com/kenslodata/n/n34242a06a7f4"
+    },
     "azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
@@ -254,6 +260,36 @@ machine_settings = {
         "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
 
     },
+
+    "L ソードアート・オンライン": {
+        "exclude_games": 40,
+        "coin_moti": 35.0,
+        "mode_options": ["CZ", "ボーナス"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～300G", "301～600G", "601G以上"],
+        "prev_diff_options": ["不問"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "CZ／ボナ",
+            "at_gap": "CZ終了時ボナ間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "ボナ(AT)当選G数",
+            "prev_coin": "ボナ(AT)獲得枚数",
+            "prev_renchan": "ボナ(AT)連荘数",
+            "prev_type": "ボナ(AT)種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_diff", "prev_type", "custom_condition"]
+
+    },
+
     "L アズールレーン THE ANIMETION": {
         "exclude_games": 40,
         "coin_moti": 25.8,
@@ -616,6 +652,9 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "zenigata4": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "sao": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "azurlane": {
