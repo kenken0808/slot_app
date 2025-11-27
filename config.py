@@ -42,6 +42,12 @@ machine_configs = {
         "og_image": "sao.jpg",
         "link_url": "https://note.com/kenslodata/n/n34242a06a7f4"
     },
+    "berserk": {
+        "display_name": "L ベルセルク無双",
+        "file_key": "berserk",
+        "og_image": "berserk.jpg",
+        "link_url": "https://note.com/kenslodata/n/nc10c9f9784f9"
+    },
     "azurlane": {
         "display_name": "L アズールレーン THE ANIMETION",
         "file_key": "azurlane",
@@ -287,6 +293,35 @@ machine_settings = {
         },
 
         "locked_fields": ["prev_diff", "prev_type", "custom_condition"]
+
+    },
+
+    "L ベルセルク無双": {
+        "exclude_games": 40,
+        "coin_moti": 35.5,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "type", "custom_condition"]
 
     },
 
@@ -655,6 +690,9 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "sao": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "berserk": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
     "azurlane": {
