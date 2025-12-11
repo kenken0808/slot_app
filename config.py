@@ -119,6 +119,24 @@ machine_configs = {
         "file_key": "express",
         "og_image": "express.jpg",
         "link_url": "https://note.com/kenslodata/n/n2648051423d9"
+    },
+    "bakemonogatari": {
+        "display_name": "L 化物語",
+        "file_key": "bakemonogatari",
+        "og_image": "bakemonogatari.jpg",
+        "link_url": "https://note.com/kenslodata/n/nc7c8e2a4ea46"
+    },
+    "prismnana": {
+        "display_name": "L プリズムナナ",
+        "file_key": "prismnana",
+        "og_image": "prismnana.jpg",
+        "link_url": "https://note.com/kenslodata/n/n10d7c2c98ace"
+    },
+    "logh": {
+        "display_name": "L 銀河英雄伝説 DieNeueThese",
+        "file_key": "logh",
+        "og_image": "logh.jpg",
+        "link_url": "https://note.com/kenslodata/n/n33ab406dc7e6"
     }
 }
 
@@ -678,6 +696,94 @@ machine_settings = {
         },
 
         "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
+
+    },
+
+    "L 化物語": {
+        "exclude_games": 40,
+        "coin_moti": 31.1,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
+
+    },
+
+    "L プリズムナナ": {
+        "exclude_games": 40,
+        "coin_moti": 31.2,
+        "mode_options": ["ST"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問"],
+        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ST",
+            "at_gap": "ST終了時ST間G数",
+            "prev_game": "ST当選G数",
+            "prev_coin": "ST獲得枚数",
+            "prev_diff": "ST終了時差枚数",
+            "prev_renchan": "ST連荘数",
+            "prev_type": "ST種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_type", "custom_condition"]
+
+    },
+
+    "L 銀河英雄伝説 DieNeueThese": {
+        "exclude_games": 40,
+        "coin_moti": 35.0,
+        "mode_options": ["ST"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ST",
+            "at_gap": "ボナ終了時ST間G数",
+            "prev_game": "ST当選G数",
+            "prev_coin": "ST獲得枚数",
+            "prev_diff": "ST終了時差枚数",
+            "prev_renchan": "ST連荘数",
+            "prev_type": "ST種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
+
     }
 }
 
@@ -764,6 +870,15 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$U3dMj6TDdyhLgkfa$2fe6b3b269b73bd8be9dd54ef69b7d5090aa2c4d0e4afc1c5edbf819df27039319a07a318316f88a9369d1a8fd70abd6365a0abd4d7c35415aae1c85af124c08"
     },
     "express": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "化物語": {
+        "paid": "scrypt:32768:8:1$99W19KGwTtqWP35c$61970ad6576c0d6a9c198a9309a43ed03be0d636d0fa70c5f907cc75a340796c25f0b95ba4eecfb286d0f84b9f24fec4e28f60184c48f0818bafd33227949a1d"
+    },
+    "プリズムナナ": {
+        "paid": "scrypt:32768:8:1$La8x4KQkovXJ0U8C$33591a2d3d7e91c5bb3d87fc858bb364275934a07d3a7488bf63ea04f16119484111399d0e9cd141a44d9b5fe01d7fdf853853e317d9936c1ed3db1c27bbadc2"
+    },
+    "銀河英雄伝説 DieNeueThese": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
