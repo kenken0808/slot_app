@@ -872,13 +872,13 @@ TOOL_PASSWORDS = {
     "express": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     },
-    "化物語": {
+    "bakemonogatari": {
         "paid": "scrypt:32768:8:1$99W19KGwTtqWP35c$61970ad6576c0d6a9c198a9309a43ed03be0d636d0fa70c5f907cc75a340796c25f0b95ba4eecfb286d0f84b9f24fec4e28f60184c48f0818bafd33227949a1d"
     },
-    "プリズムナナ": {
+    "prismnana": {
         "paid": "scrypt:32768:8:1$La8x4KQkovXJ0U8C$33591a2d3d7e91c5bb3d87fc858bb364275934a07d3a7488bf63ea04f16119484111399d0e9cd141a44d9b5fe01d7fdf853853e317d9936c1ed3db1c27bbadc2"
     },
-    "銀河英雄伝説 DieNeueThese": {
+    "logh": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
