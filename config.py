@@ -657,7 +657,7 @@ machine_settings = {
         "coin_moti": 31.0,
         "mode_options": ["AT"],
 
-        "through_options": ["不問""],
+        "through_options": ["不問"],
         "at_gap_options": ["不問"],
         "prev_game_options": ["不問", "1～400G", "401～800G", "801G以上"],
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
