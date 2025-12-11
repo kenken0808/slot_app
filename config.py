@@ -113,6 +113,12 @@ machine_configs = {
         "file_key": "neoplanet",
         "og_image": "neoplanet.jpg",
         "link_url": "https://note.com/kenslodata/n/nfbb1961157e5"
+    },
+    "express": {
+        "display_name": "L バーニングエクスプレス",
+        "file_key": "express",
+        "og_image": "express.jpg",
+        "link_url": "https://note.com/kenslodata/n/n2648051423d9"
     }
 }
 
@@ -643,6 +649,35 @@ machine_settings = {
         },
 
         "locked_fields": ["mode", "at_gap", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
+
+    },
+
+    "L バーニングエクスプレス": {
+        "exclude_games": 0,
+        "coin_moti": 31.0,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問""],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問", "1～400G", "401～800G", "801G以上"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ",
+            "at_gap": "AT終了時ボナ間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
     }
 }
 
@@ -727,6 +762,9 @@ TOOL_PASSWORDS = {
     },
     "neoplanet": {
         "paid": "scrypt:32768:8:1$U3dMj6TDdyhLgkfa$2fe6b3b269b73bd8be9dd54ef69b7d5090aa2c4d0e4afc1c5edbf819df27039319a07a318316f88a9369d1a8fd70abd6365a0abd4d7c35415aae1c85af124c08"
+    },
+    "express": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
 
