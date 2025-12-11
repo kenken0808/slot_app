@@ -659,7 +659,7 @@ machine_settings = {
 
         "through_options": ["不問"],
         "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～400G", "401～800G", "801G以上"],
+        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
         "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
         "prev_diff_options": ["不問"],
         "prev_renchan_options": ["不問"],
@@ -667,8 +667,8 @@ machine_settings = {
         "custom_condition_options": ["不問"],
 
         "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時ボナ間G数",
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
             "prev_game": "AT当選G数",
             "prev_coin": "AT獲得枚数",
             "prev_diff": "AT終了時差枚数",
