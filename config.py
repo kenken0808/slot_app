@@ -137,6 +137,12 @@ machine_configs = {
         "file_key": "logh",
         "og_image": "logh.jpg",
         "link_url": "https://note.com/kenslodata/n/n33ab406dc7e6"
+    },
+    "hihouden": {
+        "display_name": "L 秘宝伝",
+        "file_key": "hihouden",
+        "og_image": "hihouden.jpg",
+        "link_url": "https://note.com/kenslodata/n/n20a891c1e4b1"
     }
 }
 
@@ -784,6 +790,35 @@ machine_settings = {
 
         "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
 
+    },
+
+    "L 秘宝伝": {
+        "exclude_games": 40,
+        "coin_moti": 32.0,
+        "mode_options": ["ボーナス"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問"],
+        "prev_game_options": ["不問"],
+        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ",
+            "at_gap": "AT終了時ボナ間G数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "at_gap", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
+
     }
 }
 
@@ -879,6 +914,9 @@ TOOL_PASSWORDS = {
         "paid": "scrypt:32768:8:1$La8x4KQkovXJ0U8C$33591a2d3d7e91c5bb3d87fc858bb364275934a07d3a7488bf63ea04f16119484111399d0e9cd141a44d9b5fe01d7fdf853853e317d9936c1ed3db1c27bbadc2"
     },
     "logh": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "hihouden": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
