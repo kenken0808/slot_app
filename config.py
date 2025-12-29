@@ -143,6 +143,12 @@ machine_configs = {
         "file_key": "hihouden",
         "og_image": "hihouden.jpg",
         "link_url": "https://note.com/kenslodata/n/n20a891c1e4b1"
+    },
+    "musyoku": {
+        "display_name": "L 無職転生 ～異世界行ったら本気だす～",
+        "file_key": "musyoku",
+        "og_image": "musyoku.jpg",
+        "link_url": "https://note.com/kenslodata/n/ne3d934a762e9"
     }
 }
 
@@ -819,6 +825,35 @@ machine_settings = {
 
         "locked_fields": ["mode", "at_gap", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
 
+    },
+
+    "L 無職転生 ～異世界行ったら本気だす～": {
+        "exclude_games": 40,
+        "coin_moti": 33.0,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901～1,200G", "1,201～1,500G", "1,501G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "ボナ終了時AT間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "ボナ(AT)当選G数",
+            "prev_coin": "ボナ(AT)獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
+
     }
 }
 
@@ -918,6 +953,9 @@ TOOL_PASSWORDS = {
     },
     "hihouden": {
         "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "musyoku": {
+        "paid": "scrypt:32768:8:1$Vdj4kCl4oYRJbsmr$51af6c5e1d1fd31222d3032a849126c2af78455ef6a19aa1b56a31af17a51b691cbcf76e88fe49b1d73706c450a4e1bd5ada0f3664596add5f324148aea338ac"
     }
 }
 
