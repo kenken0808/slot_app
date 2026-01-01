@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, abort
 import pandas as pd
 from werkzeug.security import check_password_hash
-from config import machine_configs, machine_settings, TOOL_PASSWORDS, apply_free_custom_label_override
+from config.legacy import (
+    machine_configs,
+    machine_settings,
+    TOOL_PASSWORDS,
+    apply_free_custom_label_override,
+)
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -373,7 +378,10 @@ def machine_page(machine_key, plan_type):
     tw_image = f"{og_image}?v={ASSET_REV}"
 
     # テンプレート切替
-    template_name = "index_paid.html" if plan_type == "paid" else "index_free.html"
+    template_name = (
+        "index_legacy_paid.html" if plan_type == "paid"
+        else "index_legacy_free.html"
+    )
 
     # フォーム入力の取得
     if request.method == "POST":
