@@ -437,28 +437,39 @@ def build_labels(modes):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
-from flask import Flask, render_template, request
-
-app = Flask(__name__)
-
 @app.route('/tool', methods=['GET', 'POST'])
 def tool():
-    # 初期値
+    # --- 初期設定 ---
     machine_name = "L マギアレコード 魔法少女まどか☆マギカ外伝"
+    plan_type = "free"  # フル版用に固定
     mode_options = ["RB", "AT"]
     through_options = ["不問", "0スルー", "1スルー", "2スルー"]
     detailed_options = {
         "at_gap": ["不問","0-50","51-100","101-150"],
         "prev_game": ["不問","0-100","101-200"],
         "prev_coin": ["不問","0-100","101-200"],
+        "prev_diff": ["不問","-1000","0","+1000"],
+    }
+    locked_field_map = {
+        machine_name: ["prev_diff"]  # 仮でprev_diffだけロック
     }
 
-    # POST受信時
+    selected_mode = "RB"
+    selected_through = "不問"
+    selected_values = {k: "不問" for k in detailed_options.keys()}
+    selected_time = "朝イチ"
+
     result = None
     if request.method == 'POST':
-        # 仮の結果表示
+        selected_mode = request.form.get("mode", selected_mode)
+        selected_through = request.form.get("through", selected_through)
+        selected_time = request.form.get("time", selected_time)
+        for key in detailed_options.keys():
+            selected_values[key] = request.form.get(key, "不問")
+
+        # 仮の結果計算
         result = {
-            "件数": 10,
+            "件数": 12,
             "平均REGゲーム数": 120,
             "平均AT枚数": 350,
             "機械割": "102.5%",
@@ -468,20 +479,18 @@ def tool():
     return render_template(
         'index_new.html',
         machine_name=machine_name,
+        plan_type=plan_type,
         mode_options=mode_options,
         through_options=through_options,
         detailed_options=detailed_options,
+        locked_field_map=locked_field_map,
         result=result,
-        selected_mode="RB",
-        selected_through="不問",
-        selected_values={k:"不問" for k in detailed_options.keys()},
-        selected_time="朝イチ",
+        selected_mode=selected_mode,
+        selected_through=selected_through,
+        selected_values=selected_values,
+        selected_time=selected_time,
         request=request
     )
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
 
 
 # ================================
