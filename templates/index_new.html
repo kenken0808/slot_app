@@ -1,343 +1,57 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no"
-  />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="けんけんスロット分析ツール">
-  <meta property="og:description" content="実践データから機械割や期待値を自動計算できる分析ツールです。">
-  <meta property="og:url" content="{{ og_url }}">
-  <meta property="og:image" content="{{ og_image }}">
-  <meta property="og:site_name" content="けんけんスロット分析ツール">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="けんけんスロット分析ツール">
-  <meta name="twitter:description" content="けんけんスロット分析ツール">
-  <meta name="twitter:image" content="{{ tw_image }}">
-
+  <meta charset="UTF-8">
   <title>けんけんスロット分析ツール</title>
-
-  <!-- フォント -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap"
-    rel="stylesheet"
-  />
-
-  <style>
-    /* ここは元のまま省略 */
-  </style>
 </head>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-HXM85ZV043');
-</script>
-
 <body>
-  <h1 style="display:flex; align-items:center; justify-content:center; gap:10px;">
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="左画像" style="height:24px;">
-    <span>けんけんスロット分析ツール</span>
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="右画像" style="height:24px;">
-  </h1>
+  <h1>{{ machine_name }}</h1>
 
-  <form id="myForm" method="POST" action="/{{ machine_key }}/{{ plan_type }}">
-    <label for="machine">機種名</label>
-    <select name="machine" id="machine" required>
-      <option value="{{ machine_name }}" selected>{{ machine_name }}</option>
-    </select>
-
-    <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>
-    <select name="mode_display" id="mode" required>
+  <form method="POST" action="/tool">
+    <label for="mode">モード</label>
+    <select name="mode" id="mode">
       {% for opt in mode_options %}
-        <option value="{{ opt }}" {% if opt == selected_mode %}selected{% endif %}>{{ opt }}</option>
+        <option value="{{ opt }}" {% if selected_mode==opt %}selected{% endif %}>{{ opt }}</option>
       {% endfor %}
     </select>
-    <input type="hidden" name="mode" id="mode_hidden" value="{{ selected_mode }}">
 
     <label for="time">朝イチ／朝イチ以外</label>
-    <select name="time" id="time" required>
-      <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
-      <option value="朝イチ以外" {% if selected_time == "朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
+    <select name="time" id="time">
+      <option value="朝イチ" {% if selected_time=="朝イチ" %}selected{% endif %}>朝イチ</option>
+      <option value="朝イチ以外" {% if selected_time=="朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
     </select>
-
-    <label for="game">打ち出しG数</label>
-    <input
-      type="number"
-      id="game"
-      name="game"
-      min="0"
-      value="{{ input_game }}"
-      required
-      inputmode="numeric"
-      pattern="[0-9]*"
-    >
 
     <label for="through">スルー回数</label>
-    <select name="through_display" id="through" required data-selected="{{ selected_through }}">
+    <select name="through" id="through">
       {% for opt in through_options %}
-        <option value="{{ opt }}" {% if opt == selected_through %}selected{% endif %}>{{ opt }}</option>
+        <option value="{{ opt }}" {% if selected_through==opt %}selected{% endif %}>{{ opt }}</option>
       {% endfor %}
     </select>
-    <input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
 
-    <button type="button" id="toggle-detail" class="toggle-btn">▼ 詳細条件を表示（前回条件）</button>
-
-    <div id="advanced-section" style="{{ 'display: grid;' if request.method == 'POST' else 'display: none;' }}">
-      {% for key, options in detailed_options.items() %}
-        <label for="{{ key }}">{{ labels.get(key, key) }}</label>
-        <select name="{{ key }}_display" id="{{ key }}" required data-selected="{{ selected_values[key] }}">
-          {% for opt in options %}
-            <option value="{{ opt }}" {% if opt == selected_values[key] %}selected{% endif %}>{{ opt }}</option>
+    <div id="advanced-section" style="display:grid;">
+      {% for key, opts in detailed_options.items() %}
+        <label for="{{ key }}">{{ key }}</label>
+        <select name="{{ key }}" id="{{ key }}">
+          {% for opt in opts %}
+            <option value="{{ opt }}" {% if selected_values[key]==opt %}selected{% endif %}>{{ opt }}</option>
           {% endfor %}
         </select>
-        <input type="hidden" name="{{ key }}" id="{{ key }}_hidden" value="{{ selected_values[key] }}">
       {% endfor %}
     </div>
 
-    <div class="form-buttons">
-      <button type="button" id="reset-btn" class="reset-btn">リセット</button>
-      <input type="submit" value="出力">
-    </div>
+    <input type="submit" value="出力">
   </form>
 
-  {% if error_msg %}
-    <div id="error-area" class="error">{{ error_msg }}</div>
+  {% if result %}
+    <h2>出力結果</h2>
+    <ul>
+      <li>件数: {{ result["件数"] }}</li>
+      <li>平均REGゲーム数: {{ result["平均REGゲーム数"] }}</li>
+      <li>平均AT枚数: {{ result["平均AT枚数"] }}</li>
+      <li>機械割: {{ result["機械割"] }}</li>
+      <li>期待値: {{ result["期待値"] }}</li>
+    </ul>
   {% endif %}
 
-  <div class="result" id="result-area">
-    <p id="result-title"><strong>【出力結果】</strong></p>
-
-    {% if result == "サンプル不足" %}
-      <p>サンプル不足のため、出力できません。</p>
-    {% elif result %}
-      <table id="result-table">
-        <tbody>
-          <tr><th>件数：</th><td>{{ result["件数"] }}</td></tr>
-          <tr><th>初当たり：</th><td>{{ result["平均REGゲーム数"] }}</td></tr>
-          <tr><th>獲得枚数：</th><td>{{ result["平均AT枚数"] }}</td></tr>
-          <tr>
-            <th>機械割：</th>
-            <td>
-              <span class="{{ 'text-red' if result['機械割'] | replace('%', '') | float < 100 else 'text-blue' }}">
-                {{ result["機械割"] }}
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <th>期待値：</th>
-            <td>
-              <span class="{{ 'text-red' if result['期待値'] | replace('円', '') | replace(',', '') | int < 0 else 'text-blue' }}">
-                {{ result["期待値"] }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    {% else %}
-      <p>ここに出力結果が表示されます。</p>
-    {% endif %}
-  </div>
-
-  {% if link_preview %}
-    <a class="og-card" href="{{ link_preview.url }}" target="_blank" rel="noopener">
-      {% if link_preview.image %}
-        <div class="og-thumb">
-          <img src="{{ link_preview.image }}" alt="">
-        </div>
-      {% endif %}
-      <div class="og-body">
-        <div class="og-title">{{ link_preview.title }}</div>
-        {% if link_preview.description %}
-          <div class="og-desc">{{ link_preview.description }}</div>
-        {% endif %}
-        <div class="og-site">{{ link_preview.site_name or link_preview.url }}</div>
-      </div>
-    </a>
-  {% endif %}
-
-  <!-- JS 全部そのまま -->
-  <script>
-    document.getElementById("reset-btn").addEventListener("click", (e) => {
-      e.preventDefault();
-      const ids = [
-        "through","at_gap","prev_game","prev_coin",
-        "prev_diff","prev_renchan","prev_type","custom_condition"
-      ];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = "不問";
-        const hidden = document.getElementById(`${id}_hidden`);
-        if (hidden) hidden.value = "不問";
-      });
-      const resultArea = document.getElementById("result-area");
-      resultArea.innerHTML = `
-        <p id="result-title"><strong>【出力結果】</strong></p>
-        <p>ここに出力結果が表示されます。</p>
-      `;
-    });
-
-    const modeOptionsByMachine = {{ mode_options_map | tojson }};
-    const lockedFieldMap = {{ locked_field_map | tojson }};
-    const lockableIds = [
-      "through","at_gap","prev_diff","prev_game","prev_coin","prev_renchan","prev_type","custom_condition"
-    ];
-    const asaichiTargets = ["at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type","custom_condition"];
-    const originalOptions = {};
-
-    function getLockTargets() {
-      const m = document.getElementById("machine")?.value;
-      return lockedFieldMap[m] || [];
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const machineEl = document.getElementById("machine");
-      if (machineEl) machineEl.disabled = true;
-      lockableIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          originalOptions[id] = Array.from(el.options).map(opt => ({
-            value: opt.value, text: opt.text
-          }));
-        }
-      });
-      updateFieldLocking(document.getElementById("machine").value);
-      updateAsaichiLocking(document.getElementById("time").value);
-      updateAtGapBasedOnThrough();
-    });
-
-    function updateFieldLocking(machineName) {
-      const lockTargets = lockedFieldMap[machineName] || [];
-      lockableIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (lockTargets.includes(id)) {
-          el.disabled = true;
-          restoreSingleOption(el, "不問");
-        } else {
-          restoreOriginalOptions(id, el);
-          el.disabled = false;
-        }
-      });
-      const modeEl = document.getElementById("mode");
-      if (modeEl) modeEl.disabled = lockTargets.includes("mode");
-      updateAtGapBasedOnThrough();
-    }
-
-    function updateAsaichiLocking(timeValue) {
-      const isAsaichi = (timeValue === "朝イチ");
-      const lockTargets = getLockTargets();
-      asaichiTargets.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (isAsaichi && id !== "through") {
-          el.disabled = true;
-          restoreSingleOption(el, "不問");
-        } else {
-          restoreOriginalOptions(id, el);
-          el.disabled = lockTargets.includes(id);
-          if (el.disabled) restoreSingleOption(el, "不問");
-        }
-      });
-    }
-
-    function updateAtGapBasedOnThrough() {
-      const atGapSelect = document.getElementById("at_gap");
-      const throughSelect = document.getElementById("through");
-      if (!atGapSelect || !throughSelect) return;
-      const isAsaichi = document.getElementById("time")?.value === "朝イチ";
-      if (isAsaichi) {
-        restoreSingleOption(atGapSelect, "不問");
-        atGapSelect.disabled = true;
-        return;
-      }
-      const lockTargets = getLockTargets();
-      if (lockTargets.includes("at_gap")) {
-        restoreSingleOption(atGapSelect, "不問");
-        atGapSelect.disabled = true;
-        return;
-      }
-      const throughValue = throughSelect.value;
-      if (throughValue === "0スルー") {
-        const optionsToKeep = originalOptions["at_gap"].filter(opt => ["不問","0-50"].includes(opt.value));
-        setSelectOptions(atGapSelect, optionsToKeep);
-        if (!["不問","0-50"].includes(atGapSelect.value)) atGapSelect.value = "不問";
-        atGapSelect.disabled = false;
-      } else {
-        restoreOriginalOptions("at_gap", atGapSelect);
-        atGapSelect.disabled = false;
-      }
-    }
-
-    function restoreSingleOption(selectEl, value) {
-      selectEl.innerHTML = "";
-      const opt = document.createElement("option");
-      opt.value = value;
-      opt.text = value;
-      opt.selected = true;
-      selectEl.appendChild(opt);
-    }
-
-    function restoreOriginalOptions(id, selectEl) {
-      selectEl.innerHTML = "";
-      originalOptions[id].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt.value;
-        o.text = opt.text;
-        selectEl.appendChild(o);
-      });
-    }
-
-    function setSelectOptions(selectEl, options) {
-      selectEl.innerHTML = "";
-      options.forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt.value;
-        o.text = opt.text;
-        selectEl.appendChild(o);
-      });
-    }
-
-    document.getElementById("mode").addEventListener("change", e => {
-      document.getElementById("mode_hidden").value = e.target.value;
-    });
-
-    document.getElementById("through").addEventListener("change", e => {
-      document.getElementById("through_hidden").value = e.target.value;
-      updateAtGapBasedOnThrough();
-    });
-
-    lockableIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener("change", e => {
-        const hiddenEl = document.getElementById(`${id}_hidden`);
-        if (hiddenEl) hiddenEl.value = e.target.value;
-      });
-    });
-
-    document.getElementById("time").addEventListener("change", e => {
-      updateAsaichiLocking(e.target.value);
-      updateAtGapBasedOnThrough();
-    });
-
-    const toggleBtn = document.getElementById("toggle-detail");
-    const advancedSection = document.getElementById("advanced-section");
-    toggleBtn.addEventListener("click", () => {
-      if (advancedSection.style.display === "none") {
-        advancedSection.style.display = "grid";
-      } else {
-        advancedSection.style.display = "none";
-      }
-    });
-  </script>
 </body>
 </html>

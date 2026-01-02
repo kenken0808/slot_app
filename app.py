@@ -437,84 +437,50 @@ def build_labels(modes):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
-def load_csv(machine_key, mode):
-    filename = f"data/{machine_key}_{mode}.csv"
-    if not os.path.exists(filename):
-        return []
-    data = []
-    with open(filename, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            data.append(row)
-    return data
+from flask import Flask, render_template, request
 
-def calculate_result(rows, input_game):
-    if not rows or len(rows) < 1:
-        return "サンプル不足"
-    count = len(rows)
-    avg_reg_game = sum(int(r['REGゲーム数']) for r in rows) / count
-    avg_at_coin = sum(int(r['AT枚数']) for r in rows) / count
-    total_coin = avg_at_coin + avg_reg_game * COIN_MOTI / 100
-    makaiwari = round(total_coin / (input_game * COIN_RATE / 100) * 100, 2)
-    expected = round((total_coin - input_game * COIN_RATE / 100))
-    return {
-        "件数": count,
-        "平均REGゲーム数": round(avg_reg_game, 2),
-        "平均AT枚数": round(avg_at_coin, 2),
-        "機械割": f"{makaiwari}%",
-        "期待値": f"{expected}円"
+app = Flask(__name__)
+
+@app.route('/tool', methods=['GET', 'POST'])
+def tool():
+    # 初期値
+    machine_name = "L マギアレコード 魔法少女まどか☆マギカ外伝"
+    mode_options = ["RB", "AT"]
+    through_options = ["不問", "0スルー", "1スルー", "2スルー"]
+    detailed_options = {
+        "at_gap": ["不問","0-50","51-100","101-150"],
+        "prev_game": ["不問","0-100","101-200"],
+        "prev_coin": ["不問","0-100","101-200"],
     }
 
-@app.route("/<machine_key>/<plan_type>", methods=["GET", "POST"])
-def main(machine_key, plan_type):
-    config = machine_settings.get(machine_key, {})
-    labels = config.get("labels", {})
-    mode_options = config.get("mode_options", [])
-    through_options = config.get("through_options", [])
-    detailed_options = config.get("detailed_options", {})
-    locked_field_map = config.get("locked_field_map", {})
-
-    selected_mode = mode_options[0] if mode_options else "ボーナス"
-    selected_through = "不問"
-    selected_time = "朝イチ"
-    input_game = 0
-    selected_values = {k: "不問" for k in detailed_options.keys()}
-    error_msg = None
+    # POST受信時
     result = None
-    link_preview = None
-
-    if request.method == "POST":
-        selected_mode = request.form.get("mode", selected_mode)
-        selected_through = request.form.get("through", selected_through)
-        selected_time = request.form.get("time", selected_time)
-        input_game = int(request.form.get("game", 0))
-        for k in detailed_options.keys():
-            selected_values[k] = request.form.get(k, "不問")
-
-        rows = load_csv(machine_key, selected_mode.lower())
-        result = calculate_result(rows, input_game)
+    if request.method == 'POST':
+        # 仮の結果表示
+        result = {
+            "件数": 10,
+            "平均REGゲーム数": 120,
+            "平均AT枚数": 350,
+            "機械割": "102.5%",
+            "期待値": "5000円"
+        }
 
     return render_template(
-        "index_new.html",
-        machine_key=machine_key,
-        plan_type=plan_type,
-        machine_name=machine_configs[machine_key]["display_name"],
-        labels=labels,
+        'index_new.html',
+        machine_name=machine_name,
         mode_options=mode_options,
         through_options=through_options,
         detailed_options=detailed_options,
-        selected_mode=selected_mode,
-        selected_through=selected_through,
-        selected_time=selected_time,
-        selected_values=selected_values,
-        input_game=input_game,
-        error_msg=error_msg,
         result=result,
-        locked_field_map=locked_field_map,
-        mode_options_map={machine_key: mode_options},
-        link_preview=link_preview,
+        selected_mode="RB",
+        selected_through="不問",
+        selected_values={k:"不問" for k in detailed_options.keys()},
+        selected_time="朝イチ",
         request=request
     )
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
