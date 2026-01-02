@@ -392,7 +392,6 @@ def machine_page(machine_key, plan_type):
     )
 
 
-
 # =====================================================================
 # ユーティリティ：ラベル作成
 # =====================================================================
@@ -402,19 +401,37 @@ def build_labels(modes):
 
     if not m2:
         return {
+            "mode": m1,
             "mode1_to_mode2_games": "未使用",
             "mode12_diff_coin": f"{m1}終了時差枚数",
             "mode1_hit_games": f"{m1}当選G数",
             "mode2_hit_games": "未使用",
             "mode2_get_coin": f"{m1}獲得枚数",
+            "through": "スルー回数",
+            "at_gap": "AT間G数",
+            "prev_diff": "前回差枚数",
+            "prev_game1": "前回当選G数1",
+            "prev_game2": "前回当選G数2",
+            "prev_coin": "前回獲得枚数",
+            "prev_renchan": "前回連荘数",
+            "prev_type": "前回種別",
         }
 
     return {
+        "mode": m1,
         "mode1_to_mode2_games": f"{m1}終了時{m2}間G数",
         "mode12_diff_coin": f"{m1}({m2})終了時差枚数",
         "mode1_hit_games": f"{m1}当選G数",
         "mode2_hit_games": f"{m2}当選G数",
         "mode2_get_coin": f"{m2}獲得枚数",
+        "through": "スルー回数",
+        "at_gap": "AT間G数",
+        "prev_diff": "前回差枚数",
+        "prev_game1": "前回当選G数1",
+        "prev_game2": "前回当選G数2",
+        "prev_coin": "前回獲得枚数",
+        "prev_renchan": "前回連荘数",
+        "prev_type": "前回種別",
     }
 
 # =====================================================================
@@ -439,6 +456,7 @@ def new_tool(machine_key):
         selected_prev_coin = request.form.get("prev_coin", cfg["prev_coin_options"][0])
         selected_prev_renchan = request.form.get("prev_renchan", cfg["prev_renchan_options"][0])
         selected_prev_type = request.form.get("prev_type", cfg["prev_type_options"][0])
+        selected_time = request.form.get("time", "朝イチ")
     else:
         selected_mode = cfg["mode_options"][0]
         input_game = "0"
@@ -450,6 +468,7 @@ def new_tool(machine_key):
         selected_prev_coin = cfg["prev_coin_options"][0]
         selected_prev_renchan = cfg["prev_renchan_options"][0]
         selected_prev_type = cfg["prev_type_options"][0]
+        selected_time = "朝イチ"
 
     # CSV 読み込み
     csv_path = f"data/{cfg['file_key']}.csv"
@@ -471,22 +490,33 @@ def new_tool(machine_key):
             prev_renchan_options=cfg["prev_renchan_options"],
             prev_type_options=cfg["prev_type_options"],
             locked_fields=cfg["locked_fields"],
+            selected_through=selected_through,
+            selected_at_gap=selected_at_gap,
+            selected_prev_diff=selected_prev_diff,
+            selected_prev_game=selected_prev_game,
+            selected_prev_game2=selected_prev_game2,
+            selected_prev_coin=selected_prev_coin,
+            selected_prev_renchan=selected_prev_renchan,
+            selected_prev_type=selected_prev_type,
+            selected_time=selected_time,
+            labels=build_labels({"mode1": selected_mode, "mode2": None}),
             result=None,
-            error_msg=f"CSV読み込みエラー: {e}"
+            error_msg=f"CSV読み込みエラー: {e}",
+            url_path=f"tool/{machine_key}"
         )
 
-    # データ絞り込み
+    # データ絞り込み（打ち出しゲーム数）
     filtered_df = df[df["ゲーム数"] >= int(input_game)]
 
-    # 結果計算（簡易サンプル）
+    # 結果計算（サンプル）
     result = None
     if not filtered_df.empty:
         result = {
             "件数": len(filtered_df),
             "平均REGゲーム数": filtered_df.get("REGゲーム数", pd.Series([0])).mean(),
             "平均AT枚数": filtered_df.get("AT枚数", pd.Series([0])).mean(),
-            "機械割": "100%",  # ダミー
-            "期待値": "0円",   # ダミー
+            "機械割": "100%",  # 仮値
+            "期待値": "0円",    # 仮値
         }
 
     # ラベル作成
@@ -515,11 +545,13 @@ def new_tool(machine_key):
         selected_prev_coin=selected_prev_coin,
         selected_prev_renchan=selected_prev_renchan,
         selected_prev_type=selected_prev_type,
+        selected_time=selected_time,
         labels=labels,
         result=result,
         error_msg=None,
         url_path=f"tool/{machine_key}"
     )
+
 
 # ================================
 # 🔹 東リベツール（/toreve/tools）
