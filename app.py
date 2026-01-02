@@ -437,120 +437,85 @@ def build_labels(modes):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
-@app.route("/tool/<machine_key>", methods=["GET", "POST"])
-def new_tool(machine_key):
-    if machine_key not in new_config.machines:
-        return "無効なURLです", 404
+def load_csv(machine_key, mode):
+    filename = f"data/{machine_key}_{mode}.csv"
+    if not os.path.exists(filename):
+        return []
+    data = []
+    with open(filename, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            data.append(row)
+    return data
 
-    cfg = new_config.machines[machine_key]
+def calculate_result(rows, input_game):
+    if not rows or len(rows) < 1:
+        return "サンプル不足"
+    count = len(rows)
+    avg_reg_game = sum(int(r['REGゲーム数']) for r in rows) / count
+    avg_at_coin = sum(int(r['AT枚数']) for r in rows) / count
+    total_coin = avg_at_coin + avg_reg_game * COIN_MOTI / 100
+    makaiwari = round(total_coin / (input_game * COIN_RATE / 100) * 100, 2)
+    expected = round((total_coin - input_game * COIN_RATE / 100))
+    return {
+        "件数": count,
+        "平均REGゲーム数": round(avg_reg_game, 2),
+        "平均AT枚数": round(avg_at_coin, 2),
+        "機械割": f"{makaiwari}%",
+        "期待値": f"{expected}円"
+    }
 
-    # POST/GET の処理
-    if request.method == "POST":
-        selected_mode = request.form.get("mode", cfg["mode_options"][0])
-        input_game = request.form.get("game", "0")
-        selected_through = request.form.get("through", cfg["through_options"][0])
-        selected_at_gap = request.form.get("at_gap", cfg["at_gap_options"][0])
-        selected_prev_diff = request.form.get("prev_diff", cfg["prev_diff_options"][0])
-        selected_prev_game = request.form.get("prev_game", cfg["prev_game1_options"][0])
-        selected_prev_game2 = request.form.get("prev_game2", cfg["prev_game2_options"][0])
-        selected_prev_coin = request.form.get("prev_coin", cfg["prev_coin_options"][0])
-        selected_prev_renchan = request.form.get("prev_renchan", cfg["prev_renchan_options"][0])
-        selected_prev_type = request.form.get("prev_type", cfg["prev_type_options"][0])
-        selected_time = request.form.get("time", "朝イチ")
-    else:
-        selected_mode = cfg["mode_options"][0]
-        input_game = "0"
-        selected_through = cfg["through_options"][0]
-        selected_at_gap = cfg["at_gap_options"][0]
-        selected_prev_diff = cfg["prev_diff_options"][0]
-        selected_prev_game = cfg["prev_game1_options"][0]
-        selected_prev_game2 = cfg["prev_game2_options"][0]
-        selected_prev_coin = cfg["prev_coin_options"][0]
-        selected_prev_renchan = cfg["prev_renchan_options"][0]
-        selected_prev_type = cfg["prev_type_options"][0]
-        selected_time = "朝イチ"
+@app.route("/<machine_key>/<plan_type>", methods=["GET", "POST"])
+def main(machine_key, plan_type):
+    config = machine_settings.get(machine_key, {})
+    labels = config.get("labels", {})
+    mode_options = config.get("mode_options", [])
+    through_options = config.get("through_options", [])
+    detailed_options = config.get("detailed_options", {})
+    locked_field_map = config.get("locked_field_map", {})
 
-    # CSV 読み込み
-    csv_path = f"data/{cfg['file_key']}.csv"
-    try:
-        df = pd.read_csv(csv_path)
-    except Exception as e:
-        return render_template(
-            "index_new.html",
-            machine_name=cfg["display_name"],
-            selected_mode=selected_mode,
-            input_game=input_game,
-            mode_options=cfg["mode_options"],
-            through_options=cfg["through_options"],
-            at_gap_options=cfg["at_gap_options"],
-            prev_diff_options=cfg["prev_diff_options"],
-            prev_game_options=cfg["prev_game1_options"],
-            prev_game2_options=cfg["prev_game2_options"],
-            prev_coin_options=cfg["prev_coin_options"],
-            prev_renchan_options=cfg["prev_renchan_options"],
-            prev_type_options=cfg["prev_type_options"],
-            locked_fields=cfg["locked_fields"],
-            selected_through=selected_through,
-            selected_at_gap=selected_at_gap,
-            selected_prev_diff=selected_prev_diff,
-            selected_prev_game=selected_prev_game,
-            selected_prev_game2=selected_prev_game2,
-            selected_prev_coin=selected_prev_coin,
-            selected_prev_renchan=selected_prev_renchan,
-            selected_prev_type=selected_prev_type,
-            selected_time=selected_time,
-            labels=build_labels({"mode1": selected_mode, "mode2": None}),
-            result=None,
-            error_msg=f"CSV読み込みエラー: {e}",
-            url_path=f"tool/{machine_key}"
-        )
-
-    # データ絞り込み（打ち出しゲーム数）
-    filtered_df = df[df["ゲーム数"] >= int(input_game)]
-
-    # 結果計算（サンプル）
+    selected_mode = mode_options[0] if mode_options else "ボーナス"
+    selected_through = "不問"
+    selected_time = "朝イチ"
+    input_game = 0
+    selected_values = {k: "不問" for k in detailed_options.keys()}
+    error_msg = None
     result = None
-    if not filtered_df.empty:
-        result = {
-            "件数": len(filtered_df),
-            "平均REGゲーム数": filtered_df.get("REGゲーム数", pd.Series([0])).mean(),
-            "平均AT枚数": filtered_df.get("AT枚数", pd.Series([0])).mean(),
-            "機械割": "100%",  # 仮値
-            "期待値": "0円",    # 仮値
-        }
+    link_preview = None
 
-    # ラベル作成
-    labels = build_labels({"mode1": selected_mode, "mode2": None})
+    if request.method == "POST":
+        selected_mode = request.form.get("mode", selected_mode)
+        selected_through = request.form.get("through", selected_through)
+        selected_time = request.form.get("time", selected_time)
+        input_game = int(request.form.get("game", 0))
+        for k in detailed_options.keys():
+            selected_values[k] = request.form.get(k, "不問")
+
+        rows = load_csv(machine_key, selected_mode.lower())
+        result = calculate_result(rows, input_game)
 
     return render_template(
         "index_new.html",
-        machine_name=cfg["display_name"],
-        selected_mode=selected_mode,
-        input_game=input_game,
-        mode_options=cfg["mode_options"],
-        through_options=cfg["through_options"],
-        at_gap_options=cfg["at_gap_options"],
-        prev_diff_options=cfg["prev_diff_options"],
-        prev_game_options=cfg["prev_game1_options"],
-        prev_game2_options=cfg["prev_game2_options"],
-        prev_coin_options=cfg["prev_coin_options"],
-        prev_renchan_options=cfg["prev_renchan_options"],
-        prev_type_options=cfg["prev_type_options"],
-        locked_fields=cfg["locked_fields"],
-        selected_through=selected_through,
-        selected_at_gap=selected_at_gap,
-        selected_prev_diff=selected_prev_diff,
-        selected_prev_game=selected_prev_game,
-        selected_prev_game2=selected_prev_game2,
-        selected_prev_coin=selected_prev_coin,
-        selected_prev_renchan=selected_prev_renchan,
-        selected_prev_type=selected_prev_type,
-        selected_time=selected_time,
+        machine_key=machine_key,
+        plan_type=plan_type,
+        machine_name=machine_configs[machine_key]["display_name"],
         labels=labels,
+        mode_options=mode_options,
+        through_options=through_options,
+        detailed_options=detailed_options,
+        selected_mode=selected_mode,
+        selected_through=selected_through,
+        selected_time=selected_time,
+        selected_values=selected_values,
+        input_game=input_game,
+        error_msg=error_msg,
         result=result,
-        error_msg=None,
-        url_path=f"tool/{machine_key}"
+        locked_field_map=locked_field_map,
+        mode_options_map={machine_key: mode_options},
+        link_preview=link_preview,
+        request=request
     )
+
 
 
 # ================================
