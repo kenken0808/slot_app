@@ -17,6 +17,7 @@ from functools import lru_cache
 from typing import Dict, Tuple, Optional
 from datetime import timedelta
 import time as _time
+from config import new as new_config  # 新ツール用機種設定
 
 # =====================================================================
 # Flask アプリ初期化
@@ -390,80 +391,164 @@ def machine_page(machine_key, plan_type):
                            tw_image=tw_image
     )
 
+
+
+# =====================================================================
+# ユーティリティ：ラベル作成
+# =====================================================================
+def build_labels(modes):
+    m1 = modes.get("mode1")
+    m2 = modes.get("mode2")
+
+    if not m2:
+        return {
+            "mode1_to_mode2_games": "未使用",
+            "mode12_diff_coin": f"{m1}終了時差枚数",
+            "mode1_hit_games": f"{m1}当選G数",
+            "mode2_hit_games": "未使用",
+            "mode2_get_coin": f"{m1}獲得枚数",
+        }
+
+    return {
+        "mode1_to_mode2_games": f"{m1}終了時{m2}間G数",
+        "mode12_diff_coin": f"{m1}({m2})終了時差枚数",
+        "mode1_hit_games": f"{m1}当選G数",
+        "mode2_hit_games": f"{m2}当選G数",
+        "mode2_get_coin": f"{m2}獲得枚数",
+    }
+
 # =====================================================================
 # 新ツールページ
 # =====================================================================
-from config import new as new_config
-
-@app.route("/tool/<machine_key>", methods=["GET","POST"])
+@app.route("/tool/<machine_key>", methods=["GET", "POST"])
 def new_tool(machine_key):
     if machine_key not in new_config.machines:
-        return "無効なURLです",404
+        return "無効なURLです", 404
+
     cfg = new_config.machines[machine_key]
 
-    if request.method=="POST":
+    # POST/GET の処理
+    if request.method == "POST":
         selected_mode = request.form.get("mode", cfg["mode_options"][0])
-        input_game = request.form.get("game","0")
+        input_game = request.form.get("game", "0")
+        selected_through = request.form.get("through", cfg["through_options"][0])
+        selected_at_gap = request.form.get("at_gap", cfg["at_gap_options"][0])
+        selected_prev_diff = request.form.get("prev_diff", cfg["prev_diff_options"][0])
+        selected_prev_game = request.form.get("prev_game", cfg["prev_game1_options"][0])
+        selected_prev_game2 = request.form.get("prev_game2", cfg["prev_game2_options"][0])
+        selected_prev_coin = request.form.get("prev_coin", cfg["prev_coin_options"][0])
+        selected_prev_renchan = request.form.get("prev_renchan", cfg["prev_renchan_options"][0])
+        selected_prev_type = request.form.get("prev_type", cfg["prev_type_options"][0])
     else:
         selected_mode = cfg["mode_options"][0]
         input_game = "0"
+        selected_through = cfg["through_options"][0]
+        selected_at_gap = cfg["at_gap_options"][0]
+        selected_prev_diff = cfg["prev_diff_options"][0]
+        selected_prev_game = cfg["prev_game1_options"][0]
+        selected_prev_game2 = cfg["prev_game2_options"][0]
+        selected_prev_coin = cfg["prev_coin_options"][0]
+        selected_prev_renchan = cfg["prev_renchan_options"][0]
+        selected_prev_type = cfg["prev_type_options"][0]
 
+    # CSV 読み込み
     csv_path = f"data/{cfg['file_key']}.csv"
     try:
         df = pd.read_csv(csv_path)
     except Exception as e:
-        return render_template("index_new.html",
-                               machine_name=cfg["display_name"],
-                               selected_mode=selected_mode,
-                               input_game=input_game,
-                               mode_options=cfg["mode_options"],
-                               result=None,
-                               error_msg=f"CSV読み込みエラー: {e}")
+        return render_template(
+            "index_new.html",
+            machine_name=cfg["display_name"],
+            selected_mode=selected_mode,
+            input_game=input_game,
+            mode_options=cfg["mode_options"],
+            through_options=cfg["through_options"],
+            at_gap_options=cfg["at_gap_options"],
+            prev_diff_options=cfg["prev_diff_options"],
+            prev_game_options=cfg["prev_game1_options"],
+            prev_game2_options=cfg["prev_game2_options"],
+            prev_coin_options=cfg["prev_coin_options"],
+            prev_renchan_options=cfg["prev_renchan_options"],
+            prev_type_options=cfg["prev_type_options"],
+            locked_fields=cfg["locked_fields"],
+            result=None,
+            error_msg=f"CSV読み込みエラー: {e}"
+        )
 
-    filtered_df = df[df["ゲーム数"]>=int(input_game)]
+    # データ絞り込み
+    filtered_df = df[df["ゲーム数"] >= int(input_game)]
 
+    # 結果計算（簡易サンプル）
     result = None
     if not filtered_df.empty:
         result = {
             "件数": len(filtered_df),
-            "平均値": filtered_df["差枚"].mean()
+            "平均REGゲーム数": filtered_df.get("REGゲーム数", pd.Series([0])).mean(),
+            "平均AT枚数": filtered_df.get("AT枚数", pd.Series([0])).mean(),
+            "機械割": "100%",  # ダミー
+            "期待値": "0円",   # ダミー
         }
 
-    return render_template("index_new.html",
-                           machine_name=cfg["display_name"],
-                           selected_mode=selected_mode,
-                           input_game=input_game,
-                           mode_options=cfg["mode_options"],
-                           result=result,
-                           error_msg=None)
+    # ラベル作成
+    labels = build_labels({"mode1": selected_mode, "mode2": None})
 
-# =====================================================================
-# 新ツール静的
-# =====================================================================
+    return render_template(
+        "index_new.html",
+        machine_name=cfg["display_name"],
+        selected_mode=selected_mode,
+        input_game=input_game,
+        mode_options=cfg["mode_options"],
+        through_options=cfg["through_options"],
+        at_gap_options=cfg["at_gap_options"],
+        prev_diff_options=cfg["prev_diff_options"],
+        prev_game_options=cfg["prev_game1_options"],
+        prev_game2_options=cfg["prev_game2_options"],
+        prev_coin_options=cfg["prev_coin_options"],
+        prev_renchan_options=cfg["prev_renchan_options"],
+        prev_type_options=cfg["prev_type_options"],
+        locked_fields=cfg["locked_fields"],
+        selected_through=selected_through,
+        selected_at_gap=selected_at_gap,
+        selected_prev_diff=selected_prev_diff,
+        selected_prev_game=selected_prev_game,
+        selected_prev_game2=selected_prev_game2,
+        selected_prev_coin=selected_prev_coin,
+        selected_prev_renchan=selected_prev_renchan,
+        selected_prev_type=selected_prev_type,
+        labels=labels,
+        result=result,
+        error_msg=None,
+        url_path=f"tool/{machine_key}"
+    )
+
+# ================================
+# 🔹 東リベツール（/toreve/tools）
+# ================================
 @app.route("/toreve/tools")
 def toreve_tools():
-    tools_dir = os.path.join(app.root_path, "static/tools")
-    if not os.path.exists(tools_dir):
-        abort(404)
-    return send_from_directory(tools_dir, "index.html")
+    base = os.path.join(app.root_path, "static", "tools", "toreve")
+    index_path = os.path.join(base, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+    abort(404)
 
-# =====================================================================
-# 静的ファイル配信
-# =====================================================================
-@app.route("/static/<path:filename>")
-def serve_static(filename):
-    return send_from_directory(os.path.join(app.root_path, "static"), filename)
+# ================================
+# 🔹 沖ドキツール（/okidoki/tools）
+# ================================
+@app.route("/okidoki/tools")
+def okidoki_tools():
+    base = os.path.join(app.root_path, "static", "tools", "okidoki")
+    index_path = os.path.join(base, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+    abort(404)
 
-# =====================================================================
-# エラーハンドラー
-# =====================================================================
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("404.html"), 404
-
-@app.errorhandler(500)
-def internal_error(e):
-    return render_template("500.html"), 500
+# ================================
+# 🔹 ツール一覧ページ（/list）
+# ================================
+@app.route("/list")
+def tool_list():
+    return render_template("tool_list.html")
 
 # ==============================================================================
 # アプリ起動
