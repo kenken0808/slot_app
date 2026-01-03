@@ -393,115 +393,26 @@ def machine_page(machine_key, plan_type):
 
 
 # =====================================================================
-# ユーティリティ：ラベル作成
-# =====================================================================
-def build_labels(modes):
-    m1 = modes.get("mode1")
-    m2 = modes.get("mode2")
-
-    if not m2:
-        return {
-            "mode": m1,
-            "mode1_to_mode2_games": "未使用",
-            "mode12_diff_coin": f"{m1}終了時差枚数",
-            "mode1_hit_games": f"{m1}当選G数",
-            "mode2_hit_games": "未使用",
-            "mode2_get_coin": f"{m1}獲得枚数",
-            "through": "スルー回数",
-            "at_gap": "AT間G数",
-            "prev_diff": "前回差枚数",
-            "prev_game1": "前回当選G数1",
-            "prev_game2": "前回当選G数2",
-            "prev_coin": "前回獲得枚数",
-            "prev_renchan": "前回連荘数",
-            "prev_type": "前回種別",
-        }
-
-    return {
-        "mode": m1,
-        "mode1_to_mode2_games": f"{m1}終了時{m2}間G数",
-        "mode12_diff_coin": f"{m1}({m2})終了時差枚数",
-        "mode1_hit_games": f"{m1}当選G数",
-        "mode2_hit_games": f"{m2}当選G数",
-        "mode2_get_coin": f"{m2}獲得枚数",
-        "through": "スルー回数",
-        "at_gap": "AT間G数",
-        "prev_diff": "前回差枚数",
-        "prev_game1": "前回当選G数1",
-        "prev_game2": "前回当選G数2",
-        "prev_coin": "前回獲得枚数",
-        "prev_renchan": "前回連荘数",
-        "prev_type": "前回種別",
-    }
-
-# =====================================================================
 # 新ツールページ
 # =====================================================================
-@app.route('/tool', methods=['GET', 'POST'])
-def tool():
-    # --- 基本設定 ---
-    machine_name = "L マギアレコード 魔法少女まどか☆マギカ外伝"
-    plan_type = "free"
+@app.route("/all", methods=["GET", "POST"])
+def all_tool():
+    # フォームからの入力を取得
+    if request.method == "POST":
+        param1 = request.form.get("param1")
+        param2 = request.form.get("param2")
+        # 計算・処理をここで行う
+        result = f"Received: {param1}, {param2}"
+    else:
+        result = None
 
-    # モード・スルー・詳細条件の選択肢
-    mode_options = ["RB", "AT"]
-    through_options = ["不問", "0スルー", "1スルー", "2スルー"]
-
-    detailed_options = {
-        "at_gap": ["不問","0-50","51-100","101-150","151-200","201-250"],
-        "prev_game": ["不問","0-100","101-200","201-300","301-400"],
-        "prev_coin": ["不問","0-100","101-200","201-300","301-400"],
-        "prev_diff": ["不問","-1000","-500","0","+500","+1000"],
-        "prev_renchan": ["不問","1連","2連","3連","4連以上"],
-        "prev_type": ["不問","RB","AT"],
-        "custom_condition": ["不問","条件A","条件B","条件C"]
-    }
-
-    # ロック対象（機種ごと）
-    locked_field_map = {
-        machine_name: ["prev_diff", "prev_renchan"]
-    }
-
-    # 選択値の初期化
-    selected_mode = "RB"
-    selected_through = "不問"
-    selected_time = "朝イチ"
-    selected_values = {k:"不問" for k in detailed_options.keys()}
-
-    result = None
-
-    if request.method == 'POST':
-        selected_mode = request.form.get("mode", selected_mode)
-        selected_through = request.form.get("through", selected_through)
-        selected_time = request.form.get("time", selected_time)
-        for key in detailed_options.keys():
-            selected_values[key] = request.form.get(key, "不問")
-
-        # 仮の結果計算
-        result = {
-            "件数": 12,
-            "平均REGゲーム数": 120,
-            "平均AT枚数": 350,
-            "機械割": "102.5%",
-            "期待値": "5000円"
-        }
-
+    # index_all.html をレンダリング
     return render_template(
-        'index_new.html',
-        machine_name=machine_name,
-        plan_type=plan_type,
-        mode_options=mode_options,
-        through_options=through_options,
-        detailed_options=detailed_options,
-        locked_field_map=locked_field_map,
-        selected_mode=selected_mode,
-        selected_through=selected_through,
-        selected_time=selected_time,
-        selected_values=selected_values,
-        request=request,
+        "index_all.html",
+        machine_configs=MACHINE_CONFIGS,
+        machine_settings=MACHINE_SETTINGS,
         result=result
     )
-
 
 # ================================
 # 🔹 東リベツール（/toreve/tools）
