@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, abort
 import pandas as pd
 from werkzeug.security import check_password_hash
-from config.legacy import (
+from config.old_config import (
     machine_configs,
     machine_settings,
     TOOL_PASSWORDS,
@@ -268,7 +268,7 @@ def machine_page(machine_key, plan_type):
     link_preview = get_link_preview_cached(link_url) if link_url else None
     ASSET_REV = os.environ.get("ASSET_REV","20251007")
     tw_image = f"{og_image}?v={ASSET_REV}"
-    template_name = "index_legacy_paid.html" if plan_type=="paid" else "index_legacy_free.html"
+    template_name = "index_paid.html" if plan_type=="paid" else "index_free.html"
 
     # フォーム値
     if request.method=="POST":
@@ -439,27 +439,37 @@ def build_labels(modes):
 # =====================================================================
 @app.route('/tool', methods=['GET', 'POST'])
 def tool():
-    # --- 初期設定 ---
+    # --- 基本設定 ---
     machine_name = "L マギアレコード 魔法少女まどか☆マギカ外伝"
-    plan_type = "free"  # フル版用に固定
+    plan_type = "free"
+
+    # モード・スルー・詳細条件の選択肢
     mode_options = ["RB", "AT"]
     through_options = ["不問", "0スルー", "1スルー", "2スルー"]
+
     detailed_options = {
-        "at_gap": ["不問","0-50","51-100","101-150"],
-        "prev_game": ["不問","0-100","101-200"],
-        "prev_coin": ["不問","0-100","101-200"],
-        "prev_diff": ["不問","-1000","0","+1000"],
-    }
-    locked_field_map = {
-        machine_name: ["prev_diff"]  # 仮でprev_diffだけロック
+        "at_gap": ["不問","0-50","51-100","101-150","151-200","201-250"],
+        "prev_game": ["不問","0-100","101-200","201-300","301-400"],
+        "prev_coin": ["不問","0-100","101-200","201-300","301-400"],
+        "prev_diff": ["不問","-1000","-500","0","+500","+1000"],
+        "prev_renchan": ["不問","1連","2連","3連","4連以上"],
+        "prev_type": ["不問","RB","AT"],
+        "custom_condition": ["不問","条件A","条件B","条件C"]
     }
 
+    # ロック対象（機種ごと）
+    locked_field_map = {
+        machine_name: ["prev_diff", "prev_renchan"]
+    }
+
+    # 選択値の初期化
     selected_mode = "RB"
     selected_through = "不問"
-    selected_values = {k: "不問" for k in detailed_options.keys()}
     selected_time = "朝イチ"
+    selected_values = {k:"不問" for k in detailed_options.keys()}
 
     result = None
+
     if request.method == 'POST':
         selected_mode = request.form.get("mode", selected_mode)
         selected_through = request.form.get("through", selected_through)
@@ -484,12 +494,12 @@ def tool():
         through_options=through_options,
         detailed_options=detailed_options,
         locked_field_map=locked_field_map,
-        result=result,
         selected_mode=selected_mode,
         selected_through=selected_through,
-        selected_values=selected_values,
         selected_time=selected_time,
-        request=request
+        selected_values=selected_values,
+        request=request,
+        result=result
     )
 
 
