@@ -17,7 +17,7 @@ from functools import lru_cache
 from typing import Dict, Tuple, Optional
 from datetime import timedelta
 import time as _time
-from config import new as new_config  # 新ツール用機種設定
+from config import new_config
 
 # =====================================================================
 # Flask アプリ初期化
