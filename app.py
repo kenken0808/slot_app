@@ -401,16 +401,12 @@ MACHINE_SETTINGS = new_config.machine_settings
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
     # --- プルダウン用機種選択 ---
-    selected_machine = request.form.get("machine")  # フォームで選択
-
-    # --- KeyError 防止: MACHINE_SETTINGS に存在しない場合はデフォルト機種に置き換え ---
-    if not selected_machine or selected_machine not in MACHINE_SETTINGS:
-        selected_machine = list(MACHINE_SETTINGS.keys())[0]
-
-    # --- 表示名取得 ---
+    selected_machine = request.form.get("machine")
+    if not selected_machine:
+        selected_machine = list(MACHINE_CONFIGS.keys())[0]  # デフォルトは最初の機種
     display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
 
-    # --- POST処理（必要に応じて） ---
+    # --- POST処理例 ---
     if request.method == "POST":
         param1 = request.form.get("param1")
         param2 = request.form.get("param2")
@@ -418,13 +414,13 @@ def all_tool():
     else:
         result = None
 
-    # --- render_template 呼び出し ---
+    # --- render_template 呼び出し（既存ツールと同じ全変数） ---
     return render_template(
         "index_all.html",
         machine_name=display_name,
-        selected_machine=selected_machine,  # ← プルダウン選択保持用
-        display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],  # ← プルダウン用
-        mode_options_map={selected_machine: MACHINE_SETTINGS[selected_machine]["mode_options"]},  # ← 安全
+        selected_machine=selected_machine,
+        display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
+        mode_options_map={selected_machine: MACHINE_SETTINGS[selected_machine]["mode_options"]},
         selected_mode=selected_mode,
         selected_time=selected_time,
         input_game=input_game,
@@ -454,9 +450,10 @@ def all_tool():
         og_url=request.url,
         og_image=og_image,
         tw_image=tw_image,
-        machines=MACHINE_CONFIGS,          
+        machines=MACHINE_CONFIGS,
         machine_settings=MACHINE_SETTINGS
     )
+
 
 # ================================
 # 🔹 東リベツール（/toreve/tools）
