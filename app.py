@@ -395,18 +395,18 @@ def machine_page(machine_key, plan_type):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
+MACHINE_CONFIGS = new_config.machine_configs
+MACHINE_SETTINGS = new_config.machine_settings
+
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
-    # フォームからの入力を取得
     if request.method == "POST":
         param1 = request.form.get("param1")
         param2 = request.form.get("param2")
-        # 計算・処理をここで行う
         result = f"Received: {param1}, {param2}"
     else:
         result = None
 
-    # index_all.html をレンダリング
     return render_template(
         "index_all.html",
         machine_configs=MACHINE_CONFIGS,
