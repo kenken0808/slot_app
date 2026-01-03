@@ -409,10 +409,11 @@ def all_tool():
 
     return render_template(
         "index_all.html",
-        machine_configs=MACHINE_CONFIGS,
+        machines=MACHINE_CONFIGS,
         machine_settings=MACHINE_SETTINGS,
         result=result
     )
+
 
 # ================================
 # 🔹 東リベツール（/toreve/tools）
