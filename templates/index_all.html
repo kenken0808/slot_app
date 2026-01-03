@@ -243,11 +243,12 @@
       <option value="">機種を選択してください</option>
 
       {% for key, machine in machines.items() %}
-        <option value="{{ key }}">
+        <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
           {{ machine.display_name }}
         </option>
       {% endfor %}
     </select>
+
 
     <!-- モード（表示用と送信用hidden） -->
     <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>

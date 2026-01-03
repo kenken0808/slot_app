@@ -400,6 +400,14 @@ MACHINE_SETTINGS = new_config.machine_settings
 
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
+    # --- プルダウン用機種選択 ---
+    selected_machine = request.form.get("machine")  # フォームで選択
+    if not selected_machine:
+        selected_machine = list(MACHINE_CONFIGS.keys())[0]  # デフォルトは最初の機種
+
+    display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
+
+    # --- POST処理例（必要に応じて） ---
     if request.method == "POST":
         param1 = request.form.get("param1")
         param2 = request.form.get("param2")
@@ -407,10 +415,13 @@ def all_tool():
     else:
         result = None
 
+    # --- render_template 呼び出し ---
     return render_template(
         "index_all.html",
         machine_name=display_name,
-        mode_options_map={machine_key: settings["mode_options"]},
+        selected_machine=selected_machine,  # ← 追加
+        display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],  # ← プルダウン用追加
+        mode_options_map={selected_machine: MACHINE_SETTINGS[selected_machine]["mode_options"]},
         selected_mode=selected_mode,
         selected_time=selected_time,
         input_game=input_game,
@@ -440,8 +451,8 @@ def all_tool():
         og_url=request.url,
         og_image=og_image,
         tw_image=tw_image,
-        machines=MACHINE_CONFIGS,          # 新ツール用
-        machine_settings=MACHINE_SETTINGS  # 新ツール用
+        machines=MACHINE_CONFIGS,          
+        machine_settings=MACHINE_SETTINGS
     )
 
 
