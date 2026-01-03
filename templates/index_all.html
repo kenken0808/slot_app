@@ -242,12 +242,13 @@
     <select id="machine" name="machine">
       <option value="">機種を選択してください</option>
 
-      {% for key, machine in machines.items() %}
+      {% for key, name in display_names %}
         <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
-          {{ machine.display_name }}
+          {{ name }}
         </option>
       {% endfor %}
     </select>
+
 
 
     <!-- モード（表示用と送信用hidden） -->
