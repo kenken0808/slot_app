@@ -411,6 +411,7 @@ def all_tool():
         "index_all.html",
         machines=MACHINE_CONFIGS,
         machine_settings=MACHINE_SETTINGS,
+        labels=new_config.labels,  # ← ここを追加
         result=result
     )
 
