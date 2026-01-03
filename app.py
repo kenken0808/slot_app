@@ -409,11 +409,41 @@ def all_tool():
 
     return render_template(
         "index_all.html",
-        machines=MACHINE_CONFIGS,
-        machine_settings=MACHINE_SETTINGS,
-        labels=new_config.labels,  # ← ここを追加
-        result=result
+        machine_name=display_name,
+        mode_options_map={machine_key: settings["mode_options"]},
+        selected_mode=selected_mode,
+        selected_time=selected_time,
+        input_game=input_game,
+        mode_options=settings["mode_options"],
+        through_options=settings["through_options"],
+        at_gap_options=settings["at_gap_options"],
+        prev_game_options=settings["prev_game_options"],
+        prev_coin_options=settings["prev_coin_options"],
+        prev_diff_options=settings["prev_diff_options"],
+        prev_renchan_options=settings["prev_renchan_options"],
+        prev_type_options=settings["prev_type_options"],
+        selected_through=selected_through,
+        selected_at_gap=selected_at_gap,
+        selected_prev_game=selected_prev_game,
+        selected_prev_coin=selected_prev_coin,
+        selected_prev_diff=selected_prev_diff,
+        selected_prev_renchan=selected_prev_renchan,
+        selected_prev_type=selected_prev_type,
+        labels=settings.get("labels", {}),
+        link_url=link_url,
+        link_preview=link_preview,
+        result=result,
+        error_msg=None,
+        selected_custom_condition=selected_custom_condition,
+        custom_condition_options=settings.get("custom_condition_options", ["不問"]),
+        locked_field_map=locked_field_map,
+        og_url=request.url,
+        og_image=og_image,
+        tw_image=tw_image,
+        machines=MACHINE_CONFIGS,          # 新ツール用
+        machine_settings=MACHINE_SETTINGS  # 新ツール用
     )
+
 
 
 # ================================
