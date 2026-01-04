@@ -245,16 +245,17 @@
   </h1>
 
   <!-- メインフォーム -->
-  <form id="myForm" method="POST" action="/{{ url_path }}">
+  <form id="myForm" method="POST" action="/all">
     <!-- 機種名 -->
     <label for="machine">機種名</label>
-    <select id="machine" name="machine">
+    <select id="machine" name="machine" onchange="this.form.submit()">
       {% for key, name in display_names %}
-        <option value="{{ key }}" {% if loop.first %}selected{% endif %}>
+        <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
           {{ name }}
         </option>
       {% endfor %}
     </select>
+
 
 
 

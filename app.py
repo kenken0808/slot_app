@@ -396,18 +396,89 @@ def machine_page(machine_key, plan_type):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
+def generate_labels_from_mode_options(mode_options):
+    """
+    mode_options の内容からラベルを自動生成する
+    ・1つ → at_gap は「未設定」
+    ・2つ以上 → at_gap も含めて生成
+    """
+
+    display_map = {
+        "ボーナス": "ボナ",
+        "AT": "AT",
+        "ST": "ST",
+        "CZ": "CZ",
+    }
+
+    # 表示順を固定
+    order = ["ボーナス", "CZ", "AT", "ST"]
+
+    normalized = [m for m in order if m in mode_options]
+    if not normalized:
+        return {
+            "mode": "未設定",
+            "at_gap": "未設定",
+            "prev_diff": "未設定",
+            "prev_game": "未設定",
+            "prev_coin": "未設定",
+            "prev_renchan": "未設定",
+            "prev_type": "未設定",
+            "custom_condition": "機種別条件",
+        }
+    display_modes = [display_map[m] for m in normalized]
+
+    mode_label = "/".join(display_modes)
+
+    # mode_options が1つの場合
+    if len(normalized) == 1:
+        base = display_modes[0]
+        return {
+            "mode": base,
+            "at_gap": "未設定",
+            "prev_diff": f"{base}終了時差枚数",
+            "prev_game": f"{base}当選G数",
+            "prev_coin": f"{base}獲得枚数",
+            "prev_renchan": f"{base}連荘数",
+            "prev_type": f"{base}種別",
+            "custom_condition": "機種別条件",
+        }
+
+    # mode_options が2つ以上の場合
+    first = display_modes[0]
+    second = display_modes[1]
+
+    return {
+        "mode": mode_label,
+        "at_gap": f"{first}終了時{second}間G数",
+        "prev_diff": f"{first}({second})終了時差枚数",
+        "prev_game": f"{second}当選G数",
+        "prev_coin": f"{second}獲得枚数",
+        "prev_renchan": f"{second}連荘数",
+        "prev_type": f"{second}種別",
+        "custom_condition": "機種別条件",
+    }
+
+
+
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
     MACHINE_CONFIGS = new_config.machine_configs
     MACHINE_SETTINGS = new_config.machine_settings
 
     # --- プルダウン用機種選択 ---
-    selected_machine = request.form.get("machine") or list(MACHINE_CONFIGS.keys())[0]
+    default_machine = list(MACHINE_CONFIGS.keys())[0]
+
+    if request.method == "POST":
+        selected_machine = request.form.get("machine", default_machine)
+    else:
+        selected_machine = default_machine
+
     display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
 
+
     # --- 安全に全設定を取得 ---
-    settings = MACHINE_SETTINGS.get(display_name, {})
-    mode_options            = settings.get("mode_options", [])
+    settings                 = MACHINE_SETTINGS.get(display_name, {})
+    mode_options             = settings.get("mode_options", [])
     through                  = settings.get("through", (0, 5, 1))      # min, max, step
     at_gap                   = settings.get("at_gap", (0, 1000, 50))
     prev_game                = settings.get("prev_game", (0, 2000, 50))
@@ -416,7 +487,7 @@ def all_tool():
     prev_renchan             = settings.get("prev_renchan", (0, 10, 1))
     prev_type_options        = settings.get("prev_type_options", ["不問"])
     custom_condition_options = settings.get("custom_condition_options", ["不問"])
-    labels                   = settings.get("labels", {})
+    labels                   = generate_labels_from_mode_options(mode_options)
 
     # --- POST処理 ---
     if request.method == "POST":

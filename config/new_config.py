@@ -37,9 +37,9 @@ machine_settings = {
 
         # 数値系項目: (最小, 最大, ステップ)
         "through": (0, 5, 1),
-        "at_gap": (0, 2000, 50),
-        "prev_game": (0, 1300, 50),
-        "prev_coin": (0, 3000, 100),
+        "at_gap": (0, 2000, 200),
+        "prev_game": (0, 1300, 100),
+        "prev_coin": (0, 3000, 300),
         "prev_diff": (-3000, 1500, 100),
         "prev_renchan": (0, 10, 1),
 
@@ -47,59 +47,35 @@ machine_settings = {
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
-        "labels": {
-            "mode": "AT",
-            "through": "スルー回数",
-            "at_gap": "AT間G数",
-            "prev_game": "前回当選G数",
-            "prev_coin": "前回獲得枚数",
-            "prev_diff": "前回差枚数",
-            "prev_renchan": "前回連荘数",
-            "prev_type": "前回種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
+        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
 
     },
 
     "L ゴブリンスレイヤー": {
         "exclude_games": 40,
         "coin_moti": 31.6,
-        "mode_options": ["AT"],
+        "mode_options": ["ボーナス", "ST"],
 
         # 数値系項目: (最小, 最大, ステップ)
-        "through": (0, 5, 1),
+        "through": (0, 3, 1),
         "at_gap": (0, 2000, 50),
         "prev_game": (0, 1300, 50),
         "prev_coin": (0, 3000, 100),
         "prev_diff": (-3000, 1500, 100),
-        "prev_renchan": (0, 10, 1),
+        "prev_renchan": (0, 5, 1),
 
         # 選択肢系
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
-        "labels": {
-            "mode": "AT",
-            "through": "スルー回数",
-            "at_gap": "AT間G数",
-            "prev_game": "前回当選G数",
-            "prev_coin": "前回獲得枚数",
-            "prev_diff": "前回差枚数",
-            "prev_renchan": "前回連荘数",
-            "prev_type": "前回種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
+        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
 
     },
 
     "L 主役は銭形4": {
         "exclude_games": 40,
         "coin_moti": 32.0,
-        "mode_options": ["AT"],
+        "mode_options": ["CZ", "AT"],
 
         # 数値系項目: (最小, 最大, ステップ)
         "through": (0, 5, 1),
@@ -113,19 +89,7 @@ machine_settings = {
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
-        "labels": {
-            "mode": "AT",
-            "through": "スルー回数",
-            "at_gap": "AT間G数",
-            "prev_game": "前回当選G数",
-            "prev_coin": "前回獲得枚数",
-            "prev_diff": "前回差枚数",
-            "prev_renchan": "前回連荘数",
-            "prev_type": "前回種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
+        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
 
     }
 }
