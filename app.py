@@ -19,6 +19,7 @@ from datetime import timedelta
 import time as _time
 from config import new_config
 
+
 # =====================================================================
 # Flask アプリ初期化
 # =====================================================================
@@ -395,64 +396,111 @@ def machine_page(machine_key, plan_type):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
-MACHINE_CONFIGS = new_config.machine_configs
-MACHINE_SETTINGS = new_config.machine_settings
-
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
+    MACHINE_CONFIGS = new_config.machine_configs
+    MACHINE_SETTINGS = new_config.machine_settings
+
     # --- プルダウン用機種選択 ---
-    selected_machine = request.form.get("machine")
-    if not selected_machine:
-        selected_machine = list(MACHINE_CONFIGS.keys())[0]  # デフォルトは最初の機種
+    selected_machine = request.form.get("machine") or list(MACHINE_CONFIGS.keys())[0]
     display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
 
-    # --- POST処理例 ---
+    # --- 安全に全設定を取得 ---
+    settings = MACHINE_SETTINGS.get(display_name, {})
+    mode_options            = settings.get("mode_options", [])
+    through                  = settings.get("through", (0, 5, 1))      # min, max, step
+    at_gap                   = settings.get("at_gap", (0, 1000, 50))
+    prev_game                = settings.get("prev_game", (0, 2000, 50))
+    prev_coin                = settings.get("prev_coin", (0, 3000, 100))
+    prev_diff                = settings.get("prev_diff", (-3000, 3000, 100))
+    prev_renchan             = settings.get("prev_renchan", (0, 10, 1))
+    prev_type_options        = settings.get("prev_type_options", ["不問"])
+    custom_condition_options = settings.get("custom_condition_options", ["不問"])
+    labels                   = settings.get("labels", {})
+
+    # --- POST処理 ---
     if request.method == "POST":
-        param1 = request.form.get("param1")
-        param2 = request.form.get("param2")
-        result = f"Received: {param1}, {param2}"
+        # min/max を取得
+        selected_through_min     = int(request.form.get("through_min", through[0]))
+        selected_through_max     = int(request.form.get("through_max", through[1]))
+        selected_at_gap_min      = int(request.form.get("at_gap_min", at_gap[0]))
+        selected_at_gap_max      = int(request.form.get("at_gap_max", at_gap[1]))
+        selected_prev_game_min   = int(request.form.get("prev_game_min", prev_game[0]))
+        selected_prev_game_max   = int(request.form.get("prev_game_max", prev_game[1]))
+        selected_prev_coin_min   = int(request.form.get("prev_coin_min", prev_coin[0]))
+        selected_prev_coin_max   = int(request.form.get("prev_coin_max", prev_coin[1]))
+        selected_prev_diff_min   = int(request.form.get("prev_diff_min", prev_diff[0]))
+        selected_prev_diff_max   = int(request.form.get("prev_diff_max", prev_diff[1]))
+        selected_prev_renchan_min = int(request.form.get("prev_renchan_min", prev_renchan[0]))
+        selected_prev_renchan_max = int(request.form.get("prev_renchan_max", prev_renchan[1]))
+        selected_prev_type       = request.form.get("prev_type")
+        selected_custom_condition = request.form.get("custom_condition")
+        
+        # データ抽出処理などをここに書く
+        result = f"Received: through {selected_through_min}-{selected_through_max}, AT間 {selected_at_gap_min}-{selected_at_gap_max}"
     else:
+        # 初期値
+        selected_through_min     = through[0]
+        selected_through_max     = through[1]
+        selected_at_gap_min      = at_gap[0]
+        selected_at_gap_max      = at_gap[1]
+        selected_prev_game_min   = prev_game[0]
+        selected_prev_game_max   = prev_game[1]
+        selected_prev_coin_min   = prev_coin[0]
+        selected_prev_coin_max   = prev_coin[1]
+        selected_prev_diff_min   = prev_diff[0]
+        selected_prev_diff_max   = prev_diff[1]
+        selected_prev_renchan_min = prev_renchan[0]
+        selected_prev_renchan_max = prev_renchan[1]
+        selected_prev_type       = None
+        selected_custom_condition = None
         result = None
 
-    # --- render_template 呼び出し（既存ツールと同じ全変数） ---
     return render_template(
         "index_all.html",
         machine_name=display_name,
         selected_machine=selected_machine,
         display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
-        mode_options_map={selected_machine: MACHINE_SETTINGS[selected_machine]["mode_options"]},
-        selected_mode=selected_mode,
-        selected_time=selected_time,
-        input_game=input_game,
-        mode_options=settings["mode_options"],
-        through_options=settings["through_options"],
-        at_gap_options=settings["at_gap_options"],
-        prev_game_options=settings["prev_game_options"],
-        prev_coin_options=settings["prev_coin_options"],
-        prev_diff_options=settings["prev_diff_options"],
-        prev_renchan_options=settings["prev_renchan_options"],
-        prev_type_options=settings["prev_type_options"],
-        selected_through=selected_through,
-        selected_at_gap=selected_at_gap,
-        selected_prev_game=selected_prev_game,
-        selected_prev_coin=selected_prev_coin,
-        selected_prev_diff=selected_prev_diff,
-        selected_prev_renchan=selected_prev_renchan,
+        mode_options_map={selected_machine: mode_options},
+        selected_mode=None,
+        selected_time=None,
+        input_game=None,
+        mode_options=mode_options,
+        through=through,
+        at_gap=at_gap,
+        prev_game=prev_game,
+        prev_coin=prev_coin,
+        prev_diff=prev_diff,
+        prev_renchan=prev_renchan,
+        prev_type_options=prev_type_options,
+        custom_condition_options=custom_condition_options,
+        selected_through_min=selected_through_min,
+        selected_through_max=selected_through_max,
+        selected_at_gap_min=selected_at_gap_min,
+        selected_at_gap_max=selected_at_gap_max,
+        selected_prev_game_min=selected_prev_game_min,
+        selected_prev_game_max=selected_prev_game_max,
+        selected_prev_coin_min=selected_prev_coin_min,
+        selected_prev_coin_max=selected_prev_coin_max,
+        selected_prev_diff_min=selected_prev_diff_min,
+        selected_prev_diff_max=selected_prev_diff_max,
+        selected_prev_renchan_min=selected_prev_renchan_min,
+        selected_prev_renchan_max=selected_prev_renchan_max,
         selected_prev_type=selected_prev_type,
-        labels=settings.get("labels", {}),
-        link_url=link_url,
-        link_preview=link_preview,
+        selected_custom_condition=selected_custom_condition,
+        labels=labels,
+        link_url=MACHINE_CONFIGS[selected_machine].get("link_url"),
+        link_preview=None,
         result=result,
         error_msg=None,
-        selected_custom_condition=selected_custom_condition,
-        custom_condition_options=settings.get("custom_condition_options", ["不問"]),
-        locked_field_map=locked_field_map,
+        locked_field_map={},
         og_url=request.url,
-        og_image=og_image,
-        tw_image=tw_image,
+        og_image=MACHINE_CONFIGS[selected_machine].get("og_image"),
+        tw_image=None,
         machines=MACHINE_CONFIGS,
         machine_settings=MACHINE_SETTINGS
     )
+
 
 
 # ================================

@@ -23,120 +23,6 @@ machine_configs = {
         "file_key": "zenigata4",
         "og_image": "zenigata4.jpg",
         "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
-    },
-    "sao": {
-        "display_name": "L ソードアート・オンライン",
-        "file_key": "sao",
-        "og_image": "sao.jpg",
-        "link_url": "https://note.com/kenslodata/n/n34242a06a7f4"
-    },
-    "berserk": {
-        "display_name": "L ベルセルク無双",
-        "file_key": "berserk",
-        "og_image": "berserk.jpg",
-        "link_url": "https://note.com/kenslodata/n/nc10c9f9784f9"
-    },
-    "azurlane": {
-        "display_name": "L アズールレーン THE ANIMETION",
-        "file_key": "azurlane",
-        "og_image": "ogp.jpg",
-        "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
-    },
-    "franxx": {
-        "display_name": "L ダーリン・イン・ザ・フランキス",
-        "file_key": "franxx",
-        "og_image": "ogp.jpg",
-        "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
-    },
-    "saki": {
-        "display_name": "L 咲-Saki-頂上決戦",
-        "file_key": "saki",
-        "og_image": "ogp.jpg",
-        "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
-    },
-    "onimusya": {
-        "display_name": "L 新鬼武者3",
-        "file_key": "onimusya",
-        "og_image": "onimusya.jpg",
-        "link_url": "https://note.com/kenslodata/n/n592917017aae"
-    },
-    "zenigata5": {
-        "display_name": "L 主役は銭形5",
-        "file_key": "zenigata5",
-        "og_image": "zenigata5.jpg",
-        "link_url": "https://note.com/kenslodata/n/n14c453aae356"
-    },
-    "babel": {
-        "display_name": "L バベル",
-        "file_key": "babel",
-        "og_image": "babel.jpg",
-        "link_url": "https://note.com/kenslodata/n/n9edc151b54fc"
-    },
-    "kotobuki": {
-        "display_name": "L 荒野のコトブキ飛行隊",
-        "file_key": "kotobuki",
-        "og_image": "kotobuki.jpg",
-        "link_url": "https://note.com/kenslodata/n/n9475b350635e"
-    },
-    "vvv2": {
-        "display_name": "L 革命機ヴァルヴレイヴ2",
-        "file_key": "vvv2",
-        "og_image": "vvv2.jpg",
-        "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
-    },
-    "railgun2": {
-        "display_name": "L とある科学の超電磁砲2",
-        "file_key": "railgun2",
-        "og_image": "railgun2.jpg",
-        "link_url": "https://note.com/kenslodata/n/n471a3dc95649"
-    },
-    "syogeki4": {
-        "display_name": "L 絶対衝激Ⅳ",
-        "file_key": "syogeki4",
-        "og_image": "syogeki4.jpg",
-        "link_url": "https://note.com/kenslodata/n/n1a880ae74aff"
-    },
-    "neoplanet": {
-        "display_name": "L ネオプラネット",
-        "file_key": "neoplanet",
-        "og_image": "neoplanet.jpg",
-        "link_url": "https://note.com/kenslodata/n/nfbb1961157e5"
-    },
-    "express": {
-        "display_name": "L バーニングエクスプレス",
-        "file_key": "express",
-        "og_image": "express.jpg",
-        "link_url": "https://note.com/kenslodata/n/n2648051423d9"
-    },
-    "bakemonogatari": {
-        "display_name": "L 化物語",
-        "file_key": "bakemonogatari",
-        "og_image": "bakemonogatari.jpg",
-        "link_url": "https://note.com/kenslodata/n/nc7c8e2a4ea46"
-    },
-    "prismnana": {
-        "display_name": "L プリズムナナ",
-        "file_key": "prismnana",
-        "og_image": "prismnana.jpg",
-        "link_url": "https://note.com/kenslodata/n/n10d7c2c98ace"
-    },
-    "logh": {
-        "display_name": "L 銀河英雄伝説 DieNeueThese",
-        "file_key": "logh",
-        "og_image": "logh.jpg",
-        "link_url": "https://note.com/kenslodata/n/n33ab406dc7e6"
-    },
-    "hihouden": {
-        "display_name": "L 秘宝伝",
-        "file_key": "hihouden",
-        "og_image": "hihouden.jpg",
-        "link_url": "https://note.com/kenslodata/n/n20a891c1e4b1"
-    },
-    "musyoku": {
-        "display_name": "L 無職転生 ～異世界行ったら本気だす～",
-        "file_key": "musyoku",
-        "og_image": "musyoku.jpg",
-        "link_url": "https://note.com/kenslodata/n/ne3d934a762e9"
     }
 }
 
@@ -149,23 +35,27 @@ machine_settings = {
         "coin_moti": 35.0,
         "mode_options": ["AT"],
 
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,000G", "1,001～1,300G", "1,301G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        # 数値系項目: (最小, 最大, ステップ)
+        "through": (0, 5, 1),
+        "at_gap": (0, 2000, 50),
+        "prev_game": (0, 1300, 50),
+        "prev_coin": (0, 3000, 100),
+        "prev_diff": (-3000, 1500, 100),
+        "prev_renchan": (0, 10, 1),
+
+        # 選択肢系
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
         "labels": {
             "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
+            "through": "スルー回数",
+            "at_gap": "AT間G数",
+            "prev_game": "前回当選G数",
+            "prev_coin": "前回獲得枚数",
+            "prev_diff": "前回差枚数",
+            "prev_renchan": "前回連荘数",
+            "prev_type": "前回種別",
             "custom_condition": "機種別条件"
         },
 
@@ -178,27 +68,31 @@ machine_settings = {
         "coin_moti": 31.6,
         "mode_options": ["AT"],
 
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問", "下位", "上位"],
+        # 数値系項目: (最小, 最大, ステップ)
+        "through": (0, 5, 1),
+        "at_gap": (0, 2000, 50),
+        "prev_game": (0, 1300, 50),
+        "prev_coin": (0, 3000, 100),
+        "prev_diff": (-3000, 1500, 100),
+        "prev_renchan": (0, 10, 1),
+
+        # 選択肢系
+        "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
         "labels": {
             "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
+            "through": "スルー回数",
+            "at_gap": "AT間G数",
+            "prev_game": "前回当選G数",
+            "prev_coin": "前回獲得枚数",
+            "prev_diff": "前回差枚数",
+            "prev_renchan": "前回連荘数",
+            "prev_type": "前回種別",
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
+        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
 
     },
 
@@ -207,580 +101,31 @@ machine_settings = {
         "coin_moti": 32.0,
         "mode_options": ["AT"],
 
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問", "下位", "上位"],
-        "custom_condition_options": ["不問"],
+        # 数値系項目: (最小, 最大, ステップ)
+        "through": (0, 5, 1),
+        "at_gap": (0, 2000, 50),
+        "prev_game": (0, 1300, 50),
+        "prev_coin": (0, 3000, 100),
+        "prev_diff": (-3000, 1500, 100),
+        "prev_renchan": (0, 10, 1),
 
-        "labels": {
-            "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
-
-    },
-
-    "L ソードアート・オンライン": {
-        "exclude_games": 40,
-        "coin_moti": 35.0,
-        "mode_options": ["CZ", "ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～300G", "301～600G", "601G以上"],
-        "prev_diff_options": ["不問"],
-        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "CZ／ボナ",
-            "at_gap": "CZ終了時ボナ間G数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
-            "prev_game": "ボナ(AT)当選G数",
-            "prev_coin": "ボナ(AT)獲得枚数",
-            "prev_renchan": "ボナ(AT)連荘数",
-            "prev_type": "ボナ(AT)種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_diff", "prev_type", "custom_condition"]
-
-    },
-
-    "L ベルセルク無双": {
-        "exclude_games": 40,
-        "coin_moti": 35.5,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
+        # 選択肢系
         "prev_type_options": ["不問"],
         "custom_condition_options": ["不問"],
 
         "labels": {
             "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
+            "through": "スルー回数",
+            "at_gap": "AT間G数",
+            "prev_game": "前回当選G数",
+            "prev_coin": "前回獲得枚数",
+            "prev_diff": "前回差枚数",
+            "prev_renchan": "前回連荘数",
+            "prev_type": "前回種別",
             "custom_condition": "機種別条件"
         },
 
         "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
-
-    },
-
-    "L アズールレーン THE ANIMETION": {
-        "exclude_games": 40,
-        "coin_moti": 25.8,
-        "mode_options": ["ボーナス", "AT"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001～1,250G", "1,251G以上"],
-        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ／AT",
-            "at_gap": "ボナ(AT)終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_type", "custom_condition"]
-
-    },
-
-    "L ダーリン・イン・ザ・フランキス": {
-        "exclude_games": 40,   # 除外ゲーム数
-        "coin_moti": 30.8,     # コイン持ち
-        "mode_options": ["ボーナス", "AT"],
-
-        # 各プルダウンの選択肢
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        # ラベル設定
-        "labels": {
-            "mode": "ボナ／AT",
-            "at_gap": "ボナ(AT)終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_type", "custom_condition"]  # ロックしない項目
-
-    },
-
-    "L 咲-Saki-頂上決戦": {
-        "exclude_games": 40,
-        "coin_moti": 32.1,
-        "mode_options": ["CZ", "AT"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～200G", "201～400G", "401～600G", "601G以上"],
-        "prev_game_options": ["不問", "1～300G", "301～600G", "601～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "CZ／AT",
-            "at_gap": "CZ(AT)終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "CZ(AT)終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_type", "custom_condition"]
-
-    },
-
-    "L 新鬼武者3": {
-        "exclude_games": 80,
-        "coin_moti": 33.0,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-2,001枚以下", "-2,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問", "下位", "上位"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
-
-    },
-
-    "L 主役は銭形5": {
-        "exclude_games": 40,
-        "coin_moti": 32.2,
-        "mode_options": ["ボーナス"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～400G", "401～800G", "801～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "ボナ終了時ボナ間G数",
-            "prev_game": "ボナ当選G数",
-            "prev_coin": "ボナ獲得枚数",
-            "prev_diff": "ボナ終了時差枚数",
-            "prev_renchan": "ボナ連荘数",
-            "prev_type": "ボナ種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
-
-    },
-
-    "L バベル": {
-        "exclude_games": 40,
-        "coin_moti": 31.9,
-        "mode_options": ["ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問"],
-        "prev_diff_options": ["不問"],
-        "prev_game_options": ["不問", "1～1,000G", "1,001～2,000G", "2,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時AT間G数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "at_gap", "prev_diff", "prev_type", "custom_condition"]
-
-    },
-
-    "L 荒野のコトブキ飛行隊": {
-        "exclude_games": 40,
-        "coin_moti": 35.0,
-        "mode_options": ["CZ", "AT"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー", "6スルー"],
-        "at_gap_options": ["不問", "1～400G", "401～800G", "801～1,200G", "1,201G以上"],
-        "prev_diff_options": ["不問"],
-        "prev_game_options": ["不問", "1～1,000G", "1,001～2,000G", "2,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問", "下位", "上位"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時AT間G数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_diff", "custom_condition"]
-
-    },
-
-    "L 革命機ヴァルヴレイヴ2": {
-        "exclude_games": 50,
-        "coin_moti": 32.7,
-        "mode_options": ["CZ", "ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
-        "prev_diff_options": ["不問"],
-        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,300G", "1,301G以上"],
-        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "CZ／ボナ",
-            "at_gap": "CZ終了時ボナ間G数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
-            "prev_game": "ボナ(AT)当選G数",
-            "prev_coin": "ボナ(AT)獲得枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["prev_diff", "prev_type", "custom_condition"]
-
-    },
-
-    "L とある科学の超電磁砲2": {
-        "exclude_games": 40,
-        "coin_moti": 31.8,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_game_options": ["不問", "1～200G", "201～400G", "401～600G", "601～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問", "下位", "上位"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "custom_condition"]
-
-    },
-
-    "L 絶対衝激Ⅳ": {
-        "exclude_games": 40,
-        "coin_moti": 31.6,
-        "mode_options": ["ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～400G", "401～800G", "801G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "at_gap", "prev_game", "prev_type", "custom_condition"]
-
-    },
-
-    "L ネオプラネット": {
-        "exclude_games": 20,
-        "coin_moti": 31.3,
-        "mode_options": ["ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "at_gap", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
-
-    },
-
-    "L バーニングエクスプレス": {
-        "exclude_games": 0,
-        "coin_moti": 31.0,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問"],
-        "prev_renchan_options": ["不問"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
-
-    },
-
-    "L 化物語": {
-        "exclude_games": 40,
-        "coin_moti": 31.1,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問", "1連", "2～5連", "5～9連", "10連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "AT",
-            "at_gap": "AT終了時AT間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_type", "custom_condition"]
-
-    },
-
-    "L プリズムナナ": {
-        "exclude_games": 40,
-        "coin_moti": 31.2,
-        "mode_options": ["ST"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～300G", "301～600G", "601～900G", "901G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問"],
-        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ST",
-            "at_gap": "ST終了時ST間G数",
-            "prev_game": "ST当選G数",
-            "prev_coin": "ST獲得枚数",
-            "prev_diff": "ST終了時差枚数",
-            "prev_renchan": "ST連荘数",
-            "prev_type": "ST種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_type", "custom_condition"]
-
-    },
-
-    "L 銀河英雄伝説 DieNeueThese": {
-        "exclude_games": 40,
-        "coin_moti": 35.0,
-        "mode_options": ["ST"],
-
-        "through_options": ["不問"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問", "1～250G", "251～500G", "501～750G", "751～1,000G", "1,001G以上"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問"],
-        "prev_renchan_options": ["不問"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ST",
-            "at_gap": "ボナ終了時ST間G数",
-            "prev_game": "ST当選G数",
-            "prev_coin": "ST獲得枚数",
-            "prev_diff": "ST終了時差枚数",
-            "prev_renchan": "ST連荘数",
-            "prev_type": "ST種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "through", "at_gap", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
-
-    },
-
-    "L 秘宝伝": {
-        "exclude_games": 40,
-        "coin_moti": 32.0,
-        "mode_options": ["ボーナス"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問"],
-        "prev_game_options": ["不問"],
-        "prev_coin_options": ["不問", "1～1,000枚", "1,001～2,000枚", "2,001枚以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_renchan_options": ["不問"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "ボナ",
-            "at_gap": "AT終了時ボナ間G数",
-            "prev_game": "AT当選G数",
-            "prev_coin": "AT獲得枚数",
-            "prev_diff": "AT終了時差枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "at_gap", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
-
-    },
-
-    "L 無職転生 ～異世界行ったら本気だす～": {
-        "exclude_games": 40,
-        "coin_moti": 33.0,
-        "mode_options": ["AT"],
-
-        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
-        "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901～1,200G", "1,201～1,500G", "1,501G以上"],
-        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
-        "prev_game_options": ["不問"],
-        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
-        "prev_renchan_options": ["不問"],
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "labels": {
-            "mode": "AT",
-            "at_gap": "ボナ終了時AT間G数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
-            "prev_game": "ボナ(AT)当選G数",
-            "prev_coin": "ボナ(AT)獲得枚数",
-            "prev_renchan": "AT連荘数",
-            "prev_type": "AT種別",
-            "custom_condition": "機種別条件"
-        },
-
-        "locked_fields": ["mode", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
 
     }
 }

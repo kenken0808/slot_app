@@ -118,6 +118,15 @@
       color: #fff;
     }
 
+
+
+
+
+
+
+
+
+
     /* =====================================================
        結果/エラー表示
     ===================================================== */
@@ -240,10 +249,8 @@
     <!-- 機種名 -->
     <label for="machine">機種名</label>
     <select id="machine" name="machine">
-      <option value="">機種を選択してください</option>
-
       {% for key, name in display_names %}
-        <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
+        <option value="{{ key }}" {% if loop.first %}selected{% endif %}>
           {{ name }}
         </option>
       {% endfor %}
@@ -280,77 +287,152 @@
       pattern="[0-9]*"
     >
 
-    <!-- スルー回数（表示用＋送信用hidden） -->
-    <label for="through">スルー回数</label>
-    <select name="through_display" id="through" required data-selected="{{ selected_through }}">
-      {% for opt in through_options %}
-        <option value="{{ opt }}" {% if opt == selected_through %}selected{% endif %}>{{ opt }}</option>
+
+
+
+
+
+
+
+<style>
+/* min ～ max 専用 */
+.range {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr; /* min / ～ / max */
+  align-items: center;
+  width: 100%;
+}
+
+.range select {
+  width: 100%;
+  height: 36px;
+}
+
+.range .separator {
+  text-align: center;
+}
+</style>
+
+
+
+
+  <!-- スルー回数 -->
+  <label>{{ labels.get("through", "スルー回数") }}</label>
+  <div class="range">
+    <select name="through_min">
+      {% for i in range(through[0], through[1]+1, through[2]) %}
+        <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
       {% endfor %}
     </select>
-    <input type="hidden" name="through" id="through_hidden" value="{{ selected_through }}">
+    <span class="separator">～</span>
+    <select name="through_max">
+      {% for i in range(through[0], through[1]+1, through[2]) %}
+        <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-    <!-- 詳細条件の開閉ボタン -->
-    <button type="button" id="toggle-detail" class="toggle-btn">▼ 詳細条件を表示（前回条件）</button>
+  <!-- AT間G数 -->
+  <label>{{ labels.get("at_gap", "AT間G数") }}</label>
+  <div class="range">
+    <select name="at_gap_min">
+      {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+        <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+    <span class="separator">～</span>
+    <select name="at_gap_max">
+      {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+        <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-    <!-- 詳細条件（POST後は開いた状態にする） -->
-    <div id="advanced-section" style="{{ 'display: grid;' if request.method == 'POST' else 'display: none;' }}">
-      <!-- 各詳細項目：表示用select + hidden -->
-      <label for="at_gap">{{ labels.get("at_gap", "AT間G数") }}</label>
-      <select name="at_gap_display" id="at_gap" required data-selected="{{ selected_at_gap }}">
-        {% for opt in at_gap_options %}
-          <option value="{{ opt }}" {% if opt == selected_at_gap %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="at_gap" id="at_gap_hidden" value="{{ selected_at_gap }}">
+  <!-- 前回当選G数 -->
+  <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
+  <div class="range">
+    <select name="prev_game_min">
+      {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+    <span class="separator">～</span>
+    <select name="prev_game_max">
+      {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <label for="prev_diff">{{ labels.get("prev_diff", "前回差枚数") }}</label>
-      <select name="prev_diff_display" id="prev_diff" required data-selected="{{ selected_prev_diff }}">
-        {% for opt in prev_diff_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_diff %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_diff" id="prev_diff_hidden" value="{{ selected_prev_diff }}">
+  <!-- 前回獲得枚数 -->
+  <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+  <div class="range">
+    <select name="prev_coin_min">
+      {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+    <span class="separator">～</span>
+    <select name="prev_coin_max">
+      {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <label for="prev_game">{{ labels.get("prev_game", "前回当選G数") }}</label>
-      <select name="prev_game_display" id="prev_game" required data-selected="{{ selected_prev_game }}">
-        {% for opt in prev_game_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_game %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_game" id="prev_game_hidden" value="{{ selected_prev_game }}">
+  <!-- 前回差枚数 -->
+  <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
+  <div class="range">
+    <select name="prev_diff_min">
+      {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+    <span class="separator">～</span>
+    <select name="prev_diff_max">
+      {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <label for="prev_coin">{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
-      <select name="prev_coin_display" id="prev_coin" required data-selected="{{ selected_prev_coin }}">
-        {% for opt in prev_coin_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_coin %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_coin" id="prev_coin_hidden" value="{{ selected_prev_coin }}">
+  <!-- 前回連荘数 -->
+  <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
+  <div class="range">
+    <select name="prev_renchan_min">
+      {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+    <span class="separator">～</span>
+    <select name="prev_renchan_max">
+      {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+        <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <label for="prev_renchan">{{ labels.get("prev_renchan", "前回連荘数") }}</label>
-      <select name="prev_renchan_display" id="prev_renchan" required data-selected="{{ selected_prev_renchan }}">
-        {% for opt in prev_renchan_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_renchan %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_renchan" id="prev_renchan_hidden" value="{{ selected_prev_renchan }}">
+  <!-- 前回種別 -->
+  <label>{{ labels.get("prev_type", "前回種別") }}</label>
+  <select name="prev_type">
+    {% for opt in prev_type_options %}
+      <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
+    {% endfor %}
+  </select>
 
-      <label for="prev_type">{{ labels.get("prev_type", "前回種別") }}</label>
-      <select name="prev_type_display" id="prev_type" required data-selected="{{ selected_prev_type }}">
-        {% for opt in prev_type_options %}
-          <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="prev_type" id="prev_type_hidden" value="{{ selected_prev_type }}">
+  <!-- 機種別条件 -->
+  <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
+  <select name="custom_condition">
+    {% for opt in custom_condition_options %}
+      <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
+    {% endfor %}
+  </select>
 
-      <label for="custom_condition">{{ labels.get("custom_condition", "機種別条件") }}</label>
-      <select name="custom_condition_display" id="custom_condition" required data-selected="{{ selected_custom_condition }}">
-        {% for opt in custom_condition_options %}
-          <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="custom_condition" id="custom_condition_hidden" value="{{ selected_custom_condition }}">
-    </div>
+
+
+
+
+
 
     <!-- ボタン群 -->
     <div class="form-buttons">
@@ -479,7 +561,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     // 機種名は常にロック
     const machineEl = document.getElementById("machine");
-    if (machineEl) machineEl.disabled = true;
+    if (machineEl) machineEl.disabled = false;
 
     // 元の選択肢をロック候補すべてで退避
     lockableIds.forEach(id => {
