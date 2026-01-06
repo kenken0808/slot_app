@@ -154,7 +154,13 @@ machine_configs = {
         "display_name": "スマスロ 北斗の拳 転生の章2",
         "file_key": "tensei",
         "og_image": "tensei.jpg",
-        "link_url": "https://note.com/kenslodata"
+        "link_url": "https://note.com/kenslodata/n/ncb695f0b4fb5"
+    },
+    "tekken6": {
+        "display_name": "スマスロ 鉄拳6",
+        "file_key": "tekken6",
+        "og_image": "tekken6.jpg",
+        "link_url": "https://note.com/kenslodata/n/n483bc6255996"
     }
 }
 
@@ -889,6 +895,35 @@ machine_settings = {
 
         "locked_fields": ["mode", "at_gap", "through", "prev_type", "custom_condition"]
 
+    },
+
+    "スマスロ 鉄拳6": {
+        "exclude_games": 40,
+        "coin_moti": 31.0,
+        "mode_options": ["ボーナス", "AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ／AT",
+            "at_gap": "ボナ終了時AT間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["custom_condition"]
+
     }
 }
 
@@ -994,6 +1029,9 @@ TOOL_PASSWORDS = {
     },
     "tensei": {
         "paid": "scrypt:32768:8:1$0KIkRhi4kHKsHT2s$10c9180c156ec0671279694b52b49580e18a8b0c4ed5288e96aa9433e54d9d092cc37d144375dc4794233d1dcb40061beabccc30e5966697867990a9ca9c8f0a"
+    },
+    "tekken6": {
+        "paid": "scrypt:32768:8:1$y92bWaxNx6tC8nNb$046f36e97884509af3ae0322f1599ace8bfb0d6f60192453d553f0cfadb6af736775d5ef9a3f60081f5567a0095b04ea569a1275233be666148ef50b26bf293b"
     }
 }
 
