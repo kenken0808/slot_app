@@ -887,7 +887,7 @@ machine_settings = {
             "custom_condition": "機種別条件"
         },
 
-        "locked_fields": ["mode", "through", "prev_game", "prev_type", "custom_condition"]
+        "locked_fields": ["mode", "at_gap", "through", "prev_type", "custom_condition"]
 
     }
 }
