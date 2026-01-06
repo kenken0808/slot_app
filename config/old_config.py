@@ -149,6 +149,12 @@ machine_configs = {
         "file_key": "musyoku",
         "og_image": "musyoku.jpg",
         "link_url": "https://note.com/kenslodata/n/ne3d934a762e9"
+    },
+    "tensei": {
+        "display_name": "スマスロ 北斗の拳 転生の章2",
+        "file_key": "tensei",
+        "og_image": "tensei.jpg",
+        "link_url": "https://note.com/kenslodata"
     }
 }
 
@@ -854,6 +860,35 @@ machine_settings = {
 
         "locked_fields": ["mode", "prev_game", "prev_renchan", "prev_type", "custom_condition"]
 
+    },
+
+    "スマスロ 北斗の拳 転生の章2": {
+        "exclude_games": 40,
+        "coin_moti": 31.5,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー以上"],
+        "at_gap_options": ["不問", "1～300G", "301～600G", "601～900G", "901～1,200G", "1,201G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "through", "prev_game", "prev_type", "custom_condition"]
+
     }
 }
 
@@ -956,6 +991,9 @@ TOOL_PASSWORDS = {
     },
     "musyoku": {
         "paid": "scrypt:32768:8:1$Vdj4kCl4oYRJbsmr$51af6c5e1d1fd31222d3032a849126c2af78455ef6a19aa1b56a31af17a51b691cbcf76e88fe49b1d73706c450a4e1bd5ada0f3664596add5f324148aea338ac"
+    },
+    "tensei": {
+        "paid": "scrypt:32768:8:1$0KIkRhi4kHKsHT2s$10c9180c156ec0671279694b52b49580e18a8b0c4ed5288e96aa9433e54d9d092cc37d144375dc4794233d1dcb40061beabccc30e5966697867990a9ca9c8f0a"
     }
 }
 
