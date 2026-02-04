@@ -172,7 +172,7 @@ machine_configs = {
         "display_name": "スマスロ 攻殻機動隊",
         "file_key": "gits",
         "og_image": "gits.jpg",
-        "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
+        "link_url": "https://note.com/kenslodata/n/nf71290e3a05e"
     }
 }
 
