@@ -167,6 +167,12 @@ machine_configs = {
         "file_key": "enen2",
         "og_image": "enen2.jpg",
         "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
+    },
+    "gits": {
+        "display_name": "スマスロ 攻殻機動隊",
+        "file_key": "gits",
+        "og_image": "gits.jpg",
+        "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
     }
 }
 
@@ -938,7 +944,7 @@ machine_settings = {
         "mode_options": ["ボーナス", "ST"],
 
         "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー"],
-        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
         "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
         "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
         "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
@@ -947,9 +953,38 @@ machine_settings = {
         "custom_condition_options": ["不問"],
 
         "labels": {
-            "mode": "ボナ／AT",
-            "at_gap": "ボナ終了時AT間G数",
-            "prev_diff": "ボナ(AT)終了時差枚数",
+            "mode": "ボナ／ST",
+            "at_gap": "ボナ終了時ST間G数",
+            "prev_diff": "ボナ(ST)終了時差枚数",
+            "prev_game": "ST当選G数",
+            "prev_coin": "ST獲得枚数",
+            "prev_renchan": "ST連荘数",
+            "prev_type": "ST種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_game_options", "prev_renchan_options", "prev_type_options", "custom_condition"]
+
+    },
+
+    "スマスロ 攻殻機動隊": {
+        "exclude_games": 40,
+        "coin_moti": 33.0,
+        "mode_options": ["CZ", "AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー"],
+        "at_gap_options": ["不問", "1～250G", "251～500G", "501～750G", "751G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "CZ／AT",
+            "at_gap": "CZ終了時AT間G数",
+            "prev_diff": "CZ(AT)終了時差枚数",
             "prev_game": "AT当選G数",
             "prev_coin": "AT獲得枚数",
             "prev_renchan": "AT連荘数",
@@ -1070,6 +1105,9 @@ TOOL_PASSWORDS = {
     },
     "enen2": {
         "paid": "scrypt:32768:8:1$IGNBTXRLr7WVzgKE$7317598d82e1e5f7d610885bf6ef4ed09ca3cc8cb68a31af6c8305c715b66c7cc084809f43c7e9f9e7fa69d493413a226ddf8fb77979e5ca332592d9ee5fa15a"
+    },
+    "gits": {
+        "paid": "scrypt:32768:8:1$XMWzu7bmVqmPdsRN$c235f746d2aee332ecfa757e598278044ec4eafff4a8f4b6a88c3339b8565cadb9cb9ee074ade184ef9455582db9e463a50155117bfd80e56f77f9f33af8d7ef"
     }
 }
 
