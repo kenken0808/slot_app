@@ -290,7 +290,7 @@ def machine_page(machine_key, plan_type):
         input_game = "0"
         selected_through = selected_at_gap = selected_prev_game = selected_prev_coin = selected_prev_diff = selected_prev_renchan = selected_prev_type = selected_custom_condition = "不問"
 
-    csv_path = f"data/{file_key}_at.csv" if selected_mode=="AT" else f"data/{file_key}_cz.csv" if selected_mode=="CZ" else f"data/{file_key}_rb.csv"
+    csv_path = f"data/{file_key}_at.csv" if selected_mode=="AT" else f"data/{file_key}_cz.csv" if selected_mode=="CZ" else f"data/{file_key}_st.csv" if selected_mode=="ST" else f"data/{file_key}_rb.csv"
     try:
         dtypes = {
             "朝イチ": "int8",
