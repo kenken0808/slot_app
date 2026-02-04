@@ -161,6 +161,12 @@ machine_configs = {
         "file_key": "tekken6",
         "og_image": "tekken6.jpg",
         "link_url": "https://note.com/kenslodata/n/n483bc6255996"
+    },
+    "enen2": {
+        "display_name": "スマスロ 炎炎ノ消防隊2",
+        "file_key": "enen2",
+        "og_image": "enen2.jpg",
+        "link_url": "https://note.com/kenslodata/n/n483bc6255996"
     }
 }
 
@@ -924,6 +930,35 @@ machine_settings = {
 
         "locked_fields": ["custom_condition"]
 
+    },
+
+    "スマスロ 炎炎ノ消防隊2": {
+        "exclude_games": 40,
+        "coin_moti": 33.0,
+        "mode_options": ["ボーナス", "ST"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501～2,000G", "2,001G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問", "1連", "2～7連", "8～14連", "15連以上"],
+        "prev_type_options": ["不問", "下位", "上位"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ／AT",
+            "at_gap": "ボナ終了時AT間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_game_options", "prev_renchan_options", "prev_type_options", "custom_condition"]
+
     }
 }
 
@@ -1032,6 +1067,9 @@ TOOL_PASSWORDS = {
     },
     "tekken6": {
         "paid": "scrypt:32768:8:1$y92bWaxNx6tC8nNb$046f36e97884509af3ae0322f1599ace8bfb0d6f60192453d553f0cfadb6af736775d5ef9a3f60081f5567a0095b04ea569a1275233be666148ef50b26bf293b"
+    },
+    "enen2": {
+        "paid": "scrypt:32768:8:1$IGNBTXRLr7WVzgKE$7317598d82e1e5f7d610885bf6ef4ed09ca3cc8cb68a31af6c8305c715b66c7cc084809f43c7e9f9e7fa69d493413a226ddf8fb77979e5ca332592d9ee5fa15a"
     }
 }
 

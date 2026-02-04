@@ -492,6 +492,7 @@ def all_tool():
     # --- POST処理 ---
     if request.method == "POST":
         # min/max を取得
+        input_game = int(request.form.get("input_game", 0))  # ← 追加
         selected_through_min     = int(request.form.get("through_min", through[0]))
         selected_through_max     = int(request.form.get("through_max", through[1]))
         selected_at_gap_min      = int(request.form.get("at_gap_min", at_gap[0]))
@@ -511,6 +512,7 @@ def all_tool():
         result = f"Received: through {selected_through_min}-{selected_through_max}, AT間 {selected_at_gap_min}-{selected_at_gap_max}"
     else:
         # 初期値
+        input_game = 0   # ← 追加
         selected_through_min     = through[0]
         selected_through_max     = through[1]
         selected_at_gap_min      = at_gap[0]
@@ -535,7 +537,7 @@ def all_tool():
         mode_options_map={selected_machine: mode_options},
         selected_mode=None,
         selected_time=None,
-        input_game=None,
+        input_game=input_game,   # ← 変更
         mode_options=mode_options,
         through=through,
         at_gap=at_gap,

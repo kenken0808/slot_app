@@ -782,5 +782,37 @@
       });
     });
   </script>
+
+
+  <script>
+  function syncMinMax(minName, maxName) {
+    const minEl = document.querySelector(`select[name="${minName}"]`);
+    const maxEl = document.querySelector(`select[name="${maxName}"]`);
+
+    if (!minEl || !maxEl) return;
+
+    minEl.addEventListener("change", () => {
+      const minVal = parseInt(minEl.value, 10);
+
+      [...maxEl.options].forEach(opt => {
+        opt.disabled = parseInt(opt.value, 10) < minVal;
+      });
+
+      if (parseInt(maxEl.value, 10) < minVal) {
+        maxEl.value = minVal;
+      }
+    });
+  }
+
+  // 対象項目
+  syncMinMax("through_min", "through_max");
+  syncMinMax("at_gap_min", "at_gap_max");
+  syncMinMax("prev_game_min", "prev_game_max");
+  syncMinMax("prev_coin_min", "prev_coin_max");
+  syncMinMax("prev_diff_min", "prev_diff_max");
+  syncMinMax("prev_renchan_min", "prev_renchan_max");
+  </script>
+
+
 </body>
 </html>
