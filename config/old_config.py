@@ -166,7 +166,7 @@ machine_configs = {
         "display_name": "スマスロ 炎炎ノ消防隊2",
         "file_key": "enen2",
         "og_image": "enen2.jpg",
-        "link_url": "https://note.com/kenslodata/n/n483bc6255996"
+        "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
     }
 }
 
