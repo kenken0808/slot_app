@@ -173,6 +173,18 @@ machine_configs = {
         "file_key": "gits",
         "og_image": "gits.jpg",
         "link_url": "https://note.com/kenslodata/n/nf71290e3a05e"
+    },
+    "gobsla2": {
+        "display_name": "スマスロ ゴブリンスレイヤーⅡ",
+        "file_key": "gobsla2",
+        "og_image": "gobsla2.jpg",
+        "link_url": "https://note.com/kenslodata/n/n2cb70daf971e"
+    },
+    "hanma": {
+        "display_name": "スマスロ 範馬刃牙",
+        "file_key": "hanma",
+        "og_image": "hanma.jpg",
+        "link_url": "https://note.com/kenslodata/n/nd125e7fe7554"
     }
 }
 
@@ -994,6 +1006,64 @@ machine_settings = {
 
         "locked_fields": ["prev_game_options", "prev_renchan_options", "prev_type_options", "custom_condition"]
 
+    },
+
+    "スマスロ ゴブリンスレイヤーⅡ": {
+        "exclude_games": 40,
+        "coin_moti": 30.6,
+        "mode_options": ["AT"],
+
+        "through_options": ["不問"],
+        "at_gap_options": ["不問"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "AT",
+            "at_gap": "AT終了時AT間G数",
+            "prev_diff": "AT終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["mode", "at_gap", "through", "prev_type", "prev_renchan", "custom_condition"]
+
+    },
+
+    "スマスロ 範馬刃牙": {
+        "exclude_games": 40,
+        "coin_moti": 32.1,
+        "mode_options": ["ボーナス", "AT"],
+
+        "through_options": ["不問", "0スルー", "1スルー", "2スルー", "3スルー", "4スルー", "5スルー", "6スルー"],
+        "at_gap_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
+        "prev_diff_options": ["不問", "-3,001枚以下", "-3,000～-2,001枚", "-2,000～-1,001枚", "-1,000～-1枚", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501枚以上"],
+        "prev_game_options": ["不問", "1～500G", "501～1,000G", "1,001～1,500G", "1,501G以上"],
+        "prev_coin_options": ["不問", "1～500枚", "501～1,000枚", "1,001～1,500枚", "1,501～2,000枚", "2,001枚以上"],
+        "prev_renchan_options": ["不問"],
+        "prev_type_options": ["不問"],
+        "custom_condition_options": ["不問"],
+
+        "labels": {
+            "mode": "ボナ／AT",
+            "at_gap": "ボナ終了時AT間G数",
+            "prev_diff": "ボナ(AT)終了時差枚数",
+            "prev_game": "AT当選G数",
+            "prev_coin": "AT獲得枚数",
+            "prev_renchan": "AT連荘数",
+            "prev_type": "AT種別",
+            "custom_condition": "機種別条件"
+        },
+
+        "locked_fields": ["prev_renchan_options", "prev_type_options", "custom_condition"]
+
     }
 }
 
@@ -1108,6 +1178,12 @@ TOOL_PASSWORDS = {
     },
     "gits": {
         "paid": "scrypt:32768:8:1$XMWzu7bmVqmPdsRN$c235f746d2aee332ecfa757e598278044ec4eafff4a8f4b6a88c3339b8565cadb9cb9ee074ade184ef9455582db9e463a50155117bfd80e56f77f9f33af8d7ef"
+    },
+    "gobsla2": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
+    },
+    "hanma": {
+        "paid": "scrypt:32768:8:1$I1w0SlHwAOFn9H7u$74a92e77576e592f74ede4a817697695763b4dd05e7a7d38bbfa77a92e6a094a5fbdcd37769fd203557f7d7b0571a72941eb91ba89507d653dd14fbc671a60d1"
     }
 }
 
