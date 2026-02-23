@@ -49,57 +49,75 @@
       font-size: 20px;
     }
 
+
     /* =====================================================
-       フォーム
+       フォーム（シンプル版）
     ===================================================== */
     form {
       display: grid;
-      grid-template-columns: 1fr;  /* ← 1列にする */
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 18px;                 /* 余白は少し広めのまま */
       background-color: #fff;
       padding: 20px;
       border-radius: 12px;
       margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* 外側の影は維持（不要なら削除OK） */
     }
+
+    /* ---- ラベル（14pxのまま） ---- */
     label {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
+      display: block;
+      font-weight: 600;
       color: #1f2937;
-      width: 100%;
-      box-sizing: border-box;
-      font-size: 12px;
+      font-size: 14px;
+      margin-bottom: 6px;
     }
+
+    /* ---- 入力（カード化なし） ---- */
     select,
     input[type="number"] {
-      padding: 4px 8px;
-      font-size: 12px;
+      padding: 8px 10px;
+      font-size: 14px;
       border: 1px solid #aaa;
       border-radius: 6px;
       box-sizing: border-box;
       width: 100%;
-      max-width: 100%;
-      height: 32px;
+      height: 42px;              /* 押しやすさは維持 */
       -webkit-text-size-adjust: 100%;
+      background: #fff;          /* ← 元の白に戻す */
+      box-shadow: none;          /* ← 影なし */
     }
+
+    /* range内も高さ統一 */
+    .range select {
+      height: 42px;
+    }
+
+    /* フォーカス */
     select:focus,
     input[type="number"]:focus {
       border-color: #6366f1;
       outline: none;
+      box-shadow: 0 0 0 2px rgba(99,102,241,0.12);
     }
 
-    /* ボタン行 */
+    /* ---- セクション区切り線（そのまま使えます） ---- */
+    .section-divider {
+      border-top: 1px solid #e5e7eb;
+      margin: 10px 0;
+    }
+
+    /* ---- ボタン行 ---- */
     .form-buttons {
-      grid-column: 1 / -1;
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-top: 10px;
+      margin-top: 20px;
     }
+
     .reset-btn,
     input[type="submit"] {
-      padding: 12px 20px;
+      padding: 14px 22px;
       font-size: 15px;
       border: none;
       border-radius: 8px;
@@ -107,20 +125,8 @@
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: all 0.2s ease;
-      width: 140px; /* 幅を統一 */
+      width: 160px;
     }
-    .reset-btn {
-      background-color: #f87171; /* 赤 */
-      color: #fff;
-    }
-    input[type="submit"] {
-      background-color: #60a5fa; /* 青 */
-      color: #fff;
-    }
-
-
-
-
 
 
 
@@ -247,6 +253,7 @@
   <!-- メインフォーム -->
   <form id="myForm" method="POST" action="/all">
     <!-- 機種名 -->
+    <div class="section-divider"></div>
     <label for="machine">機種名</label>
     <select id="machine" name="machine" onchange="this.form.submit()">
       {% for key, name in display_names %}
@@ -260,6 +267,7 @@
 
 
     <!-- モード（表示用と送信用hidden） -->
+    <div class="section-divider"></div>
     <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>
     <select name="mode_display" id="mode" required>
       {% for opt in mode_options %}
@@ -269,6 +277,7 @@
     <input type="hidden" name="mode" id="mode_hidden" value="{{ selected_mode }}">
 
     <!-- 朝イチ/朝イチ以外 -->
+    <div class="section-divider"></div>
     <label for="time">朝イチ／朝イチ以外</label>
     <select name="time" id="time" required>
       <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
@@ -276,6 +285,7 @@
     </select>
 
     <!-- 打ち出しゲーム数 -->
+    <div class="section-divider"></div>
     <label for="game">打ち出しG数</label>
     <input
       type="number"
@@ -318,6 +328,7 @@
 
 
   <!-- スルー回数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("through", "スルー回数") }}</label>
   <div class="range">
     <select name="through_min">
@@ -334,6 +345,7 @@
   </div>
 
   <!-- AT間G数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("at_gap", "AT間G数") }}</label>
   <div class="range">
     <select name="at_gap_min">
@@ -350,6 +362,7 @@
   </div>
 
   <!-- 前回当選G数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
   <div class="range">
     <select name="prev_game_min">
@@ -366,6 +379,7 @@
   </div>
 
   <!-- 前回獲得枚数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
   <div class="range">
     <select name="prev_coin_min">
@@ -382,6 +396,7 @@
   </div>
 
   <!-- 前回差枚数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
   <div class="range">
     <select name="prev_diff_min">
@@ -398,6 +413,7 @@
   </div>
 
   <!-- 前回連荘数 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
   <div class="range">
     <select name="prev_renchan_min">
@@ -414,6 +430,7 @@
   </div>
 
   <!-- 前回種別 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("prev_type", "前回種別") }}</label>
   <select name="prev_type">
     {% for opt in prev_type_options %}
@@ -422,12 +439,14 @@
   </select>
 
   <!-- 機種別条件 -->
+  <div class="section-divider"></div>
   <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
   <select name="custom_condition">
     {% for opt in custom_condition_options %}
       <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
     {% endfor %}
   </select>
+  <div class="section-divider"></div>
 
 
 
