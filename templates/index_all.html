@@ -56,12 +56,13 @@
     form {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 18px;                 /* 余白は少し広めのまま */
+      gap: 12px;                 /* 余白は少し広めのまま */
       background-color: #fff;
       padding: 20px;
       border-radius: 12px;
       margin-top: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* 外側の影は維持（不要なら削除OK） */
+      box-sizing: border-box;
     }
 
     /* ---- ラベル（14pxのまま） ---- */
@@ -80,17 +81,15 @@
       font-size: 14px;
       border: 1px solid #aaa;
       border-radius: 6px;
-      box-sizing: border-box;
       width: 100%;
-      height: 42px;              /* 押しやすさは維持 */
-      -webkit-text-size-adjust: 100%;
-      background: #fff;          /* ← 元の白に戻す */
-      box-shadow: none;          /* ← 影なし */
+      height: 42px;
+      box-sizing: border-box;   /* ← これ重要 */
+      background: #fff;
     }
 
-    /* range内も高さ統一 */
-    .range select {
-      height: 42px;
+    .range {
+      width: 100%;
+      box-sizing: border-box;   /* ← 追加 */
     }
 
     /* フォーカス */
@@ -104,7 +103,7 @@
     /* ---- セクション区切り線（そのまま使えます） ---- */
     .section-divider {
       border-top: 1px solid #e5e7eb;
-      margin: 10px 0;
+      margin: 4px 0;   /* ← 狭く */
     }
 
     /* ---- ボタン行 ---- */
