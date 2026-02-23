@@ -423,7 +423,7 @@ def generate_labels_from_mode_options(mode_options):
             "prev_coin": "未設定",
             "prev_renchan": "未設定",
             "prev_type": "未設定",
-            "custom_condition": "機種別条件",
+            "custom_condition": "未設定",
         }
     display_modes = [display_map[m] for m in normalized]
 
@@ -435,11 +435,11 @@ def generate_labels_from_mode_options(mode_options):
         return {
             "mode": base,
             "at_gap": "未設定",
-            "prev_diff": f"{base}終了時差枚数",
-            "prev_game": f"{base}当選G数",
-            "prev_coin": f"{base}獲得枚数",
-            "prev_renchan": f"{base}連荘数",
-            "prev_type": f"{base}種別",
+            "prev_diff": f"前回{base}終了時差枚数",
+            "prev_game": f"前回{base}当選G数",
+            "prev_coin": f"前回{base}獲得枚数",
+            "prev_renchan": f"前回{base}連荘数",
+            "prev_type": f"前回{base}種別",
             "custom_condition": "機種別条件",
         }
 
@@ -449,12 +449,12 @@ def generate_labels_from_mode_options(mode_options):
 
     return {
         "mode": mode_label,
-        "at_gap": f"{first}終了時{second}間G数",
-        "prev_diff": f"{first}({second})終了時差枚数",
-        "prev_game": f"{second}当選G数",
-        "prev_coin": f"{second}獲得枚数",
-        "prev_renchan": f"{second}連荘数",
-        "prev_type": f"{second}種別",
+        "at_gap": f"前回{first}終了時{second}間G数",
+        "prev_diff": f"前回{first}({second})終了時差枚数",
+        "prev_game": f"前回{second}当選G数",
+        "prev_coin": f"前回{second}獲得枚数",
+        "prev_renchan": f"前回{second}連荘数",
+        "prev_type": f"前回{second}種別",
         "custom_condition": "機種別条件",
     }
 
