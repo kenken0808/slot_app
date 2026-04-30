@@ -56,6 +56,24 @@
     }
 
 
+.form-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.range-inline {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+label {
+  margin-bottom: 0;
+}
+
     /* =====================================================
        フォーム（シンプル版）
     ===================================================== */
@@ -284,10 +302,13 @@
     <img src="{{ url_for('static', filename='icon.jpg') }}" alt="右画像" style="height:24px;">
   </h1>
 
-  <!-- メインフォーム -->
-  <form id="myForm" method="POST" action="/all">
-    <!-- 機種名 -->
-    <div class="section-divider"></div>
+
+
+<!-- メインフォーム -->
+<form id="myForm" method="POST" action="/all">
+
+  <!-- 機種名 -->
+  <div class="form-row">
     <label for="machine">機種名</label>
     <select id="machine" name="machine" onchange="this.form.submit()">
       {% for key, name in display_names %}
@@ -296,12 +317,10 @@
         </option>
       {% endfor %}
     </select>
+  </div>
 
-
-
-
-    <!-- モード（表示用と送信用hidden） -->
-    <div class="section-divider"></div>
+  <!-- モード -->
+  <div class="form-row">
     <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>
     <select name="mode_display" id="mode" required>
       {% for opt in mode_options %}
@@ -309,17 +328,19 @@
       {% endfor %}
     </select>
     <input type="hidden" name="mode" id="mode_hidden" value="{{ selected_mode }}">
+  </div>
 
-    <!-- 朝イチ/朝イチ以外 -->
-    <div class="section-divider"></div>
+  <!-- 朝イチ -->
+  <div class="form-row">
     <label for="time">朝イチ／朝イチ以外</label>
     <select name="time" id="time" required>
       <option value="朝イチ" {% if selected_time == "朝イチ" %}selected{% endif %}>朝イチ</option>
       <option value="朝イチ以外" {% if selected_time == "朝イチ以外" %}selected{% endif %}>朝イチ以外</option>
     </select>
+  </div>
 
-    <!-- 打ち出しゲーム数 -->
-    <div class="section-divider"></div>
+  <!-- 打ち出しG数 -->
+  <div class="form-row">
     <label for="game">打ち出しG数</label>
     <input
       type="number"
@@ -331,157 +352,135 @@
       inputmode="numeric"
       pattern="[0-9]*"
     >
-
-
-
-
-
-
-
-
-<style>
-/* min ～ max 専用 */
-.range {
-  display: grid;
-  grid-template-columns: 1fr 30px 1fr; /* min / ～ / max */
-  align-items: center;
-  width: 100%;
-}
-
-.range select {
-  width: 100%;
-  height: 36px;
-}
-
-.range .separator {
-  text-align: center;
-}
-</style>
-
-
-
+  </div>
 
   <!-- スルー回数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("through", "スルー回数") }}</label>
-  <div class="range">
-    <select name="through_min">
-      {% for i in range(through[0], through[1]+1, through[2]) %}
-        <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="through_max">
-      {% for i in range(through[0], through[1]+1, through[2]) %}
-        <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
+  <div class="form-row">
+    <label>{{ labels.get("through", "スルー回数") }}</label>
+    <div class="range-inline">
+      <select name="through_min">
+        {% for i in range(through[0], through[1]+1, through[2]) %}
+          <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="through_max">
+        {% for i in range(through[0], through[1]+1, through[2]) %}
+          <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <!-- AT間G数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("at_gap", "AT間G数") }}</label>
-  <div class="range">
-    <select name="at_gap_min">
-      {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
-        <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="at_gap_max">
-      {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
-        <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
+  <div class="form-row">
+    <label>{{ labels.get("at_gap", "AT間G数") }}</label>
+    <div class="range-inline">
+      <select name="at_gap_min">
+        {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+          <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="at_gap_max">
+        {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+          <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <!-- 前回当選G数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
-  <div class="range">
-    <select name="prev_game_min">
-      {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="prev_game_max">
-      {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
+  <div class="form-row">
+    <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
+    <div class="range-inline">
+      <select name="prev_game_min">
+        {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="prev_game_max">
+        {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <!-- 前回獲得枚数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
-  <div class="range">
-    <select name="prev_coin_min">
-      {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="prev_coin_max">
-      {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
+  <div class="form-row">
+    <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+    <div class="range-inline">
+      <select name="prev_coin_min">
+        {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="prev_coin_max">
+        {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <!-- 前回差枚数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
-  <div class="range">
-    <select name="prev_diff_min">
-      {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="prev_diff_max">
-      {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
+  <div class="form-row">
+    <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
+    <div class="range-inline">
+      <select name="prev_diff_min">
+        {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="prev_diff_max">
+        {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <!-- 前回連荘数 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
-  <div class="range">
-    <select name="prev_renchan_min">
-      {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span class="separator">～</span>
-    <select name="prev_renchan_max">
-      {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
-        <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
+  <div class="form-row">
+    <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
+    <div class="range-inline">
+      <select name="prev_renchan_min">
+        {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>～</span>
+      <select name="prev_renchan_max">
+        {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+          <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- 前回種別 -->
+  <div class="form-row">
+    <label>{{ labels.get("prev_type", "前回種別") }}</label>
+    <select name="prev_type">
+      {% for opt in prev_type_options %}
+        <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
       {% endfor %}
     </select>
   </div>
 
-  <!-- 前回種別 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("prev_type", "前回種別") }}</label>
-  <select name="prev_type">
-    {% for opt in prev_type_options %}
-      <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
-    {% endfor %}
-  </select>
-
   <!-- 機種別条件 -->
-  <div class="section-divider"></div>
-  <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
-  <select name="custom_condition">
-    {% for opt in custom_condition_options %}
-      <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
-    {% endfor %}
-  </select>
-  <div class="section-divider"></div>
-
+  <div class="form-row">
+    <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
+    <select name="custom_condition">
+      {% for opt in custom_condition_options %}
+        <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
 
 
