@@ -318,13 +318,18 @@
   <!-- スルー回数 -->
   <div class="form-row">
     <label>{{ labels.get("through", "スルー回数") }}</label>
-    <div class="range-inline">
+
+    <!-- ▼ 修正：range-inline → range -->
+    <div class="range">
       <select name="through_min">
         {% for i in range(through[0], through[1]+1, through[2]) %}
           <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+
+      <!-- ▼ 修正：中央用クラス追加 -->
+      <span class="separator">～</span>
+
       <select name="through_max">
         {% for i in range(through[0], through[1]+1, through[2]) %}
           <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
@@ -336,13 +341,13 @@
   <!-- AT間G数 -->
   <div class="form-row">
     <label>{{ labels.get("at_gap", "AT間G数") }}</label>
-    <div class="range-inline">
+    <div class="range"> <!-- ▼ 修正 -->
       <select name="at_gap_min">
         {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
           <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+      <span class="separator">～</span> <!-- ▼ 修正 -->
       <select name="at_gap_max">
         {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
           <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
@@ -354,13 +359,13 @@
   <!-- 前回当選G数 -->
   <div class="form-row">
     <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
-    <div class="range-inline">
+    <div class="range"> <!-- ▼ 修正 -->
       <select name="prev_game_min">
         {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+      <span class="separator">～</span> <!-- ▼ 修正 -->
       <select name="prev_game_max">
         {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
@@ -372,13 +377,13 @@
   <!-- 前回獲得枚数 -->
   <div class="form-row">
     <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
-    <div class="range-inline">
+    <div class="range"> <!-- ▼ 修正 -->
       <select name="prev_coin_min">
         {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+      <span class="separator">～</span> <!-- ▼ 修正 -->
       <select name="prev_coin_max">
         {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
@@ -390,13 +395,13 @@
   <!-- 前回差枚数 -->
   <div class="form-row">
     <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
-    <div class="range-inline">
+    <div class="range"> <!-- ▼ 修正 -->
       <select name="prev_diff_min">
         {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+      <span class="separator">～</span> <!-- ▼ 修正 -->
       <select name="prev_diff_max">
         {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
@@ -408,13 +413,13 @@
   <!-- 前回連荘数 -->
   <div class="form-row">
     <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
-    <div class="range-inline">
+    <div class="range"> <!-- ▼ 修正 -->
       <select name="prev_renchan_min">
         {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
-      <span>～</span>
+      <span class="separator">～</span> <!-- ▼ 修正 -->
       <select name="prev_renchan_max">
         {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
           <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
