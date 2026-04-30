@@ -63,6 +63,15 @@
   gap: 10px;
 }
 
+.form-row label {
+  text-align: right;
+}
+
+.form-row select,
+.form-row input {
+  justify-self: center;
+}
+
 .range-inline {
   display: grid;
   grid-template-columns: 1fr 30px 1fr;
@@ -72,6 +81,8 @@
 
 label {
   margin-bottom: 0;
+  font-size: 13px;   /* ← 追加（16→13くらいがちょうど良い） */
+  line-height: 1.2;  /* ← 2行でも詰まりすぎない */
 }
 
     /* =====================================================
