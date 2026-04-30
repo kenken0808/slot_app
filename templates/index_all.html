@@ -58,19 +58,25 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 180px 1fr; /* 140 → 180 */
   align-items: center;
   gap: 10px;
 }
 
 .form-row label {
-  text-align: right;
+  text-align: center;
 }
 
 .form-row select,
 .form-row input {
   justify-self: center;
 }
+
+.form-row input {
+  text-align: center;
+}
+
+
 
 .range-inline {
   display: grid;
