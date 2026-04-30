@@ -68,6 +68,8 @@
       border-radius: 16px;  /* ← 少し丸く */
       margin-top: 10px;
       box-sizing: border-box;
+      /* 20260501追加 */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
     /* ---- ラベル（16pxに変更） ---- */
@@ -88,10 +90,10 @@
       height: 36px;        /* ← 42 → 36 */
       font-size: 14px;
       padding: 4px 8px;    /* ← 減らす */
-      border: 1px solid #aaa;
       border-radius: 6px;
       box-sizing: border-box;
-      background: #fff;
+      border: 1px solid #d1d5db; /* ← 20260501追加 */
+      background: #f9fafb;       /* ← 20260501追加 */
     }
 
     .range {
@@ -104,6 +106,8 @@
     input[type="number"]:focus {
       border-color: #6366f1;
       outline: none;
+      background: #fff;       /* ← 20260501追加 */
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);       /* ← 20260501追加 */
     }
 
     /* ---- セクション区切り線（そのまま使えます） ---- */
@@ -137,12 +141,14 @@
     }
 
     input[type="submit"] {
-      background-color: #6366f1;
       color: #ffffff;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);       /* ← 20260501追加 */
+      box-shadow: 0 4px 10px rgba(99,102,241,0.3);       /* ← 20260501追加 */
     }
 
     input[type="submit"]:hover {
       background-color: #4f46e5;
+      transform: translateY(-1px);       /* ← 20260501追加 */
     }
 
 
@@ -157,10 +163,11 @@
       border-radius: 8px;
       font-size: 15px;
       color: #065f46;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .error {
       background-color: #fef2f2;
-      border-left: 5px solid #ef4444;
+      border-left: 5px solid #ef4444;       /* ← 20260501追加 */
       color: #991b1b;
       padding: 16px;
       border-radius: 8px;
@@ -168,6 +175,20 @@
     }
     .text-red { color: red; font-weight: bold; }
     .text-blue { color: blue; font-weight: bold; }
+
+
+
+
+#result-table th {
+  text-align: left;
+  padding-right: 10px;
+}
+
+#result-table td {
+  font-weight: bold;
+  font-size: 16px;
+}
+
 
     /* =====================================================
        詳細条件（開閉セクション）
