@@ -87,17 +87,19 @@
     text-align: left;
   }
 
-  .range-inline {
-    display: grid;
-    grid-template-columns: 1fr 30px 1fr;
-    align-items: center;
-    gap: 6px;
-  }
+/* ▼ 修正：実際に使っている .range に適用 */
+.range {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  align-items: center;
+  gap: 6px;
+}
 
-  .range-inline .separator {
-    text-align: center;
-    justify-self: center;
-  }
+/* ▼ 修正：「～」を中央固定 */
+.range .separator {
+  text-align: center;
+  justify-self: center;
+}
 
   /* =====================================================
      フォーム（メタリック）
