@@ -289,41 +289,21 @@
   <div class="form-row">
     <label for="machine_input">機種名</label>
 
-    <div style="position: relative;">
+    <input
+      id="machine_input"
+      name="machine_name"
+      list="machine_list"
+      placeholder="機種名を入力（例：北斗）"
+      autocomplete="off"
+    >
 
-      <!-- ▼ 検索 -->
-      <input
-        type="text"
-        id="machine_input"
-        placeholder="機種名を検索"
-        style="width:100%; margin-bottom:4px;"
-        autocomplete="off"
-      >
+    <datalist id="machine_list">
+      {% for key, name in display_names %}
+        <option value="{{ name }}">
+      {% endfor %}
+    </datalist>
 
-      <!-- ▼ 候補 -->
-      <div id="machine_suggest" style="
-        position:absolute;
-        top:38px;
-        left:0;
-        right:0;
-        background:#fff;
-        border:1px solid #ccc;
-        max-height:200px;
-        overflow-y:auto;
-        z-index:10;
-        display:none;
-      "></div>
-
-      <!-- ▼ 既存select（表示する） -->
-      <select id="machine" name="machine" onchange="this.form.submit()">
-        {% for key, name in display_names %}
-          <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
-            {{ name }}
-          </option>
-        {% endfor %}
-      </select>
-
-    </div>
+    <input type="hidden" id="machine" name="machine">
   </div>
 
   <!-- モード -->
@@ -954,6 +934,13 @@
     this.textContent = isOpen ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
   });
   </script>
+
+  <script>
+    document.getElementById("machine_input").addEventListener("change", function () {
+      document.getElementById("machine").value = this.value;
+    });
+  </script>
+
 
 </body>
 </html>
