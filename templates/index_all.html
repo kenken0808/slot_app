@@ -55,9 +55,7 @@
     margin: 10px 0 0;
     font-size: 20px;
     color: #1f2937;
-    text-shadow:
-      0 1px 0 #fff,
-      0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: none; /* ← 修正 */
   }
 
   /* =====================================================
@@ -72,7 +70,7 @@
 
   .form-row label {
     text-align: left;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.2;
   }
 
@@ -99,6 +97,10 @@
 .range .separator {
   text-align: center;
   justify-self: center;
+}
+
+#advanced-area {
+  display: none;
 }
 
   /* =====================================================
@@ -162,7 +164,7 @@
   ===================================================== */
   .form-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* ← 修正 */
     gap: 10px;
     margin-top: 10px;
   }
@@ -367,117 +369,123 @@
     </div>
   </div>
 
-  <!-- AT間G数 -->
-  <div class="form-row">
-    <label>{{ labels.get("at_gap", "AT間G数") }}</label>
-    <div class="range"> <!-- ▼ 修正 -->
-      <select name="at_gap_min">
-        {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
-          <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-      <span class="separator">～</span> <!-- ▼ 修正 -->
-      <select name="at_gap_max">
-        {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
-          <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
+  <button type="button" id="toggle-advanced" class="toggle-btn">
+    ▼ 詳細条件を表示
+  </button>
+
+  <div id="advanced-area">
+
+    <!-- AT間G数 -->
+    <div class="form-row">
+      <label>{{ labels.get("at_gap", "AT間G数") }}</label>
+      <div class="range"> <!-- ▼ 修正 -->
+        <select name="at_gap_min">
+          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+            <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="separator">～</span> <!-- ▼ 修正 -->
+        <select name="at_gap_max">
+          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+            <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- 前回当選G数 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
+      <div class="range"> <!-- ▼ 修正 -->
+        <select name="prev_game_min">
+          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="separator">～</span> <!-- ▼ 修正 -->
+        <select name="prev_game_max">
+          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- 前回獲得枚数 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+      <div class="range"> <!-- ▼ 修正 -->
+        <select name="prev_coin_min">
+          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="separator">～</span> <!-- ▼ 修正 -->
+        <select name="prev_coin_max">
+          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- 前回差枚数 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
+      <div class="range"> <!-- ▼ 修正 -->
+        <select name="prev_diff_min">
+          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="separator">～</span> <!-- ▼ 修正 -->
+        <select name="prev_diff_max">
+          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- 前回連荘数 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
+      <div class="range"> <!-- ▼ 修正 -->
+        <select name="prev_renchan_min">
+          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="separator">～</span> <!-- ▼ 修正 -->
+        <select name="prev_renchan_max">
+          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+            <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- 前回種別 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_type", "前回種別") }}</label>
+      <select name="prev_type">
+        {% for opt in prev_type_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
         {% endfor %}
       </select>
     </div>
-  </div>
 
-  <!-- 前回当選G数 -->
-  <div class="form-row">
-    <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
-    <div class="range"> <!-- ▼ 修正 -->
-      <select name="prev_game_min">
-        {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-      <span class="separator">～</span> <!-- ▼ 修正 -->
-      <select name="prev_game_max">
-        {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
+    <!-- 機種別条件 -->
+    <div class="form-row">
+      <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
+      <select name="custom_condition">
+        {% for opt in custom_condition_options %}
+          <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
         {% endfor %}
       </select>
     </div>
+
   </div>
-
-  <!-- 前回獲得枚数 -->
-  <div class="form-row">
-    <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
-    <div class="range"> <!-- ▼ 修正 -->
-      <select name="prev_coin_min">
-        {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-      <span class="separator">～</span> <!-- ▼ 修正 -->
-      <select name="prev_coin_max">
-        {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-  <!-- 前回差枚数 -->
-  <div class="form-row">
-    <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
-    <div class="range"> <!-- ▼ 修正 -->
-      <select name="prev_diff_min">
-        {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-      <span class="separator">～</span> <!-- ▼ 修正 -->
-      <select name="prev_diff_max">
-        {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-  <!-- 前回連荘数 -->
-  <div class="form-row">
-    <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
-    <div class="range"> <!-- ▼ 修正 -->
-      <select name="prev_renchan_min">
-        {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-      <span class="separator">～</span> <!-- ▼ 修正 -->
-      <select name="prev_renchan_max">
-        {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
-          <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-  <!-- 前回種別 -->
-  <div class="form-row">
-    <label>{{ labels.get("prev_type", "前回種別") }}</label>
-    <select name="prev_type">
-      {% for opt in prev_type_options %}
-        <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <!-- 機種別条件 -->
-  <div class="form-row">
-    <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
-    <select name="custom_condition">
-      {% for opt in custom_condition_options %}
-        <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>{{ opt }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-
 
 
 
@@ -919,6 +927,16 @@
         suggest.style.display = "none";
       }
     });
+  });
+  </script>
+
+  <script>
+  document.getElementById("toggle-advanced").addEventListener("click", function () {
+    const area = document.getElementById("advanced-area");
+    const isOpen = area.style.display === "block";
+
+    area.style.display = isOpen ? "none" : "block";
+    this.textContent = isOpen ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
   });
   </script>
 
