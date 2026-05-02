@@ -270,25 +270,34 @@
 
   <!-- 機種名 -->
   <div class="form-row">
-    <label for="machine">機種名</label>
+    <label for="machine_input">機種名</label>
 
-    <div>
-      <!-- ▼ 追加：検索ボックス（見た目は普通のinput） -->
+    <div style="position: relative;">
+      <!-- 入力 -->
       <input
         type="text"
-        id="machine_search"
-        placeholder="機種名で検索"
-        style="width:100%; margin-bottom:4px;"
+        id="machine_input"
+        placeholder="機種名を検索"
+        style="width:100%;"
+        autocomplete="off"
       >
 
-      <!-- ▼ 既存はそのまま -->
-      <select id="machine" name="machine" onchange="this.form.submit()">
-        {% for key, name in display_names %}
-          <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
-            {{ name }}
-          </option>
-        {% endfor %}
-      </select>
+      <!-- 候補表示 -->
+      <div id="machine_suggest" style="
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:#fff;
+        border:1px solid #ccc;
+        max-height:200px;
+        overflow-y:auto;
+        z-index:10;
+        display:none;
+      "></div>
+
+      <!-- 実際に送る -->
+      <input type="hidden" id="machine" name="machine">
     </div>
   </div>
 
@@ -845,53 +854,62 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const search = document.getElementById("machine_search");
-    const select = document.getElementById("machine");
+    const input = document.getElementById("machine_input");
+    const suggest = document.getElementById("machine_suggest");
+    const hidden = document.getElementById("machine");
 
-    const originalOptions = Array.from(select.options).map(opt => ({
-      value: opt.value,
-      text: opt.text
-    }));
+    // 元データ
+    const data = [
+      {% for key, name in display_names %}
+        { key: "{{ key }}", name: "{{ name }}" },
+      {% endfor %}
+    ];
 
-    // ▼ 検索
-    search.addEventListener("input", function () {
+    input.addEventListener("input", function () {
       const keyword = this.value.toLowerCase();
 
-      select.innerHTML = "";
+      suggest.innerHTML = "";
 
-      // 空欄 → 全表示
-      if (keyword === "") {
-        originalOptions.forEach(opt => {
-          const option = document.createElement("option");
-          option.value = opt.value;
-          option.text = opt.text;
-          select.appendChild(option);
-        });
+      if (!keyword) {
+        suggest.style.display = "none";
         return;
       }
 
-      // フィルタ
-      originalOptions.forEach(opt => {
-        if (opt.text.toLowerCase().includes(keyword)) {
-          const option = document.createElement("option");
-          option.value = opt.value;
-          option.text = opt.text;
-          select.appendChild(option);
-        }
+      const filtered = data.filter(d =>
+        d.name.toLowerCase().includes(keyword)
+      );
+
+      if (filtered.length === 0) {
+        suggest.style.display = "none";
+        return;
+      }
+
+      filtered.forEach(d => {
+        const div = document.createElement("div");
+        div.textContent = d.name;
+        div.style.padding = "8px";
+        div.style.cursor = "pointer";
+
+        div.addEventListener("click", function () {
+          input.value = d.name;
+          hidden.value = d.key;
+          suggest.style.display = "none";
+
+          // ★ 即反映
+          document.getElementById("myForm").submit();
+        });
+
+        suggest.appendChild(div);
       });
 
-      // 該当なし
-      if (select.options.length === 0) {
-        const option = document.createElement("option");
-        option.text = "該当なし";
-        option.disabled = true;
-        select.appendChild(option);
-      }
+      suggest.style.display = "block";
     });
 
-    // ▼ 選択したときだけ発火
-    select.addEventListener("change", function () {
-      this.form.submit(); // 既存の挙動
+    // 外クリックで閉じる
+    document.addEventListener("click", function (e) {
+      if (!input.contains(e.target) && !suggest.contains(e.target)) {
+        suggest.style.display = "none";
+      }
     });
   });
   </script>
