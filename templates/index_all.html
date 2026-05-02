@@ -287,21 +287,17 @@
 
   <!-- 機種名 -->
   <div class="form-row">
-    <label for="machine_input">機種名</label>
+    <label>機種名</label>
 
-    <input
-      id="machine_input"
-      name="machine_name"
-      list="machine_list"
-      placeholder="機種名を入力（例：北斗）"
-      autocomplete="off"
-    >
+    <!-- 検索 -->
+    <input type="text" id="machine_input" placeholder="検索（例：北斗）">
 
-    <datalist id="machine_list">
+    <!-- 候補 -->
+    <select id="machine_select" size="6">
       {% for key, name in display_names %}
-        <option value="{{ name }}">
+        <option value="{{ key }}">{{ name }}</option>
       {% endfor %}
-    </datalist>
+    </select>
 
     <input type="hidden" id="machine" name="machine">
   </div>
@@ -936,8 +932,24 @@
   </script>
 
   <script>
-    document.getElementById("machine_input").addEventListener("change", function () {
-      document.getElementById("machine").value = this.value;
+    const input = document.getElementById("machine_input");
+    const select = document.getElementById("machine_select");
+    const hidden = document.getElementById("machine");
+
+    // 検索フィルタ
+    input.addEventListener("input", function () {
+      const keyword = this.value.toLowerCase();
+
+      for (let option of select.options) {
+        option.style.display = option.text.toLowerCase().includes(keyword)
+          ? ""
+          : "none";
+      }
+    });
+
+    // 選択
+    select.addEventListener("change", function () {
+      hidden.value = this.value;
     });
   </script>
 
