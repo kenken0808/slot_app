@@ -556,62 +556,28 @@
   {% endif %}
 
 
-
 <script>
 /* =====================================================
-   ① リセット処理
-===================================================== */
-document.getElementById("reset-btn").addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const ids = [
-    "through","at_gap","prev_game","prev_coin",
-    "prev_diff","prev_renchan","prev_type","custom_condition"
-  ];
-
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "不問";
-
-    const hidden = document.getElementById(`${id}_hidden`);
-    if (hidden) hidden.value = "不問";
-  });
-
-  document.getElementById("game").value = "0";
-
-  document.getElementById("result-area").innerHTML = `
-    <p id="result-title"><strong>【出力結果】</strong></p>
-    <p>ここに出力結果が表示されます。</p>
-  `;
-});
-
-
-/* =====================================================
-   ② 機種データ（Flask → JS）
+   共通データ
 ===================================================== */
 const modeOptionsByMachine = {{ mode_options_map | tojson }};
 const lockedFieldMap = {{ locked_field_map | tojson }};
 
-
-/* =====================================================
-   ③ ロック制御（機種・朝イチ）
-===================================================== */
 const lockableIds = [
-  "through","at_gap","prev_diff","prev_game","prev_coin",
-  "prev_renchan","prev_type","custom_condition"
+  "through","at_gap","prev_game","prev_coin",
+  "prev_diff","prev_renchan","prev_type","custom_condition"
 ];
 
 const asaichiTargets = [
-  "at_gap","prev_game","prev_coin","prev_diff",
-  "prev_renchan","prev_type","custom_condition"
+  "at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type","custom_condition"
 ];
 
 const originalOptions = {};
 
-function getLockTargets() {
-  const m = document.getElementById("machine")?.value;
-  return lockedFieldMap[m] || [];
-}
+/* =====================================================
+   ユーティリティ
+===================================================== */
+function getEl(id){ return document.getElementById(id); }
 
 function restoreSingleOption(selectEl, value) {
   selectEl.innerHTML = "";
@@ -624,159 +590,216 @@ function restoreSingleOption(selectEl, value) {
 
 function restoreOriginalOptions(id, selectEl) {
   if (!originalOptions[id]) return;
-
-  const selected = selectEl.value;
   selectEl.innerHTML = "";
-
   originalOptions[id].forEach(opt => {
-    const option = document.createElement("option");
-    option.value = opt.value;
-    option.textContent = opt.text;
-    if (opt.value === selected) option.selected = true;
+    const option = new Option(opt.text, opt.value);
     selectEl.appendChild(option);
   });
 }
 
-/* 機種ロック */
-function updateFieldLocking(machineName) {
-  const lockTargets = lockedFieldMap[machineName] || [];
+/* =====================================================
+   初期化
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 元のoption保存
+  lockableIds.forEach(id => {
+    const el = getEl(id);
+    if (!el) return;
+    originalOptions[id] = Array.from(el.options).map(o => ({
+      value: o.value,
+      text: o.text
+    }));
+  });
+
+  // 初期適用
+  updateAll();
+
+  // イベント統一
+  getEl("machine")?.addEventListener("change", updateAll);
+  getEl("time")?.addEventListener("change", updateAll);
+  getEl("through")?.addEventListener("change", updateAtGap);
+});
+
+/* =====================================================
+   全体更新
+===================================================== */
+function updateAll(){
+  updateFieldLocking();
+  updateAsaichiLocking();
+  updateAtGap();
+}
+
+/* =====================================================
+   機種ロック制御
+===================================================== */
+function updateFieldLocking(){
+  const machine = getEl("machine")?.value;
+  const lockTargets = lockedFieldMap[machine] || [];
 
   lockableIds.forEach(id => {
-    const el = document.getElementById(id);
+    const el = getEl(id);
     if (!el) return;
 
     if (lockTargets.includes(id)) {
       el.disabled = true;
       restoreSingleOption(el, "不問");
     } else {
-      restoreOriginalOptions(id, el);
       el.disabled = false;
+      restoreOriginalOptions(id, el);
     }
   });
+
+  const mode = getEl("mode");
+  if (mode) mode.disabled = lockTargets.includes("mode");
 }
 
-/* 朝イチ制御 */
-function updateAsaichiLocking() {
-  const isAsaichi = document.getElementById("time")?.value === "朝イチ";
-  const lockTargets = getLockTargets();
+/* =====================================================
+   朝イチ制御
+===================================================== */
+function updateAsaichiLocking(){
+  const isAsaichi = getEl("time")?.value === "朝イチ";
+  const lockTargets = lockedFieldMap[getEl("machine")?.value] || [];
 
   asaichiTargets.forEach(id => {
-    const el = document.getElementById(id);
+    const el = getEl(id);
     if (!el) return;
 
     if (isAsaichi) {
       el.disabled = true;
       restoreSingleOption(el, "不問");
     } else {
-      restoreOriginalOptions(id, el);
       el.disabled = lockTargets.includes(id);
       if (el.disabled) restoreSingleOption(el, "不問");
+      else restoreOriginalOptions(id, el);
     }
   });
-
-  updateAtGap();
 }
 
-/* AT間G数制御 */
-function updateAtGap() {
-  const el = document.getElementById("at_gap");
-  const through = document.getElementById("through");
+/* =====================================================
+   AT間G数制御（0スルー + 朝イチ対応）
+===================================================== */
+function updateAtGap(){
+  const atGap = getEl("at_gap");
+  const through = getEl("through");
+  const isAsaichi = getEl("time")?.value === "朝イチ";
 
-  if (!el || !through) return;
+  if (!atGap || !through) return;
 
-  const isAsaichi = document.getElementById("time")?.value === "朝イチ";
-  const lockTargets = getLockTargets();
+  if (isAsaichi) {
+    restoreSingleOption(atGap, "不問");
+    atGap.disabled = true;
+    return;
+  }
 
-  if (isAsaichi || lockTargets.includes("at_gap") || through.value === "0スルー") {
-    restoreSingleOption(el, "不問");
-    el.disabled = true;
+  const lockTargets = lockedFieldMap[getEl("machine")?.value] || [];
+
+  if (lockTargets.includes("at_gap")) {
+    restoreSingleOption(atGap, "不問");
+    atGap.disabled = true;
+    return;
+  }
+
+  if (through.value === "0スルー") {
+    restoreSingleOption(atGap, "不問");
+    atGap.disabled = true;
   } else {
-    restoreOriginalOptions("at_gap", el);
-    el.disabled = false;
+    restoreOriginalOptions("at_gap", atGap);
+    atGap.disabled = false;
   }
 }
 
-
 /* =====================================================
-   ④ 初期化
+   リセット
 ===================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-
-  const machine = document.getElementById("machine");
+getEl("reset-btn")?.addEventListener("click", (e) => {
+  e.preventDefault();
 
   lockableIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      originalOptions[id] = Array.from(el.options).map(opt => ({
-        value: opt.value,
-        text: opt.text
-      }));
-    }
+    const el = getEl(id);
+    if (el) el.value = "不問";
   });
 
-  updateFieldLocking(machine.value);
-  updateAsaichiLocking();
-  updateAtGap();
-});
-
-
-/* =====================================================
-   ⑤ イベント
-===================================================== */
-document.getElementById("machine").addEventListener("change", function () {
-  updateFieldLocking(this.value);
-  updateAsaichiLocking();
-});
-
-document.getElementById("time").addEventListener("change", updateAsaichiLocking);
-document.getElementById("through").addEventListener("change", updateAtGap);
-
-
-/* =====================================================
-   ⑥ submit（hidden同期）
-===================================================== */
-document.getElementById("myForm").addEventListener("submit", function () {
-
-  const fields = [
-    "mode","through","at_gap",
-    "prev_game","prev_coin","prev_diff",
-    "prev_renchan","prev_type","custom_condition"
-  ];
-
-  fields.forEach(id => {
-    const el = document.getElementById(id);
-    const hidden = document.getElementById(`${id}_hidden`);
-    if (el && hidden) hidden.value = el.value;
-  });
-});
-
-
-/* =====================================================
-   ⑦ スクロール復元
-===================================================== */
-window.addEventListener("load", () => {
-  const y = sessionStorage.getItem("scrollPosition");
-  if (y !== null) {
-    window.scrollTo(0, parseInt(y));
-    sessionStorage.removeItem("scrollPosition");
+  const result = getEl("result-area");
+  if (result) {
+    result.innerHTML = `
+      <p><strong>【出力結果】</strong></p>
+      <p>ここに出力結果が表示されます。</p>
+    `;
   }
 });
 
-document.getElementById("myForm").addEventListener("submit", () => {
+/* =====================================================
+   hidden同期送信
+===================================================== */
+getEl("myForm")?.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  lockableIds.forEach(id => {
+    const select = getEl(id);
+    const hidden = getEl(id + "_hidden");
+    if (select && hidden) hidden.value = select.value;
+  });
+
+  this.submit();
+});
+
+/* =====================================================
+   スクロール復元
+===================================================== */
+getEl("myForm")?.addEventListener("submit", () => {
   sessionStorage.setItem("scrollPosition", window.scrollY);
 });
 
+window.addEventListener("load", () => {
+  const y = sessionStorage.getItem("scrollPosition");
+  if (y) window.scrollTo(0, parseInt(y));
+});
 
 /* =====================================================
-   ⑧ 詳細トグル
+   詳細トグル（修正版ID対応）
 ===================================================== */
-document.getElementById("toggle-advanced").addEventListener("click", function () {
-  const area = document.getElementById("advanced-area");
-  const open = area.style.display === "grid";
+window.addEventListener("DOMContentLoaded", () => {
+  const area = getEl("advanced-area");
+  const btn = getEl("toggle-advanced");
+  const keep = sessionStorage.getItem("adv") === "1";
 
-  area.style.display = open ? "none" : "grid";
-  this.textContent = open ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
+  if (!area || !btn) return;
+
+  area.style.display = keep ? "grid" : "none";
+  btn.textContent = keep ? "▲ 詳細を隠す" : "▼ 詳細を表示";
+
+  btn.addEventListener("click", () => {
+    const open = area.style.display === "grid";
+    area.style.display = open ? "none" : "grid";
+    sessionStorage.setItem("adv", open ? "0" : "1");
+    btn.textContent = open ? "▼ 詳細を表示" : "▲ 詳細を隠す";
+  });
 });
+
+/* =====================================================
+   min/max制御
+===================================================== */
+function syncMinMax(min, max){
+  const minEl = document.querySelector(`select[name="${min}"]`);
+  const maxEl = document.querySelector(`select[name="${max}"]`);
+  if (!minEl || !maxEl) return;
+
+  minEl.addEventListener("change", () => {
+    const v = parseInt(minEl.value, 10);
+    [...maxEl.options].forEach(o => {
+      o.disabled = parseInt(o.value, 10) < v;
+    });
+    if (parseInt(maxEl.value,10) < v) maxEl.value = v;
+  });
+}
+
+syncMinMax("through_min","through_max");
+syncMinMax("at_gap_min","at_gap_max");
+syncMinMax("prev_game_min","prev_game_max");
+syncMinMax("prev_coin_min","prev_coin_max");
+syncMinMax("prev_diff_min","prev_diff_max");
+syncMinMax("prev_renchan_min","prev_renchan_max");
 </script>
 
 
