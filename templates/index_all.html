@@ -63,18 +63,15 @@
   ===================================================== */
   .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* ← ここ */
+    grid-template-columns: 160px 1fr;
     align-items: center;
     gap: 10px;
   }
 
   .form-row label {
     text-align: left;
-    font-size: 14px;        /* ← 少し小さく */
+    font-size: 14px;
     line-height: 1.2;
-    white-space: nowrap;    /* ← 2行防止 */
-    overflow: hidden;       /* ← はみ出し隠す */
-    text-overflow: ellipsis;/* ← ...表示 */
   }
 
   .form-row select,
@@ -91,7 +88,7 @@
 /* ▼ 修正：実際に使っている .range に適用 */
 .range {
   display: grid;
-  grid-template-columns: 1fr 20px 1fr;
+  grid-template-columns: 1fr 30px 1fr;
   align-items: center;
   gap: 6px;
 }
@@ -104,14 +101,6 @@
 
 #advanced-area {
   display: none;
-  gap: 10px; /* ← これ追加 */
-}
-
-.machine-box {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
 }
 
   /* =====================================================
@@ -174,8 +163,8 @@
      ボタン
   ===================================================== */
   .form-buttons {
-    display: grid;          /* ← flexやめる */
-    grid-template-columns: 1fr 1fr; /* ← 1:1 */
+    display: flex;
+    justify-content: flex-start; /* ← 修正 */
     gap: 10px;
     margin-top: 10px;
   }
@@ -187,18 +176,7 @@
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    width: 100%; /* ← ここを変更 */
-  }
-
-  /* ▼ リセットだけ枠つける */
-  .reset-btn {
-    border: 1px solid #9ca3af;
-    background: linear-gradient(145deg, #e5e7eb, #d1d5db);
-    color: #111827;
-  }
-
-  /* ▼ 出力は枠なし */
-  input[type="submit"] {
+    width: 160px;
     border: none;
   }
 
@@ -293,17 +271,45 @@
 <form id="myForm" method="POST" action="/all">
 
   <!-- 機種名 -->
-<div class="form-row">
-  <label>機種名</label>
+  <div class="form-row">
+    <label for="machine_input">機種名</label>
 
-  <select id="machine_select">
-    {% for key, name in display_names %}
-      <option value="{{ key }}">{{ name }}</option>
-    {% endfor %}
-  </select>
+    <div style="position: relative;">
 
-  <input type="hidden" id="machine" name="machine">
-</div>
+      <!-- ▼ 検索 -->
+      <input
+        type="text"
+        id="machine_input"
+        placeholder="機種名を検索"
+        style="width:100%; margin-bottom:4px;"
+        autocomplete="off"
+      >
+
+      <!-- ▼ 候補 -->
+      <div id="machine_suggest" style="
+        position:absolute;
+        top:38px;
+        left:0;
+        right:0;
+        background:#fff;
+        border:1px solid #ccc;
+        max-height:200px;
+        overflow-y:auto;
+        z-index:10;
+        display:none;
+      "></div>
+
+      <!-- ▼ 既存select（表示する） -->
+      <select id="machine" name="machine" onchange="this.form.submit()">
+        {% for key, name in display_names %}
+          <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
+            {{ name }}
+          </option>
+        {% endfor %}
+      </select>
+
+    </div>
+  </div>
 
   <!-- モード -->
   <div class="form-row">
@@ -550,269 +556,389 @@
     </a>
   {% endif %}
 
+  <!-- =====================================================
+       JS：リセット（選択肢＆結果表示を初期化）
+  ====================================================== -->
+  <script>
+    document.getElementById("reset-btn").addEventListener("click", (e) => {
+      e.preventDefault();
 
-<script>
-/* =====================================================
-   共通データ
-===================================================== */
-const modeOptionsByMachine = {{ mode_options_map | tojson }};
-const lockedFieldMap = {{ locked_field_map | tojson }};
+      const ids = [
+        "through","at_gap","prev_game","prev_coin",
+        "prev_diff","prev_renchan","prev_type","custom_condition"
+      ];
 
-const lockableIds = [
-  "through","at_gap","prev_game","prev_coin",
-  "prev_diff","prev_renchan","prev_type","custom_condition"
-];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "不問";
+        const hidden = document.getElementById(`${id}_hidden`);
+        if (hidden) hidden.value = "不問";
+      });
 
-const asaichiTargets = [
-  "at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type","custom_condition"
-];
-
-const originalOptions = {};
-
-/* =====================================================
-   ユーティリティ
-===================================================== */
-function getEl(id){ return document.getElementById(id); }
-
-function restoreSingleOption(selectEl, value) {
-  selectEl.innerHTML = "";
-  const opt = document.createElement("option");
-  opt.value = value;
-  opt.textContent = value;
-  selectEl.appendChild(opt);
-  selectEl.value = value;
-}
-
-function restoreOriginalOptions(id, selectEl) {
-  if (!originalOptions[id]) return;
-  selectEl.innerHTML = "";
-  originalOptions[id].forEach(opt => {
-    const option = new Option(opt.text, opt.value);
-    selectEl.appendChild(option);
-  });
-}
-
-/* =====================================================
-   初期化
-===================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-
-  // 元のoption保存
-  lockableIds.forEach(id => {
-    const el = getEl(id);
-    if (!el) return;
-    originalOptions[id] = Array.from(el.options).map(o => ({
-      value: o.value,
-      text: o.text
-    }));
-  });
-
-  // 初期適用
-  updateAll();
-
-  // イベント統一
-  getEl("machine")?.addEventListener("change", updateAll);
-  getEl("time")?.addEventListener("change", updateAll);
-  getEl("through")?.addEventListener("change", updateAtGap);
-});
-
-/* =====================================================
-   全体更新
-===================================================== */
-function updateAll(){
-  updateFieldLocking();
-  updateAsaichiLocking();
-  updateAtGap();
-}
-
-/* =====================================================
-   機種ロック制御
-===================================================== */
-function updateFieldLocking(){
-  const machine = getEl("machine")?.value;
-  const lockTargets = lockedFieldMap[machine] || [];
-
-  lockableIds.forEach(id => {
-    const el = getEl(id);
-    if (!el) return;
-
-    if (lockTargets.includes(id)) {
-      el.disabled = true;
-      restoreSingleOption(el, "不問");
-    } else {
-      el.disabled = false;
-      restoreOriginalOptions(id, el);
-    }
-  });
-
-  const mode = getEl("mode");
-  if (mode) mode.disabled = lockTargets.includes("mode");
-}
-
-/* =====================================================
-   朝イチ制御
-===================================================== */
-function updateAsaichiLocking(){
-  const isAsaichi = getEl("time")?.value === "朝イチ";
-  const lockTargets = lockedFieldMap[getEl("machine")?.value] || [];
-
-  asaichiTargets.forEach(id => {
-    const el = getEl(id);
-    if (!el) return;
-
-    if (isAsaichi) {
-      el.disabled = true;
-      restoreSingleOption(el, "不問");
-    } else {
-      el.disabled = lockTargets.includes(id);
-      if (el.disabled) restoreSingleOption(el, "不問");
-      else restoreOriginalOptions(id, el);
-    }
-  });
-}
-
-/* =====================================================
-   AT間G数制御（0スルー + 朝イチ対応）
-===================================================== */
-function updateAtGap(){
-  const atGap = getEl("at_gap");
-  const through = getEl("through");
-  const isAsaichi = getEl("time")?.value === "朝イチ";
-
-  if (!atGap || !through) return;
-
-  if (isAsaichi) {
-    restoreSingleOption(atGap, "不問");
-    atGap.disabled = true;
-    return;
-  }
-
-  const lockTargets = lockedFieldMap[getEl("machine")?.value] || [];
-
-  if (lockTargets.includes("at_gap")) {
-    restoreSingleOption(atGap, "不問");
-    atGap.disabled = true;
-    return;
-  }
-
-  if (through.value === "0スルー") {
-    restoreSingleOption(atGap, "不問");
-    atGap.disabled = true;
-  } else {
-    restoreOriginalOptions("at_gap", atGap);
-    atGap.disabled = false;
-  }
-}
-
-/* =====================================================
-   リセット
-===================================================== */
-getEl("reset-btn")?.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  lockableIds.forEach(id => {
-    const el = getEl(id);
-    if (el) el.value = "不問";
-  });
-
-  const result = getEl("result-area");
-  if (result) {
-    result.innerHTML = `
-      <p><strong>【出力結果】</strong></p>
-      <p>ここに出力結果が表示されます。</p>
-    `;
-  }
-});
-
-/* =====================================================
-   hidden同期送信
-===================================================== */
-getEl("myForm")?.addEventListener("submit", function(e){
-  e.preventDefault();
-
-  lockableIds.forEach(id => {
-    const select = getEl(id);
-    const hidden = getEl(id + "_hidden");
-    if (select && hidden) hidden.value = select.value;
-  });
-
-  this.submit();
-});
-
-/* =====================================================
-   スクロール復元
-===================================================== */
-getEl("myForm")?.addEventListener("submit", () => {
-  sessionStorage.setItem("scrollPosition", window.scrollY);
-});
-
-window.addEventListener("load", () => {
-  const y = sessionStorage.getItem("scrollPosition");
-  if (y) window.scrollTo(0, parseInt(y));
-});
-
-/* =====================================================
-   詳細トグル（修正版ID対応）
-===================================================== */
-window.addEventListener("DOMContentLoaded", () => {
-  const area = getEl("advanced-area");
-  const btn = getEl("toggle-advanced");
-  const keep = sessionStorage.getItem("adv") === "1";
-
-  if (!area || !btn) return;
-
-  area.style.display = keep ? "grid" : "none";
-  btn.textContent = keep ? "▲ 詳細を隠す" : "▼ 詳細を表示";
-
-  btn.addEventListener("click", () => {
-    const open = area.style.display === "grid";
-    area.style.display = open ? "none" : "grid";
-    sessionStorage.setItem("adv", open ? "0" : "1");
-    btn.textContent = open ? "▼ 詳細を表示" : "▲ 詳細を隠す";
-  });
-});
-
-/* =====================================================
-   min/max制御
-===================================================== */
-function syncMinMax(min, max){
-  const minEl = document.querySelector(`select[name="${min}"]`);
-  const maxEl = document.querySelector(`select[name="${max}"]`);
-  if (!minEl || !maxEl) return;
-
-  minEl.addEventListener("change", () => {
-    const v = parseInt(minEl.value, 10);
-    [...maxEl.options].forEach(o => {
-      o.disabled = parseInt(o.value, 10) < v;
+      const resultArea = document.getElementById("result-area");
+      resultArea.innerHTML = `
+        <p id="result-title"><strong>【出力結果】</strong></p>
+        <p>ここに出力結果が表示されます。</p>
+      `;
     });
-    if (parseInt(maxEl.value,10) < v) maxEl.value = v;
-  });
-}
+  </script>
 
-syncMinMax("through_min","through_max");
-syncMinMax("at_gap_min","at_gap_max");
-syncMinMax("prev_game_min","prev_game_max");
-syncMinMax("prev_coin_min","prev_coin_max");
-syncMinMax("prev_diff_min","prev_diff_max");
-syncMinMax("prev_renchan_min","prev_renchan_max");
-</script>
+  <!-- =====================================================
+       JS：モード選択肢（Flask → JS へ受け渡し）
+  ====================================================== -->
+  <script>
+    const modeOptionsByMachine = {{ mode_options_map | tojson }};
+  </script>
 
-
+  <!-- =====================================================
+       JS：ロック対象（機種ごと）＋ 朝イチ時の制御
+  ====================================================== -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const select = document.getElementById("machine_select");
-  const hidden = document.getElementById("machine");
+  // サーバから渡すロック設定（表示名キー）
+  const lockedFieldMap = {{ locked_field_map | tojson }};
 
-  if (!select || !hidden) return;
+  // ロック対象になり得るIDを一元管理
+  const lockableIds = [
+    "through","at_gap","prev_diff","prev_game","prev_coin","prev_renchan","prev_type","custom_condition"
+  ];
 
-  function sync() {
-    hidden.value = select.value;
+  // ★ 朝イチで不問固定にする対象に at_gap を含める
+  const asaichiTargets = ["at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type","custom_condition"];
+
+  // 元の<option>退避
+  const originalOptions = {};
+
+  // 現在機種のロック対象を取得
+  function getLockTargets() {
+    const m = document.getElementById("machine")?.value;
+    return lockedFieldMap[m] || [];
   }
 
-  sync();
-  select.addEventListener("change", sync);
-});
+  document.addEventListener("DOMContentLoaded", () => {
+    // 機種名は常にロック
+    const machineEl = document.getElementById("machine");
+    if (machineEl) machineEl.disabled = false;
+
+    // 元の選択肢をロック候補すべてで退避
+    lockableIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        originalOptions[id] = Array.from(el.options).map(opt => ({
+          value: opt.value, text: opt.text
+        }));
+      }
+    });
+
+    // 初期適用
+    updateFieldLocking(document.getElementById("machine").value);
+    updateAsaichiLocking(document.getElementById("time").value);
+    updateAtGapBasedOnThrough(); // 0スルー→AT間G数の固定
+  });
+
+  // 機種ごとのロック適用
+  function updateFieldLocking(machineName) {
+    const lockTargets = lockedFieldMap[machineName] || [];
+
+    lockableIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      if (lockTargets.includes(id)) {
+        el.disabled = true;
+        restoreSingleOption(el, "不問");
+      } else {
+        restoreOriginalOptions(id, el);
+        el.disabled = false;
+      }
+    });
+
+    const modeEl = document.getElementById("mode");
+    if (modeEl) modeEl.disabled = lockTargets.includes("mode");
+
+    // スルーとの連動は最後に再評価
+    updateAtGapBasedOnThrough();
+  }
+
+  // 朝イチのときは一部項目を不問固定（機種ロックは維持）
+  function updateAsaichiLocking(timeValue) {
+    const isAsaichi = (timeValue === "朝イチ");
+    const lockTargets = getLockTargets();
+
+    asaichiTargets.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      if (isAsaichi && id !== "through") {
+        el.disabled = true;
+        restoreSingleOption(el, "不問");
+      } else {
+        restoreOriginalOptions(id, el);
+        // 機種ロック対象は解除しない
+        el.disabled = lockTargets.includes(id);
+        if (el.disabled) restoreSingleOption(el, "不問");
+      }
+    });
+  }
+
+  // 0スルー時は AT間G数 を不問固定（★ 朝イチ最優先）
+  function updateAtGapBasedOnThrough() {
+    const atGapSelect = document.getElementById("at_gap");
+    const throughSelect = document.getElementById("through");
+    if (!atGapSelect || !throughSelect) return;
+
+    // ★ 追加：朝イチなら常に at_gap は不問固定＋disabled
+    const isAsaichi = document.getElementById("time")?.value === "朝イチ";
+    if (isAsaichi) {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+      return;
+    }
+
+    const lockTargets = getLockTargets();
+    // 機種ロックに at_gap が含まれるなら常に固定
+    if (lockTargets.includes("at_gap")) {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+      return;
+    }
+
+    // 通常時：0スルーなら固定、それ以外は選択可
+    const throughValue = throughSelect.value;
+    if (throughValue === "0スルー") {
+      restoreSingleOption(atGapSelect, "不問");
+      atGapSelect.disabled = true;
+    } else {
+      restoreOriginalOptions("at_gap", atGapSelect);
+      atGapSelect.disabled = false;
+    }
+  }
+
+  // Select を「不問」1択にする
+  function restoreSingleOption(selectEl, value) {
+    selectEl.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = value;
+    selectEl.appendChild(opt);
+    selectEl.value = value;
+  }
+
+  // Select の元の選択肢を復元
+  function restoreOriginalOptions(id, selectEl) {
+    if (!originalOptions[id]) return;
+    const selected = selectEl.dataset.selected;
+    selectEl.innerHTML = "";
+    originalOptions[id].forEach(opt => {
+      const option = document.createElement("option");
+      option.value = opt.value;
+      option.textContent = opt.text;
+      if (opt.value === selected) option.selected = true;
+      selectEl.appendChild(option);
+    });
+  }
+
+  // イベント
+  document.getElementById("machine").addEventListener("change", function () {
+    updateFieldLocking(this.value);
+    updateAtGapBasedOnThrough(); // 念のため再評価
+  });
+  document.getElementById("time").addEventListener("change", function () {
+    updateAsaichiLocking(this.value);
+    updateAtGapBasedOnThrough(); // ★ 朝イチ切替時にも反映
+  });
+  document.getElementById("through").addEventListener("change", function () {
+    updateAtGapBasedOnThrough();
+  });
 </script>
+
+  <!-- =====================================================
+       JS：機種変更時に各条件を「不問」に戻す
+  ====================================================== -->
+  <script>
+    function resetFieldsOnMachineChange() {
+      const resetTargets = ["through","at_gap","prev_game","prev_coin","prev_diff","prev_renchan","prev_type"];
+      resetTargets.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let option = Array.from(el.options).find(opt => opt.value === "不問");
+        if (!option) el.add(new Option("不問", "不問"));
+        el.value = "不問";
+      });
+
+      const gameInput = document.getElementById("game");
+      if (gameInput) gameInput.value = "0";
+    }
+    document.getElementById("machine").addEventListener("change", () => {
+      resetFieldsOnMachineChange();
+    });
+  </script>
+
+  <!-- =====================================================
+       JS：送信後のスクロール位置を復元
+  ====================================================== -->
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function () {
+      const scrollY = window.scrollY;
+      sessionStorage.setItem("scrollPosition", scrollY);
+    });
+    window.addEventListener("load", function () {
+      const savedY = sessionStorage.getItem("scrollPosition");
+      if (savedY !== null) {
+        window.scrollTo(0, parseInt(savedY));
+        sessionStorage.removeItem("scrollPosition");
+      }
+    });
+  </script>
+
+  <!-- =====================================================
+       JS：詳細条件トグル（状態保持）
+  ====================================================== -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const section = document.getElementById("advanced-section");
+      const button  = document.getElementById("toggle-detail");
+      const keepOpen = sessionStorage.getItem("keepAdvancedOpen") === "true";
+
+      section.style.display = keepOpen ? "grid" : "none";
+      if (button) button.textContent = keepOpen ? "▲ 詳細条件を隠す（前回条件）" : "▼ 詳細条件を表示（前回条件）";
+
+      if (button) {
+        button.addEventListener("click", () => {
+          const isVisible = section.style.display === "grid";
+          section.style.display = isVisible ? "none" : "grid";
+          button.textContent = isVisible ? "▼ 詳細条件を表示（前回条件）" : "▲ 詳細条件を隠す（前回条件）";
+          sessionStorage.setItem("keepAdvancedOpen", String(!isVisible));
+        });
+      }
+    });
+  </script>
+
+  <!-- =====================================================
+       JS：select値をhiddenへコピーして送信（name整合のため）
+  ====================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("myForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // 一旦止める
+
+        const syncFields = [
+          "mode","through","at_gap",
+          "prev_game","prev_coin","prev_diff",
+          "prev_renchan","prev_type","custom_condition"
+        ];
+
+        syncFields.forEach(id => {
+          const select = document.getElementById(id);
+          const hidden = document.getElementById(`${id}_hidden`);
+          if (select && hidden) hidden.value = select.value;
+        });
+
+        this.submit(); // コピー後に送信
+      });
+    });
+  </script>
+
+
+  <script>
+  function syncMinMax(minName, maxName) {
+    const minEl = document.querySelector(`select[name="${minName}"]`);
+    const maxEl = document.querySelector(`select[name="${maxName}"]`);
+
+    if (!minEl || !maxEl) return;
+
+    minEl.addEventListener("change", () => {
+      const minVal = parseInt(minEl.value, 10);
+
+      [...maxEl.options].forEach(opt => {
+        opt.disabled = parseInt(opt.value, 10) < minVal;
+      });
+
+      if (parseInt(maxEl.value, 10) < minVal) {
+        maxEl.value = minVal;
+      }
+    });
+  }
+
+  // 対象項目
+  syncMinMax("through_min", "through_max");
+  syncMinMax("at_gap_min", "at_gap_max");
+  syncMinMax("prev_game_min", "prev_game_max");
+  syncMinMax("prev_coin_min", "prev_coin_max");
+  syncMinMax("prev_diff_min", "prev_diff_max");
+  syncMinMax("prev_renchan_min", "prev_renchan_max");
+  </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("machine_input");
+    const suggest = document.getElementById("machine_suggest");
+    const hidden = document.getElementById("machine");
+
+    // 元データ
+    const data = [
+      {% for key, name in display_names %}
+        { key: "{{ key }}", name: "{{ name }}" },
+      {% endfor %}
+    ];
+
+    input.addEventListener("input", function () {
+      const keyword = this.value.toLowerCase();
+
+      suggest.innerHTML = "";
+
+      if (!keyword) {
+        suggest.style.display = "none";
+        return;
+      }
+
+      const filtered = data.filter(d =>
+        d.name.toLowerCase().includes(keyword)
+      );
+
+      if (filtered.length === 0) {
+        suggest.style.display = "none";
+        return;
+      }
+
+      filtered.forEach(d => {
+        const div = document.createElement("div");
+        div.textContent = d.name;
+        div.style.padding = "8px";
+        div.style.cursor = "pointer";
+
+        div.addEventListener("click", function () {
+          input.value = d.name;
+          hidden.value = d.key;
+          suggest.style.display = "none";
+
+          // ★ 即反映
+          document.getElementById("myForm").submit();
+        });
+
+        suggest.appendChild(div);
+      });
+
+      suggest.style.display = "block";
+    });
+
+    // 外クリックで閉じる
+    document.addEventListener("click", function (e) {
+      if (!input.contains(e.target) && !suggest.contains(e.target)) {
+        suggest.style.display = "none";
+      }
+    });
+  });
+  </script>
+
+  <script>
+  document.getElementById("toggle-advanced").addEventListener("click", function () {
+    const area = document.getElementById("advanced-area");
+    const isOpen = area.style.display === "block";
+
+    area.style.display = isOpen ? "none" : "block";
+    this.textContent = isOpen ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
+  });
+  </script>
 
 </body>
 </html>
