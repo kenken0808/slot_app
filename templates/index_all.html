@@ -273,19 +273,20 @@
     <label for="machine_input">機種名</label>
 
     <div style="position: relative;">
-      <!-- 入力 -->
+
+      <!-- ▼ 検索 -->
       <input
         type="text"
         id="machine_input"
         placeholder="機種名を検索"
-        style="width:100%;"
+        style="width:100%; margin-bottom:4px;"
         autocomplete="off"
       >
 
-      <!-- 候補表示 -->
+      <!-- ▼ 候補 -->
       <div id="machine_suggest" style="
         position:absolute;
-        top:100%;
+        top:38px;
         left:0;
         right:0;
         background:#fff;
@@ -296,8 +297,15 @@
         display:none;
       "></div>
 
-      <!-- 実際に送る -->
-      <input type="hidden" id="machine" name="machine">
+      <!-- ▼ 既存select（表示する） -->
+      <select id="machine" name="machine" onchange="this.form.submit()">
+        {% for key, name in display_names %}
+          <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
+            {{ name }}
+          </option>
+        {% endfor %}
+      </select>
+
     </div>
   </div>
 
