@@ -23,6 +23,12 @@ machine_configs = {
         "file_key": "zenigata4",
         "og_image": "zenigata4.jpg",
         "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
+    },
+    "tensei2": {
+        "display_name": "L 北斗の拳転生の章2",
+        "file_key": "zenigata4",
+        "og_image": "zenigata4.jpg",
+        "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
     }
 }
 
