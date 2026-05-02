@@ -107,6 +107,13 @@
   gap: 10px; /* ← これ追加 */
 }
 
+.machine-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
   /* =====================================================
      フォーム（メタリック）
   ===================================================== */
@@ -289,15 +296,16 @@
   <div class="form-row">
     <label>機種名</label>
 
-    <!-- 検索 -->
-    <input type="text" id="machine_input" placeholder="検索（例：北斗）">
+    <!-- 検索＋候補をまとめる -->
+    <div class="machine-box">
+      <input type="text" id="machine_input" placeholder="検索（例：北斗）">
 
-    <!-- 候補 -->
-    <select id="machine_select" size="6">
-      {% for key, name in display_names %}
-        <option value="{{ key }}">{{ name }}</option>
-      {% endfor %}
-    </select>
+      <select id="machine_select" size="6">
+        {% for key, name in display_names %}
+          <option value="{{ key }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
     <input type="hidden" id="machine" name="machine">
   </div>
