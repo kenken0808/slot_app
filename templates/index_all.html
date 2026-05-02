@@ -271,13 +271,23 @@
   <!-- 機種名 -->
   <div class="form-row">
     <label for="machine">機種名</label>
-    <select id="machine" name="machine" onchange="this.form.submit()">
+
+    <!-- ▼ 修正：input + datalist に変更 -->
+    <input
+      list="machine-list"
+      id="machine"
+      name="machine"
+      value="{{ selected_machine }}"
+      placeholder="機種名を入力または選択"
+      onchange="this.form.submit()"
+    >
+
+    <datalist id="machine-list">
       {% for key, name in display_names %}
-        <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
-          {{ name }}
-        </option>
+        <!-- ▼ 表示名で検索できるようにする -->
+        <option value="{{ name }}"></option>
       {% endfor %}
-    </select>
+    </datalist>
   </div>
 
   <!-- モード -->
