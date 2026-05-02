@@ -803,5 +803,32 @@ syncMinMax("prev_renchan_min","prev_renchan_max");
 </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("machine_select");
+  const hidden = document.getElementById("machine");
+  const input = document.getElementById("machine_input");
+
+  if (!select || !hidden) return;
+
+  function sync() {
+    hidden.value = select.value;
+
+    if (input) {
+      input.value = select.options[select.selectedIndex].text;
+    }
+  }
+
+  // 初期反映
+  sync();
+
+  // 選択変更時
+  select.addEventListener("change", sync);
+
+  // クリックでも反映
+  select.addEventListener("click", sync);
+});
+</script>
+
 </body>
 </html>
