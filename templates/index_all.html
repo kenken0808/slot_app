@@ -809,24 +809,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const hidden = document.getElementById("machine");
   const input = document.getElementById("machine_input");
 
-  if (!select || !hidden) return;
+  if (!select || !hidden || !input) return;
 
   function sync() {
-    hidden.value = select.value;
+    const selected = select.options[select.selectedIndex];
 
-    if (input) {
-      input.value = select.options[select.selectedIndex].text;
-    }
+    if (!selected) return; // ★これが重要
+
+    hidden.value = select.value;
+    input.value = selected.text;
   }
 
-  // 初期反映
+  // 初期
   sync();
 
-  // 選択変更時
   select.addEventListener("change", sync);
-
-  // クリックでも反映
-  select.addEventListener("click", sync);
 });
 </script>
 
