@@ -164,8 +164,8 @@
      ボタン
   ===================================================== */
   .form-buttons {
-    display: flex;
-    justify-content: flex-start; /* ← 修正 */
+    display: grid;          /* ← flexやめる */
+    grid-template-columns: 160px 1fr; /* ← form-rowと揃える */
     gap: 10px;
     margin-top: 10px;
   }
@@ -177,7 +177,7 @@
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    width: 160px;
+    width: 100%; /* ← ここを変更 */
   }
 
   /* ▼ リセットだけ枠つける */
