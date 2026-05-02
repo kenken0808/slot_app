@@ -902,6 +902,7 @@
       // ③ 自動選択
       // =========================
       select.selectedIndex = 0;
+      select.dispatchEvent(new Event('change')); // ★追加：機種変更を発火
     });
   });
   </script>
