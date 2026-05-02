@@ -293,22 +293,17 @@
 <form id="myForm" method="POST" action="/all">
 
   <!-- 機種名 -->
-  <div class="form-row">
-    <label>機種名</label>
+<div class="form-row">
+  <label>機種名</label>
 
-    <!-- 検索＋候補をまとめる -->
-    <div class="machine-box">
-      <input type="text" id="machine_input" placeholder="検索（例：北斗）">
+  <select id="machine_select">
+    {% for key, name in display_names %}
+      <option value="{{ key }}">{{ name }}</option>
+    {% endfor %}
+  </select>
 
-      <select id="machine_select" size="6">
-        {% for key, name in display_names %}
-          <option value="{{ key }}">{{ name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <input type="hidden" id="machine" name="machine">
-  </div>
+  <input type="hidden" id="machine" name="machine">
+</div>
 
   <!-- モード -->
   <div class="form-row">
@@ -807,22 +802,14 @@ syncMinMax("prev_renchan_min","prev_renchan_max");
 document.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById("machine_select");
   const hidden = document.getElementById("machine");
-  const input = document.getElementById("machine_input");
 
-  if (!select || !hidden || !input) return;
+  if (!select || !hidden) return;
 
   function sync() {
-    const selected = select.options[select.selectedIndex];
-
-    if (!selected) return; // ★これが重要
-
     hidden.value = select.value;
-    input.value = selected.text;
   }
 
-  // 初期
   sync();
-
   select.addEventListener("change", sync);
 });
 </script>
