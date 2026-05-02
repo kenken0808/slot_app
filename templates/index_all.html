@@ -63,15 +63,18 @@
   ===================================================== */
   .form-row {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 1fr 1fr; /* ← ここ */
     align-items: center;
     gap: 10px;
   }
 
   .form-row label {
     text-align: left;
-    font-size: 14px;
+    font-size: 14px;        /* ← 少し小さく */
     line-height: 1.2;
+    white-space: nowrap;    /* ← 2行防止 */
+    overflow: hidden;       /* ← はみ出し隠す */
+    text-overflow: ellipsis;/* ← ...表示 */
   }
 
   .form-row select,
