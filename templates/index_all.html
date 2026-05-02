@@ -953,20 +953,22 @@ document.addEventListener("DOMContentLoaded", function () {
     {% endfor %}
   ];
 
-  function setValueFromSelect() {
-    if (select.selectedIndex >= 0) {
-      hidden.value = select.value;
-      input.value = select.options[select.selectedIndex].text;
-    }
+  // 初期値反映
+  function syncFromSelect() {
+    const opt = select.options[select.selectedIndex];
+    if (!opt) return;
+    hidden.value = opt.value;
+    input.value = opt.text;
   }
 
-  setValueFromSelect();
+  syncFromSelect();
 
+  // 選択 → hidden & input更新
   select.addEventListener("change", function () {
-    hidden.value = this.value;
-    input.value = this.options[this.selectedIndex].text;
+    syncFromSelect();
   });
 
+  // 検索 → select再生成（選択状態も維持しない）
   input.addEventListener("input", function () {
     const keyword = this.value.toLowerCase();
 
@@ -983,8 +985,15 @@ document.addEventListener("DOMContentLoaded", function () {
       select.appendChild(opt);
     });
   });
+
+  // クリックで確定
+  select.addEventListener("click", function () {
+    syncFromSelect();
+
+    const form = document.getElementById("myForm");
+    if (form) form.submit();
+  });
 });
 </script>
-
 </body>
 </html>
