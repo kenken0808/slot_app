@@ -947,23 +947,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!input || !select || !hidden) return;
 
-  // Flaskからのデータ
   const data = [
     {% for key, name in display_names %}
       { key: "{{ key }}", name: "{{ name }}" },
     {% endfor %}
   ];
 
-  // 初期値セット
-  hidden.value = select.value;
+  function setValueFromSelect() {
+    if (select.selectedIndex >= 0) {
+      hidden.value = select.value;
+      input.value = select.options[select.selectedIndex].text;
+    }
+  }
 
-  // セレクト変更 → hidden更新
+  setValueFromSelect();
+
   select.addEventListener("change", function () {
     hidden.value = this.value;
     input.value = this.options[this.selectedIndex].text;
   });
 
-  // 検索入力 → フィルタ反映
   input.addEventListener("input", function () {
     const keyword = this.value.toLowerCase();
 
@@ -979,15 +982,6 @@ document.addEventListener("DOMContentLoaded", function () {
       opt.textContent = d.name;
       select.appendChild(opt);
     });
-  });
-
-  // クリックで確定
-  select.addEventListener("click", function () {
-    hidden.value = this.value;
-    input.value = this.options[this.selectedIndex].text;
-
-    // 即反映したい場合
-    document.getElementById("myForm")?.submit();
   });
 });
 </script>
