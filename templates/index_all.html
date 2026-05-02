@@ -101,6 +101,7 @@
 
 #advanced-area {
   display: none;
+  gap: 10px; /* ← これ追加 */
 }
 
   /* =====================================================
@@ -933,9 +934,9 @@
   <script>
   document.getElementById("toggle-advanced").addEventListener("click", function () {
     const area = document.getElementById("advanced-area");
-    const isOpen = area.style.display === "block";
+    const isOpen = area.style.display === "grid"; // ← 修正
 
-    area.style.display = isOpen ? "none" : "block";
+    area.style.display = isOpen ? "none" : "grid"; // ← block → grid
     this.textContent = isOpen ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
   });
   </script>
