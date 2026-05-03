@@ -63,7 +63,7 @@
   ===================================================== */
   .form-row {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 1fr 1fr;  /* ← これ */
     align-items: center;
     gap: 10px;
   }
@@ -88,7 +88,7 @@
 /* ▼ 修正：実際に使っている .range に適用 */
 .range {
   display: grid;
-  grid-template-columns: 1fr 30px 1fr;
+  grid-template-columns: 1fr 20px 1fr;
   align-items: center;
   gap: 6px;
 }
@@ -101,6 +101,15 @@
 
 #advanced-area {
   display: none;
+  margin-top: 10px;
+}
+
+#advanced-area .form-row + .form-row {
+  margin-top: 10px;
+}
+
+#toggle-advanced {
+  margin-top: 10px;
 }
 
   /* =====================================================
@@ -163,8 +172,8 @@
      ボタン
   ===================================================== */
   .form-buttons {
-    display: flex;
-    justify-content: flex-start; /* ← 修正 */
+    display: grid;                 /* ← これに変更 */
+    grid-template-columns: 1fr 1fr;/* ← これ追加 */
     gap: 10px;
     margin-top: 10px;
   }
@@ -176,8 +185,8 @@
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    width: 160px;
-    border: none;
+    width: 100%;   /* ← これに変更 */
+    border: 1px solid #9ca3af;
   }
 
   input[type="submit"] {
