@@ -68,7 +68,7 @@ body {
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: start;
+    align-items: center;  /* ←ここだけ変更 */
     gap: 4px;
     padding: 6px 0;
     position: relative;
@@ -81,8 +81,12 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: #e5e7eb;
+  background: rgba(255, 140, 0, 0.15); /* オレンジ薄線 */
 }
+
+
+
+
 
 .form-row:first-of-type::before {
   display: none;
@@ -111,9 +115,7 @@ body {
 select, input {
   border-radius: 6px;
 }
-.form-row::before {
-  background: #e5e7eb80;
-}
+
 
 
 /* ▼ 修正：実際に使っている .range に適用 */
@@ -195,16 +197,7 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(255,140,0,0.25);
 }
 
-  /* 区切り */
-.form-row::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(255, 140, 0, 0.15); /* オレンジ薄線 */
-}
+
 
   /* =====================================================
      ボタン
@@ -216,21 +209,74 @@ input:focus {
     margin-top: 10px;
   }
 
-  .reset-btn,
-  input[type="submit"] {
-    padding: 14px 22px;
-    font-size: 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;   /* ← これに変更 */
-    border: 1px solid #9ca3af;
-  }
+.reset-btn,
+input[type="submit"] {
+  padding: 14px 22px;
+  font-size: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.reset-btn {
+  background: #0a0a0a;
+  color: #e5e7eb;
+
+  border: 1px solid #ff8c00;
+}
+
+.reset-icon {
+  display: inline-block;
+  margin-right: 6px;
+  color: #ff8c00;
+}
+
+
+.submit-btn {
+  background: linear-gradient(145deg, #ff8c00, #e67300);
+  border: 1px solid #ff8c00;
+  color: #fff;
+  align-items: center;
+
+  padding: 14px 22px;
+  font-size: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+}
+
+/* ←ここに追加 */
+.submit-btn span:last-child {
+  position: relative;
+  top: 1px;
+}
+
+.submit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-icon svg {
+  display: block;
+}
+
 
 input[type="submit"] {
   background: linear-gradient(145deg, #ff8c00, #e67300);
   border: 1px solid #ff8c00;
-  color: #0b1220;
+  color: #ffffff;  /* ←ここを白にする */
 
   box-shadow:
     0 6px 16px rgba(255, 140, 0, 0.25),
@@ -256,18 +302,23 @@ input[type="submit"]:active {
   /* =====================================================
      結果
   ===================================================== */
-  .result {
-    margin-top: 20px;
-    background: linear-gradient(145deg, #ecfdf5, #d1fae5);
-    border-left: 5px solid #10b981;
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 15px;
-    color: #065f46;
-    box-shadow:
-      inset 0 1px 0 #fff,
-      0 4px 10px rgba(0,0,0,0.1);
-  }
+.result {
+  margin-top: 20px;
+
+  background: rgba(0, 0, 0, 0.7);
+
+  border: 1px solid rgba(255, 140, 0, 0.25);
+  border-left: 4px solid #ff8c00;
+
+  padding: 16px;
+  border-radius: 10px;
+
+  font-size: 15px;
+  color: #e5e7eb;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.6);
+}
 
   .error {
     background-color: #fef2f2;
@@ -585,8 +636,21 @@ input[type="submit"]:active {
 
     <!-- ボタン群 -->
     <div class="form-buttons">
-      <button type="button" id="reset-btn" class="reset-btn">リセット</button>
-      <input type="submit" value="出力">
+      <button class="reset-btn">
+        <span class="reset-icon">⟲</span> リセット
+      </button>
+      <button type="submit" class="submit-btn">
+        <span class="submit-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 19V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 19V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M22 5L14 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 5H22V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        出力
+      </button>
     </div>
   </form>
 
