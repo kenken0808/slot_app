@@ -142,7 +142,26 @@ select, input {
 }
 
 #toggle-advanced {
-  margin-top: 10px;
+  width: 100%;
+  padding: 10px 12px;
+
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 140, 0, 0.25);
+  border-radius: 10px;
+
+  color: #e5e7eb;
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+}
+
+#toggle-advanced:hover {
+  background: rgba(255, 140, 0, 0.08);
+  border-color: rgba(255, 140, 0, 0.4);
+  color: #ffffff;
 }
 
   /* =====================================================
@@ -401,6 +420,46 @@ input[type="submit"]:active {
 }
 
 
+
+.toggle-btn {
+  width: 100%;
+  padding: 10px 12px;
+
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 140, 0, 0.25);
+  border-radius: 10px;
+
+  color: #e5e7eb;
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 140, 0, 0.08);
+  border-color: rgba(255, 140, 0, 0.4);
+  color: #fff;
+}
+
+/* アイコン回転 */
+.toggle-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.toggle-btn.open .toggle-icon {
+  transform: rotate(180deg);
+}
+
+
+
 </style>
 </head>
 
@@ -518,9 +577,10 @@ input[type="submit"]:active {
     </div>
   </div>
 
-  <button type="button" id="toggle-advanced" class="toggle-btn">
-    ▼ 詳細条件を表示
-  </button>
+<button type="button" id="toggle-advanced" class="toggle-btn">
+  <span class="toggle-icon">▼</span>
+  詳細条件を表示
+</button>
 
   <div id="advanced-area">
 
@@ -849,12 +909,18 @@ document.addEventListener("DOMContentLoaded", function () {
        JS：詳細条件トグル
   ====================================================== -->
   <script>
-  document.getElementById("toggle-advanced").addEventListener("click", function () {
-    const area = document.getElementById("advanced-area");
-    const isOpen = area.style.display === "block";
-    area.style.display = isOpen ? "none" : "block";
-    this.textContent = isOpen ? "▼ 詳細条件を表示" : "▲ 詳細条件を隠す";
-  });
+document.getElementById("toggle-advanced").addEventListener("click", function () {
+  const area = document.getElementById("advanced-area");
+  const isOpen = area.style.display === "block";
+
+  area.style.display = isOpen ? "none" : "block";
+
+  this.classList.toggle("open", !isOpen);
+  this.innerHTML = `
+    <span class="toggle-icon">▼</span>
+    ${isOpen ? "詳細条件を表示" : "詳細条件を隠す"}
+  `;
+});
   </script>
 
 <script>
