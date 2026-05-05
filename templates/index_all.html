@@ -337,14 +337,7 @@
         display:none;
       "></div>
 
-      <!-- ▼ 既存select（表示する） -->
-      <select id="machine" name="machine" onchange="this.form.submit()">
-        {% for key, name in display_names %}
-          <option value="{{ key }}" {% if key == selected_machine %}selected{% endif %}>
-            {{ name }}
-          </option>
-        {% endfor %}
-      </select>
+<input type="hidden" id="machine" name="machine" value="{{ selected_machine }}">
 
     </div>
   </div>
@@ -661,67 +654,65 @@
 
 
 
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("machine_input");
-    const suggest = document.getElementById("machine_suggest");
-    const hidden = document.getElementById("machine");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("machine_input");
+  const suggest = document.getElementById("machine_suggest");
+  const hidden = document.getElementById("machine");
 
-    // 元データ
-    const data = [
-      {% for key, name in display_names %}
-        { key: "{{ key }}", name: "{{ name }}" },
-      {% endfor %}
-    ];
+  const data = [
+    {% for key, name in display_names %}
+      { key: "{{ key }}", name: "{{ name }}" },
+    {% endfor %}
+  ];
 
-    input.addEventListener("input", function () {
-      const keyword = this.value.toLowerCase();
+  input.addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+    suggest.innerHTML = "";
 
-      suggest.innerHTML = "";
+    if (!keyword) {
+      suggest.style.display = "none";
+      hidden.value = ""; // ← リセット
+      return;
+    }
 
-      if (!keyword) {
+    const filtered = data.filter(d =>
+      d.name.toLowerCase().includes(keyword)
+    );
+
+    if (filtered.length === 0) {
+      suggest.style.display = "none";
+      hidden.value = "";
+      return;
+    }
+
+    filtered.forEach(d => {
+      const div = document.createElement("div");
+      div.textContent = d.name;
+      div.style.padding = "8px";
+      div.style.cursor = "pointer";
+
+      div.addEventListener("click", function () {
+        input.value = d.name;
+        hidden.value = d.key; // ★確定
         suggest.style.display = "none";
-        return;
-      }
-
-      const filtered = data.filter(d =>
-        d.name.toLowerCase().includes(keyword)
-      );
-
-      if (filtered.length === 0) {
-        suggest.style.display = "none";
-        return;
-      }
-
-      filtered.forEach(d => {
-        const div = document.createElement("div");
-        div.textContent = d.name;
-        div.style.padding = "8px";
-        div.style.cursor = "pointer";
-
-        div.addEventListener("click", function () {
-          input.value = d.name;
-          hidden.value = d.key;
-          suggest.style.display = "none";
-
-          // ★ 即反映
-          document.getElementById("myForm").submit();
-        });
-
-        suggest.appendChild(div);
+        document.getElementById("myForm").submit(); // ←追加
       });
 
-      suggest.style.display = "block";
+      suggest.appendChild(div);
     });
 
-    // 外クリックで閉じる
-    document.addEventListener("click", function (e) {
-      if (!input.contains(e.target) && !suggest.contains(e.target)) {
-        suggest.style.display = "none";
-      }
-    });
+    suggest.style.display = "block";
   });
-  </script>
+
+  // 外クリック
+  document.addEventListener("click", function (e) {
+    if (!input.contains(e.target) && !suggest.contains(e.target)) {
+      suggest.style.display = "none";
+    }
+  });
+});
+</script>
 
   <!-- =====================================================
        JS：詳細条件トグル
@@ -735,6 +726,16 @@
   });
   </script>
 
+<script>
+document.getElementById("myForm").addEventListener("submit", function (e) {
+  const machine = document.getElementById("machine").value;
+
+  if (!machine) {
+    e.preventDefault();
+    alert("候補から機種を選択してください");
+  }
+});
+</script>
 
 
 
