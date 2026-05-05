@@ -12,22 +12,16 @@ machine_configs = {
         "og_image": "ogp.jpg",
         "link_url": "https://note.com/kenslodata"
     },
-    "gobsla": {
-        "display_name": "L ゴブリンスレイヤー",
-        "file_key": "gobsla",
-        "og_image": "gobsla.jpg",
+    "azurlane": {
+        "display_name": "L アズレン",
+        "file_key": "azurlane",
+        "og_image": "azurlane.jpg",
         "link_url": "https://note.com/kenslodata/n/n32a75e8fe72c"
     },
-    "zenigata4": {
-        "display_name": "L 主役は銭形4",
-        "file_key": "zenigata4",
-        "og_image": "zenigata4.jpg",
-        "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
-    },
-    "tensei2": {
-        "display_name": "L 北斗の拳転生の章2",
-        "file_key": "zenigata4",
-        "og_image": "zenigata4.jpg",
+    "vvv2": {
+        "display_name": "L ヴヴヴ2",
+        "file_key": "vvv2",
+        "og_image": "vvv2.jpg",
         "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
     }
 }
@@ -57,10 +51,10 @@ machine_settings = {
 
     },
 
-    "L ゴブリンスレイヤー": {
+    "L アズレン": {
         "exclude_games": 40,
         "coin_moti": 31.6,
-        "mode_options": ["ボーナス", "ST"],
+        "mode_options": ["ボーナス", "AT"],
 
         # 数値系項目: (最小, 最大, ステップ)
         "through": (0, 3, 1),
@@ -78,10 +72,10 @@ machine_settings = {
 
     },
 
-    "L 主役は銭形4": {
+    "L ヴヴヴ2": {
         "exclude_games": 40,
         "coin_moti": 32.0,
-        "mode_options": ["CZ", "AT"],
+        "mode_options": ["CZ", "ボーナス"],
 
         # 数値系項目: (最小, 最大, ステップ)
         "through": (0, 5, 1),

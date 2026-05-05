@@ -396,12 +396,8 @@ def machine_page(machine_key, plan_type):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
+
 def generate_labels_from_mode_options(mode_options):
-    """
-    mode_options の内容からラベルを自動生成する
-    ・1つ → at_gap は「未設定」
-    ・2つ以上 → at_gap も含めて生成
-    """
 
     display_map = {
         "ボーナス": "ボナ",
@@ -410,10 +406,9 @@ def generate_labels_from_mode_options(mode_options):
         "CZ": "CZ",
     }
 
-    # 表示順を固定
-    order = ["ボーナス", "CZ", "AT", "ST"]
+    # 🔥order完全削除 → mode_optionsをそのまま使う
+    normalized = [m for m in mode_options if m in display_map]
 
-    normalized = [m for m in order if m in mode_options]
     if not normalized:
         return {
             "mode": "未設定",
@@ -425,12 +420,11 @@ def generate_labels_from_mode_options(mode_options):
             "prev_type": "未設定",
             "custom_condition": "未設定",
         }
-    display_modes = [display_map[m] for m in normalized]
 
+    display_modes = [display_map[m] for m in normalized]
     mode_label = "/".join(display_modes)
 
-    # mode_options が1つの場合
-    if len(normalized) == 1:
+    if len(display_modes) == 1:
         base = display_modes[0]
         return {
             "mode": base,
@@ -443,7 +437,6 @@ def generate_labels_from_mode_options(mode_options):
             "custom_condition": "機種別条件",
         }
 
-    # mode_options が2つ以上の場合
     first = display_modes[0]
     second = display_modes[1]
 
@@ -459,121 +452,236 @@ def generate_labels_from_mode_options(mode_options):
     }
 
 
+def mode_to_csv_suffix(mode: str) -> str:
+    """
+    UIモード → CSV suffix変換
+    """
+    mapping = {
+        "ボーナス": "rb",
+        "AT": "at",
+        "CZ": "cz",
+        "ST": "st",
+    }
+    return mapping.get(mode, "rb")
+
 
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
     MACHINE_CONFIGS = new_config.machine_configs
     MACHINE_SETTINGS = new_config.machine_settings
 
-    # --- プルダウン用機種選択 ---
+    # =========================
+    # 機種選択
+    # =========================
     default_machine = list(MACHINE_CONFIGS.keys())[0]
 
-    if request.method == "POST":
-        selected_machine = request.form.get("machine", default_machine)
-    else:
-        selected_machine = default_machine
+    selected_machine = (
+        request.form.get("machine", default_machine)
+        if request.method == "POST"
+        else default_machine
+    )
 
     display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
+    settings = MACHINE_SETTINGS.get(display_name, {})
 
+    # =========================
+    # モード
+    # =========================
+    mode_options = settings.get("mode_options", [])
 
-    # --- 安全に全設定を取得 ---
-    settings                 = MACHINE_SETTINGS.get(display_name, {})
-    mode_options             = settings.get("mode_options", [])
-    through                  = settings.get("through", (0, 5, 1))      # min, max, step
-    at_gap                   = settings.get("at_gap", (0, 1000, 50))
-    prev_game                = settings.get("prev_game", (0, 2000, 50))
-    prev_coin                = settings.get("prev_coin", (0, 3000, 100))
-    prev_diff                = settings.get("prev_diff", (-3000, 3000, 100))
-    prev_renchan             = settings.get("prev_renchan", (0, 10, 1))
-    prev_type_options        = settings.get("prev_type_options", ["不問"])
-    custom_condition_options = settings.get("custom_condition_options", ["不問"])
-    labels                   = generate_labels_from_mode_options(mode_options)
+    selected_mode = (
+        request.form.get("mode")
+        if request.method == "POST"
+        else (mode_options[0] if mode_options else None)
+    )
 
-    # --- POST処理 ---
-    if request.method == "POST":
-        # min/max を取得
-        input_game = int(request.form.get("input_game", 0))  # ← 追加
-        selected_through_min     = int(request.form.get("through_min", through[0]))
-        selected_through_max     = int(request.form.get("through_max", through[1]))
-        selected_at_gap_min      = int(request.form.get("at_gap_min", at_gap[0]))
-        selected_at_gap_max      = int(request.form.get("at_gap_max", at_gap[1]))
-        selected_prev_game_min   = int(request.form.get("prev_game_min", prev_game[0]))
-        selected_prev_game_max   = int(request.form.get("prev_game_max", prev_game[1]))
-        selected_prev_coin_min   = int(request.form.get("prev_coin_min", prev_coin[0]))
-        selected_prev_coin_max   = int(request.form.get("prev_coin_max", prev_coin[1]))
-        selected_prev_diff_min   = int(request.form.get("prev_diff_min", prev_diff[0]))
-        selected_prev_diff_max   = int(request.form.get("prev_diff_max", prev_diff[1]))
-        selected_prev_renchan_min = int(request.form.get("prev_renchan_min", prev_renchan[0]))
-        selected_prev_renchan_max = int(request.form.get("prev_renchan_max", prev_renchan[1]))
-        selected_prev_type       = request.form.get("prev_type")
-        selected_custom_condition = request.form.get("custom_condition")
-        
-        # データ抽出処理などをここに書く
-        result = f"Received: through {selected_through_min}-{selected_through_max}, AT間 {selected_at_gap_min}-{selected_at_gap_max}"
-    else:
-        # 初期値
-        input_game = 0   # ← 追加
-        selected_through_min     = through[0]
-        selected_through_max     = through[1]
-        selected_at_gap_min      = at_gap[0]
-        selected_at_gap_max      = at_gap[1]
-        selected_prev_game_min   = prev_game[0]
-        selected_prev_game_max   = prev_game[1]
-        selected_prev_coin_min   = prev_coin[0]
-        selected_prev_coin_max   = prev_coin[1]
-        selected_prev_diff_min   = prev_diff[0]
-        selected_prev_diff_max   = prev_diff[1]
-        selected_prev_renchan_min = prev_renchan[0]
-        selected_prev_renchan_max = prev_renchan[1]
-        selected_prev_type       = None
-        selected_custom_condition = None
-        result = None
+    # 🔥追加：modeの安全チェック（ここ重要）
+    if not mode_options:
+        selected_mode = None
+    elif selected_mode not in mode_options:
+        selected_mode = mode_options[0]
 
+    # =========================
+    # 入力
+    # =========================
+    input_game = int(request.form.get("input_game", 0)) if request.method == "POST" else 0
+
+    selected_time = request.form.get("time", "朝イチ")
+
+    selected_through = request.form.get("through", "不問")
+    selected_at_gap = request.form.get("at_gap", "不問")
+    selected_prev_game = request.form.get("prev_game", "不問")
+    selected_prev_coin = request.form.get("prev_coin", "不問")
+    selected_prev_diff = request.form.get("prev_diff", "不問")
+    selected_prev_renchan = request.form.get("prev_renchan", "不問")
+    selected_prev_type = request.form.get("prev_type", "不問")
+    selected_custom_condition = request.form.get("custom_condition", "不問")
+
+    # =========================
+    # レンジ系
+    # =========================
+    through = settings.get("through", (0, 5, 1))
+    at_gap = settings.get("at_gap", (0, 1000, 50))
+    prev_game = settings.get("prev_game", (0, 2000, 50))
+    prev_coin = settings.get("prev_coin", (0, 3000, 100))
+    prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
+    prev_renchan = settings.get("prev_renchan", (0, 10, 1))
+
+    # =========================
+    # CSV選択
+    # =========================
+    file_key = MACHINE_CONFIGS[selected_machine]["file_key"]
+
+    csv_suffix = mode_to_csv_suffix(selected_mode)
+
+    # 🔥保険（None対策）
+    if not csv_suffix:
+        csv_suffix = "rb"
+
+    csv_path = f"data/{file_key}_{csv_suffix}.csv"
+
+    # =========================
+    # CSVロード
+    # =========================
+    try:
+        dtypes = {
+            "朝イチ": "int8",
+            "スルー回数": "int16",
+            "AT間ゲーム数": "int32",
+            "前回当選ゲーム数": "int32",
+            "前回獲得枚数": "int32",
+            "前回差枚数": "int32",
+            "前回連荘数": "int16",
+            "当該REGゲーム数": "int32",
+            "REGゲーム数": "float32",
+            "ATゲーム数": "float32",
+            "REG枚数": "float32",
+            "AT枚数": "float32",
+        }
+
+        df = load_csv_cached(csv_path, dtypes=dtypes)
+
+    except Exception as e:
+        return render_template(
+            "index_all.html",
+            error_msg=f"CSV読み込みエラー: {e}",
+            result=None
+        )
+
+    # =========================
+    # form
+    # =========================
+    form = {
+        "time": selected_time,
+        "through": selected_through,
+        "at_gap": selected_at_gap,
+        "prev_game": selected_prev_game,
+        "prev_coin": selected_prev_coin,
+        "prev_diff": selected_prev_diff,
+        "prev_renchan": selected_prev_renchan,
+        "prev_type": selected_prev_type,
+        "game": input_game,
+        "custom_condition": selected_custom_condition
+    }
+
+    # =========================
+    # フィルタ
+    # =========================
+    filtered_df = filter_dataframe(df, form, settings)
+
+    # =========================
+    # 計算
+    # =========================
+    result = None
+
+    if not filtered_df.empty and len(filtered_df) >= 100:
+        count = len(filtered_df)
+
+        avg_reg_games = filtered_df["REGゲーム数"].mean()
+        avg_at_games = filtered_df["ATゲーム数"].mean()
+        avg_reg_coins = filtered_df["REG枚数"].mean()
+        avg_at_coins = filtered_df["AT枚数"].mean()
+
+        hatsu_atari = max(avg_reg_games - input_game, 0)
+
+        avg_diff = avg_at_coins + avg_reg_coins - (
+            hatsu_atari * 50 / settings.get("coin_moti", 1)
+        )
+
+        avg_in = (hatsu_atari + avg_at_games) * 3
+        avg_out = avg_diff + avg_in
+
+        payout_rate = (avg_out / avg_in) * 100 if avg_in else 0
+        expected_value = avg_diff * 20
+
+        result = {
+            "件数": f"{count:,}件",
+            "平均REGゲーム数": f"1/{hatsu_atari:,.1f}",
+            "平均AT枚数": f"{avg_at_coins:,.1f}枚",
+            "機械割": f"{payout_rate:,.1f}%",
+            "期待値": f"{expected_value:,.0f}円"
+        }
+
+    elif len(filtered_df) < 100:
+        result = "サンプル不足"
+
+    # =========================
+    # ラベル
+    # =========================
+    labels = generate_labels_from_mode_options(mode_options)
+
+    # =========================
+    # レンダリング（★through系全部追加済み）
+    # =========================
     return render_template(
         "index_all.html",
+
         machine_name=display_name,
         selected_machine=selected_machine,
         display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
+
         mode_options_map={selected_machine: mode_options},
-        selected_mode=None,
-        selected_time=None,
-        input_game=input_game,   # ← 変更
+
+        selected_mode=selected_mode,
+        selected_time=selected_time,
+        input_game=input_game,
+
         mode_options=mode_options,
+
         through=through,
         at_gap=at_gap,
         prev_game=prev_game,
         prev_coin=prev_coin,
         prev_diff=prev_diff,
         prev_renchan=prev_renchan,
-        prev_type_options=prev_type_options,
-        custom_condition_options=custom_condition_options,
-        selected_through_min=selected_through_min,
-        selected_through_max=selected_through_max,
-        selected_at_gap_min=selected_at_gap_min,
-        selected_at_gap_max=selected_at_gap_max,
-        selected_prev_game_min=selected_prev_game_min,
-        selected_prev_game_max=selected_prev_game_max,
-        selected_prev_coin_min=selected_prev_coin_min,
-        selected_prev_coin_max=selected_prev_coin_max,
-        selected_prev_diff_min=selected_prev_diff_min,
-        selected_prev_diff_max=selected_prev_diff_max,
-        selected_prev_renchan_min=selected_prev_renchan_min,
-        selected_prev_renchan_max=selected_prev_renchan_max,
+
+        selected_through=selected_through,
+        selected_at_gap=selected_at_gap,
+        selected_prev_game=selected_prev_game,
+        selected_prev_coin=selected_prev_coin,
+        selected_prev_diff=selected_prev_diff,
+        selected_prev_renchan=selected_prev_renchan,
         selected_prev_type=selected_prev_type,
         selected_custom_condition=selected_custom_condition,
+
+        prev_type_options=settings.get("prev_type_options", ["不問"]),
+        custom_condition_options=settings.get("custom_condition_options", ["不問"]),
+
         labels=labels,
         link_url=MACHINE_CONFIGS[selected_machine].get("link_url"),
-        link_preview=None,
+
         result=result,
         error_msg=None,
+
         locked_field_map={},
+
         og_url=request.url,
         og_image=MACHINE_CONFIGS[selected_machine].get("og_image"),
         tw_image=None,
+
         machines=MACHINE_CONFIGS,
         machine_settings=MACHINE_SETTINGS
     )
-
 
 
 # ================================
