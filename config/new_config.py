@@ -9,20 +9,40 @@ machine_configs = {
     "hokuto": {
         "display_name": "L 北斗の拳",
         "file_key": "hokuto",
-        "og_image": "ogp.jpg",
-        "link_url": "https://note.com/kenslodata"
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata"
+            }
+        ]
     },
     "azurlane": {
         "display_name": "L アズレン",
         "file_key": "azurlane",
-        "og_image": "azurlane.jpg",
-        "link_url": "https://note.com/kenslodata/n/n32a75e8fe72c"
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata"
+            },
+            {
+                "og_image": "azurlane.jpg",
+                "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
+            }
+        ]
     },
     "vvv2": {
         "display_name": "L ヴヴヴ2",
         "file_key": "vvv2",
-        "og_image": "vvv2.jpg",
-        "link_url": "https://note.com/kenslodata/n/ndc323a0f3044"
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata"
+            },
+            {
+                "og_image": "vvv2.jpg",
+                "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
+            }
+        ]
     }
 }
 

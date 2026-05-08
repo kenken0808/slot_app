@@ -617,6 +617,19 @@ def all_tool():
         # ★重要：settingsは display_name で取得
         settings = MACHINE_SETTINGS.get(display_name, {})
 
+    links = MACHINE_CONFIGS[selected_machine].get("links", [])
+
+    link_previews = []
+    for item in links:
+        url = item.get("link_url")
+        if not url:
+            continue
+
+        preview = get_link_preview_cached(url)
+        if preview:
+            preview["og_image_local"] = item.get("og_image")
+            link_previews.append(preview)
+
     mode_options = settings.get("mode_options", [])
     defaults = get_default_values(mode_options)
     labels = generate_labels_from_mode_options(mode_options)
@@ -726,7 +739,8 @@ def all_tool():
             error_msg="機種が未選択です",
 
             machines=MACHINE_CONFIGS,
-            machine_settings=MACHINE_SETTINGS
+            machine_settings=MACHINE_SETTINGS,
+            link_previews=link_previews
         )
 
     # =========================
@@ -793,7 +807,8 @@ def all_tool():
             error_msg=f"CSV読み込みエラー: {e}",
 
             machines=MACHINE_CONFIGS,
-            machine_settings=MACHINE_SETTINGS
+            machine_settings=MACHINE_SETTINGS,
+            link_previews=link_previews
         )
 
     # =========================
@@ -867,11 +882,11 @@ def all_tool():
         expected_value = avg_diff * 20
 
         result = {
-            "件数": f"{count:,}件",
-            "平均REGゲーム数": f"1/{hatsu_atari:,.1f}",
-            "平均AT枚数": f"{avg_at_coins:,.1f}枚",
-            "機械割": f"{payout_rate:,.1f}%",
-            "期待値": f"{expected_value:,.0f}円"
+            "件数　　　": f"{count:,}件",
+            "初当たり　": f"1/{hatsu_atari:,.1f}",
+            "獲得枚数　": f"{avg_at_coins:,.1f}枚",
+            "機械割　　": f"{payout_rate:,.1f}%",
+            "期待値　　": f"{expected_value:,.0f}円"
         }
 
     # =========================
@@ -920,7 +935,8 @@ def all_tool():
         error_msg=None,
 
         machines=MACHINE_CONFIGS,
-        machine_settings=MACHINE_SETTINGS
+        machine_settings=MACHINE_SETTINGS,
+        link_previews=link_previews
     )
 
 # ================================
