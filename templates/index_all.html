@@ -333,6 +333,15 @@ input[type="submit"]:active {
   }
 }
 
+#result-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 120px;
+  text-align: center;
+}
+
 .submit-btn {
   display: flex;
   align-items: center;
@@ -1041,41 +1050,109 @@ input[type="submit"]:active {
 
 
 
-  <!-- =====================================================
-       JS：最大値の制限
-  ====================================================== -->
-  <script>
-  function syncMinMax(minName, maxName) {
-    const minEl = document.querySelector(`select[name="${minName}"]`);
-    const maxEl = document.querySelector(`select[name="${maxName}"]`);
-    if (!minEl || !maxEl) return;
-    minEl.addEventListener("change", () => {
-      const minVal = parseInt(minEl.value, 10);
-      [...maxEl.options].forEach(opt => {
-        opt.disabled = parseInt(opt.value, 10) < minVal;
-      });
-      if (parseInt(maxEl.value, 10) < minVal) {
-        maxEl.value = minVal;
-      }
-    });
-  }
-  // 対象項目
-  syncMinMax("through_min", "through_max");
-  syncMinMax("at_gap_min", "at_gap_max");
-  syncMinMax("prev_game_min", "prev_game_max");
-  syncMinMax("prev_coin_min", "prev_coin_max");
-  syncMinMax("prev_diff_min", "prev_diff_max");
-  syncMinMax("prev_renchan_min", "prev_renchan_max");
-  </script>
-
-
-
 <script>
+/* =====================================================
+   🟢 JS FULL FINAL STABLE VERSION
+===================================================== */
+
+console.log("🟢 JS FULL LOAD START");
+
+/* =====================================================
+   🧠 ERROR HANDLE
+===================================================== */
+window.addEventListener("error", (e) => {
+  console.error("🔴 JS ERROR:", e.message);
+});
+
+window.addEventListener("unhandledrejection", (e) => {
+  console.error("🔴 PROMISE ERROR:", e.reason);
+});
+
+/* =====================================================
+   🧠 MACHINE CONFIG
+===================================================== */
+const machineSettings = {{ machine_configs | tojson }};
+console.log("🟢 machineSettings loaded");
+
+/* =====================================================
+   🧠 STATE CONTROL（最重要）
+===================================================== */
+const STATE = {
+  submitted: sessionStorage.getItem("submitted") === "1",
+  reset: sessionStorage.getItem("reset") === "1",
+  applied: false   // ★二重初期化防止
+};
+
+if (STATE.reset) sessionStorage.removeItem("reset");
+
+/* =====================================================
+   🧠 GET SETTINGS
+===================================================== */
+function getSettings(machineName) {
+  return machineSettings?.[machineName]?.settings || null;
+}
+
+/* =====================================================
+   🧠 APPLY SETTINGS（絶対1回制御）
+===================================================== */
+window.applySettings = function (machineName) {
+
+  if (STATE.applied) {
+    console.log("🟡 SKIP applySettings (already applied)");
+    return;
+  }
+
+  console.log("🟡 applySettings:", machineName);
+
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  const settings = getSettings(machineName);
+  if (!settings) return;
+
+  const setRange = (name, arr) => {
+    const min = form.querySelector(`[name='${name}_min']`);
+    const max = form.querySelector(`[name='${name}_max']`);
+    if (!min || !max || !Array.isArray(arr)) return;
+
+    min.value = arr[0] ?? "";
+    max.value = arr[1] ?? "";
+  };
+
+  setRange("through", settings.through);
+  setRange("at_gap", settings.at_gap);
+  setRange("prev_game", settings.prev_game);
+  setRange("prev_coin", settings.prev_coin);
+  setRange("prev_diff", settings.prev_diff);
+  setRange("prev_renchan", settings.prev_renchan);
+
+  form.querySelector("[name='mode']").value =
+    settings.mode_options?.[0] || "ボーナス";
+
+  form.querySelector("[name='time']").value = "朝イチ";
+  form.querySelector("[name='game']").value = 0;
+
+  form.querySelector("[name='prev_type']").value =
+    settings.prev_type_options?.[0] || "不問";
+
+  form.querySelector("[name='custom_condition']").value =
+    settings.custom_condition_options?.[0] || "不問";
+
+  STATE.applied = true;
+
+  console.log("🟢 applySettings END");
+};
+
+/* =====================================================
+   🟡 MACHINE SUGGEST
+===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
   const input = document.getElementById("machine_input");
   const suggest = document.getElementById("machine_suggest");
   const hidden = document.getElementById("machine");
+
+  if (!input || !suggest || !hidden) return;
 
   const data = [
     {% for key, name in display_names %}
@@ -1086,12 +1163,10 @@ document.addEventListener("DOMContentLoaded", function () {
   input.addEventListener("input", function () {
 
     const keyword = this.value.toLowerCase();
-
     suggest.innerHTML = "";
 
     if (!keyword) {
       suggest.style.display = "none";
-      hidden.value = "";
       return;
     }
 
@@ -1099,213 +1174,80 @@ document.addEventListener("DOMContentLoaded", function () {
       d.name.toLowerCase().includes(keyword)
     );
 
-    if (filtered.length === 0) {
-      suggest.style.display = "none";
-      hidden.value = "";
-      return;
-    }
-
     filtered.forEach(d => {
 
       const div = document.createElement("div");
-
       div.textContent = d.name;
-
       div.style.padding = "8px";
       div.style.cursor = "pointer";
 
-      div.addEventListener("click", function () {
-
-        input.value = d.name;
+      div.onclick = function () {
         hidden.value = d.key;
-
-        // GET遷移
+        sessionStorage.removeItem("submitted"); // ★重要
         window.location.href = `/all?machine=${d.key}`;
-
-      });
+      };
 
       suggest.appendChild(div);
-
     });
 
-    suggest.style.display = "block";
-
+    suggest.style.display = filtered.length ? "block" : "none";
   });
 
-  // 外クリックで閉じる
   document.addEventListener("click", function (e) {
-
-    if (!input.contains(e.target) &&
-        !suggest.contains(e.target)) {
-
+    if (!input.contains(e.target) && !suggest.contains(e.target)) {
       suggest.style.display = "none";
-
     }
-
   });
 
 });
-</script>
 
-  <!-- =====================================================
-       JS：詳細条件トグル
-  ====================================================== -->
-<script>
+/* =====================================================
+   🟡 RESET（設定値に戻す）
+===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
-  const area = document.getElementById("advanced-area");
-  const btn = document.getElementById("toggle-advanced");
 
-  const storageKey = "advanced_open";
+  const btn = document.querySelector(".reset-btn");
+  if (!btn) return;
 
-  // =========================
-  // ① 起動時判定（ここが重要）
-  // =========================
-  const isFirstLoad = !sessionStorage.getItem("app_started");
+  btn.onclick = function () {
 
-  if (isFirstLoad) {
-    // ブラウザ起動直後だけ閉じる
-    localStorage.setItem(storageKey, "false");
-    sessionStorage.setItem("app_started", "true");
-  }
+    const machine = document.querySelector("[name='machine']")?.value;
+    if (!machine) return;
 
-  // =========================
-  // ② 状態復元（機種変更・リセットでも維持）
-  // =========================
-  const saved = localStorage.getItem(storageKey);
-  const isOpen = saved === "true";
+    // ★スクロール位置保存
+    sessionStorage.setItem("scrollY", window.scrollY);
 
-  area.style.display = isOpen ? "block" : "none";
+    window.location.href = `/all?machine=${machine}`;
+  };
 
-  btn.classList.toggle("open", isOpen);
-  btn.innerHTML = `
-    <span class="toggle-icon">▼</span>
-    ${isOpen ? "詳細条件を隠す" : "詳細条件を表示"}
-  `;
+});
 
-  // =========================
-  // ③ トグル
-  // =========================
-  btn.addEventListener("click", function () {
-    const newState = area.style.display !== "block";
+/* =====================================================
+   🟡 INPUT CLEAR
+===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
 
-    area.style.display = newState ? "block" : "none";
+  const input = document.getElementById("machine_input");
+  if (!input) return;
 
-    localStorage.setItem(storageKey, newState);
+  let cleared = false;
 
-    this.classList.toggle("open", newState);
-
-    this.innerHTML = `
-      <span class="toggle-icon">▼</span>
-      ${newState ? "詳細条件を隠す" : "詳細条件を表示"}
-    `;
+  input.addEventListener("focus", function () {
+    if (!cleared) {
+      this.value = "";
+      cleared = true;
+    }
   });
-});
-</script>
 
-
-
-<script>
-document.querySelector(".reset-btn").addEventListener("click", function () {
-
-  console.log("🔵 reset clicked");
-
-  const form = document.querySelector("form");
-  const machineSelect = document.querySelector("[name='machine']");
-  const resultArea = document.getElementById("result-area");
-
-  if (!form || !machineSelect) {
-    console.log("❌ form or machineSelect not found");
-    return;
-  }
-
-  // ① 現在の機種確認
-  console.log("🟡 before reset machine:", machineSelect.value);
-
-  // ② フォームリセット
-  form.reset();
-
-  console.log("🟡 after reset machine:", machineSelect.value);
-
-  // ③ 強制的に change 発火
-  console.log("🟢 dispatch change event");
-
-  machineSelect.dispatchEvent(new Event("change"));
-
-  // ④ 結果リセット
-  if (resultArea) {
-    resultArea.innerHTML = `
-      <p class="result-placeholder">
-        出力ボタンを押すと、ここに結果が表示されます。
-      </p>
-    `;
-  }
+  input.addEventListener("blur", function () {
+    cleared = false;
+  });
 
 });
-</script>
 
-
-
-
-<script>
-const machineInput = document.getElementById("machine_input");
-
-let cleared = false;
-
-machineInput.addEventListener("focus", function () {
-  if (!cleared) {
-    this.value = "";
-    cleared = true;
-  }
-});
-
-machineInput.addEventListener("blur", function () {
-  cleared = false;
-});
-</script>
-
-<script>
-document.getElementById("machine_input").addEventListener("change", function () {
-  const machine = document.getElementById("machine").value;
-
-  if (!machine) return;
-
-  fetch(`/api/default_values?machine=${machine}`)
-    .then(res => res.json())
-    .then(data => {
-
-      // ▼ 数値系（min/max）
-      document.querySelector("[name='through_min']").value = data.through[0];
-      document.querySelector("[name='through_max']").value = data.through[1];
-
-      document.querySelector("[name='at_gap_min']").value = data.at_gap[0];
-      document.querySelector("[name='at_gap_max']").value = data.at_gap[1];
-
-      document.querySelector("[name='prev_game_min']").value = data.prev_game[0];
-      document.querySelector("[name='prev_game_max']").value = data.prev_game[1];
-
-      document.querySelector("[name='prev_coin_min']").value = data.prev_coin[0];
-      document.querySelector("[name='prev_coin_max']").value = data.prev_coin[1];
-
-      document.querySelector("[name='prev_diff_min']").value = data.prev_diff[0];
-      document.querySelector("[name='prev_diff_max']").value = data.prev_diff[1];
-
-      document.querySelector("[name='prev_renchan_min']").value = data.prev_renchan[0];
-      document.querySelector("[name='prev_renchan_max']").value = data.prev_renchan[1];
-
-      // ▼ テキスト系
-      document.querySelector("[name='prev_type']").value = "不問";
-      document.querySelector("[name='custom_condition']").value = "不問";
-
-      // ▼ 共通
-      document.querySelector("[name='time']").value = data.time;
-      document.querySelector("[name='game']").value = data.game;
-      document.querySelector("[name='mode']").value = data.mode;
-
-    });
-});
-</script>
-
-<script>
+/* =====================================================
+   🟡 SUBMIT HANDLER（初期化禁止）
+===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
   const form = document.querySelector("form");
@@ -1313,172 +1255,138 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!form || !resultArea) return;
 
-  let isSubmitting = false;
-
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
+  let lock = false;
 
   form.addEventListener("submit", function (e) {
 
-    if (isSubmitting) return;
-    isSubmitting = true;
+    if (lock) return;
+    lock = true;
 
     e.preventDefault();
 
-    // 計算中表示
+    /* ★ここは初期化しない（重要） */
     resultArea.innerHTML = `
-      <p class="result-loading">計算中...</p>
+      <div class="result-loading" style="text-align:center;padding:30px;">
+        計算中...
+      </div>
     `;
 
-    // ★ここを追加（これが今回の本体）
-    resultArea.classList.add("loading-mode");
-
-    // ★スクロール位置を固定（現在位置保持）
     const scrollY = window.scrollY;
 
+    sessionStorage.setItem("submitted", "1");
+
     setTimeout(() => {
-
-      // ★送信前に位置を保存
       sessionStorage.setItem("scrollY", scrollY);
-
       form.submit();
-
-    }, 2000);
-
+    }, 1500);
   });
 
-  // ★再描画後に位置復元
   window.addEventListener("load", function () {
     const y = sessionStorage.getItem("scrollY");
-    if (y !== null) {
-      window.scrollTo(0, parseInt(y));
-      sessionStorage.removeItem("scrollY");
-    }
+    if (y) window.scrollTo(0, parseInt(y));
+    sessionStorage.removeItem("scrollY");
   });
 
 });
-</script>
 
-<script>
+/* =====================================================
+   🟡 GRADE
+===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
-  const machineSelect = document.querySelector("[name='machine']");
-  const form = document.querySelector("form");
+  const expectedText = document.getElementById("expected-value");
+  const gradeBox = document.getElementById("grade-box");
 
-  if (!machineSelect || !form) return;
-
-  const machineSettings = {{ machine_settings | tojson }};
-
-  // ★ 追加：変換テーブル
-  const machineMap = {
-    "vvv2": "L ヴヴヴ2"
-  };
-
-  function applySettings(machineName) {
-
-    // ★ 追加：キー変換
-    const key = machineMap[machineName] || machineName;
-
-    const settings = machineSettings[key];
-
-    console.log("machineName:", machineName);
-    console.log("mapped key:", key);
-    console.log("settings:", settings);
-
-    if (!settings) return;
-
-    const setRange = (name, arr) => {
-      const min = form.querySelector(`[name='${name}_min']`);
-      const max = form.querySelector(`[name='${name}_max']`);
-
-      if (min && max) {
-        min.value = arr[0];
-        max.value = arr[1];
-      }
-    };
-
-    setRange("through", settings.through);
-    setRange("at_gap", settings.at_gap);
-    setRange("prev_game", settings.prev_game);
-    setRange("prev_coin", settings.prev_coin);
-    setRange("prev_diff", settings.prev_diff);
-    setRange("prev_renchan", settings.prev_renchan);
-
-    // =========================
-    // ✔ ここから追加ロジック
-    // =========================
-
-    // ① ボナ／AT → 1つ目
-    const modeSelect = form.querySelector("[name='mode']");
-    if (modeSelect && settings.mode_options?.length > 0) {
-      modeSelect.value = settings.mode_options[0];
-    }
-
-    // ② 朝一 → 固定
-    const timeSelect = form.querySelector("[name='time']");
-    if (timeSelect) {
-      timeSelect.value = "朝イチ";
-    }
-
-    // ③ 打ち出しゲーム数 → 0固定
-    const gameInput = form.querySelector("[name='game']");
-    if (gameInput) {
-      gameInput.value = 0;
-    }
-
-    // =========================
-
-
-    const prevType = form.querySelector("[name='prev_type']");
-    if (prevType) prevType.value = settings.prev_type_options?.[0] || "不問";
-
-    const custom = form.querySelector("[name='custom_condition']");
-    if (custom) custom.value = settings.custom_condition_options?.[0] || "不問";
-  }
-
-  machineSelect.addEventListener("change", function () {
-    applySettings(this.value);
-  });
-
-  form.addEventListener("reset", function () {
-    setTimeout(() => {
-      applySettings(machineSelect.value);
-    }, 0);
-  });
-
-});
-</script>
-
-<script>
-const expectedText = document.getElementById("expected-value");
-const gradeBox = document.getElementById("grade-box");
-
-if (expectedText && gradeBox) {
+  if (!expectedText || !gradeBox) return;
 
   const value = parseInt(
-    expectedText.textContent
-      .replace("円", "")
-      .replace(/,/g, "")
+    expectedText.textContent.replace("円", "").replace(/,/g, "")
   );
 
   let grade = "良";
-  let gradeClass = "grade-normal";
+  let className = "grade-normal";
 
   if (value >= 1000) {
     grade = "優";
-    gradeClass = "grade-good";
+    className = "grade-good";
   } else if (value < 0) {
     grade = "不可";
-    gradeClass = "grade-bad";
+    className = "grade-bad";
   }
 
   gradeBox.textContent = grade;
-  gradeBox.className = "grade-badge " + gradeClass;
-}
+  gradeBox.className = "grade-badge " + className;
+});
+
+/* =====================================================
+   🟡 DETAIL TOGGLE（起動時は閉じる）
+===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+  const area = document.getElementById("advanced-area");
+  const btn = document.getElementById("toggle-advanced");
+
+  if (!area || !btn) return;
+
+  const key = "advanced_open";
+
+  if (!sessionStorage.getItem("app_started_once")) {
+    localStorage.setItem(key, "false");
+    sessionStorage.setItem("app_started_once", "1");
+  }
+
+  const isOpen = localStorage.getItem(key) === "true";
+
+  area.style.display = isOpen ? "block" : "none";
+  btn.classList.toggle("open", isOpen);
+
+  btn.innerHTML = `
+    <span class="toggle-icon">▼</span>
+    ${isOpen ? "詳細条件を隠す" : "詳細条件を表示"}
+  `;
+
+  btn.onclick = function () {
+
+    const newState = area.style.display !== "block";
+
+    area.style.display = newState ? "block" : "none";
+    localStorage.setItem(key, newState);
+
+    this.classList.toggle("open", newState);
+
+    this.innerHTML = `
+      <span class="toggle-icon">▼</span>
+      ${newState ? "詳細条件を隠す" : "詳細条件を表示"}
+    `;
+  };
+
+});
+
+/* =====================================================
+   🟡 INITIAL APPLY（唯一の入口）
+===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+  const hidden = document.getElementById("machine");
+  const machine = hidden?.value;
+
+  if (!machine) return;
+
+  if (STATE.submitted) {
+    sessionStorage.removeItem("submitted");
+    return;
+  }
+
+  if (STATE.reset) {
+    window.applySettings(machine);
+    return;
+  }
+
+  window.applySettings(machine);
+});
+
+console.log("🟢 JS FULL LOAD END");
 </script>
-
-
 
 
 </body>

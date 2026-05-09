@@ -396,19 +396,28 @@ def machine_page(machine_key, plan_type):
 # =====================================================================
 # 新ツールページ
 # =====================================================================
+
 @app.route("/api/default_values")
 def api_default_values():
-    machine = request.args.get("machine")
 
-    if machine not in new_config.machine_configs:
-        return {"error": "invalid machine"}
+    machine = request.args.get("")
 
-    display_name = new_config.machine_configs[machine]["display_name"]
-    settings = new_config.machine_settings.get(display_name, {})
+    # =========================
+    # ❗ machineチェック
+    # =========================
+    cfg = new_config.machine_configs.get(machine)
+
+    if not cfg:
+        return jsonify({"error": "invalid machine"}), 400
+
+    if "settings" not in cfg:
+        return jsonify({"error": "settings missing"}), 400
+
+    settings = cfg["settings"]
 
     defaults = get_default_values(settings.get("mode_options", []))
 
-    return {
+    return jsonify({
         "mode": defaults["mode"],
         "time": defaults["time"],
         "game": defaults["game"],
@@ -419,7 +428,7 @@ def api_default_values():
         "prev_coin": defaults["prev_coin"],
         "prev_diff": defaults["prev_diff"],
         "prev_renchan": defaults["prev_renchan"],
-    }
+    })
 
 def filter_dataframe_v2(df, form, settings):
 
@@ -430,70 +439,59 @@ def filter_dataframe_v2(df, form, settings):
     mask = pd.Series(True, index=df.index)
 
     # =========================
-    # 朝イチ（ここが最重要）
+    # 朝イチ
     # =========================
     time_value = form.get("time")
 
     if time_value == "朝イチ":
         mask &= df["朝イチ"].eq(1)
-        print("after 朝イチ: only 1")
     elif time_value == "朝イチ以外":
         mask &= df["朝イチ"].eq(0)
-        print("after 朝イチ: only 0")
-    else:
-        print("skip 朝イチ filter:", time_value)
 
     print("after 朝イチ:", mask.sum())
 
     # =========================
-    # min/max 共通処理
+    # range共通（安全化）
     # =========================
     def apply_range(column, key):
-        min_v, max_v = form[key]
 
-        # ゼロレンジ全部スキップ（ここ重要）
+        val = form.get(key)
+
+        if not val or len(val) != 2:
+            return pd.Series(True, index=df.index)
+
+        min_v, max_v = val
+
         if min_v == 0 and max_v == 0:
-            print(f"skip {key} (0,0)")
             return pd.Series(True, index=df.index)
 
         return df[column].between(min_v, max_v)
 
     mask &= apply_range("スルー回数", "through")
-    print("after スルー回数:", mask.sum())
-
     mask &= apply_range("AT間ゲーム数", "at_gap")
-    print("after AT間ゲーム数:", mask.sum())
-
     mask &= apply_range("前回当選ゲーム数", "prev_game")
-    print("after 前回当選ゲーム数:", mask.sum())
-
     mask &= apply_range("前回獲得枚数", "prev_coin")
-    print("after 前回獲得枚数:", mask.sum())
-
     mask &= apply_range("前回差枚数", "prev_diff")
-    print("after 前回差枚数:", mask.sum())
-
     mask &= apply_range("前回連荘数", "prev_renchan")
-    print("after 前回連荘数:", mask.sum())
 
     # =========================
-    # 文字列条件
+    # 文字列条件（安全）
     # =========================
-    if form.get("prev_type") != "不問":
+    if form.get("prev_type") and form.get("prev_type") != "不問":
         mask &= df["前回種別"].eq(form["prev_type"])
-    else:
-        print("skip prev_type")
 
-    if form.get("custom_condition") != "不問":
+    if form.get("custom_condition") and form.get("custom_condition") != "不問":
         mask &= df["機種別条件"].eq(form["custom_condition"])
-    else:
-        print("skip custom_condition")
 
     # =========================
-    # ゲーム数条件
+    # ゲーム数
     # =========================
+    try:
+        game = int(form.get("game", 0))
+    except:
+        game = 0
+
     exclude_games = settings.get("exclude_games", 0)
-    game = int(form["game"])
 
     mask &= df["当該REGゲーム数"].ge(game + exclude_games)
 
@@ -501,7 +499,6 @@ def filter_dataframe_v2(df, form, settings):
     print("========== FILTER DEBUG END ==========")
 
     return df.loc[mask]
-
 
 def generate_labels_from_mode_options(mode_options):
 
@@ -594,9 +591,7 @@ def get_default_values(mode_options):
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
     MACHINE_CONFIGS = new_config.machine_configs
-    MACHINE_SETTINGS = new_config.machine_settings
 
-    # =========================
     # =========================
     # 機種選択
     # =========================
@@ -608,29 +603,41 @@ def all_tool():
         or default_machine
     )
 
+    # =========================
+    # ★ここ修正（display_nameちゃんと入れる）
+    # =========================
     display_name = ""
     settings = {}
+    links = []
 
-    if selected_machine and selected_machine in MACHINE_CONFIGS:
-        display_name = MACHINE_CONFIGS[selected_machine]["display_name"]
+    if selected_machine in MACHINE_CONFIGS:
+        cfg = MACHINE_CONFIGS[selected_machine]
 
-        # ★重要：settingsは display_name で取得
-        settings = MACHINE_SETTINGS.get(display_name, {})
+        display_name = cfg.get("display_name", "")   # ←ここ重要
+        settings = cfg.get("settings", {})
+        links = cfg.get("links", [])
 
-    links = MACHINE_CONFIGS[selected_machine].get("links", [])
-
+    # =========================
+    # リンク処理
+    # =========================
     link_previews = []
+
     for item in links:
         url = item.get("link_url")
         if not url:
             continue
 
         preview = get_link_preview_cached(url)
+
         if preview:
             preview["og_image_local"] = item.get("og_image")
             link_previews.append(preview)
 
+    # =========================
+    # モード関連
+    # =========================
     mode_options = settings.get("mode_options", [])
+
     defaults = get_default_values(mode_options)
     labels = generate_labels_from_mode_options(mode_options)
 
@@ -739,7 +746,7 @@ def all_tool():
             error_msg="機種が未選択です",
 
             machines=MACHINE_CONFIGS,
-            machine_settings=MACHINE_SETTINGS,
+            machine_configs=MACHINE_CONFIGS,
             link_previews=link_previews
         )
 
@@ -807,7 +814,7 @@ def all_tool():
             error_msg=f"CSV読み込みエラー: {e}",
 
             machines=MACHINE_CONFIGS,
-            machine_settings=MACHINE_SETTINGS,
+            machine_configs=MACHINE_CONFIGS,
             link_previews=link_previews
         )
 
@@ -935,7 +942,7 @@ def all_tool():
         error_msg=None,
 
         machines=MACHINE_CONFIGS,
-        machine_settings=MACHINE_SETTINGS,
+        machine_configs=MACHINE_CONFIGS,
         link_previews=link_previews
     )
 

@@ -3,22 +3,49 @@ from typing import Dict, Any
 from werkzeug.security import generate_password_hash
 
 # =========================================================
-# 機種ごとのURLキー・表示名・CSV読み込み用キー
+# 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
     "hokuto": {
         "display_name": "L 北斗の拳",
         "file_key": "hokuto",
+
+        # =========================
+        # UIリンク情報
+        # =========================
         "links": [
             {
                 "og_image": "ogp.jpg",
                 "link_url": "https://note.com/kenslodata"
             }
-        ]
+        ],
+
+        # =========================
+        # 計算・条件設定
+        # =========================
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 35.0,
+            "mode_options": ["AT"],
+
+            "through": (0, 5, 1),
+            "at_gap": (0, 2000, 200),
+            "prev_game": (0, 1300, 100),
+            "prev_coin": (0, 3000, 300),
+            "prev_diff": (-3000, 1500, 100),
+            "prev_renchan": (0, 10, 1),
+
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
     },
+
     "azurlane": {
         "display_name": "L アズレン",
         "file_key": "azurlane",
+
         "links": [
             {
                 "og_image": "ogp.jpg",
@@ -28,11 +55,31 @@ machine_configs = {
                 "og_image": "azurlane.jpg",
                 "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
             }
-        ]
+        ],
+
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.6,
+            "mode_options": ["ボーナス", "AT"],
+
+            "through": (0, 3, 1),
+            "at_gap": (0, 2000, 50),
+            "prev_game": (0, 1300, 50),
+            "prev_coin": (0, 3000, 100),
+            "prev_diff": (-3000, 1500, 100),
+            "prev_renchan": (0, 5, 1),
+
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
     },
+
     "vvv2": {
         "display_name": "L ヴヴヴ2",
         "file_key": "vvv2",
+
         "links": [
             {
                 "og_image": "ogp.jpg",
@@ -42,75 +89,25 @@ machine_configs = {
                 "og_image": "vvv2.jpg",
                 "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
             }
-        ]
-    }
-}
+        ],
 
-# =========================================================
-# 機種ごとの条件設定・ラベル（display_nameをキーに）
-# =========================================================
-machine_settings = {
-    "L 北斗の拳": {
-        "exclude_games": 40,
-        "coin_moti": 35.0,
-        "mode_options": ["AT"],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "ボーナス"],
 
-        # 数値系項目: (最小, 最大, ステップ)
-        "through": (0, 5, 1),
-        "at_gap": (0, 2000, 200),
-        "prev_game": (0, 1300, 100),
-        "prev_coin": (0, 3000, 300),
-        "prev_diff": (-3000, 1500, 100),
-        "prev_renchan": (0, 10, 1),
+            "through": (0, 3, 1),
+            "at_gap": (0, 1000, 50),
+            "prev_game": (0, 2000, 50),
+            "prev_coin": (0, 1000, 100),
+            "prev_diff": (-1000, 1000, 100),
+            "prev_renchan": (0, 10, 1),
 
-        # 選択肢系
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
 
-        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
-
-    },
-
-    "L アズレン": {
-        "exclude_games": 40,
-        "coin_moti": 31.6,
-        "mode_options": ["ボーナス", "AT"],
-
-        # 数値系項目: (最小, 最大, ステップ)
-        "through": (0, 3, 1),
-        "at_gap": (0, 2000, 50),
-        "prev_game": (0, 1300, 50),
-        "prev_coin": (0, 3000, 100),
-        "prev_diff": (-3000, 1500, 100),
-        "prev_renchan": (0, 5, 1),
-
-        # 選択肢系
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
-
-    },
-
-    "L ヴヴヴ2": {
-        "exclude_games": 40,
-        "coin_moti": 32.0,
-        "mode_options": ["CZ", "ボーナス"],
-
-        # 数値系項目: (最小, 最大, ステップ)
-        "through": (0, 5, 1),
-        "at_gap": (0, 2000, 50),
-        "prev_game": (0, 1300, 50),
-        "prev_coin": (0, 3000, 100),
-        "prev_diff": (-3000, 1500, 100),
-        "prev_renchan": (0, 10, 1),
-
-        # 選択肢系
-        "prev_type_options": ["不問"],
-        "custom_condition_options": ["不問"],
-
-        "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
-
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
     }
 }
 
