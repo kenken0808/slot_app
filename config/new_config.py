@@ -43,7 +43,7 @@ machine_configs = {
     },
 
     "azurlane": {
-        "display_name": "L アズレン",
+        "display_name": "L アズールレーン",
         "file_key": "azurlane",
 
         "links": [
@@ -77,8 +77,76 @@ machine_configs = {
     },
 
     "vvv2": {
-        "display_name": "L ヴヴヴ2",
+        "display_name": "L 革命機ヴァルヴレイヴ2",
         "file_key": "vvv2",
+
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata"
+            },
+            {
+                "og_image": "vvv2.jpg",
+                "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
+            }
+        ],
+
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "ボーナス"],
+
+            "through": (0, 3, 1),
+            "at_gap": (0, 1000, 50),
+            "prev_game": (0, 2000, 50),
+            "prev_coin": (0, 1000, 100),
+            "prev_diff": (-1000, 1000, 100),
+            "prev_renchan": (0, 10, 1),
+
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
+    },
+
+    "hanma": {
+        "display_name": "L 範馬刃牙",
+        "file_key": "hanma",
+
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata"
+            },
+            {
+                "og_image": "azurlane.jpg",
+                "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
+            }
+        ],
+
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.6,
+            "mode_options": ["ボーナス", "AT"],
+
+            "through": (0, 3, 1),
+            "at_gap": (0, 2000, 50),
+            "prev_game": (0, 1300, 50),
+            "prev_coin": (0, 3000, 100),
+            "prev_diff": (-3000, 1500, 100),
+            "prev_renchan": (0, 5, 1),
+
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
+    },
+
+    "magireco": {
+        "display_name": "L マギアレコード",
+        "file_key": "magireco",
 
         "links": [
             {
