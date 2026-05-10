@@ -594,20 +594,30 @@ input[type="submit"]:active {
 
 /* 入力欄 */
 .search-box input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+
   height: 36px;
-  padding-left: 32px;
+
+  padding-left: 26px;
+
   font-size: 13px;
 }
 
 /* アイコン */
 .search-box .icon {
   position: absolute;
+
   left: 8px;
   top: 50%;
-  transform: translateY(-60%);
-  font-size: 14px;
+
+  transform: translateY(-55%);
+
+  font-size: 13px;
+
   color: #6b7280;
+
+  pointer-events: none;
 }
 
 #machine_suggest {
