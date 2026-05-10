@@ -69,7 +69,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;  /* ←ここだけ変更 */
-    gap: 2px;
+    gap: 0px;  /* ←メモたぶん不要ラベルと入力ボックスの間 */
     padding: 0;
     position: relative;
   }
@@ -87,10 +87,10 @@ body {
 
   position: absolute;
 
-  top: -2px;
+  top: 0px;
   left: 0;
 
-  width: calc(50% - 8px);
+  width: calc(50% - 0px);
   height: 1px;
 
   background: rgba(255, 140, 0, 0.18);
@@ -105,7 +105,7 @@ body {
   .form-row input {
     justify-self: stretch;
     width: 100%;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .form-row input {
@@ -116,7 +116,7 @@ body {
   background: rgba(255, 140, 0, 0.05);
 }
 select, input {
-  border-radius: 6px;
+  border-radius: 8px;  /* ←メモ入力欄の丸みらしいけど変わらない */
 }
 
 
@@ -126,7 +126,7 @@ select, input {
   display: grid;
   grid-template-columns: 1fr 20px 1fr;
   align-items: center;
-  gap: 6px;
+  gap: 0px;  /* ←メモたぶん不要～のところ */
 }
 
 /* ▼ 修正：「～」を中央固定 */
@@ -140,19 +140,19 @@ select, input {
 }
 
 #advanced-area .form-row + .form-row {
-  margin-top: 2px;
+  margin-top: 0px;
 }
 
 #toggle-advanced {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px;  /* ←メモトグル内の余白 */
 
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 140, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 8px;  /* ←メモトグルの丸み */
 
   color: #e5e7eb;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
 
   cursor: pointer;
@@ -172,7 +172,7 @@ select, input {
 form {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2px;
+  gap: 0px;  /* ←メモフォームの内側の余白 */
 
   padding: 8px;
 
@@ -180,9 +180,9 @@ form {
   backdrop-filter: blur(8px);
 
   border: 1px solid rgba(255, 140, 0, 0.15);
-  border-radius: 16px;
+  border-radius: 8px;  /* ←メモフォームの丸み */
 
-  margin-top: 10px;
+  margin-top: 8px;
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.6);
@@ -201,9 +201,9 @@ input[type="text"] {
   width: 100%;
   height: 36px;
   font-size: 14px;
-  padding: 4px 8px;
+  padding: 0px 8px;  /* ←メモ入力欄内の余白 */
 
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #2a2a2a;
 
   background: #111111;
@@ -226,14 +226,14 @@ input:focus {
   .form-buttons {
     display: grid;                 /* ← これに変更 */
     grid-template-columns: 1fr 1fr;/* ← これ追加 */
-    margin-top: 6px;
-    gap: 4px;
+    margin-top: 8px;
+    gap: 0px;  /* ←メモボタン同士の幅 */
   }
 
 .reset-btn,
 input[type="submit"] {
-  padding: 14px 22px;
-  font-size: 15px;
+  padding: 0px 0px;
+  font-size: 14px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
@@ -263,8 +263,8 @@ input[type="submit"] {
   color: #fff;
   align-items: center;
 
-  padding: 14px 22px;
-  font-size: 15px;
+  padding: 14px 0px;  /* ←メモリセット出力ボタンの内余白 */
+  font-size: 14px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
@@ -274,7 +274,7 @@ input[type="submit"] {
   align-items: center;
   justify-content: center;
 
-  gap: 6px;
+  gap: 0px;  /* ←メモこれどこだ */
 }
 
 /* ←ここに追加 */
@@ -322,7 +322,7 @@ input[type="submit"]:active {
 
 .result-loading {
   text-align: center;
-  padding: 30px 10px;
+  padding: 0px 0px;
   font-size: 20px;
   font-weight: bold;
   color: #ff9800;
@@ -348,7 +348,7 @@ input[type="submit"]:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 8px;  /* ←メモマークと出力の幅 */
 }
 
 .submit-icon {
@@ -360,7 +360,7 @@ input[type="submit"]:active {
 .search-box {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 0px;  /* ←メモ機種名とボタンの間 */
 }
 
 #machine_input {
@@ -377,7 +377,7 @@ input[type="submit"]:active {
   border: 1px solid #ff8c00;
   border-radius: 8px;
 
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
 
   cursor: pointer;
@@ -399,7 +399,7 @@ input[type="submit"]:active {
 
 #machine_suggest {
   position: absolute;
-  top: 48px;
+  top: 0px;
   left: 0;
   right: 0;
 
@@ -417,15 +417,26 @@ input[type="submit"]:active {
 
 
 
+#machine_suggest div {
+  padding: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#machine_suggest div:hover {
+  background: rgba(255, 140, 0, 0.12);
+  color: #fff;
+}
 
 
 
 
 
-
-
-
-
+.cz-gap {
+  margin-top: 8px;
+}
 
 
 
@@ -438,14 +449,14 @@ input[type="submit"]:active {
   align-items: stretch;
 
   height: 140px;
-  margin-top: 12px;
-  padding: 12px;
+  margin-top: 8px;
+  padding: 8px;
 
   background: linear-gradient(145deg, rgba(0,0,0,0.85), rgba(20,20,20,0.7));
   border: 1px solid rgba(255, 140, 0, 0.2);
   border-left: 4px solid #ff8c00;
 
-  border-radius: 12px;
+  border-radius: 8px;
 
   box-shadow: 0 12px 30px rgba(0,0,0,0.6);
   font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -480,7 +491,7 @@ input[type="submit"]:active {
   align-items: center;
   flex-direction: column;
 
-  border-radius: 16px;
+  border-radius: 8px;
 
   font-size: 42px;
   font-weight: bold;
@@ -534,14 +545,14 @@ input[type="submit"]:active {
 .og-card {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;  /* ←メモリンクの画像と文字幅 */
 
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 8px;
+  padding: 8px;  /* ←メモカード内の余白 */
 
   background: #1e1e1e;
   border: 1px solid #333;
-  border-radius: 10px;
+  border-radius: 8px;
 
   text-decoration: none;
   color: #fff;
@@ -558,6 +569,7 @@ input[type="submit"]:active {
   height: 72px;
   object-fit: cover;
   border-radius: 8px;
+  display: block;
 }
 
 .og-body {
@@ -566,13 +578,13 @@ input[type="submit"]:active {
 }
 
 .og-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 0px;
 }
 
 .og-desc {
-  font-size: 12px;
+  font-size: 10px;
   color: #bbb;
 
   overflow: hidden;
@@ -582,8 +594,8 @@ input[type="submit"]:active {
 }
 
 .og-site {
-  margin-top: 6px;
-  font-size: 11px;
+  margin-top: 0px;
+  font-size: 10px;
   color: #ff9800;
 }
 
@@ -604,7 +616,7 @@ input[type="submit"]:active {
 
   padding-left: 26px;
 
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* アイコン */
@@ -629,27 +641,28 @@ input[type="submit"]:active {
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
-#machine_suggest div {
+#machine_list div {
   color: #ffffff;
   padding: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   background: transparent;
+  cursor: pointer;
 }
 
-#machine_suggest div:hover {
+#machine_list div:hover {
   background: rgba(255, 140, 0, 0.12);
-  color: #ffffff;
 }
+
 
 
 
 .toggle-btn {
   width: 100%;
-  padding: 8px 12px;
+  padding: 0px 0px;
 
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 140, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 8px;
 
   color: #e5e7eb;
   font-size: 13px;
@@ -661,7 +674,9 @@ input[type="submit"]:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 2px;  /* ←メモ詳細条件の位置 */
+
+  margin-top: 8px;
 }
 
 .toggle-btn:hover {
@@ -743,7 +758,7 @@ input[type="submit"]:active {
       <!-- 候補 -->
       <div id="machine_suggest" style="
         position:absolute;
-        top:38px;
+        top:36px;
         left:0;
         right:0;
         max-height:200px;
@@ -823,7 +838,7 @@ input[type="submit"]:active {
   <div id="advanced-area">
 
     <!-- AT間G数（minmaxあり） -->
-    <div class="form-row">
+    <div class="form-row cz-gap">
       <label>{{ labels.get("at_gap", "AT間G数") }}</label>
       <div class="range">
 
@@ -1064,7 +1079,8 @@ input[type="submit"]:active {
 
     <div class="result-left">
       <p class="result-placeholder">
-        出力ボタンを押すと、ここに結果が表示されます。
+        出力ボタンを押すと、<br>
+        ここに結果が表示されます。
       </p>
     </div>
 
@@ -1280,11 +1296,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         div.textContent = d.name;
 
-        div.style.padding = "8px";
-        div.style.cursor = "pointer";
-        div.style.background = "#222";
-        div.style.color = "#fff";
-        div.style.borderBottom = "1px solid #444";
+
 
         div.addEventListener("click", function () {
 
