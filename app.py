@@ -546,7 +546,7 @@ def generate_labels_from_mode_options(mode_options):
     return {
         "mode": mode_label,
         "at_gap": f"前回{first}終了時{second}間G数",
-        "prev_diff": f"前回{first}({second})終了時差枚数",
+        "prev_diff": f"前回{second}終了時差枚数",
         "prev_game": f"前回{second}当選G数",
         "prev_coin": f"前回{second}獲得枚数",
         "prev_renchan": f"前回{second}連荘数",

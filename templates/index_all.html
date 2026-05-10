@@ -69,33 +69,16 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;  /* ←ここだけ変更 */
-    gap: 4px;
-    padding: 6px 0;
+    gap: 3px;
+    padding: 1px 0;
     position: relative;
   }
 
-.form-row::before {
-  content: "";
-  position: absolute;
-  top: -6px;       /* ← 線の位置（ここが“上に固定”の正体） */
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(255, 140, 0, 0.15); /* オレンジ薄線 */
-}
-
-
-
-
-
-.form-row:first-of-type::before {
-  display: none;
-}
 
   .form-row label {
     text-align: left;
     font-size: 14px;
-    line-height: 1.2;
+    line-height: 1;
   }
 
   .form-row select,
@@ -138,7 +121,7 @@ select, input {
 }
 
 #advanced-area .form-row + .form-row {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 #toggle-advanced {
@@ -170,9 +153,9 @@ select, input {
 form {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 3px;
 
-  padding: 12px 12px 22px;
+  padding: 10px 10px 10px;
 
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
