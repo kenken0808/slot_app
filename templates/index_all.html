@@ -69,8 +69,8 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;  /* ←ここだけ変更 */
-    gap: 3px;
-    padding: 1px 0;
+    gap: 2px;
+    padding: 0;
     position: relative;
   }
 
@@ -80,6 +80,26 @@ body {
     font-size: 14px;
     line-height: 1;
   }
+
+
+.form-row::before {
+  content: "";
+
+  position: absolute;
+
+  top: -2px;
+  left: 0;
+
+  width: calc(50% - 8px);
+  height: 1px;
+
+  background: rgba(255, 140, 0, 0.18);
+}
+.form-row:first-of-type::before {
+  display: none;
+}
+
+
 
   .form-row select,
   .form-row input {
@@ -117,7 +137,7 @@ select, input {
 
 #advanced-area {
   display: none;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 #advanced-area .form-row + .form-row {
@@ -153,9 +173,9 @@ select, input {
 form {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3px;
+  gap: 2px;
 
-  padding: 10px 10px 10px;
+  padding: 8px;
 
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
@@ -207,8 +227,7 @@ input:focus {
   .form-buttons {
     display: grid;                 /* ← これに変更 */
     grid-template-columns: 1fr 1fr;/* ← これ追加 */
-    gap: 10px;
-    margin-top: 10px;
+    margin-top: 2px;
   }
 
 .reset-btn,
@@ -341,7 +360,7 @@ input[type="submit"]:active {
 .search-box {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
 }
 
 #machine_input {
@@ -370,7 +389,6 @@ input[type="submit"]:active {
   line-height: 1;
 
   position: relative;
-  top: -2px;
 }
 
 
@@ -625,7 +643,7 @@ input[type="submit"]:active {
 
 .toggle-btn {
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
 
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 140, 0, 0.25);
@@ -700,7 +718,7 @@ input[type="submit"]:active {
           id="machine_input"
           value="{{ machine_name }}"
           placeholder="機種名を検索"
-          style="width:100%; margin-bottom:4px;"
+          style="width:100%"
           autocomplete="off"
         >
         <!-- ▼追加 -->
