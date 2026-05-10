@@ -353,6 +353,81 @@ input[type="submit"]:active {
   flex-shrink: 0;
 }
 
+
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#machine_input {
+  flex: 1;
+}
+
+#machine_toggle {
+  width: 36px;
+  height: 36px;
+
+  background: #0a0a0a;
+  color: #e5e7eb;
+
+  border: 1px solid #ff8c00;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+  flex-shrink: 0;
+
+  transition: all 0.15s ease;
+
+  padding: 0;
+  line-height: 1;
+
+  position: relative;
+  top: -2px;
+}
+
+
+#machine_toggle:hover {
+  background: #161616;
+  color: #ffffff;
+}
+
+#machine_suggest {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+
+  max-height: 300px;
+  overflow-y: auto;
+
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 8px;
+
+  z-index: 999;
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* =====================================================
      結果
   ===================================================== */
@@ -635,6 +710,13 @@ input[type="submit"]:active {
           style="width:100%; margin-bottom:4px;"
           autocomplete="off"
         >
+        <!-- ▼追加 -->
+        <button
+          type="button"
+          id="machine_toggle"
+        >
+          ▼
+        </button>
       </div>
 
       <!-- hidden（★重複削除済み） -->
@@ -1160,6 +1242,71 @@ document.addEventListener("DOMContentLoaded", function () {
     {% endfor %}
   ];
 
+
+
+
+
+
+
+
+  // ▼ボタン
+  const toggleBtn = document.getElementById("machine_toggle");
+
+  if (toggleBtn) {
+
+    toggleBtn.addEventListener("click", function (e) {
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      suggest.innerHTML = "";
+
+      data.forEach(d => {
+
+        const div = document.createElement("div");
+
+        div.textContent = d.name;
+
+        div.style.padding = "8px";
+        div.style.cursor = "pointer";
+        div.style.background = "#222";
+        div.style.color = "#fff";
+        div.style.borderBottom = "1px solid #444";
+
+        div.addEventListener("click", function () {
+
+          hidden.value = d.key;
+
+          window.location.href = `/all?machine=${d.key}`;
+        });
+
+        suggest.appendChild(div);
+
+      });
+
+      suggest.style.display =
+        suggest.style.display === "block"
+          ? "none"
+          : "block";
+
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   input.addEventListener("input", function () {
 
     const keyword = this.value.toLowerCase();
@@ -1386,6 +1533,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 console.log("🟢 JS FULL LOAD END");
+
+
 </script>
 
 
