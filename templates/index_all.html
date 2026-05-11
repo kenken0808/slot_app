@@ -419,11 +419,17 @@ input[type="submit"]:active {
 
 
 #machine_suggest div {
-  padding: 8px;
-  cursor: pointer;
-  background: transparent;
-  color: #fff;
+  height: 38px;
+  display: flex;
+  align-items: center;
+
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 1;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 #machine_suggest div:hover {
@@ -431,7 +437,17 @@ input[type="submit"]:active {
   color: #fff;
 }
 
+#machine_suggest {
+  background: #111111;
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
 
+
+
+#machine_list div:hover {
+  background: rgba(255, 140, 0, 0.12);
+}
 
 
 
@@ -639,23 +655,7 @@ input[type="submit"]:active {
   pointer-events: none;
 }
 
-#machine_suggest {
-  background: #111111;
-  border: 1px solid rgba(255, 140, 0, 0.2);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-}
 
-#machine_list div {
-  color: #ffffff;
-  padding: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: transparent;
-  cursor: pointer;
-}
-
-#machine_list div:hover {
-  background: rgba(255, 140, 0, 0.12);
-}
 
 
 
@@ -762,7 +762,7 @@ input[type="submit"]:active {
       <!-- 候補 -->
       <div id="machine_suggest" style="
         position:absolute;
-        top:36px;
+        top:37px;
         left:0;
         right:0;
         max-height:200px;
