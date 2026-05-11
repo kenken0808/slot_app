@@ -72,6 +72,7 @@ body {
     gap: 0px;  /* ←メモたぶん不要ラベルと入力ボックスの間 */
     padding: 0;
     position: relative;
+    margin-bottom: 2px;  /* ←メモここ調整 */
   }
 
 
@@ -87,7 +88,7 @@ body {
 
   position: absolute;
 
-  top: 0px;
+  top: -1px;  /* ←メモここ調整 */
   left: 0;
 
   width: calc(50% - 0px);
@@ -226,8 +227,8 @@ input:focus {
   .form-buttons {
     display: grid;                 /* ← これに変更 */
     grid-template-columns: 1fr 1fr;/* ← これ追加 */
-    margin-top: 8px;
-    gap: 0px;  /* ←メモボタン同士の幅 */
+    margin-top: 8px;  /* ←メモここ調整 */
+    gap: 2px;  /* ←メモボタン同士の幅 */
   }
 
 .reset-btn,
@@ -360,7 +361,7 @@ input[type="submit"]:active {
 .search-box {
   display: flex;
   align-items: center;
-  gap: 0px;  /* ←メモ機種名とボタンの間 */
+  gap: 2px;  /* ←メモ機種名とボタンの間 */
 }
 
 #machine_input {
@@ -435,9 +436,12 @@ input[type="submit"]:active {
 
 
 .cz-gap {
-  margin-top: 8px;
+  margin-top: 8px;  /* ←メモここ調整 */
 }
 
+.machine-condition {
+  margin-bottom: 0px;  /* ←メモここ調整 */
+}
 
 
   /* =====================================================
@@ -676,7 +680,7 @@ input[type="submit"]:active {
   align-items: center;
   gap: 2px;  /* ←メモ詳細条件の位置 */
 
-  margin-top: 8px;
+  margin-top: 6px;  /* ←メモここ調整 */
 }
 
 .toggle-btn:hover {
@@ -960,7 +964,7 @@ input[type="submit"]:active {
     </div>
 
     <!-- 機種別条件 -->
-    <div class="form-row">
+    <div class="form-row machine-condition">
       <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
       <select name="custom_condition">
         {% for opt in custom_condition_options %}
