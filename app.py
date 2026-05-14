@@ -588,6 +588,15 @@ def get_default_values(mode_options):
         "custom_condition": "不問",
     }
 
+
+# =========================
+# 攻略メモページ
+# =========================
+@app.route("/memo/<machine>")
+def memo(machine):
+    return render_template(f"memo/{machine}.html")
+
+
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
     MACHINE_CONFIGS = new_config.machine_configs

@@ -17,6 +17,10 @@ machine_configs = {
             {
                 "og_image": "ogp.jpg",
                 "link_url": "https://note.com/kenslodata"
+            },
+            {
+                "og_image": "tensei.jpg",
+                "link_url": "/memo/hokuto"
             }
         ],
 
