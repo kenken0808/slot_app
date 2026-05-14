@@ -1114,7 +1114,7 @@ input[type="submit"]:active {
       {% endif %}
 
       <div class="og-body">
-        <div class="og-title">{{ link.title }}</div>
+        <div class="og-title">{{ link.display_title or link.title }}</div>
 
         {% if link.description %}
           <div class="og-desc">{{ link.description }}</div>

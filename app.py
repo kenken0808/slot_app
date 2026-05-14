@@ -143,13 +143,25 @@ def tool_login(machine_key, plan_type):
 # =====================================================================
 # OGP / Twitter Card 取得（LRU+TTL）
 # =====================================================================
-def fetch_link_preview(url: str, timeout: int = 6):
+def fetch_link_preview(url: str, machine_name: str = "攻略メモ", timeout: int = 6):
     if not url:
         return None
+
+    # ★ memo系は固定表示（スクレイピングしない）
+    if "127.0.0.1" in url or "/memo/" in url:
+        return {
+            "url": url,
+            "title": f"{machine_name}｜攻略メモ",
+            "description": "",
+            "image": None,
+            "site_name": ""
+        }
+
     try:
         headers = {"User-Agent": "Mozilla/5.0"}
         resp = requests.get(url, headers=headers, timeout=timeout)
         resp.raise_for_status()
+
         soup = BeautifulSoup(resp.text, "html.parser")
 
         def pick(*names):
@@ -159,28 +171,53 @@ def fetch_link_preview(url: str, timeout: int = 6):
                     return el["content"].strip()
             return None
 
-        title = pick("og:title", "twitter:title") or (soup.title.string.strip() if soup.title else None)
+        title = (
+            pick("og:title", "twitter:title")
+            or (soup.title.string.strip() if soup.title and soup.title.string else None)
+        )
+
         desc  = pick("og:description", "twitter:description", "description")
         image = pick("og:image", "twitter:image")
         site  = pick("og:site_name", "twitter:site")
+
         if image and image.startswith("//"):
             image = "https:" + image
-        return {"url": url, "title": title or url, "description": desc or "", "image": image, "site_name": site or ""}
+
+        # ★フォールバック
+        if not title:
+            title = f"{machine_name}｜攻略メモ"
+
+        return {
+            "url": url,
+            "title": title,
+            "description": desc or "",
+            "image": image,
+            "site_name": site or ""
+        }
+
     except Exception:
-        return {"url": url, "title": url, "description": "", "image": None, "site_name": ""}
+        return {
+            "url": url,
+            "title": f"{machine_name}｜攻略メモ",
+            "description": "",
+            "image": None,
+            "site_name": ""
+        }
 
 _PREVIEW_TTL = 60*60
 
 @lru_cache(maxsize=64)
-def _cached_fetch_link_preview(url: str) -> Tuple[float, Optional[dict]]:
-    data = fetch_link_preview(url)
+def _cached_fetch_link_preview(url: str, machine_name: str):
+    data = fetch_link_preview(url, machine_name)
     return (_time.time(), data)
 
-def get_link_preview_cached(url: str) -> Optional[dict]:
-    ts, data = _cached_fetch_link_preview(url)
+def get_link_preview_cached(url: str, machine_name: str = "攻略メモ") -> Optional[dict]:
+    ts, data = _cached_fetch_link_preview(url, machine_name)
+
     if _time.time() - ts > _PREVIEW_TTL:
         _cached_fetch_link_preview.cache_clear()
-        ts, data = _cached_fetch_link_preview(url)
+        ts, data = _cached_fetch_link_preview(url, machine_name)
+
     return data
 
 # =====================================================================
@@ -625,6 +662,7 @@ def all_tool():
         display_name = cfg.get("display_name", "")   # ←ここ重要
         settings = cfg.get("settings", {})
         links = cfg.get("links", [])
+        print("DEBUG display_name =", display_name)
 
     # =========================
     # リンク処理
@@ -636,10 +674,11 @@ def all_tool():
         if not url:
             continue
 
-        preview = get_link_preview_cached(url)
+        preview = get_link_preview_cached(url, display_name)
 
         if preview:
             preview["og_image_local"] = item.get("og_image")
+            preview["display_title"] = preview.get("title") or f"{display_name}｜攻略メモ"
             link_previews.append(preview)
 
     # =========================
