@@ -494,15 +494,20 @@ def filter_dataframe_v2(df, form, settings):
 
         val = form.get(key)
 
-        if not val or len(val) != 2:
+        if not val or len(val) != 3:
             return pd.Series(True, index=df.index)
 
-        min_v, max_v = val
+        min_v, max_v, extra_v = val
 
-        if min_v == 0 and max_v == 0:
+        if min_v == 0 and max_v == 0 and extra_v is None:
             return pd.Series(True, index=df.index)
 
-        return df[column].between(min_v, max_v)
+        mask = df[column].between(min_v, max_v)
+
+        if extra_v is not None:
+            mask |= (df[column] == extra_v)
+
+        return mask
 
     mask &= apply_range("スルー回数", "through")
     mask &= apply_range("AT間ゲーム数", "at_gap")
@@ -562,13 +567,13 @@ def generate_labels_from_mode_options(mode_options):
         }
 
     display_modes = [display_map[m] for m in normalized]
-    mode_label = "/".join(display_modes)
+    mode_label = "／".join(display_modes)
 
     if len(display_modes) == 1:
         base = display_modes[0]
         return {
             "mode": base,
-            "at_gap": "未設定",
+            "at_gap": f"前回***終了時{base}間G数",
             "prev_diff": f"前回{base}終了時差枚数",
             "prev_game": f"前回{base}当選G数",
             "prev_coin": f"前回{base}獲得枚数",
@@ -614,12 +619,12 @@ def get_default_values(mode_options):
         "time": "朝イチ",
         "game": 0,
 
-        "through": (0, 0),
-        "at_gap": (0, 0),
-        "prev_game": (0, 0),
-        "prev_coin": (0, 0),
-        "prev_diff": (0, 0),
-        "prev_renchan": (0, 0),
+        "through": (0, 0, 1, None),
+        "at_gap": (0, 0, 100, None),
+        "prev_game": (0, 0, 100, None),
+        "prev_coin": (0, 0, 100, None),
+        "prev_diff": (0, 0, 100, None),
+        "prev_renchan": (0, 0, 1, None),
 
         "prev_type": "不問",
         "custom_condition": "不問",
@@ -713,40 +718,70 @@ def all_tool():
     # =========================
     def get_int(name, default):
         v = request.form.get(name, None)
+
         if v is None or v == "":
-            return int(default)
+            return default
+
         try:
             return int(v)
         except:
-            return int(default)
+            return default
 
     selected_through_min = get_int("through_min", defaults["through"][0])
     selected_through_max = get_int("through_max", defaults["through"][1])
+    selected_through_extra = get_int("through_extra", defaults["through"][3])
 
     selected_at_gap_min = get_int("at_gap_min", defaults["at_gap"][0])
     selected_at_gap_max = get_int("at_gap_max", defaults["at_gap"][1])
+    selected_at_gap_extra = get_int("at_gap_extra", defaults["at_gap"][3])
 
     selected_prev_game_min = get_int("prev_game_min", defaults["prev_game"][0])
     selected_prev_game_max = get_int("prev_game_max", defaults["prev_game"][1])
+    selected_prev_game_extra = get_int("prev_game_extra", defaults["prev_game"][3])
 
     selected_prev_coin_min = get_int("prev_coin_min", defaults["prev_coin"][0])
     selected_prev_coin_max = get_int("prev_coin_max", defaults["prev_coin"][1])
+    selected_prev_coin_extra = get_int("prev_coin_extra", defaults["prev_coin"][3])
 
     selected_prev_diff_min = get_int("prev_diff_min", defaults["prev_diff"][0])
     selected_prev_diff_max = get_int("prev_diff_max", defaults["prev_diff"][1])
+    selected_prev_diff_extra = get_int("prev_diff_extra", defaults["prev_diff"][3])
 
     selected_prev_renchan_min = get_int("prev_renchan_min", defaults["prev_renchan"][0])
     selected_prev_renchan_max = get_int("prev_renchan_max", defaults["prev_renchan"][1])
+    selected_prev_renchan_extra = get_int("prev_renchan_extra", defaults["prev_renchan"][3])
 
     # =========================
     # UIレンジ（★必ず存在させる）
     # =========================
-    through = settings.get("through", (0, 5, 1))
-    at_gap = settings.get("at_gap", (0, 1000, 50))
-    prev_game = settings.get("prev_game", (0, 2000, 50))
-    prev_coin = settings.get("prev_coin", (0, 3000, 100))
-    prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
-    prev_renchan = settings.get("prev_renchan", (0, 10, 1))
+    through = settings.get("through", (0, 5, 1, None))
+    at_gap = settings.get("at_gap", (0, 1000, 50, None))
+    prev_game = settings.get("prev_game", (0, 2000, 50, None))
+    prev_coin = settings.get("prev_coin", (0, 3000, 100, None))
+    prev_diff = settings.get("prev_diff", (-3000, 3000, 100, None))
+    prev_renchan = settings.get("prev_renchan", (0, 10, 1, None))
+
+    # =========================
+    # select用valueリスト生成
+    # =========================
+    def build_values(cfg):
+        start, end, step = cfg[:3]
+
+        values = list(range(start, end + 1, step))
+
+        # extra値追加
+        if len(cfg) >= 4 and cfg[3] is not None:
+            if cfg[3] not in values:
+                values.append(cfg[3])
+
+        return sorted(values)
+
+    through_values = build_values(through)
+    at_gap_values = build_values(at_gap)
+    prev_game_values = build_values(prev_game)
+    prev_coin_values = build_values(prev_coin)
+    prev_diff_values = build_values(prev_diff)
+    prev_renchan_values = build_values(prev_renchan)
 
     # =========================
     # CSV（未選択でも落ちない）
@@ -785,6 +820,13 @@ def all_tool():
 
             selected_prev_type="不問",
             selected_custom_condition="不問",
+
+            through_values=through_values,
+            at_gap_values=at_gap_values,
+            prev_game_values=prev_game_values,
+            prev_coin_values=prev_coin_values,
+            prev_diff_values=prev_diff_values,
+            prev_renchan_values=prev_renchan_values,
 
             prev_type_options=[],
             custom_condition_options=[],
@@ -854,6 +896,13 @@ def all_tool():
             selected_prev_type=selected_prev_type,
             selected_custom_condition=selected_custom_condition,
 
+            through_values=through_values,
+            at_gap_values=at_gap_values,
+            prev_game_values=prev_game_values,
+            prev_coin_values=prev_coin_values,
+            prev_diff_values=prev_diff_values,
+            prev_renchan_values=prev_renchan_values,
+
             prev_type_options=settings.get("prev_type_options", []),
             custom_condition_options=settings.get("custom_condition_options", []),
 
@@ -873,12 +922,41 @@ def all_tool():
         "time": selected_time,
         "game": input_game,
 
-        "through": (selected_through_min, selected_through_max),
-        "at_gap": (selected_at_gap_min, selected_at_gap_max),
-        "prev_game": (selected_prev_game_min, selected_prev_game_max),
-        "prev_coin": (selected_prev_coin_min, selected_prev_coin_max),
-        "prev_diff": (selected_prev_diff_min, selected_prev_diff_max),
-        "prev_renchan": (selected_prev_renchan_min, selected_prev_renchan_max),
+        "through": (
+            selected_through_min,
+            selected_through_max,
+            selected_through_extra
+        ),
+
+        "at_gap": (
+            selected_at_gap_min,
+            selected_at_gap_max,
+            selected_at_gap_extra
+        ),
+
+        "prev_game": (
+            selected_prev_game_min,
+            selected_prev_game_max,
+            selected_prev_game_extra
+        ),
+
+        "prev_coin": (
+            selected_prev_coin_min,
+            selected_prev_coin_max,
+            selected_prev_coin_extra
+        ),
+
+        "prev_diff": (
+            selected_prev_diff_min,
+            selected_prev_diff_max,
+            selected_prev_diff_extra
+        ),
+
+        "prev_renchan": (
+            selected_prev_renchan_min,
+            selected_prev_renchan_max,
+            selected_prev_renchan_extra
+        ),
 
         "prev_type": selected_prev_type,
         "custom_condition": selected_custom_condition
@@ -982,6 +1060,13 @@ def all_tool():
         selected_prev_type=selected_prev_type,
         selected_custom_condition=selected_custom_condition,
 
+        through_values=through_values,
+        at_gap_values=at_gap_values,
+        prev_game_values=prev_game_values,
+        prev_coin_values=prev_coin_values,
+        prev_diff_values=prev_diff_values,
+        prev_renchan_values=prev_renchan_values,
+
         prev_type_options=settings.get("prev_type_options", []),
         custom_condition_options=settings.get("custom_condition_options", []),
 
@@ -1028,6 +1113,6 @@ def tool_list():
 # ==============================================================================
 if __name__ == "__main__":
     # ローカル検証時のみ debug=True にしてOK。公開時は False 推奨。
-    # app.run(debug=False)
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=False)
+    # app.run(debug=True, use_reloader=True)
 
