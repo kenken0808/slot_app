@@ -818,7 +818,7 @@ input[type="submit"]:active {
     <div class="range">
 
       <select name="through_min">
-        {% for i in through_values %}
+        {% for i in range(through[0], through[1]+1, through[2]) %}
           <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
@@ -826,7 +826,7 @@ input[type="submit"]:active {
       <span class="separator">～</span>
 
       <select name="through_max">
-        {% for i in through_values %}
+        {% for i in range(through[0], through[1]+1, through[2]) %}
           <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
@@ -841,28 +841,21 @@ input[type="submit"]:active {
 
   <div id="advanced-area">
 
-
     <!-- AT間G数（minmaxあり） -->
     <div class="form-row cz-gap">
       <label>{{ labels.get("at_gap", "AT間G数") }}</label>
       <div class="range">
 
-        <select
-          name="at_gap_min"
-          data-default="{{ at_gap[0] }}"
-        >
-          {% for i in at_gap_values %}
+        <select name="at_gap_min">
+          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
             <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select
-          name="at_gap_max"
-          data-default="{{ at_gap[1] }}"
-        >
-          {% for i in at_gap_values %}
+        <select name="at_gap_max">
+          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
             <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -875,22 +868,16 @@ input[type="submit"]:active {
       <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
       <div class="range">
 
-        <select
-          name="prev_game_min"
-          data-default="{{ prev_game[0] }}"
-        >
-          {% for i in prev_game_values %}
+        <select name="prev_game_min">
+          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select
-          name="prev_game_max"
-          data-default="{{ prev_game[1] }}"
-        >
-          {% for i in prev_game_values %}
+        <select name="prev_game_max">
+          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -903,22 +890,16 @@ input[type="submit"]:active {
       <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
       <div class="range">
 
-        <select
-          name="prev_coin_min"
-          data-default="{{ prev_coin[0] }}"
-        >
-          {% for i in prev_coin_values %}
+        <select name="prev_coin_min">
+          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select
-          name="prev_coin_max"
-          data-default="{{ prev_coin[1] }}"
-        >
-          {% for i in prev_coin_values %}
+        <select name="prev_coin_max">
+          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -931,22 +912,16 @@ input[type="submit"]:active {
       <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
       <div class="range">
 
-        <select
-          name="prev_diff_min"
-          data-default="{{ prev_diff[0] }}"
-        >
-          {% for i in prev_diff_values %}
+        <select name="prev_diff_min">
+          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select
-          name="prev_diff_max"
-          data-default="{{ prev_diff[1] }}"
-        >
-          {% for i in prev_diff_values %}
+        <select name="prev_diff_max">
+          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -959,22 +934,16 @@ input[type="submit"]:active {
       <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
       <div class="range">
 
-        <select
-          name="prev_renchan_min"
-          data-default="{{ prev_renchan[0] }}"
-        >
-          {% for i in prev_renchan_values %}
+        <select name="prev_renchan_min">
+          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select
-          name="prev_renchan_max"
-          data-default="{{ prev_renchan[1] }}"
-        >
-          {% for i in prev_renchan_values %}
+        <select name="prev_renchan_max">
+          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
             <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -985,35 +954,25 @@ input[type="submit"]:active {
     <!-- 前回種別 -->
     <div class="form-row">
       <label>{{ labels.get("prev_type", "前回種別") }}</label>
-
-      <select
-        name="prev_type"
-        data-default="不問"
-      >
+      <select name="prev_type">
         {% for opt in prev_type_options %}
           <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>
             {{ opt }}
           </option>
         {% endfor %}
       </select>
-
     </div>
 
     <!-- 機種別条件 -->
     <div class="form-row machine-condition">
       <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
-
-      <select
-        name="custom_condition"
-        data-default="不問"
-      >
+      <select name="custom_condition">
         {% for opt in custom_condition_options %}
           <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>
             {{ opt }}
           </option>
         {% endfor %}
       </select>
-
     </div>
 
   </div>
@@ -1605,228 +1564,8 @@ document.addEventListener("DOMContentLoaded", function () {
 console.log("🟢 JS FULL LOAD END");
 
 
-/* =====================================================
-   🟡 MIN/MAX 制限
-===================================================== */
-
-function setupRangeLimit(minName, maxName) {
-
-  const minSelect = document.querySelector(`[name="${minName}"]`);
-  const maxSelect = document.querySelector(`[name="${maxName}"]`);
-
-  if (!minSelect || !maxSelect) return;
-
-  function updateOptions() {
-
-    const minValue = parseInt(minSelect.value);
-    const maxValue = parseInt(maxSelect.value);
-
-    /* max側：min未満を無効化 */
-    [...maxSelect.options].forEach(option => {
-
-      const value = parseInt(option.value);
-
-      option.disabled = value < minValue;
-    });
-
-    /* min側：max超過を無効化 */
-    [...minSelect.options].forEach(option => {
-
-      const value = parseInt(option.value);
-
-      option.disabled = value > maxValue;
-    });
-
-    /* 念のため補正 */
-    if (minValue > maxValue) {
-      maxSelect.value = minSelect.value;
-    }
-
-  }
-
-  minSelect.addEventListener("change", updateOptions);
-  maxSelect.addEventListener("change", updateOptions);
-
-  updateOptions();
-} 
-
-/* =====================================================
-   🟡 RANGE 対象
-===================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  setupRangeLimit("through_min", "through_max");
-  setupRangeLimit("at_gap_min", "at_gap_max");
-  setupRangeLimit("prev_game_min", "prev_game_max");
-  setupRangeLimit("prev_coin_min", "prev_coin_max");
-  setupRangeLimit("prev_diff_min", "prev_diff_max");
-  setupRangeLimit("prev_renchan_min", "prev_renchan_max");
-
-});
-
-
-
-
-
-
 </script>
 
-<script>
 
-  // =========================
-  // 朝イチ時の詳細条件制御
-  // =========================
-  function toggleAdvancedInputs() {
-
-    // セレクト取得
-    const timeSelect = document.querySelector('select[name="time"]');
-    const modeSelect = document.querySelector('select[name="mode"]');
-
-    // 朝イチ判定
-    const isMorning = timeSelect.value === "朝イチ";
-
-    // mode数判定
-    const modeCount = modeSelect.options.length;
-
-    // =========================
-    // 朝イチ時に無効化する項目
-    // =========================
-    const morningTargets = [
-
-      // AT間G数
-      'at_gap_min',
-      'at_gap_max',
-      'at_gap_extra',
-
-      // 前回当選G数
-      'prev_game_min',
-      'prev_game_max',
-      'prev_game_extra',
-
-      // 前回獲得枚数
-      'prev_coin_min',
-      'prev_coin_max',
-      'prev_coin_extra',
-
-      // 前回差枚数
-      'prev_diff_min',
-      'prev_diff_max',
-      'prev_diff_extra',
-
-      // 前回連荘数
-      'prev_renchan_min',
-      'prev_renchan_max',
-      'prev_renchan_extra',
-
-      // 前回種別
-      'prev_type'
-    ];
-
-    // =========================
-    // mode1個時に無効化する項目
-    // =========================
-    const singleModeTargets = [
-
-      // スルー回数
-      'through_min',
-      'through_max',
-      'through_extra',
-
-      // AT間G数
-      'at_gap_min',
-      'at_gap_max',
-      'at_gap_extra'
-    ];
-
-    // =========================
-    // 朝イチ制御
-    // =========================
-    morningTargets.forEach(name => {
-
-      const elems = document.querySelectorAll(`[name="${name}"]`);
-
-      elems.forEach(el => {
-
-        // 朝イチ時はデフォルトへ戻す
-        if (isMorning) {
-
-          const defaultValue = el.dataset.default;
-
-          Array.from(el.options).forEach((option, index) => {
-
-            if (option.value == defaultValue) {
-              el.selectedIndex = index;
-            }
-
-          });
-
-        }
-
-        // disabled切替
-        el.disabled = isMorning;
-
-      });
-
-    });
-
-    // =========================
-    // mode1個制御
-    // =========================
-    singleModeTargets.forEach(name => {
-
-      const elems = document.querySelectorAll(`[name="${name}"]`);
-
-      elems.forEach(el => {
-
-        // mode1個時はデフォルトへ戻す
-        if (modeCount <= 1) {
-
-          const defaultValue = el.dataset.default;
-
-          Array.from(el.options).forEach((option, index) => {
-
-            if (option.value == defaultValue) {
-              el.selectedIndex = index;
-            }
-
-          });
-
-        }
-
-        // disabled切替
-        el.disabled = modeCount <= 1;
-
-      });
-
-    });
-
-  }
-
-  // =========================
-  // 初期化
-  // =========================
-  document.addEventListener("DOMContentLoaded", () => {
-
-    // 初回実行
-    toggleAdvancedInputs();
-
-    // 朝イチ変更時
-    const timeSelect = document.querySelector('select[name="time"]');
-
-    if (timeSelect) {
-      timeSelect.addEventListener("change", toggleAdvancedInputs);
-    }
-
-    // mode変更時
-    const modeSelect = document.querySelector('select[name="mode"]');
-
-    if (modeSelect) {
-      modeSelect.addEventListener("change", toggleAdvancedInputs);
-    }
-
-  });
-
-</script>
 </body>
 </html>
