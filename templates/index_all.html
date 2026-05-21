@@ -1564,6 +1564,163 @@ document.addEventListener("DOMContentLoaded", function () {
 console.log("🟢 JS FULL LOAD END");
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+console.log("🟢 LOCK SYSTEM START");
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  const mode = form.querySelector("[name='mode']");
+  const time = form.querySelector("[name='time']");
+
+  const tMin = form.querySelector("[name='through_min']");
+  const tMax = form.querySelector("[name='through_max']");
+
+  const aMin = form.querySelector("[name='at_gap_min']");
+  const aMax = form.querySelector("[name='at_gap_max']");
+
+  const prevItems = [
+    form.querySelector("[name='prev_game_min']"),
+    form.querySelector("[name='prev_game_max']"),
+    form.querySelector("[name='prev_coin_min']"),
+    form.querySelector("[name='prev_coin_max']"),
+    form.querySelector("[name='prev_diff_min']"),
+    form.querySelector("[name='prev_diff_max']"),
+    form.querySelector("[name='prev_renchan_min']"),
+    form.querySelector("[name='prev_renchan_max']"),
+    form.querySelector("[name='prev_type']")
+  ].filter(Boolean);
+
+  if (!mode || !time || !tMin || !tMax || !aMin || !aMax) {
+    console.error("❌ 必須要素が見つかりません");
+    return;
+  }
+
+  function updateLock() {
+
+    /* =========================
+       MODE制御
+    ========================= */
+    const modeSingle = mode.options.length === 1;
+
+    if (modeSingle) {
+      mode.disabled = true;
+      tMin.disabled = true;
+      tMax.disabled = true;
+      aMin.disabled = true;
+      aMax.disabled = true;
+    } else {
+      mode.disabled = false;
+      tMin.disabled = false;
+      tMax.disabled = false;
+      aMin.disabled = false;
+      aMax.disabled = false;
+    }
+
+    /* =========================
+       TIME制御
+    ========================= */
+    const isMorning = time.value === "朝イチ";
+
+    prevItems.forEach(el => {
+      el.disabled = isMorning;
+    });
+
+    /* =========================
+       THROUGH制御
+    ========================= */
+    const throughLock =
+      Number(tMin.value) === 0 &&
+      Number(tMax.value) === 0;
+
+    if (throughLock) {
+      aMin.disabled = true;
+      aMax.disabled = true;
+    } else {
+      if (!modeSingle) {
+        aMin.disabled = false;
+        aMax.disabled = false;
+      }
+    }
+
+    if (modeSingle) {
+      aMin.disabled = true;
+      aMax.disabled = true;
+    }
+  }
+
+  /* 初回実行 */
+  updateLock();
+
+  /* =====================================================
+     ✔ 修正ポイント：イベント制御（そのまま維持）
+  ===================================================== */
+  mode.addEventListener("change", updateLock);
+  time.addEventListener("change", updateLock);
+  tMin.addEventListener("change", updateLock);
+  tMax.addEventListener("change", updateLock);
+
+  prevItems.forEach(el => {
+    el.addEventListener("change", updateLock);
+  });
+
+  /* =====================================================
+     ✔ ここが本体修正（重要）
+     disabledのまま送信すると値が消える問題を防ぐ
+  ===================================================== */
+  form.addEventListener("submit", () => {
+
+    // through
+    tMin.disabled = false;
+    tMax.disabled = false;
+
+    // at_gap
+    aMin.disabled = false;
+    aMax.disabled = false;
+
+    // mode
+    mode.disabled = false;
+
+    // prev系
+    prevItems.forEach(el => {
+      el.disabled = false;
+    });
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 
