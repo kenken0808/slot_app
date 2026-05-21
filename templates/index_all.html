@@ -131,6 +131,13 @@ input:disabled {
 }
 
 
+.keep-disabled-style {
+  color: #777 !important;
+  background: #1a1a1a !important;
+  border-color: #333 !important;
+  -webkit-text-fill-color: #777 !important;
+}
+
 
 /* ▼ 修正：実際に使っている .range に適用 */
 .range {
@@ -1738,16 +1745,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", () => {
 
-    [
-      ...prevItems,
-      mode,
-      tMin,
-      tMax,
-      aMin,
-      aMax
-    ].forEach(el => {
+    form.querySelectorAll(":disabled").forEach(el => {
+      el.dataset.wasDisabled = "1";
       el.disabled = false;
+      el.classList.add("keep-disabled-style");
     });
+
   });
 
 });
