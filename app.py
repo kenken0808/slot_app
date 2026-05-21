@@ -562,13 +562,13 @@ def generate_labels_from_mode_options(mode_options):
         }
 
     display_modes = [display_map[m] for m in normalized]
-    mode_label = "/".join(display_modes)
+    mode_label = "／".join(display_modes)
 
     if len(display_modes) == 1:
         base = display_modes[0]
         return {
             "mode": base,
-            "at_gap": "未設定",
+            "at_gap": f"前回***終了時{base}間G数",
             "prev_diff": f"前回{base}終了時差枚数",
             "prev_game": f"前回{base}当選G数",
             "prev_coin": f"前回{base}獲得枚数",

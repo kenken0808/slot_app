@@ -1164,60 +1164,44 @@ input[type="submit"]:active {
 
 
 
-
 <script>
 /* =====================================================
-   🟢 JS FULL FINAL STABLE VERSION
-===================================================== */
-
-console.log("🟢 JS FULL LOAD START");
-
-/* =====================================================
-   🧠 ERROR HANDLE
+   🟢 GLOBAL ERROR HANDLER
 ===================================================== */
 window.addEventListener("error", (e) => {
-  console.error("🔴 JS ERROR:", e.message);
+  console.error("JS ERROR:", e.message);
 });
 
 window.addEventListener("unhandledrejection", (e) => {
-  console.error("🔴 PROMISE ERROR:", e.reason);
+  console.error("PROMISE ERROR:", e.reason);
 });
 
 /* =====================================================
-   🧠 MACHINE CONFIG
+   🟢 MACHINE CONFIG
 ===================================================== */
 const machineSettings = {{ machine_configs | tojson }};
-console.log("🟢 machineSettings loaded");
 
-/* =====================================================
-   🧠 STATE CONTROL（最重要）
-===================================================== */
-const STATE = {
-  submitted: sessionStorage.getItem("submitted") === "1",
-  reset: sessionStorage.getItem("reset") === "1",
-  applied: false   // ★二重初期化防止
-};
-
-if (STATE.reset) sessionStorage.removeItem("reset");
-
-/* =====================================================
-   🧠 GET SETTINGS
-===================================================== */
 function getSettings(machineName) {
   return machineSettings?.[machineName]?.settings || null;
 }
 
 /* =====================================================
-   🧠 APPLY SETTINGS（絶対1回制御）
+   🟢 STATE MANAGEMENT
+===================================================== */
+const STATE = {
+  submitted: sessionStorage.getItem("submitted") === "1",
+  reset: sessionStorage.getItem("reset") === "1",
+  applied: false
+};
+
+if (STATE.reset) sessionStorage.removeItem("reset");
+
+/* =====================================================
+   🟢 APPLY MACHINE SETTINGS（初期値セット）
 ===================================================== */
 window.applySettings = function (machineName) {
 
-  if (STATE.applied) {
-    console.log("🟡 SKIP applySettings (already applied)");
-    return;
-  }
-
-  console.log("🟡 applySettings:", machineName);
+  if (STATE.applied) return;
 
   const form = document.querySelector("form");
   if (!form) return;
@@ -1245,6 +1229,7 @@ window.applySettings = function (machineName) {
     settings.mode_options?.[0] || "ボーナス";
 
   form.querySelector("[name='time']").value = "朝イチ";
+
   form.querySelector("[name='game']").value = 0;
 
   form.querySelector("[name='prev_type']").value =
@@ -1254,18 +1239,17 @@ window.applySettings = function (machineName) {
     settings.custom_condition_options?.[0] || "不問";
 
   STATE.applied = true;
-
-  console.log("🟢 applySettings END");
 };
 
 /* =====================================================
-   🟡 MACHINE SUGGEST
+   🟡 MACHINE SUGGEST（検索補助UI）
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const input = document.getElementById("machine_input");
   const suggest = document.getElementById("machine_suggest");
   const hidden = document.getElementById("machine");
+  const toggleBtn = document.getElementById("machine_toggle");
 
   if (!input || !suggest || !hidden) return;
 
@@ -1275,69 +1259,33 @@ document.addEventListener("DOMContentLoaded", function () {
     {% endfor %}
   ];
 
-
-
-
-
-
-
-
-  // ▼ボタン
-  const toggleBtn = document.getElementById("machine_toggle");
-
+  // ▼ 一覧表示ボタン
   if (toggleBtn) {
-
-    toggleBtn.addEventListener("click", function (e) {
-
+    toggleBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
 
       suggest.innerHTML = "";
 
       data.forEach(d => {
-
         const div = document.createElement("div");
-
         div.textContent = d.name;
 
-
-
-        div.addEventListener("click", function () {
-
+        div.onclick = () => {
           hidden.value = d.key;
-
           window.location.href = `/all?machine=${d.key}`;
-        });
+        };
 
         suggest.appendChild(div);
-
       });
 
       suggest.style.display =
-        suggest.style.display === "block"
-          ? "none"
-          : "block";
-
+        suggest.style.display === "block" ? "none" : "block";
     });
-
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // ▼ 入力検索
   input.addEventListener("input", function () {
-
     const keyword = this.value.toLowerCase();
     suggest.innerHTML = "";
 
@@ -1351,15 +1299,14 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     filtered.forEach(d => {
-
       const div = document.createElement("div");
       div.textContent = d.name;
       div.style.padding = "8px";
       div.style.cursor = "pointer";
 
-      div.onclick = function () {
+      div.onclick = () => {
         hidden.value = d.key;
-        sessionStorage.removeItem("submitted"); // ★重要
+        sessionStorage.removeItem("submitted");
         window.location.href = `/all?machine=${d.key}`;
       };
 
@@ -1369,7 +1316,7 @@ document.addEventListener("DOMContentLoaded", function () {
     suggest.style.display = filtered.length ? "block" : "none";
   });
 
-  document.addEventListener("click", function (e) {
+  document.addEventListener("click", (e) => {
     if (!input.contains(e.target) && !suggest.contains(e.target)) {
       suggest.style.display = "none";
     }
@@ -1378,53 +1325,48 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =====================================================
-   🟡 RESET（設定値に戻す）
+   🟡 RESET BUTTON
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const btn = document.querySelector(".reset-btn");
   if (!btn) return;
 
-  btn.onclick = function () {
-
+  btn.onclick = () => {
     const machine = document.querySelector("[name='machine']")?.value;
     if (!machine) return;
 
-    // ★スクロール位置保存
     sessionStorage.setItem("scrollY", window.scrollY);
-
     window.location.href = `/all?machine=${machine}`;
   };
-
 });
 
 /* =====================================================
-   🟡 INPUT CLEAR
+   🟡 INPUT CLEAR（初回のみクリア）
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const input = document.getElementById("machine_input");
   if (!input) return;
 
   let cleared = false;
 
-  input.addEventListener("focus", function () {
+  input.addEventListener("focus", () => {
     if (!cleared) {
-      this.value = "";
+      input.value = "";
       cleared = true;
     }
   });
 
-  input.addEventListener("blur", function () {
+  input.addEventListener("blur", () => {
     cleared = false;
   });
-
 });
 
 /* =====================================================
-   🟡 SUBMIT HANDLER（初期化禁止）
+   🟡 FORM SUBMIT（ローディング制御）
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.querySelector("form");
   const resultArea = document.getElementById("result-area");
@@ -1433,22 +1375,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let lock = false;
 
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", (e) => {
 
     if (lock) return;
     lock = true;
 
     e.preventDefault();
 
-    /* ★ここは初期化しない（重要） */
     resultArea.innerHTML = `
-      <div class="result-loading" style="text-align:center;padding:30px;">
+      <div style="
+        text-align:center;
+        padding:30px;
+        color:#ff8c00;
+        font-weight:bold;
+        font-size:20px;
+      ">
         計算中...
       </div>
     `;
 
     const scrollY = window.scrollY;
-
     sessionStorage.setItem("submitted", "1");
 
     setTimeout(() => {
@@ -1457,7 +1403,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1500);
   });
 
-  window.addEventListener("load", function () {
+  window.addEventListener("load", () => {
     const y = sessionStorage.getItem("scrollY");
     if (y) window.scrollTo(0, parseInt(y));
     sessionStorage.removeItem("scrollY");
@@ -1466,18 +1412,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =====================================================
-   🟡 GRADE
+   🟡 GRADE表示
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-  const expectedText = document.getElementById("expected-value");
+  const expected = document.getElementById("expected-value");
   const gradeBox = document.getElementById("grade-box");
 
-  if (!expectedText || !gradeBox) return;
+  if (!expected || !gradeBox) return;
 
-  const value = parseInt(
-    expectedText.textContent.replace("円", "").replace(/,/g, "")
-  );
+  const value = parseInt(expected.textContent.replace("円", "").replace(/,/g, ""));
 
   let grade = "良";
   let className = "grade-normal";
@@ -1495,9 +1439,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =====================================================
-   🟡 DETAIL TOGGLE（起動時は閉じる）
+   🟡 ADVANCED TOGGLE
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const area = document.getElementById("advanced-area");
   const btn = document.getElementById("toggle-advanced");
@@ -1521,27 +1465,25 @@ document.addEventListener("DOMContentLoaded", function () {
     ${isOpen ? "詳細条件を隠す" : "詳細条件を表示"}
   `;
 
-  btn.onclick = function () {
-
+  btn.onclick = () => {
     const newState = area.style.display !== "block";
 
     area.style.display = newState ? "block" : "none";
     localStorage.setItem(key, newState);
 
-    this.classList.toggle("open", newState);
+    btn.classList.toggle("open", newState);
 
-    this.innerHTML = `
+    btn.innerHTML = `
       <span class="toggle-icon">▼</span>
       ${newState ? "詳細条件を隠す" : "詳細条件を表示"}
     `;
   };
-
 });
 
 /* =====================================================
-   🟡 INITIAL APPLY（唯一の入口）
+   🟡 INITIAL APPLY（設定適用）
 ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const hidden = document.getElementById("machine");
   const machine = hidden?.value;
@@ -1561,28 +1503,113 @@ document.addEventListener("DOMContentLoaded", function () {
   window.applySettings(machine);
 });
 
-console.log("🟢 JS FULL LOAD END");
+/* =====================================================
+   🟡 RANGE制御（最小・最大グレーアウト）
+===================================================== */
 
+/* =====================================================
+   🟡 RANGE CONTROL（全項目対応版）
+===================================================== */
 
+function getRule(name) {
+  const inclusive = ["through", "prev_renchan"];
 
+  return inclusive.includes(name)
+    ? { min: "gte", max: "lte" }
+    : { min: "gt", max: "lt" };
+}
 
+function updatePair(name, modeVal, form) {
 
+  const minEl = form.querySelector(`[name='${name}_min']`);
+  const maxEl = form.querySelector(`[name='${name}_max']`);
 
+  if (!minEl || !maxEl) return;
 
+  const rule = getRule(name);
 
+  const minVal = Number(minEl.value);
+  const maxVal = Number(maxEl.value);
 
+  // 最大側制御
+  Array.from(maxEl.options).forEach(opt => {
+    const v = Number(opt.value);
 
+    opt.disabled =
+      rule.max === "lte" ? v < minVal : v <= minVal;
+  });
 
+  // 最小側制御
+  Array.from(minEl.options).forEach(opt => {
+    const v = Number(opt.value);
 
+    opt.disabled =
+      rule.min === "gte" ? v > maxVal : v >= maxVal;
+  });
+}
 
+/* =====================================================
+   🟡 共通RANGE再計算（★追加：runAllを外出し）
+===================================================== */
+function runAll(form, mode) {
 
+  const targets = [
+    "through",
+    "at_gap",
+    "prev_game",
+    "prev_coin",
+    "prev_diff",
+    "prev_renchan"
+  ];
 
+  targets.forEach(name => {
+    updatePair(name, mode.value, form);
+  });
+}
 
+/* =====================================================
+   🟡 RANGEイベント初期化
+===================================================== */
 
+document.addEventListener("DOMContentLoaded", () => {
 
+  const form = document.querySelector("form");
+  if (!form) return;
 
+  const mode = form.querySelector("[name='mode']");
 
-console.log("🟢 LOCK SYSTEM START");
+  function run() {
+    runAll(form, mode);
+  }
+
+  const targets = [
+    "through",
+    "at_gap",
+    "prev_game",
+    "prev_coin",
+    "prev_diff",
+    "prev_renchan"
+  ];
+
+  targets.forEach(name => {
+
+    const minEl = form.querySelector(`[name='${name}_min']`);
+    const maxEl = form.querySelector(`[name='${name}_max']`);
+
+    if (!minEl || !maxEl) return;
+
+    minEl.addEventListener("change", run);
+    maxEl.addEventListener("change", run);
+  });
+
+  mode.addEventListener("change", run);
+
+  run();
+});
+
+/* =====================================================
+   🟡 LOCK SYSTEM（入力制御）
+===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1594,7 +1621,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tMin = form.querySelector("[name='through_min']");
   const tMax = form.querySelector("[name='through_max']");
-
   const aMin = form.querySelector("[name='at_gap_min']");
   const aMax = form.querySelector("[name='at_gap_max']");
 
@@ -1610,70 +1636,87 @@ document.addEventListener("DOMContentLoaded", () => {
     form.querySelector("[name='prev_type']")
   ].filter(Boolean);
 
-  if (!mode || !time || !tMin || !tMax || !aMin || !aMax) {
-    console.error("❌ 必須要素が見つかりません");
-    return;
-  }
-
   function updateLock() {
 
-    /* =========================
-       MODE制御
-    ========================= */
     const modeSingle = mode.options.length === 1;
 
+    // =================================================
+    // 初期化
+    // =================================================
+    mode.disabled = false;
+    tMin.disabled = false;
+    tMax.disabled = false;
+    aMin.disabled = false;
+    aMax.disabled = false;
+
+    prevItems.forEach(el => {
+      el.disabled = false;
+    });
+
+    // =================================================
+    // 条件判定
+    // =================================================
+    const isMorning = time.value === "朝イチ";
+
+    const throughLock =
+      Number(tMin.value) === 0 &&
+      Number(tMax.value) === 0;
+
+    // =================================================
+    // mode1 ロック
+    // =================================================
     if (modeSingle) {
       mode.disabled = true;
       tMin.disabled = true;
       tMax.disabled = true;
       aMin.disabled = true;
       aMax.disabled = true;
-    } else {
-      mode.disabled = false;
-      tMin.disabled = false;
-      tMax.disabled = false;
-      aMin.disabled = false;
-      aMax.disabled = false;
     }
 
-    /* =========================
-       TIME制御
-    ========================= */
-    const isMorning = time.value === "朝イチ";
+    // =================================================
+    // 朝イチロック
+    // =================================================
+    if (isMorning) {
 
-    prevItems.forEach(el => {
-      el.disabled = isMorning;
-    });
+      prevItems.forEach(el => {
+        el.disabled = true;
+      });
 
-    /* =========================
-       THROUGH制御
-    ========================= */
-    const throughLock =
-      Number(tMin.value) === 0 &&
-      Number(tMax.value) === 0;
+      // ★追加：gapもロック
+      aMin.disabled = true;
+      aMax.disabled = true;
+    }
 
+    // =================================================
+    // through=0 ロック
+    // =================================================
     if (throughLock) {
       aMin.disabled = true;
       aMax.disabled = true;
-    } else {
-      if (!modeSingle) {
-        aMin.disabled = false;
-        aMax.disabled = false;
-      }
     }
 
-    if (modeSingle) {
-      aMin.disabled = true;
-      aMax.disabled = true;
-    }
+    // =================================================
+    // 値初期化
+    // =================================================
+    onLockChange({
+      form,
+      modeSingle,
+      isMorning,
+      throughLock
+    });
+
+    // =================================================
+    // 表示更新
+    // =================================================
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        runAll(form, mode);
+      });
+    });
   }
 
-  /* 初回実行 */
   updateLock();
 
-  /* =====================================================
-     ✔ 修正ポイント：イベント制御（そのまま維持）
-  ===================================================== */
   mode.addEventListener("change", updateLock);
   time.addEventListener("change", updateLock);
   tMin.addEventListener("change", updateLock);
@@ -1683,46 +1726,86 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("change", updateLock);
   });
 
-  /* =====================================================
-     ✔ ここが本体修正（重要）
-     disabledのまま送信すると値が消える問題を防ぐ
-  ===================================================== */
   form.addEventListener("submit", () => {
 
-    // through
-    tMin.disabled = false;
-    tMax.disabled = false;
-
-    // at_gap
-    aMin.disabled = false;
-    aMax.disabled = false;
-
-    // mode
-    mode.disabled = false;
-
-    // prev系
-    prevItems.forEach(el => {
+    [
+      ...prevItems,
+      mode,
+      tMin,
+      tMax,
+      aMin,
+      aMax
+    ].forEach(el => {
       el.disabled = false;
     });
   });
 
 });
 
+/* =====================================================
+   🟡 LOCK時リセット処理
+===================================================== */
+function onLockChange({
+  form,
+  modeSingle,
+  isMorning,
+  throughLock
+}) {
 
+  const machineName =
+    form.querySelector("[name='machine']")?.value;
 
+  const settings =
+    machineSettings?.[machineName]?.settings;
 
+  if (!settings) return;
 
+  const resetRange = (name, arr) => {
 
+    const min =
+      form.querySelector(`[name='${name}_min']`);
 
+    const max =
+      form.querySelector(`[name='${name}_max']`);
 
+    if (!min || !max || !Array.isArray(arr)) return;
 
+    min.value = String(arr[0] ?? "");
+    max.value = String(arr[1] ?? "");
 
+  };
 
+  // =================================================
+  // mode1
+  // =================================================
+  if (modeSingle) {
 
+    resetRange("through", settings.through);
+    resetRange("at_gap", settings.at_gap);
+  }
 
+  // =================================================
+  // 朝イチ
+  // =================================================
+  if (isMorning) {
+
+    resetRange("at_gap", settings.at_gap);
+    resetRange("prev_game", settings.prev_game);
+    resetRange("prev_coin", settings.prev_coin);
+    resetRange("prev_diff", settings.prev_diff);
+    resetRange("prev_renchan", settings.prev_renchan);
+  }
+
+  // =================================================
+  // through=0
+  // =================================================
+  if (throughLock) {
+
+    resetRange("at_gap", settings.at_gap);
+  }
+}
 
 </script>
-
 
 </body>
 </html>
