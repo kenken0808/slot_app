@@ -467,6 +467,38 @@ def api_default_values():
         "prev_renchan": defaults["prev_renchan"],
     })
 
+# =====================================================
+# range option生成
+# =====================================================
+
+def build_range_options(setting):
+
+    print("SETTING =", setting)
+
+    start = setting[0]
+    normal_max = setting[1]
+    step = setting[2]
+    final_value = setting[3]
+
+    values = list(range(start, normal_max + 1, step))
+
+    if final_value not in values:
+        values.append(final_value)
+
+    print("VALUES =", values)
+
+    return values
+
+# ★これを追加
+def get_setting_max(setting):
+
+    # 4項目ある場合
+    if len(setting) >= 4:
+        return setting[3]
+
+    # 旧形式
+    return setting[1]
+
 def filter_dataframe_v2(df, form, settings):
 
     print("========== FILTER DEBUG START ==========")
@@ -708,6 +740,27 @@ def all_tool():
     selected_prev_type = request.form.get("prev_type", "不問")
     selected_custom_condition = request.form.get("custom_condition", "不問")
 
+
+    # =========================
+    # UIレンジ（★必ず存在させる）
+    # =========================
+    through = settings.get("through", (0, 5, 1))
+    at_gap = settings.get("at_gap", (0, 1000, 50))
+    prev_game = settings.get("prev_game", (0, 2000, 50))
+    prev_coin = settings.get("prev_coin", (0, 3000, 100))
+    prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
+    prev_renchan = settings.get("prev_renchan", (0, 10, 1))
+
+    # =========================
+    # 最大値初期値
+    # =========================
+    through_default_max = get_setting_max(through)
+    at_gap_default_max = get_setting_max(at_gap)
+    prev_game_default_max = get_setting_max(prev_game)
+    prev_coin_default_max = get_setting_max(prev_coin)
+    prev_diff_default_max = get_setting_max(prev_diff)
+    prev_renchan_default_max = get_setting_max(prev_renchan)
+
     # =========================
     # min/max（安全変換）
     # =========================
@@ -720,33 +773,23 @@ def all_tool():
         except:
             return int(default)
 
-    selected_through_min = get_int("through_min", defaults["through"][0])
-    selected_through_max = get_int("through_max", defaults["through"][1])
+    selected_through_min = get_int("through_min", 0)
+    selected_through_max = get_int("through_max", through_default_max)
 
-    selected_at_gap_min = get_int("at_gap_min", defaults["at_gap"][0])
-    selected_at_gap_max = get_int("at_gap_max", defaults["at_gap"][1])
+    selected_at_gap_min = get_int("at_gap_min", 0)
+    selected_at_gap_max = get_int("at_gap_max", at_gap_default_max)
 
-    selected_prev_game_min = get_int("prev_game_min", defaults["prev_game"][0])
-    selected_prev_game_max = get_int("prev_game_max", defaults["prev_game"][1])
+    selected_prev_game_min = get_int("prev_game_min", 0)
+    selected_prev_game_max = get_int("prev_game_max", prev_game_default_max)
 
-    selected_prev_coin_min = get_int("prev_coin_min", defaults["prev_coin"][0])
-    selected_prev_coin_max = get_int("prev_coin_max", defaults["prev_coin"][1])
+    selected_prev_coin_min = get_int("prev_coin_min", 0)
+    selected_prev_coin_max = get_int("prev_coin_max", prev_coin_default_max)
 
-    selected_prev_diff_min = get_int("prev_diff_min", defaults["prev_diff"][0])
-    selected_prev_diff_max = get_int("prev_diff_max", defaults["prev_diff"][1])
+    selected_prev_diff_min = get_int("prev_diff_min", 0)
+    selected_prev_diff_max = get_int("prev_diff_max", prev_diff_default_max)
 
-    selected_prev_renchan_min = get_int("prev_renchan_min", defaults["prev_renchan"][0])
-    selected_prev_renchan_max = get_int("prev_renchan_max", defaults["prev_renchan"][1])
-
-    # =========================
-    # UIレンジ（★必ず存在させる）
-    # =========================
-    through = settings.get("through", (0, 5, 1))
-    at_gap = settings.get("at_gap", (0, 1000, 50))
-    prev_game = settings.get("prev_game", (0, 2000, 50))
-    prev_coin = settings.get("prev_coin", (0, 3000, 100))
-    prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
-    prev_renchan = settings.get("prev_renchan", (0, 10, 1))
+    selected_prev_renchan_min = get_int("prev_renchan_min", 0)
+    selected_prev_renchan_max = get_int("prev_renchan_max", prev_renchan_default_max)
 
     # =========================
     # CSV（未選択でも落ちない）
@@ -763,25 +806,30 @@ def all_tool():
             selected_time="朝イチ",
             input_game=0,
 
-            through=through,
-            at_gap=at_gap,
-            prev_game=prev_game,
-            prev_coin=prev_coin,
-            prev_diff=prev_diff,
-            prev_renchan=prev_renchan,
+            through_options=build_range_options(through),
+            at_gap_options=build_range_options(at_gap),
+            prev_game_options=build_range_options(prev_game),
+            prev_coin_options=build_range_options(prev_coin),
+            prev_diff_options=build_range_options(prev_diff),
+            prev_renchan_options=build_range_options(prev_renchan),
 
-            selected_through_min=0,
-            selected_through_max=0,
-            selected_at_gap_min=0,
-            selected_at_gap_max=0,
-            selected_prev_game_min=0,
-            selected_prev_game_max=0,
-            selected_prev_coin_min=0,
-            selected_prev_coin_max=0,
-            selected_prev_diff_min=0,
-            selected_prev_diff_max=0,
-            selected_prev_renchan_min=0,
-            selected_prev_renchan_max=0,
+            selected_through_min=selected_through_min,
+            selected_through_max=selected_through_max,
+
+            selected_at_gap_min=selected_at_gap_min,
+            selected_at_gap_max=selected_at_gap_max,
+
+            selected_prev_game_min=selected_prev_game_min,
+            selected_prev_game_max=selected_prev_game_max,
+
+            selected_prev_coin_min=selected_prev_coin_min,
+            selected_prev_coin_max=selected_prev_coin_max,
+
+            selected_prev_diff_min=selected_prev_diff_min,
+            selected_prev_diff_max=selected_prev_diff_max,
+
+            selected_prev_renchan_min=selected_prev_renchan_min,
+            selected_prev_renchan_max=selected_prev_renchan_max,
 
             selected_prev_type="不問",
             selected_custom_condition="不問",
@@ -831,23 +879,28 @@ def all_tool():
             display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
             mode_options=mode_options,
 
-            through=through,
-            at_gap=at_gap,
-            prev_game=prev_game,
-            prev_coin=prev_coin,
-            prev_diff=prev_diff,
-            prev_renchan=prev_renchan,
+            through_options=build_range_options(through),
+            at_gap_options=build_range_options(at_gap),
+            prev_game_options=build_range_options(prev_game),
+            prev_coin_options=build_range_options(prev_coin),
+            prev_diff_options=build_range_options(prev_diff),
+            prev_renchan_options=build_range_options(prev_renchan),
 
             selected_through_min=selected_through_min,
             selected_through_max=selected_through_max,
+
             selected_at_gap_min=selected_at_gap_min,
             selected_at_gap_max=selected_at_gap_max,
+
             selected_prev_game_min=selected_prev_game_min,
             selected_prev_game_max=selected_prev_game_max,
+
             selected_prev_coin_min=selected_prev_coin_min,
             selected_prev_coin_max=selected_prev_coin_max,
+
             selected_prev_diff_min=selected_prev_diff_min,
             selected_prev_diff_max=selected_prev_diff_max,
+
             selected_prev_renchan_min=selected_prev_renchan_min,
             selected_prev_renchan_max=selected_prev_renchan_max,
 
@@ -959,23 +1012,28 @@ def all_tool():
         selected_time=selected_time,
         input_game=input_game,
 
-        through=through,
-        at_gap=at_gap,
-        prev_game=prev_game,
-        prev_coin=prev_coin,
-        prev_diff=prev_diff,
-        prev_renchan=prev_renchan,
+        through_options=build_range_options(through),
+        at_gap_options=build_range_options(at_gap),
+        prev_game_options=build_range_options(prev_game),
+        prev_coin_options=build_range_options(prev_coin),
+        prev_diff_options=build_range_options(prev_diff),
+        prev_renchan_options=build_range_options(prev_renchan),
 
         selected_through_min=selected_through_min,
         selected_through_max=selected_through_max,
+
         selected_at_gap_min=selected_at_gap_min,
         selected_at_gap_max=selected_at_gap_max,
+
         selected_prev_game_min=selected_prev_game_min,
         selected_prev_game_max=selected_prev_game_max,
+
         selected_prev_coin_min=selected_prev_coin_min,
         selected_prev_coin_max=selected_prev_coin_max,
+
         selected_prev_diff_min=selected_prev_diff_min,
         selected_prev_diff_max=selected_prev_diff_max,
+
         selected_prev_renchan_min=selected_prev_renchan_min,
         selected_prev_renchan_max=selected_prev_renchan_max,
 

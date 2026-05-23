@@ -843,7 +843,7 @@ input[type="submit"]:active {
     <div class="range">
 
       <select name="through_min">
-        {% for i in range(through[0], through[1]+1, through[2]) %}
+        {% for i in through_options %}
           <option value="{{ i }}" {% if i == selected_through_min %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
@@ -851,7 +851,7 @@ input[type="submit"]:active {
       <span class="separator">～</span>
 
       <select name="through_max">
-        {% for i in range(through[0], through[1]+1, through[2]) %}
+        {% for i in through_options %}
           <option value="{{ i }}" {% if i == selected_through_max %}selected{% endif %}>{{ i }}</option>
         {% endfor %}
       </select>
@@ -869,10 +869,11 @@ input[type="submit"]:active {
     <!-- AT間G数（minmaxあり） -->
     <div class="form-row cz-gap">
       <label>{{ labels.get("at_gap", "AT間G数") }}</label>
+
       <div class="range">
 
         <select name="at_gap_min">
-          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+          {% for i in at_gap_options %}
             <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -880,7 +881,7 @@ input[type="submit"]:active {
         <span class="separator">～</span>
 
         <select name="at_gap_max">
-          {% for i in range(at_gap[0], at_gap[1]+1, at_gap[2]) %}
+          {% for i in at_gap_options %}
             <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -891,10 +892,11 @@ input[type="submit"]:active {
     <!-- 前回当選G数 -->
     <div class="form-row">
       <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
+
       <div class="range">
 
         <select name="prev_game_min">
-          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+          {% for i in prev_game_options %}
             <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -902,7 +904,7 @@ input[type="submit"]:active {
         <span class="separator">～</span>
 
         <select name="prev_game_max">
-          {% for i in range(prev_game[0], prev_game[1]+1, prev_game[2]) %}
+          {% for i in prev_game_options %}
             <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -913,10 +915,11 @@ input[type="submit"]:active {
     <!-- 前回獲得枚数 -->
     <div class="form-row">
       <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+
       <div class="range">
 
         <select name="prev_coin_min">
-          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+          {% for i in prev_coin_options %}
             <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -924,7 +927,7 @@ input[type="submit"]:active {
         <span class="separator">～</span>
 
         <select name="prev_coin_max">
-          {% for i in range(prev_coin[0], prev_coin[1]+1, prev_coin[2]) %}
+          {% for i in prev_coin_options %}
             <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -935,10 +938,11 @@ input[type="submit"]:active {
     <!-- 前回差枚数 -->
     <div class="form-row">
       <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
+
       <div class="range">
 
         <select name="prev_diff_min">
-          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+          {% for i in prev_diff_options %}
             <option value="{{ i }}" {% if i == selected_prev_diff_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -946,7 +950,7 @@ input[type="submit"]:active {
         <span class="separator">～</span>
 
         <select name="prev_diff_max">
-          {% for i in range(prev_diff[0], prev_diff[1]+1, prev_diff[2]) %}
+          {% for i in prev_diff_options %}
             <option value="{{ i }}" {% if i == selected_prev_diff_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -957,10 +961,11 @@ input[type="submit"]:active {
     <!-- 前回連荘数 -->
     <div class="form-row">
       <label>{{ labels.get("prev_renchan", "前回連荘数") }}</label>
+
       <div class="range">
 
         <select name="prev_renchan_min">
-          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+          {% for i in prev_renchan_options %}
             <option value="{{ i }}" {% if i == selected_prev_renchan_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -968,7 +973,7 @@ input[type="submit"]:active {
         <span class="separator">～</span>
 
         <select name="prev_renchan_max">
-          {% for i in range(prev_renchan[0], prev_renchan[1]+1, prev_renchan[2]) %}
+          {% for i in prev_renchan_options %}
             <option value="{{ i }}" {% if i == selected_prev_renchan_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
@@ -979,6 +984,7 @@ input[type="submit"]:active {
     <!-- 前回種別 -->
     <div class="form-row">
       <label>{{ labels.get("prev_type", "前回種別") }}</label>
+
       <select name="prev_type">
         {% for opt in prev_type_options %}
           <option value="{{ opt }}" {% if opt == selected_prev_type %}selected{% endif %}>
@@ -991,6 +997,7 @@ input[type="submit"]:active {
     <!-- 機種別条件 -->
     <div class="form-row machine-condition">
       <label>{{ labels.get("custom_condition", "機種別条件") }}</label>
+
       <select name="custom_condition">
         {% for opt in custom_condition_options %}
           <option value="{{ opt }}" {% if opt == selected_custom_condition %}selected{% endif %}>
@@ -1235,12 +1242,19 @@ window.applySettings = function (machineName) {
   if (!settings) return;
 
   const setRange = (name, arr) => {
+
     const min = form.querySelector(`[name='${name}_min']`);
     const max = form.querySelector(`[name='${name}_max']`);
+
     if (!min || !max || !Array.isArray(arr)) return;
 
     min.value = arr[0] ?? "";
-    max.value = arr[1] ?? "";
+
+    // ★4項目なら最後を使う
+    max.value =
+      arr.length >= 4
+        ? arr[3]
+        : arr[1];
   };
 
   setRange("through", settings.through);
@@ -1571,6 +1585,28 @@ function updatePair(name, modeVal, form) {
     opt.disabled =
       rule.min === "gte" ? v > maxVal : v >= maxVal;
   });
+
+  // 現在のmax値がdisabledなら最後の有効値へ
+  if (maxEl.selectedOptions[0]?.disabled) {
+
+    const enabled = [...maxEl.options]
+      .filter(o => !o.disabled);
+
+    if (enabled.length) {
+      maxEl.value = enabled[enabled.length - 1].value;
+    }
+  }
+
+  // 現在のmin値がdisabledなら最初の有効値へ
+  if (minEl.selectedOptions[0]?.disabled) {
+
+    const enabled = [...minEl.options]
+      .filter(o => !o.disabled);
+
+    if (enabled.length) {
+      minEl.value = enabled[0].value;
+    }
+  }
 }
 
 /* =====================================================
@@ -1721,6 +1757,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =================================================
+    // locked_fields（最優先ロック）
+    // =================================================
+    const machineName = form.querySelector("[name='machine']")?.value;
+
+    const lockedFields =
+      machineSettings?.[machineName]?.settings?.locked_fields || [];
+
+    const lockMap = {
+
+      through: [tMin, tMax],
+
+      at_gap: [aMin, aMax],
+
+      prev_game: [
+        form.querySelector("[name='prev_game_min']"),
+        form.querySelector("[name='prev_game_max']")
+      ],
+
+      prev_coin: [
+        form.querySelector("[name='prev_coin_min']"),
+        form.querySelector("[name='prev_coin_max']")
+      ],
+
+      prev_diff: [
+        form.querySelector("[name='prev_diff_min']"),
+        form.querySelector("[name='prev_diff_max']")
+      ],
+
+      prev_renchan: [
+        form.querySelector("[name='prev_renchan_min']"),
+        form.querySelector("[name='prev_renchan_max']")
+      ],
+
+      prev_type: [
+        form.querySelector("[name='prev_type']")
+      ],
+
+      custom_condition: [
+        form.querySelector("[name='custom_condition']")
+      ]
+    };
+
+    lockedFields.forEach(name => {
+
+      const targets = lockMap[name] || [];
+
+      targets.forEach(el => {
+
+        if (el) {
+          el.disabled = true;
+        }
+
+      });
+
+    });
+
+    // =================================================
     // 値初期化
     // =================================================
     onLockChange({
@@ -1792,7 +1885,11 @@ function onLockChange({
     if (!min || !max || !Array.isArray(arr)) return;
 
     min.value = String(arr[0] ?? "");
-    max.value = String(arr[1] ?? "");
+    max.value = String(
+      arr.length >= 4
+        ? arr[3]
+        : arr[1]
+    );
 
   };
 
