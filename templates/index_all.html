@@ -1248,13 +1248,33 @@ window.applySettings = function (machineName) {
 
     if (!min || !max || !Array.isArray(arr)) return;
 
-    min.value = arr[0] ?? "";
+    // =========================
+    // 5項目形式
+    // =========================
+    if (arr.length >= 5) {
 
-    // ★4項目なら最後を使う
-    max.value =
-      arr.length >= 4
-        ? arr[3]
-        : arr[1];
+      min.value = arr[3];
+      max.value = arr[4];
+
+      return;
+    }
+
+    // =========================
+    // 4項目形式
+    // =========================
+    if (arr.length >= 4) {
+
+      min.value = arr[0];
+      max.value = arr[3];
+
+      return;
+    }
+
+    // =========================
+    // 旧形式
+    // =========================
+    min.value = arr[0] ?? "";
+    max.value = arr[1] ?? "";
   };
 
   setRange("through", settings.through);
@@ -1884,13 +1904,33 @@ function onLockChange({
 
     if (!min || !max || !Array.isArray(arr)) return;
 
-    min.value = String(arr[0] ?? "");
-    max.value = String(
-      arr.length >= 4
-        ? arr[3]
-        : arr[1]
-    );
+    // =========================
+    // 5項目形式
+    // =========================
+    if (arr.length >= 5) {
 
+      min.value = String(arr[3]);
+      max.value = String(arr[4]);
+
+      return;
+    }
+
+    // =========================
+    // 4項目形式
+    // =========================
+    if (arr.length >= 4) {
+
+      min.value = String(arr[0]);
+      max.value = String(arr[3]);
+
+      return;
+    }
+
+    // =========================
+    // 旧形式
+    // =========================
+    min.value = String(arr[0] ?? "");
+    max.value = String(arr[1] ?? "");
   };
 
   // =================================================

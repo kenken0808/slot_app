@@ -36,13 +36,42 @@ machine_configs = {
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 1300, 100,9999),
             "prev_coin": (0, 3000, 300,9999),
-            "prev_diff": (-3000, 1500, 100,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 10, 1,9999),
 
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
 
             "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+        }
+    },
+
+    "bigdream": {
+        "display_name": "L ビッグドリーム",
+        "file_key": "bigdream",
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
+            },
+            {
+                "og_image": "bigdream.jpg",
+                "link_url": "/memo/bigdream"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.7,
+            "mode_options": ["CZ", "AT"],
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": []
         }
     },
 
@@ -70,7 +99,7 @@ machine_configs = {
             "at_gap": (0, 2000, 50,9999),
             "prev_game": (0, 1300, 50,9999),
             "prev_coin": (0, 3000, 100,9999),
-            "prev_diff": (-3000, 1500, 100,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 5, 1,9999),
 
             "prev_type_options": ["不問"],
@@ -104,7 +133,7 @@ machine_configs = {
             "at_gap": (0, 1000, 50,9999),
             "prev_game": (0, 2000, 50,9999),
             "prev_coin": (0, 1000, 100,9999),
-            "prev_diff": (-1000, 1000, 100,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 10, 1,9999),
 
             "prev_type_options": ["不問"],
@@ -138,7 +167,7 @@ machine_configs = {
             "at_gap": (0, 2000, 50,9999),
             "prev_game": (0, 1300, 50,9999),
             "prev_coin": (0, 3000, 100,9999),
-            "prev_diff": (-3000, 1500, 100,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 5, 1,9999),
 
             "prev_type_options": ["不問"],
@@ -172,7 +201,7 @@ machine_configs = {
             "at_gap": (0, 1000, 50,9999),
             "prev_game": (0, 2000, 50,9999),
             "prev_coin": (0, 1000, 100,9999),
-            "prev_diff": (-1000, 1000, 100,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 10, 1,9999),
 
             "prev_type_options": ["不問"],

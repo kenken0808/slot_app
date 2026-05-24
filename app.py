@@ -475,6 +475,36 @@ def build_range_options(setting):
 
     print("SETTING =", setting)
 
+    # =================================================
+    # 5項目形式
+    # (normal_min, normal_max, step, final_min, final_max)
+    # =================================================
+    if len(setting) >= 5:
+
+        start = setting[0]
+        normal_max = setting[1]
+        step = setting[2]
+        final_min = setting[3]
+        final_max = setting[4]
+
+        values = list(range(start, normal_max + 1, step))
+
+        # 最小追加
+        if final_min not in values:
+            values.insert(0, final_min)
+
+        # 最大追加
+        if final_max not in values:
+            values.append(final_max)
+
+        print("VALUES =", values)
+
+        return values
+
+    # =================================================
+    # 4項目形式
+    # (start, normal_max, step, final_max)
+    # =================================================
     start = setting[0]
     normal_max = setting[1]
     step = setting[2]
@@ -489,15 +519,35 @@ def build_range_options(setting):
 
     return values
 
-# ★これを追加
+
+# =================================================
+# 最大値取得
+# =================================================
 def get_setting_max(setting):
 
-    # 4項目ある場合
+    # 5項目
+    if len(setting) >= 5:
+        return setting[4]
+
+    # 4項目
     if len(setting) >= 4:
         return setting[3]
 
     # 旧形式
     return setting[1]
+
+
+# =================================================
+# 最小値取得
+# =================================================
+def get_setting_min(setting):
+
+    # 5項目
+    if len(setting) >= 5:
+        return setting[3]
+
+    # 通常
+    return setting[0]
 
 def filter_dataframe_v2(df, form, settings):
 
@@ -530,9 +580,6 @@ def filter_dataframe_v2(df, form, settings):
             return pd.Series(True, index=df.index)
 
         min_v, max_v = val
-
-        if min_v == 0 and max_v == 0:
-            return pd.Series(True, index=df.index)
 
         return df[column].between(min_v, max_v)
 
@@ -785,8 +832,15 @@ def all_tool():
     selected_prev_coin_min = get_int("prev_coin_min", 0)
     selected_prev_coin_max = get_int("prev_coin_max", prev_coin_default_max)
 
-    selected_prev_diff_min = get_int("prev_diff_min", 0)
-    selected_prev_diff_max = get_int("prev_diff_max", prev_diff_default_max)
+    selected_prev_diff_min = get_int(
+        "prev_diff_min",
+        get_setting_min(prev_diff)
+    )
+
+    selected_prev_diff_max = get_int(
+        "prev_diff_max",
+        get_setting_max(prev_diff)
+    )
 
     selected_prev_renchan_min = get_int("prev_renchan_min", 0)
     selected_prev_renchan_max = get_int("prev_renchan_max", prev_renchan_default_max)
