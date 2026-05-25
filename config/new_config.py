@@ -71,7 +71,7 @@ machine_configs = {
             "prev_renchan": (0, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
-            "locked_fields": ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type_options", "custom_condition"]
+            "locked_fields": ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
         }
     },
 
