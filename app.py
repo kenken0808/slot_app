@@ -18,6 +18,7 @@ from typing import Dict, Tuple, Optional
 from datetime import timedelta
 import time as _time
 from config import new_config
+from config import memo_config
 
 
 # =====================================================================
@@ -647,6 +648,8 @@ def generate_labels_from_mode_options(mode_options):
         base = display_modes[0]
         return {
             "mode": base,
+            "game": f"打ち出しG数（{base}間）",
+            "through": f"{base}スルー回数",
             "at_gap": f"前回***終了時{base}間G数",
             "prev_diff": f"前回{base}終了時差枚数",
             "prev_game": f"前回{base}当選G数",
@@ -661,6 +664,8 @@ def generate_labels_from_mode_options(mode_options):
 
     return {
         "mode": mode_label,
+        "game": f"打ち出しG数（{first}間）",
+        "through": f"{first}スルー回数",
         "at_gap": f"前回{first}終了時{second}間G数",
         "prev_diff": f"前回{second}終了時差枚数",
         "prev_game": f"前回{second}当選G数",
@@ -710,7 +715,17 @@ def get_default_values(mode_options):
 # =========================
 @app.route("/memo/<machine>")
 def memo(machine):
-    return render_template(f"memo/{machine}.html")
+
+    memo = memo_config.memo_configs.get(machine)
+
+    if not memo:
+        return "memo not found", 404
+
+    return render_template(
+        "index_memo.html",
+        memo=memo,
+        machine=machine
+    )
 
 
 @app.route("/all", methods=["GET", "POST"])
@@ -821,7 +836,7 @@ def all_tool():
             return int(default)
 
     selected_through_min = get_int("through_min", 0)
-    selected_through_max = get_int("through_max", through_default_max)
+    selected_through_max = get_int("through_max", 0)
 
     selected_at_gap_min = get_int("at_gap_min", 0)
     selected_at_gap_max = get_int("at_gap_max", at_gap_default_max)
@@ -905,7 +920,7 @@ def all_tool():
     # =========================
     file_key = MACHINE_CONFIGS[selected_machine]["file_key"]
     csv_suffix = mode_to_csv_suffix(selected_mode) or "rb"
-    csv_path = f"data/{file_key}_{csv_suffix}.csv"
+    csv_path = f"data/{file_key}/{csv_suffix}.csv"
 
     try:
         dtypes = {
@@ -1021,35 +1036,46 @@ def all_tool():
     # 計算
     # =========================
     result = None
+    error_msg = None
 
-    if request.method == "POST" and not filtered_df.empty and len(filtered_df) >= 100:
+    if request.method == "POST":
 
-        count = len(filtered_df)
+        if filtered_df.empty:
 
-        avg_reg_games = filtered_df["REGゲーム数"].mean()
-        avg_at_games = filtered_df["ATゲーム数"].mean()
-        avg_reg_coins = filtered_df["REG枚数"].mean()
-        avg_at_coins = filtered_df["AT枚数"].mean()
+            error_msg = "条件に一致するデータがありません"
 
-        hatsu_atari = max(avg_reg_games - input_game, 0)
+        elif len(filtered_df) < 100:
 
-        avg_diff = avg_at_coins + avg_reg_coins - (
-            hatsu_atari * 50 / settings.get("coin_moti", 1)
-        )
+            error_msg = "件数が少ないため、<br>結果を出力出来ません。"
 
-        avg_in = (hatsu_atari + avg_at_games) * 3
-        avg_out = avg_diff + avg_in
+        else:
 
-        payout_rate = (avg_out / avg_in) * 100 if avg_in else 0
-        expected_value = avg_diff * 20
+            count = len(filtered_df)
 
-        result = {
-            "件数　　　": f"{count:,}件",
-            "初当たり　": f"1/{hatsu_atari:,.1f}",
-            "獲得枚数　": f"{avg_at_coins:,.1f}枚",
-            "機械割　　": f"{payout_rate:,.1f}%",
-            "期待値　　": f"{expected_value:,.0f}円"
-        }
+            avg_reg_games = filtered_df["REGゲーム数"].mean()
+            avg_at_games = filtered_df["ATゲーム数"].mean()
+            avg_reg_coins = filtered_df["REG枚数"].mean()
+            avg_at_coins = filtered_df["AT枚数"].mean()
+
+            hatsu_atari = max(avg_reg_games - input_game, 0)
+
+            avg_diff = avg_at_coins + avg_reg_coins - (
+                hatsu_atari * 50 / settings.get("coin_moti", 1)
+            )
+
+            avg_in = (hatsu_atari + avg_at_games) * 3
+            avg_out = avg_diff + avg_in
+
+            payout_rate = (avg_out / avg_in) * 100 if avg_in else 0
+            expected_value = avg_diff * 20
+
+            result = {
+                "件数　　　": f"{count:,}件",
+                "初当たり　": f"1/{hatsu_atari:,.1f}",
+                "獲得枚数　": f"{avg_at_coins:,.1f}枚",
+                "機械割　　": f"{payout_rate:,.1f}%",
+                "期待値　　": f"{expected_value:,.0f}円"
+            }
 
     # =========================
     # render（★全変数必ず存在）
@@ -1099,7 +1125,7 @@ def all_tool():
 
         labels=labels,
         result=result,
-        error_msg=None,
+        error_msg=error_msg,
 
         machines=MACHINE_CONFIGS,
         machine_configs=MACHINE_CONFIGS,

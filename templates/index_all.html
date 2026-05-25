@@ -740,9 +740,9 @@ input[type="submit"]:active {
 <body>
   <!-- タイトル -->
   <h1 style="display:flex; align-items:center; justify-content:center; gap:10px;">
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="左画像" style="height:24px;">
+    <img src="{{ url_for('static', filename='icon/icon.jpg') }}" alt="左画像" style="height:24px;">
     <span>けんけんスロット分析ツール</span>
-    <img src="{{ url_for('static', filename='icon.jpg') }}" alt="右画像" style="height:24px;">
+    <img src="{{ url_for('static', filename='icon/icon.jpg') }}" alt="右画像" style="height:24px;">
   </h1>
 
 
@@ -823,7 +823,7 @@ input[type="submit"]:active {
 
   <!-- 打ち出しG数 -->
   <div class="form-row">
-    <label for="game">打ち出しG数</label>
+    <label for="game">{{ labels.get("game", "打ち出しG数") }}</label>
     <input
       type="number"
       id="game"
@@ -1052,21 +1052,22 @@ input[type="submit"]:active {
 
 </form>
 
-  <!-- エラーメッセージ -->
-  {% if error_msg %}
-    <div id="error-area" class="error">{{ error_msg }}</div>
-  {% endif %}
-
-  <!-- 出力結果 -->
+<!-- 出力結果 -->
 <div class="result" id="result-area">
 
-  {% if result %}
+  {% if result or error_msg %}
 
-    {% if result == "サンプル不足" %}
+    {% if error_msg %}
 
       <div class="result-left">
-        <p>サンプル不足のため、出力できません。</p>
+        <p>{{ error_msg | safe }}</p>
       </div>
+
+      <div class="result-right">
+        <div id="grade-box" class="grade-badge">－</div>
+      </div>
+
+    {% elif result == "サンプル不足" %}
 
       <div class="result-right">
         <div id="grade-box" class="grade-badge">－</div>
@@ -1248,31 +1249,28 @@ window.applySettings = function (machineName) {
 
     if (!min || !max || !Array.isArray(arr)) return;
 
-    // =========================
-    // 5項目形式
-    // =========================
-    if (arr.length >= 5) {
+    // ★スルー回数だけ初期値を 0〜0 にする
+    if (name === "through") {
+      min.value = arr[0] ?? "";
+      max.value = arr[0] ?? "";
+      return;
+    }
 
+    // 5項目形式
+    if (arr.length >= 5) {
       min.value = arr[3];
       max.value = arr[4];
-
       return;
     }
 
-    // =========================
     // 4項目形式
-    // =========================
     if (arr.length >= 4) {
-
       min.value = arr[0];
       max.value = arr[3];
-
       return;
     }
 
-    // =========================
     // 旧形式
-    // =========================
     min.value = arr[0] ?? "";
     max.value = arr[1] ?? "";
   };

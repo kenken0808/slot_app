@@ -15,11 +15,11 @@ machine_configs = {
         # =========================
         "links": [
             {
-                "og_image": "ogp.jpg",
+                "og_image": "icon/ogp.jpg",
                 "link_url": "https://note.com/kenslodata"
             },
             {
-                "og_image": "tensei.jpg",
+                "og_image": "icon/tensei.jpg",
                 "link_url": "/memo/hokuto"
             }
         ],
@@ -51,11 +51,11 @@ machine_configs = {
         "file_key": "taktopdestiny",
         "links": [
             {
-                "og_image": "ogp.jpg",
+                "og_image": "icon/ogp.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
-                "og_image": "taktopdestiny.jpg",
+                "og_image": "icon/taktopdestiny.jpg",
                 "link_url": "/memo/taktopdestiny"
             }
         ],
@@ -80,11 +80,11 @@ machine_configs = {
         "file_key": "bigdream",
         "links": [
             {
-                "og_image": "ogp.jpg",
+                "og_image": "icon/ogp.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
-                "og_image": "bigdream.jpg",
+                "og_image": "icon/bigdream.jpg",
                 "link_url": "/memo/bigdream"
             }
         ],
@@ -109,11 +109,11 @@ machine_configs = {
         "file_key": "residentevilre3",
         "links": [
             {
-                "og_image": "ogp.jpg",
+                "og_image": "icon/ogp.jpg",
                 "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
             },
             {
-                "og_image": "residentevilre3.jpg",
+                "og_image": "icon/residentevilre3.jpg",
                 "link_url": "/memo/residentevilre3"
             }
         ],
