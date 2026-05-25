@@ -100,7 +100,7 @@ machine_configs = {
             "prev_renchan": (0, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
-            "locked_fields": []
+            "locked_fields": ["custom_condition"]
         }
     },
 
@@ -129,7 +129,7 @@ machine_configs = {
             "prev_renchan": (0, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
-            "locked_fields": []
+            "locked_fields": ["custom_condition"]
         }
     },
 
