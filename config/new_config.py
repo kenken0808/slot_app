@@ -46,6 +46,35 @@ machine_configs = {
         }
     },
 
+    "taktopdestiny": {
+        "display_name": "L タクトオーパスデスティニー",
+        "file_key": "taktopdestiny",
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
+            },
+            {
+                "og_image": "taktopdestiny.jpg",
+                "link_url": "/memo/taktopdestiny"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 35.0,
+            "mode_options": ["AT"],
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type_options", "custom_condition"]
+        }
+    },
+
     "bigdream": {
         "display_name": "L ビッグドリーム",
         "file_key": "bigdream",
@@ -66,6 +95,35 @@ machine_configs = {
             "through": (0, 5, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": []
+        }
+    },
+
+    "residentevilre3": {
+        "display_name": "L バイオハザードRE:3",
+        "file_key": "residentevilre3",
+        "links": [
+            {
+                "og_image": "ogp.jpg",
+                "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
+            },
+            {
+                "og_image": "residentevilre3.jpg",
+                "link_url": "/memo/residentevilre3"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.8,
+            "mode_options": ["CZ", "AT"],
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
             "prev_renchan": (0, 15, 1,99),
