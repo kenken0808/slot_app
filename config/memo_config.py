@@ -7,11 +7,19 @@ memo_configs = {
             {
                 "title": "ゲーム数天井",
                 "text":
-                    "<div class='memo-line'><span>設定変更後</span><span>：</span><span>999G（333G , 555G）</span></div>"
-                    "<div class='memo-line'><span>下位AT後</span><span>：</span><span>1,499G（333G , 555G , 999G）</span></div>"
-                    "<div class='memo-line'><span>上位AT後</span><span>：</span><span>999G（333G , 555G）</span></div>"
-                    "<div class='memo-line'><span>恩恵</span><span>：</span><span>AT当選</span></div>"
-                    "※20%以上で天井短縮あり",
+                    "恩恵はAT当選。<br>"
+                    "20%以上で天井短縮あり。",
+                "tables": [
+                    {
+                        "widths": ["100px", "1fr"],
+                        "headers": ["種類", "ゲーム数"],
+                        "rows": [
+                            ["設定変更後", "999G（333G , 555G）"],
+                            ["下位AT後", "1,499G（333G , 555G , 999G）"],
+                            ["上位AT後", "999G（333G , 555G）"]
+                        ]
+                    }
+                ],
                 "images": []
             },
             {
@@ -28,21 +36,45 @@ memo_configs = {
             },
             {
                 "title": "アイキャッチ",
-                "text":
-                    "<div class='memo-line'><span>通常</span><span>：</span><span>デフォルト（上位AT終了時なら天井555G以下の期待大）</span></div>"
-                    "<div class='memo-line'><span>赤</span><span>：</span><span>天井999G以下のチャンス（CZ後なら大チャンス）</span></div>"
-                    "<div class='memo-line'><span>キリン柄</span><span>：</span><span>天井333G以下濃厚+ボール天井ptMAX濃厚</span></div>",
+                "tables": [
+                    {
+                        "widths": ["100px", "1fr"],
+                        "headers": ["種類", "示唆"],
+                        "rows": [
+                            ["通常", "デフォルト（上位AT終了時なら天井555G以下の期待大）"],
+                            ["赤", "天井999G以下のチャンス<br>（CZ後なら大チャンス）"],
+                            ["キリン柄", "天井333G以下濃厚<br> + ボール天井ptMAX濃厚"]
+                        ]
+                    }
+                ],
                 "images": [
-                    "3.jpg"
+                    "1.jpg"
                 ]
             },
             {
                 "title": "AT終了画面",
                 "text":
-                  "下位後：設定+999G天井<br>"
-                  "上位後：設定+555G天井",
+                    "設定や天井ゲーム数を示唆。<br>"
+                    "※上位AT後は天井555G以下濃厚",
+                "tables": [
+                    {
+                        "widths": ["100px", "1fr"],
+                        "headers": ["種類", "示唆"],
+                        "rows": [
+                            ["帽子", "デフォルト"],
+                            ["神化の双剣", "上位AT後デフォルト"],
+                            ["銃", "偶数設定期待度UP"],
+                            ["剣", "高設定期待度UP"],
+                            ["財宝の山", "設定4以上濃厚"],
+                            ["立ち絵", "設定2以上濃厚<br> + 天井999G以下濃厚※"],
+                            ["見返り", "設定4以上濃厚<br> + 天井999G以下濃厚※"],
+                            ["玉座", "設定5以上濃厚<br> + 天井999G以下濃厚※"],
+                            ["覚醒ギルガメッシュ", "設定6以上濃厚<br> + 天井999G以下濃厚※"]
+                        ]
+                    }
+                ],
                 "images": [
-                    "1.jpg"
+                    "2.jpg"
                 ]
             }
         ]

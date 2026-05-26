@@ -163,7 +163,7 @@
       display: grid;
       grid-auto-flow: column;
       grid-auto-columns: 1fr;
-
+      align-items: center;
       border-bottom: 1px solid #2d2d2d;
     }
 
@@ -206,22 +206,6 @@
       font-weight: bold;
     }
 
-    /* =========================
-       テキスト位置
-    ========================= */
-    .memo-line {
-
-      display: grid;
-      grid-template-columns:
-        100px
-        10px
-        1fr;
-
-      gap: 0px;
-
-      margin-bottom: 0px;
-    }
-
 
   </style>
 </head>
@@ -246,9 +230,11 @@
           {{ section.title }}
         </div>
 
-        <div class="card-content">
-          {{ section.text | replace('\n', '<br>') | safe }}
-        </div>
+        {% if section.text %}
+          <div class="card-content">
+            {{ section.text | replace('\n', '<br>') | safe }}
+          </div>
+        {% endif %}
 
         {% if section.tables %}
 
@@ -256,7 +242,10 @@
 
             <div class="memo-table">
 
-              <div class="memo-table-row memo-table-header">
+              <div
+                class="memo-table-row memo-table-header"
+                style="grid-template-columns: {{ table.widths | join(' ') if table.widths else 'repeat(' ~ table.headers|length ~ ', 1fr)' }};"
+              >
 
                 {% for header in table.headers %}
                   <div>{{ header }}</div>
@@ -266,7 +255,10 @@
 
               {% for row in table.rows %}
 
-                <div class="memo-table-row">
+                <div
+                  class="memo-table-row"
+                  style="grid-template-columns: {{ table.widths | join(' ') if table.widths else 'repeat(' ~ table.headers|length ~ ', 1fr)' }};"
+                >
 
                   {% for cell in row %}
                     <div>{{ cell | safe }}</div>
