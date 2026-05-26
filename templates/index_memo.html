@@ -149,6 +149,63 @@
 
     }
 
+    /* =========================
+       表
+    ========================= */
+    .memo-table {
+      margin-top: 16px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .memo-table-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+
+      border-bottom: 1px solid #2d2d2d;
+    }
+
+    .memo-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .memo-table-row div {
+      padding: 8px 10px;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .memo-table-header {
+      background: rgba(255, 152, 0, 0.16);
+      color: #ffb347;
+      font-weight: bold;
+    }
+
+    .memo-table-row div + div {
+      border-left: 1px solid #2d2d2d;
+    }
+
+    /* =========================
+       文字色
+    ========================= */
+    .red {
+      color: #ff6b6b;
+      font-weight: bold;
+    }
+
+    .orange {
+      color: #ffb347;
+      font-weight: bold;
+    }
+
+    .green {
+      color: #6ee7b7;
+      font-weight: bold;
+    }
+
   </style>
 </head>
 
@@ -175,6 +232,38 @@
         <div class="card-content">
           {{ section.text | replace('\n', '<br>') | safe }}
         </div>
+
+        {% if section.tables %}
+
+          {% for table in section.tables %}
+
+            <div class="memo-table">
+
+              <div class="memo-table-row memo-table-header">
+
+                {% for header in table.headers %}
+                  <div>{{ header }}</div>
+                {% endfor %}
+
+              </div>
+
+              {% for row in table.rows %}
+
+                <div class="memo-table-row">
+
+                  {% for cell in row %}
+                    <div>{{ cell | safe }}</div>
+                  {% endfor %}
+
+                </div>
+
+              {% endfor %}
+
+            </div>
+
+          {% endfor %}
+
+        {% endif %}
 
         {% if section.images %}
 
