@@ -474,8 +474,6 @@ def api_default_values():
 
 def build_range_options(setting):
 
-    print("SETTING =", setting)
-
     # =================================================
     # 5項目形式
     # (normal_min, normal_max, step, final_min, final_max)
@@ -498,8 +496,6 @@ def build_range_options(setting):
         if final_max not in values:
             values.append(final_max)
 
-        print("VALUES =", values)
-
         return values
 
     # =================================================
@@ -515,8 +511,6 @@ def build_range_options(setting):
 
     if final_value not in values:
         values.append(final_value)
-
-    print("VALUES =", values)
 
     return values
 
@@ -552,10 +546,6 @@ def get_setting_min(setting):
 
 def filter_dataframe_v2(df, form, settings):
 
-    print("========== FILTER DEBUG START ==========")
-    print("rows start:", len(df))
-    print("form:", form)
-
     mask = pd.Series(True, index=df.index)
 
     # =========================
@@ -567,8 +557,6 @@ def filter_dataframe_v2(df, form, settings):
         mask &= df["朝イチ"].eq(1)
     elif time_value == "朝イチ以外":
         mask &= df["朝イチ"].eq(0)
-
-    print("after 朝イチ:", mask.sum())
 
     # =========================
     # range共通（安全化）
@@ -611,9 +599,6 @@ def filter_dataframe_v2(df, form, settings):
     exclude_games = settings.get("exclude_games", 0)
 
     mask &= df["当該REGゲーム数"].ge(game + exclude_games)
-
-    print("after ゲーム数:", mask.sum())
-    print("========== FILTER DEBUG END ==========")
 
     return df.loc[mask]
 
@@ -756,7 +741,6 @@ def all_tool():
         display_name = cfg.get("display_name", "")   # ←ここ重要
         settings = cfg.get("settings", {})
         links = cfg.get("links", [])
-        print("DEBUG display_name =", display_name)
 
     # =========================
     # リンク処理
@@ -1010,27 +994,6 @@ def all_tool():
     # フィルタ
     # =========================
     filtered_df = filter_dataframe_v2(df, form, settings)
-    print("========== DEBUG START ==========")
-    print("machine:", selected_machine)
-    print("mode:", selected_mode)
-    print("form:", form)
-    print("csv rows:", len(df))
-    print("filtered rows:", len(filtered_df))
-    print("========== DEBUG END ==========")
-
-    print("filtered rows:", len(filtered_df))
-
-    # 0件のとき原因確認
-    if len(filtered_df) == 0:
-        print("---- SAMPLE DATA CHECK ----")
-        print(df.head(3))
-        print("columns:", df.columns.tolist())
-
-        # 代表条件のヒット確認（重要）
-        print("朝イチ分布:", df["朝イチ"].value_counts().to_dict())
-        print("REG最大値:", df["当該REGゲーム数"].max())
-
-    print("========== DEBUG END ==========")
 
     # =========================
     # 計算
