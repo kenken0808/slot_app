@@ -80,7 +80,7 @@ machine_configs = {
         "file_key": "bigdream",
         "links": [
             {
-                "og_image": "icon/ogp_v1.jpg",
+                "og_image": "icon/ogp_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
@@ -109,7 +109,7 @@ machine_configs = {
         "file_key": "residentevilre3",
         "links": [
             {
-                "og_image": "icon/ogp_v1.jpg",
+                "og_image": "icon/ogp_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
             },
             {
@@ -138,7 +138,7 @@ machine_configs = {
         "file_key": "unicorn2",
         "links": [
             {
-                "og_image": "icon/ogp_v1.jpg",
+                "og_image": "icon/ogp_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
             },
             {
@@ -167,7 +167,7 @@ machine_configs = {
         "file_key": "milliongod",
         "links": [
             {
-                "og_image": "icon/ogp_v1.jpg",
+                "og_image": "icon/ogp_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
             },
             {
