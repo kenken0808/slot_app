@@ -45,7 +45,9 @@ machine_configs = {
             "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
         }
     },
-
+# =========================================================
+# タクトオーパス
+# =========================================================
     "taktopdestiny": {
         "display_name": "L タクトオーパス",
         "file_key": "taktopdestiny",
@@ -80,11 +82,11 @@ machine_configs = {
         "file_key": "bigdream",
         "links": [
             {
-                "og_image": "icon/ogp_v2.jpg",
+                "og_image": "icon/bigdream_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
-                "og_image": "icon/bigdream_v1.jpg",
+                "og_image": "icon/ogp_v3.jpg",
                 "link_url": "/memo/bigdream"
             }
         ],
@@ -109,11 +111,11 @@ machine_configs = {
         "file_key": "residentevilre3",
         "links": [
             {
-                "og_image": "icon/ogp_v2.jpg",
+                "og_image": "icon/residentevilre3_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
             },
             {
-                "og_image": "icon/residentevilre3_v1.jpg",
+                "og_image": "icon/ogp_v3.jpg",
                 "link_url": "/memo/residentevilre3"
             }
         ],
@@ -132,17 +134,19 @@ machine_configs = {
             "locked_fields": ["custom_condition"]
         }
     },
-
+# =========================================================
+# アニマルドッチ
+# =========================================================
     "unicorn2": {
         "display_name": "L ガンダムユニコーン2",
         "file_key": "unicorn2",
         "links": [
             {
-                "og_image": "icon/ogp_v2.jpg",
+                "og_image": "icon/unicorn2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
             },
             {
-                "og_image": "icon/unicorn2_v1.jpg",
+                "og_image": "icon/ogp_v3.jpg",
                 "link_url": "/memo/unicorn2"
             }
         ],
@@ -167,11 +171,11 @@ machine_configs = {
         "file_key": "milliongod",
         "links": [
             {
-                "og_image": "icon/ogp_v2.jpg",
+                "og_image": "icon/milliongod_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
             },
             {
-                "og_image": "icon/milliongod_v1.jpg",
+                "og_image": "icon/ogp_v3.jpg",
                 "link_url": "/memo/milliongod"
             }
         ],
@@ -188,6 +192,96 @@ machine_configs = {
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+# =========================================================
+# 虚構推理
+# =========================================================
+# =========================================================
+# アクダマドライブ_スルー処理どうするか
+# =========================================================
+    "akudamadrive": {
+        "display_name": "L アクダマドライブ",
+        "file_key": "akudamadrive",
+        "links": [
+            {
+                "og_image": "icon/x.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v3.jpg",
+                "link_url": "/memo/akudamadrive"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス"],
+            "through": (0, 6, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+    "shinuchiyoshimune": {
+        "display_name": "L 真打吉宗",
+        "file_key": "shinuchiyoshimune",
+        "links": [
+            {
+                "og_image": "icon/x.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v3.jpg",
+                "link_url": "/memo/shinuchiyoshimune"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["CZ", "AT"],
+            "through": (0, 7, 1,99),
+            "at_gap": (0, 1400, 200,9999),
+            "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+    "kabaneriunato": {
+        "display_name": "L 甲鉄城のカバネリ海門決戦",
+        "file_key": "kabaneriunato",
+        "links": [
+            {
+                "og_image": "icon/x.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v3.jpg",
+                "link_url": "/memo/kabaneriunato"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.4,
+            "mode_options": ["ボーナス", "ST"],
+            "through": (0, 4, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
         }
     }
 }

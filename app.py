@@ -634,7 +634,7 @@ def generate_labels_from_mode_options(mode_options):
         return {
             "mode": base,
             "game": f"打ち出しG数（{base}間）",
-            "through": f"{base}スルー回数",
+            "through": "スルー回数",
             "at_gap": f"前回***終了時{base}間G数",
             "prev_diff": f"前回{base}終了時差枚数",
             "prev_game": f"前回{base}当選G数",
