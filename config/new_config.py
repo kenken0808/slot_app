@@ -80,11 +80,11 @@ machine_configs = {
         "file_key": "bigdream",
         "links": [
             {
-                "og_image": "icon/ogp.jpg",
+                "og_image": "icon/ogp_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
-                "og_image": "icon/bigdream.jpg",
+                "og_image": "icon/bigdream_v1.jpg",
                 "link_url": "/memo/bigdream"
             }
         ],
@@ -109,11 +109,11 @@ machine_configs = {
         "file_key": "residentevilre3",
         "links": [
             {
-                "og_image": "icon/ogp.jpg",
+                "og_image": "icon/ogp_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
             },
             {
-                "og_image": "icon/residentevilre3.jpg",
+                "og_image": "icon/residentevilre3_v1.jpg",
                 "link_url": "/memo/residentevilre3"
             }
         ],
@@ -138,11 +138,11 @@ machine_configs = {
         "file_key": "unicorn2",
         "links": [
             {
-                "og_image": "icon/unicorn2.jpg",
+                "og_image": "icon/ogp_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
             },
             {
-                "og_image": "icon/unicorn2.jpg",
+                "og_image": "icon/unicorn2_v1.jpg",
                 "link_url": "/memo/unicorn2"
             }
         ],
@@ -167,11 +167,11 @@ machine_configs = {
         "file_key": "milliongod",
         "links": [
             {
-                "og_image": "icon/milliongod.jpg",
+                "og_image": "icon/ogp_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
             },
             {
-                "og_image": "icon/milliongod.jpg",
+                "og_image": "icon/milliongod_v1.jpg",
                 "link_url": "/memo/milliongod"
             }
         ],
