@@ -47,12 +47,12 @@ machine_configs = {
     },
 
     "taktopdestiny": {
-        "display_name": "L タクトオーパスデスティニー",
+        "display_name": "L タクトオーパス",
         "file_key": "taktopdestiny",
         "links": [
             {
-                "og_image": "icon/ogp.jpg",
-                "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
+                "og_image": "icon/taktopdestiny.jpg",
+                "link_url": "/memo/taktopdestiny"
             },
             {
                 "og_image": "icon/taktopdestiny.jpg",
@@ -130,6 +130,64 @@ machine_configs = {
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
+        }
+    },
+
+    "unicorn2": {
+        "display_name": "L ガンダムユニコーン2",
+        "file_key": "unicorn2",
+        "links": [
+            {
+                "og_image": "icon/unicorn2.jpg",
+                "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
+            },
+            {
+                "og_image": "icon/unicorn2.jpg",
+                "link_url": "/memo/unicorn2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.0,
+            "mode_options": ["CZ", "AT"],
+            "through": (0, 6, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1500, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+
+    "milliongod": {
+        "display_name": "L ミリオンゴッド",
+        "file_key": "milliongod",
+        "links": [
+            {
+                "og_image": "icon/milliongod.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/milliongod.jpg",
+                "link_url": "/memo/milliongod"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.8,
+            "mode_options": ["AT"],
+            "through": (0, 6, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
         }
     }
 }

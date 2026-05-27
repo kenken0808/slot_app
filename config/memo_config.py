@@ -1,7 +1,7 @@
 memo_configs = {
 
     "taktopdestiny": {
-        "title": "L タクトオーパスデスティニー",
+        "title": "L タクトオーパス",
         "updated": "2026/05/25",
         "sections": [
             {
