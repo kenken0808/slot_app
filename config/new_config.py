@@ -53,12 +53,12 @@ machine_configs = {
         "file_key": "taktopdestiny",
         "links": [
             {
-                "og_image": "icon/taktopdestiny_v2.jpg",
-                "link_url": "/memo/taktopdestiny"
+                "og_image": "icon/taktopdestiny_v4.jpg",
+                "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
             },
             {
                 "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/taktopdestiny"
+                "link_url": "/memo/bigdream"
             }
         ],
         "settings": {
