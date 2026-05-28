@@ -58,7 +58,7 @@ machine_configs = {
             },
             {
                 "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/bigdream"
+                "link_url": "/memo/taktopdestiny"
             }
         ],
         "settings": {
@@ -283,7 +283,122 @@ machine_configs = {
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
         }
+    },
+    "hanmabaki": {
+        "display_name": "L 範馬刃牙",
+        "file_key": "hanmabaki",
+        "links": [
+            {
+                "og_image": "icon/hanmabaki_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/hanmabaki"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.1,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 6, 1,99),
+            "at_gap": (0, 1500, 200,9999),
+            "prev_game": (0, 2000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "goblinslayer2": {
+        "display_name": "L ゴブリンスレイヤーⅡ",
+        "file_key": "goblinslayer2",
+        "links": [
+            {
+                "og_image": "icon/goblinslayer2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/goblinslayer2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.6,
+            "mode_options": ["AT"],
+            "through": (0, 8, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1600, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+    "ghostintheshell": {
+        "display_name": "L 攻殻機動隊",
+        "file_key": "ghostintheshell",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/ghostintheshell"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "AT"],
+            "through": (0, 8, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1100, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "fireforce2": {
+        "display_name": "L 炎炎ノ消防隊2",
+        "file_key": "fireforce2",
+        "links": [
+            {
+                "og_image": "icon/fireforce2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/fireforce2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.0,
+            "mode_options": ["ボーナス", "ST"],
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 1500, 200,9999),
+            "prev_game": (0, 2200, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
     }
+# =========================================================
+# 
+# =========================================================
 }
 
 # =========================================================
