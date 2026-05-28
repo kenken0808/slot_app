@@ -584,15 +584,16 @@ input[type="submit"]:active {
   align-items: center;
 }
 
-/* =====================================================
-   OGPカード
-===================================================== */
+  /* =====================================================
+     OGPカード
+  ===================================================== */
 .og-card {
-
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;  /* ←メモリンクの画像と文字幅 */
 
   margin-top: 8px;
-  padding: 8px;
+  padding: 8px;  /* ←メモカード内の余白 */
 
   background: #1e1e1e;
   border: 1px solid #333;
@@ -609,25 +610,23 @@ input[type="submit"]:active {
 }
 
 .og-thumb img {
-
-  width: 100%;
-  height: 150px;
-
+  width: 72px;
+  height: 72px;
   object-fit: cover;
-
   border-radius: 8px;
+  border: 1px solid #444;
   display: block;
 }
 
 .og-body {
-  margin-top: 8px;
+  flex: 1;
   overflow: hidden;
 }
 
 .og-title {
   font-size: 12px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 0px;
 }
 
 .og-desc {
@@ -641,10 +640,11 @@ input[type="submit"]:active {
 }
 
 .og-site {
-  margin-top: 4px;
+  margin-top: 0px;
   font-size: 10px;
   color: #ff9800;
 }
+
 
 
   /* =====================================================
