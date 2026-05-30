@@ -449,30 +449,202 @@ machine_configs = {
             "locked_fields": ["prev_type", "custom_condition"]
         }
     },
-
-# =========================================================
-# 秘宝伝10000
-# =========================================================
-# =========================================================
-# 無職転生7000
-# =========================================================
-# =========================================================
-# アンコール20000
-# =========================================================
-
-# =========================================================
-# プリズムナナ4000
-# =========================================================
-# =========================================================
-# 化物語12000
-# =========================================================
-# =========================================================
-# 銀河英雄5000
-# =========================================================
-
-# =========================================================
-# エクスプレス
-# =========================================================
+    "mushokutensei": {
+        "display_name": "L 無職転生",
+        "file_key": "mushokutensei",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/mushokutensei"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.0,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1500, 200,9999),
+            "prev_game": (0, 2500, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "hihoden": {
+        "display_name": "L 秘宝伝",
+        "file_key": "hihoden",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/hihoden"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 3000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "okidokiduoencore": {
+        "display_name": "L 沖ドキ！DUO アンコール",
+        "file_key": "okidokiduoencore",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/okidokiduoencore"
+            }
+        ],
+        "settings": {
+            "exclude_games": 1,
+            "coin_moti": 25.3,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 9, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 3000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "prismnana": {
+        "display_name": "L プリズムナナ",
+        "file_key": "prismnana",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/prismnana"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.2,
+            "mode_options": ["ST"],
+            "through": (0, 9, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 1000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+    "logh": {
+        "display_name": "L 銀河英雄伝説",
+        "file_key": "logh",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/logh"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 35.0,
+            "mode_options": ["ボーナス", "ST"],
+            "through": (0, 9, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1100, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "bakemonogatari": {
+        "display_name": "L 化物語",
+        "file_key": "bakemonogatari",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/bakemonogatari"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.1,
+            "mode_options": ["AT"],
+            "through": (0, 9, 1,99),
+            "at_gap": (0, 800, 200,9999),
+            "prev_game": (0, 1100, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
+    "burningexpress": {
+        "display_name": "L バーニングエクスプレス",
+        "file_key": "burningexpress",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/burningexpress"
+            }
+        ],
+        "settings": {
+            "exclude_games": 1,
+            "coin_moti": 31.0,
+            "mode_options": ["AT"],
+            "through": (0, 9, 1,99),
+            "at_gap": (0, 1000, 200,9999),
+            "prev_game": (0, 1000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
 
 # =========================================================
 # ネオプラネット7000
