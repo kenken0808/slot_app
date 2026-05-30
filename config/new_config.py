@@ -645,17 +645,90 @@ machine_configs = {
             "locked_fields": ["prev_type", "custom_condition"]
         }
     },
-
-# =========================================================
-# ネオプラネット7000
-# =========================================================
-
-# =========================================================
-# 絶対衝激Ⅳ6000
-# =========================================================
-# =========================================================
-# 超電磁砲2 10000
-# =========================================================
+    "neoplanet": {
+        "display_name": "L ネオプラネット",
+        "file_key": "neoplanet",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/neoplanet"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.3,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 2000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "zettaishogeki4": {
+        "display_name": "L 絶対衝激Ⅳ",
+        "file_key": "zettaishogeki4",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/zettaishogeki4"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.6,
+            "mode_options": ["ボーナス", "AT"],
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 2000, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
+    "railgun2": {
+        "display_name": "L とある科学の超電磁砲2",
+        "file_key": "railgun2",
+        "links": [
+            {
+                "og_image": "icon/ghostintheshell_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/railgun2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.8,
+            "mode_options": ["AT"],
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 2000, 200,9999),
+            "prev_game": (0, 1100, 200,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (0, 15, 1,99),
+            "prev_type_options": ["不問"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_type", "custom_condition"]
+        }
+    },
 # =========================================================
 # ヴァルヴレイヴ25000
 # =========================================================
