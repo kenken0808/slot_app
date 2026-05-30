@@ -41,6 +41,10 @@
   --bg-card: #1a1a1a;
   --bg-input: #111111;
   --border: #333333;
+
+  --panel-bg: #1a1a1a;
+  --panel-text: #e5e7eb;
+  --panel-accent: #ff8c00;
 }
 
 
@@ -564,27 +568,37 @@ input[type="submit"]:active {
   font-size: 42px;
   font-weight: bold;
 
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  background: transparent;
   border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
 
   box-shadow: none;
 }
 
 /* 評価別カラー */
+/* 優 */
 .grade-good {
-  color: #4fc3ff;
-  border-color: rgba(79, 195, 255, 0.6);
+  color: #43A047;
+  border-color: rgba(67,160,71,0.6);
 }
 
+/* 良 */
 .grade-normal {
-  color: #ff9800;
-  border-color: rgba(255,152,0,0.5);
+  color: #D4AF37;
+  border-color: rgba(212,175,55,0.6);
 }
 
+/* 不可 */
 .grade-bad {
   color: #ff6b6b;
   border-color: rgba(255,82,82,0.5);
 }
+
+/* 可 */
+.grade-low {
+  color: #5BC0DE;
+  border-color: rgba(91,192,222,0.6);
+}
+
 
 .text-red {
   color: #ff6b6b;
@@ -776,21 +790,21 @@ input[type="submit"]:active {
   width: 220px;
   padding: 12px;
 
-  background: #1a1a1a;
-  border: 1px solid #ff8c00;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-accent);
   border-radius: 8px;
 
   z-index: 9999;
 
   box-shadow: 0 8px 20px rgba(0,0,0,.4);
 
-  color: #e5e7eb;
+  color: var(--panel-text);
 }
 
 .settings-title {
   font-weight: bold;
   margin-bottom: 10px;
-  color: #ff8c00;
+  color: var(--panel-accent);
 }
 
 #settings-panel label {
@@ -799,22 +813,22 @@ input[type="submit"]:active {
   margin-bottom: 4px;
   font-size: 13px;
 
-  color: #e5e7eb;
+  color: var(--panel-text);
 }
 
 #settings-panel select {
   width: 100%;
 
-  background: #111111;
-  color: #e5e7eb;
+  background: var(--panel-bg);
+  color: var(--panel-text);
 
-  border: 1px solid #333333;
+  border: 1px solid var(--panel-accent);
   border-radius: 8px;
 }
 
 #settings-panel select:focus {
-  border-color: #ff8c00;
-  box-shadow: 0 0 0 2px rgba(255,140,0,0.25);
+  border-color: var(--panel-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--panel-accent) 25%, transparent);
 }
 
 #settings-save {
@@ -822,7 +836,7 @@ input[type="submit"]:active {
   margin-top: 12px;
   padding: 8px;
 
-  background: #ff8c00;
+  background: var(--panel-accent);
   color: #fff;
 
   border: none;
@@ -835,6 +849,12 @@ input[type="submit"]:active {
 #settings-save:hover {
   opacity: 0.9;
 }
+
+
+
+
+
+
 
 </style>
 </head>
@@ -877,7 +897,11 @@ input[type="submit"]:active {
   <select id="accent-select">
     <option value="#ff8c00">オレンジ</option>
     <option value="#4DB6C8">青</option>
-    <option value="#6FA34A">緑</option>
+    <option value="#4CAF50">緑</option>
+    <option value="#A78BFA">紫</option>
+    <option value="#EF4444">赤</option>
+    <option value="#D4AF37">金</option>
+    <option value="#F4A6B8">ピンク</option>
   </select>
 
   <button id="settings-save" type="button">
@@ -1235,7 +1259,10 @@ input[type="submit"]:active {
             <tr>
               <th>機械割　　：</th>
               <td>
-                <span class="{{ 'text-red' if result['機械割　　'] | replace('%', '') | float < 100 else 'text-blue' }}">
+                <span
+                  id="payout-rate"
+                  class="{{ 'text-red' if result['機械割　　'] | replace('%', '') | float < 100 else 'text-blue' }}"
+                >
                   {{ result["機械割　　"] }}
                 </span>
               </td>
@@ -1616,20 +1643,34 @@ document.addEventListener("DOMContentLoaded", () => {
 ===================================================== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  const expected = document.getElementById("expected-value");
+  const payout = document.getElementById("payout-rate");
   const gradeBox = document.getElementById("grade-box");
 
-  if (!expected || !gradeBox) return;
+  if (!payout || !gradeBox) return;
 
-  const value = parseInt(expected.textContent.replace("円", "").replace(/,/g, ""));
+  const value = parseFloat(
+    payout.textContent
+      .replace("%", "")
+      .replace(/,/g, "")
+      .trim()
+  );
 
-  let grade = "良";
-  let className = "grade-normal";
+  let grade = "可";
+  let className = "grade-low";
 
-  if (value >= 1000) {
+  if (value >= 110) {
     grade = "優";
     className = "grade-good";
-  } else if (value < 0) {
+
+  } else if (value >= 105) {
+    grade = "良";
+    className = "grade-normal";
+
+  } else if (value >= 100) {
+    grade = "可";
+    className = "grade-low";
+
+  } else {
     grade = "不可";
     className = "grade-bad";
   }
@@ -2165,6 +2206,33 @@ function onLockChange({
 
   // 歯車クリックで開閉
   settingsBtn.addEventListener("click", () => {
+
+    const currentBg =
+      localStorage.getItem("theme_bg") || "#111111";
+
+    const currentAccent =
+      localStorage.getItem("theme_accent") || "#ff8c00";
+
+    const panelText =
+      currentBg === "#ffffff"
+        ? "#111827"
+        : "#e5e7eb";
+
+    document.documentElement.style.setProperty(
+      "--panel-bg",
+      currentBg
+    );
+
+    document.documentElement.style.setProperty(
+      "--panel-accent",
+      currentAccent
+    );
+
+    document.documentElement.style.setProperty(
+      "--panel-text",
+      panelText
+    );
+
     settingsPanel.style.display =
       settingsPanel.style.display === "block"
         ? "none"
