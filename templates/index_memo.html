@@ -10,12 +10,23 @@
   <meta property="og:type" content="website">
 
   <style>
+  /* =====================================================
+     20260531色変更
+  ===================================================== */
+    :root {
+      --bg-main: #111111;
+      --text-main: #e5e7eb;
+      --accent: #ff8c00;
+      --bg-card: #1a1a1a;
+      --bg-input: #111111;
+      --border: #333333;
+    }
 
     body {
       margin: 0;
       padding: 16px;
-      background: #111;
-      color: #fff;
+      background: var(--bg-main);
+      color: var(--text-main);
       font-family: "M PLUS Rounded 1c", sans-serif;
     }
 
@@ -31,12 +42,12 @@
     .title {
       font-size: 32px;
       font-weight: bold;
-      color: #ff9800;
+      color: var(--accent);
       margin-bottom: 6px;
     }
 
     .updated {
-      color: #888;
+      color: var(--text-main);
       font-size: 14px;
       margin-bottom: 20px;
     }
@@ -46,9 +57,8 @@
     ========================= */
 
     .card {
-      background: #1a1a1a;
-
-      border: 1px solid #2b2b2b;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 8px;
 
       padding: 18px;
@@ -67,7 +77,7 @@
     .card-title {
       display: inline-block;
 
-      border: 2px solid #ff9800;
+      border: 2px solid var(--accent);
       border-radius: 8px;
 
       padding:
@@ -75,13 +85,12 @@
 
       margin-bottom: 8px;
 
-      color: #ffb347;
+      color: var(--accent);
 
       font-size: 18px;
       font-weight: bold;
 
-      background:
-        rgba(255,152,0,0.08);
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
     }
 
     /* =========================
@@ -91,11 +100,11 @@
     .card-content {
       font-size: 16px;
       line-height: 1.9;
-      color: #eee;
+      color: var(--text-main);
     }
 
     .highlight {
-      color: #ffb347;
+      color: var(--accent);
       font-weight: bold;
     }
 
@@ -109,7 +118,7 @@
       border-radius: 8px;
       overflow: hidden;
 
-      border: 1px solid #333;
+      border: 1px solid var(--border);
     }
 
     .card-image img {
@@ -154,7 +163,7 @@
     ========================= */
     .memo-table {
       margin-top: 8px;
-      border: 1px solid #333;
+      border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
     }
@@ -164,7 +173,7 @@
       grid-auto-flow: column;
       grid-auto-columns: 1fr;
       align-items: center;
-      border-bottom: 1px solid #2d2d2d;
+      border-bottom: 1px solid var(--border);
     }
 
     .memo-table-row:last-child {
@@ -179,13 +188,13 @@
     }
 
     .memo-table-header {
-      background: rgba(255, 152, 0, 0.16);
-      color: #ffb347;
+      background: color-mix(in srgb, var(--accent) 16%, transparent);
+      color: var(--accent);
       font-weight: bold;
     }
 
     .memo-table-row div + div {
-      border-left: 1px solid #2d2d2d;
+      border-left: 1px solid var(--border);
     }
 
     /* =========================
@@ -296,6 +305,46 @@
     {% endfor %}
 
   </div>
+
+
+
+<script>
+  // =====================================================
+  // 20260531色変更
+  // =====================================================
+
+  function applyMemoBgTheme(bg) {
+    document.documentElement.style.setProperty("--bg-main", bg);
+
+    if (bg === "#ffffff") {
+      document.documentElement.style.setProperty("--bg-card", "#ffffff");
+      document.documentElement.style.setProperty("--bg-input", "#ffffff");
+      document.documentElement.style.setProperty("--border", "#d1d5db");
+    } else {
+      document.documentElement.style.setProperty("--bg-card", "#1a1a1a");
+      document.documentElement.style.setProperty("--bg-input", "#111111");
+      document.documentElement.style.setProperty("--border", "#333333");
+    }
+  }
+
+  const savedBg = localStorage.getItem("theme_bg");
+  const savedText = localStorage.getItem("theme_text");
+  const savedAccent = localStorage.getItem("theme_accent");
+
+  if (savedBg) {
+    applyMemoBgTheme(savedBg);
+  }
+
+  if (savedText) {
+    document.documentElement.style.setProperty("--text-main", savedText);
+  }
+
+  if (savedAccent) {
+    document.documentElement.style.setProperty("--accent", savedAccent);
+  }
+</script>
+
+
 
 </body>
 </html>

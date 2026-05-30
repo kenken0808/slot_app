@@ -30,6 +30,21 @@
   />
 
 <style>
+
+  /* =====================================================
+     20260531色変更
+  ===================================================== */
+:root {
+  --bg-main: #111111;
+  --text-main: #e5e7eb;
+  --accent: #ff8c00;
+  --bg-card: #1a1a1a;
+  --bg-input: #111111;
+  --border: #333333;
+}
+
+
+
   /* =====================================================
      ベース
   ===================================================== */
@@ -42,13 +57,25 @@
   *::after {
     box-sizing: border-box;
   }
+
+
+
+
 body {
+
+
+
+
+
+
+
   font-family: 'M PLUS Rounded 1c', sans-serif;
 
-  background:
-    radial-gradient(circle at top, #151515 0%, #0a0a0a 60%, #000000 100%);
-
-  color: #e5e7eb;
+  /* =====================================================
+     20260531色変更
+  ===================================================== */
+    background: var(--bg-main);
+    color: var(--text-main);
 
   max-width: 800px;
   margin: 10px auto 20px;
@@ -58,7 +85,10 @@ body {
     text-align: center;
     margin: 10px 0 0;
     font-size: 20px;
-    color: #e5e7eb;  /* ←これに変更 */
+  /* =====================================================
+     20260531色変更
+  ===================================================== */
+    color: var(--text-main);
     text-shadow: none; /* ← 修正 */
   }
 
@@ -94,7 +124,7 @@ body {
   width: calc(50% - 0px);
   height: 1px;
 
-  background: rgba(255, 140, 0, 0.18);
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
 }
 .form-row:first-of-type::before {
   display: none;
@@ -114,7 +144,7 @@ body {
   }
 
 .form-row:hover {
-  background: rgba(255, 140, 0, 0.05);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
 }
 select, input {
   border-radius: 8px;  /* ←メモ入力欄の丸みらしいけど変わらない */
@@ -124,8 +154,8 @@ select, input {
 select:disabled,
 input:disabled {
   color: #777;
-  background: #1a1a1a;
-  border-color: #333;
+  background: var(--bg-card);
+  border-color: var(--border);
   opacity: 1;
   cursor: not-allowed;
   appearance: none;
@@ -135,15 +165,15 @@ input:disabled {
 
 .keep-disabled-style {
   color: #777 !important;
-  background: #1a1a1a !important;
-  border-color: #333 !important;
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
   -webkit-text-fill-color: #777 !important;
   appearance: none;
   -webkit-appearance: none;
 }
 .keep-disabled-style option {
   color: #777;
-  background: #1a1a1a;
+  background: var(--bg-card);
 }
 
 
@@ -173,11 +203,11 @@ input:disabled {
   width: 100%;
   padding: 8px;  /* ←メモトグル内の余白 */
 
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 140, 0, 0.25);
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
   border-radius: 8px;  /* ←メモトグルの丸み */
 
-  color: #e5e7eb;
+  color: var(--text-main);
   font-size: 14px;
   font-weight: bold;
 
@@ -187,9 +217,9 @@ input:disabled {
 }
 
 #toggle-advanced:hover {
-  background: rgba(255, 140, 0, 0.08);
-  border-color: rgba(255, 140, 0, 0.4);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: var(--accent);
+  color: var(--text-main);
 }
 
   /* =====================================================
@@ -202,22 +232,21 @@ form {
 
   padding: 8px;
 
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--bg-card);
   backdrop-filter: blur(8px);
 
-  border: 1px solid rgba(255, 140, 0, 0.15);
+  border: 1px solid var(--border);
   border-radius: 8px;  /* ←メモフォームの丸み */
 
   margin-top: 8px;
 
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.6);
+  box-shadow: none;
 }
 
 label {
   display: block;
   font-weight: 600;
-  color: #e5e7eb;
+  color: var(--text-main);
 }
 
   /* 入力（メタリック） */
@@ -230,18 +259,17 @@ input[type="text"] {
   padding: 0px 8px;  /* ←メモ入力欄内の余白 */
 
   border-radius: 8px;
-  border: 1px solid #2a2a2a;
-
-  background: #111111;
-  color: #e5e7eb;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-main);
 }
 
   /* フォーカス */
 select:focus,
 input:focus {
   outline: none;
-  border-color: #ff8c00;
-  box-shadow: 0 0 0 2px rgba(255,140,0,0.25);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 
@@ -270,10 +298,10 @@ input[type="submit"] {
 }
 
 .reset-btn {
-  background: #0a0a0a;
-  color: #e5e7eb;
+  background: var(--bg-card);
+  color: var(--text-main);
 
-  border: 1px solid #ff8c00;
+  border: 1px solid var(--accent);
 }
 
 .reset-icon {
@@ -284,8 +312,12 @@ input[type="submit"] {
 
 
 .submit-btn {
-  background: linear-gradient(145deg, #ff8c00, #e67300);
-  border: 1px solid #ff8c00;
+  /* =====================================================
+     20260531色変更
+  ===================================================== */
+  background: var(--accent);
+
+  border: 1px solid var(--accent);
   color: #fff;
   align-items: center;
 
@@ -322,7 +354,7 @@ input[type="submit"] {
 
 input[type="submit"] {
   background: linear-gradient(145deg, #ff8c00, #e67300);
-  border: 1px solid #ff8c00;
+  border: 1px solid var(--accent);
   color: #ffffff;  /* ←ここを白にする */
 
   box-shadow:
@@ -351,7 +383,7 @@ input[type="submit"]:active {
   padding: 0px 0px;
   font-size: 20px;
   font-weight: bold;
-  color: #ff9800;
+  color: var(--accent);
   animation: blink 1s infinite;
 }
 
@@ -397,10 +429,9 @@ input[type="submit"]:active {
   width: 36px;
   height: 36px;
 
-  background: #0a0a0a;
-  color: #e5e7eb;
-
-  border: 1px solid #ff8c00;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--accent);
   border-radius: 8px;
 
   font-size: 14px;
@@ -419,8 +450,8 @@ input[type="submit"]:active {
 
 
 #machine_toggle:hover {
-  background: #161616;
-  color: #ffffff;
+  background: var(--bg-input);
+  color: var(--text-main);
 }
 
 #machine_suggest {
@@ -432,8 +463,9 @@ input[type="submit"]:active {
   max-height: 300px;
   overflow-y: auto;
 
-  background: #222;
-  border: 1px solid #444;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: none;
   border-radius: 8px;
 
   z-index: 999;
@@ -457,23 +489,14 @@ input[type="submit"]:active {
   box-sizing: border-box;
 }
 
+
+
+
+
 #machine_suggest div:hover {
-  background: rgba(255, 140, 0, 0.12);
-  color: #fff;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--text-main);
 }
-
-#machine_suggest {
-  background: #111111;
-  border: 1px solid rgba(255, 140, 0, 0.2);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-}
-
-
-
-#machine_list div:hover {
-  background: rgba(255, 140, 0, 0.12);
-}
-
 
 
 .cz-gap {
@@ -497,16 +520,16 @@ input[type="submit"]:active {
   margin-top: 8px;
   padding: 8px;
 
-  background: linear-gradient(145deg, rgba(0,0,0,0.85), rgba(20,20,20,0.7));
-  border: 1px solid rgba(255, 140, 0, 0.2);
-  border-left: 4px solid #ff8c00;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
 
   border-radius: 8px;
 
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  box-shadow: none;
   font-family: 'M PLUS Rounded 1c', sans-serif;
   font-size: 15px;
-  color: #e5e7eb;
+  color: var(--text-main);
 
   line-height: 1.3;
 }
@@ -541,10 +564,10 @@ input[type="submit"]:active {
   font-size: 42px;
   font-weight: bold;
 
-  background: rgba(255, 140, 0, 0.1);
-  border: 1px solid rgba(255, 140, 0, 0.4);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
 
-  box-shadow: inset 0 0 10px rgba(255,140,0,0.15);
+  box-shadow: none;
 }
 
 /* 評価別カラー */
@@ -575,7 +598,7 @@ input[type="submit"]:active {
 
 #result-table th,
 #result-table td {
-  color: #e5e7eb;
+  color: var(--text-main);
   font-weight: 700;
 }
 
@@ -595,18 +618,18 @@ input[type="submit"]:active {
   margin-top: 8px;
   padding: 8px;  /* ←メモカード内の余白 */
 
-  background: #1e1e1e;
-  border: 1px solid #333;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 8px;
 
   text-decoration: none;
-  color: #fff;
+  color: var(--text-main);
 
   transition: 0.2s;
 }
 
 .og-card:hover {
-  background: #2a2a2a;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-card));
 }
 
 .og-thumb img {
@@ -614,7 +637,7 @@ input[type="submit"]:active {
   height: 72px;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid #444;
+  border: 1px solid var(--border);
   display: block;
 }
 
@@ -627,11 +650,12 @@ input[type="submit"]:active {
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 0px;
+  color: var(--text-main);
 }
 
 .og-desc {
   font-size: 10px;
-  color: #bbb;
+  color: var(--text-main);
 
   overflow: hidden;
   display: -webkit-box;
@@ -642,7 +666,7 @@ input[type="submit"]:active {
 .og-site {
   margin-top: 0px;
   font-size: 10px;
-  color: #ff9800;
+  color: var(--accent);
 }
 
 
@@ -691,11 +715,11 @@ input[type="submit"]:active {
   width: 100%;
   padding: 0px 0px;
 
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 140, 0, 0.25);
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
   border-radius: 8px;
 
-  color: #e5e7eb;
+  color: var(--text-main);
   font-size: 13px;
   font-weight: bold;
 
@@ -711,9 +735,9 @@ input[type="submit"]:active {
 }
 
 .toggle-btn:hover {
-  background: rgba(255, 140, 0, 0.08);
-  border-color: rgba(255, 140, 0, 0.4);
-  color: #fff;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: var(--accent);
+  color: var(--text-main);
 }
 
 /* アイコン回転 */
@@ -728,6 +752,90 @@ input[type="submit"]:active {
 
 
 
+/* =====================================================
+   20260531色変更
+===================================================== */
+#settings-btn {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 9999;
+  padding: 0;
+  color: var(--accent);
+}
+
+#settings-panel {
+  display: none;
+  position: fixed;
+  top: 40px;
+  right: 10px;
+  width: 220px;
+  padding: 12px;
+
+  background: #1a1a1a;
+  border: 1px solid #ff8c00;
+  border-radius: 8px;
+
+  z-index: 9999;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,.4);
+
+  color: #e5e7eb;
+}
+
+.settings-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff8c00;
+}
+
+#settings-panel label {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 13px;
+
+  color: #e5e7eb;
+}
+
+#settings-panel select {
+  width: 100%;
+
+  background: #111111;
+  color: #e5e7eb;
+
+  border: 1px solid #333333;
+  border-radius: 8px;
+}
+
+#settings-panel select:focus {
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 2px rgba(255,140,0,0.25);
+}
+
+#settings-save {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+
+  background: #ff8c00;
+  color: #fff;
+
+  border: none;
+  border-radius: 8px;
+
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#settings-save:hover {
+  opacity: 0.9;
+}
+
 </style>
 </head>
 
@@ -740,6 +848,45 @@ input[type="submit"]:active {
 </script>
 
 <body>
+
+
+<!-- 20260531色変更 -->
+<button id="settings-btn">
+  ⚙️
+</button>
+
+<div id="settings-panel">
+
+  <div class="settings-title">
+    テーマ設定
+  </div>
+
+  <label>背景色</label>
+  <select id="bg-select">
+    <option value="#111111">黒</option>
+    <option value="#ffffff">白</option>
+  </select>
+
+  <label>文字色</label>
+  <select id="text-select">
+    <option value="#e5e7eb">白</option>
+    <option value="#111827">黒</option>
+  </select>
+
+  <label>メインカラー</label>
+  <select id="accent-select">
+    <option value="#ff8c00">オレンジ</option>
+    <option value="#4DB6C8">青</option>
+    <option value="#6FA34A">緑</option>
+  </select>
+
+  <button id="settings-save" type="button">
+    保存
+  </button>
+
+</div>
+
+
   <!-- タイトル -->
   <h1 style="display:flex; align-items:center; justify-content:center; gap:10px;">
     <img src="{{ url_for('static', filename='icon/icon.jpg') }}" alt="左画像" style="height:24px;">
@@ -1442,13 +1589,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     resultArea.innerHTML = `
-      <div style="
-        text-align:center;
-        padding:30px;
-        color:#ff8c00;
-        font-weight:bold;
-        font-size:20px;
-      ">
+      <div class="result-loading">
         計算中...
       </div>
     `;
@@ -1964,6 +2105,103 @@ function onLockChange({
 }
 
 </script>
+
+
+
+<script>
+  // =====================================================
+  // 20260531色変更
+  // =====================================================
+
+  const settingsBtn = document.getElementById("settings-btn");
+  const settingsPanel = document.getElementById("settings-panel");
+  const settingsSave = document.getElementById("settings-save");
+
+  const bgSelect = document.getElementById("bg-select");
+  const textSelect = document.getElementById("text-select");
+  const accentSelect = document.getElementById("accent-select");
+
+  function applyBgTheme(bg) {
+    document.documentElement.style.setProperty("--bg-main", bg);
+
+    if (bg === "#ffffff") {
+      document.documentElement.style.setProperty("--bg-card", "#ffffff");
+      document.documentElement.style.setProperty("--bg-input", "#ffffff");
+      document.documentElement.style.setProperty("--border", "#d1d5db");
+    } else {
+      document.documentElement.style.setProperty("--bg-card", "#1a1a1a");
+      document.documentElement.style.setProperty("--bg-input", "#111111");
+      document.documentElement.style.setProperty("--border", "#333333");
+    }
+  }
+
+  function applyTextTheme(text) {
+    document.documentElement.style.setProperty("--text-main", text);
+  }
+
+  function applyAccentTheme(accent) {
+    document.documentElement.style.setProperty("--accent", accent);
+  }
+
+  // 保存済みテーマを復元
+  const savedBg = localStorage.getItem("theme_bg");
+  const savedText = localStorage.getItem("theme_text");
+  const savedAccent = localStorage.getItem("theme_accent");
+
+  if (savedBg) {
+    bgSelect.value = savedBg;
+    applyBgTheme(savedBg);
+  }
+
+  if (savedText) {
+    textSelect.value = savedText;
+    applyTextTheme(savedText);
+  }
+
+  if (savedAccent) {
+    accentSelect.value = savedAccent;
+    applyAccentTheme(savedAccent);
+  }
+
+  // 歯車クリックで開閉
+  settingsBtn.addEventListener("click", () => {
+    settingsPanel.style.display =
+      settingsPanel.style.display === "block"
+        ? "none"
+        : "block";
+  });
+
+  // 背景色変更
+  bgSelect.addEventListener("change", () => {
+    const bg = bgSelect.value;
+
+    localStorage.setItem("theme_bg", bg);
+    applyBgTheme(bg);
+  });
+
+  // 文字色変更
+  textSelect.addEventListener("change", () => {
+    const text = textSelect.value;
+
+    localStorage.setItem("theme_text", text);
+    applyTextTheme(text);
+  });
+
+  // メインカラー変更
+  accentSelect.addEventListener("change", () => {
+    const accent = accentSelect.value;
+
+    localStorage.setItem("theme_accent", accent);
+    applyAccentTheme(accent);
+  });
+
+  // 保存ボタン
+  settingsSave.addEventListener("click", () => {
+    settingsPanel.style.display = "none";
+  });
+</script>
+
+
 
 </body>
 </html>
