@@ -1616,13 +1616,12 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     // ★GAイベント送信
-    const machine = document.querySelector("[name='machine']")?.value || "unknown";
-    const mode = document.querySelector("[name='mode']")?.value || "unknown";
+    const machine =
+      document.getElementById("machine")?.value || "unknown";
 
     if (typeof gtag === "function") {
       gtag("event", "machine_output", {
-        machine: machine,
-        mode: mode
+        machine: machine
       });
     }
 
