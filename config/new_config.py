@@ -9,6 +9,7 @@ machine_configs = {
     "hokuto": {
         "display_name": "L 北斗の拳",
         "file_key": "hokuto",
+        "search_words": ["北斗", "北斗の拳"],
 
         # =========================
         # UIリンク情報
@@ -31,18 +32,21 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 35.0,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1000, 100, 9999,0),
 
             "through": (0, 5, 1,9999),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 1300, 100,9999),
             "prev_coin": (0, 3000, 300,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 10, 1,9999),
+            "prev_renchan": (1, 10, 1,9999),
 
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
 
-            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"]
+            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"],
+            "help_texts": {}
         }
     },
     "taktopdestiny": {
@@ -62,12 +66,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 35.0,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 5, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
@@ -91,12 +97,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.7,
             "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 5, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -120,12 +128,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.8,
             "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 5, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -151,12 +161,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 6, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1500, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -180,12 +192,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.8,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 6, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -214,12 +228,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.0,
             "mode_options": ["ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 6, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -242,12 +258,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.0,
             "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 7, 1,99),
             "at_gap": (0, 1400, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -256,6 +274,7 @@ machine_configs = {
     "kabaneriunato": {
         "display_name": "L 甲鉄城のカバネリ海門決戦",
         "file_key": "kabaneriunato",
+        "search_words": ["こうてつじょうのかばねりうなとけっせん"],
         "links": [
             {
                 "og_image": "icon/kabaneriunato_v1.jpg",
@@ -270,15 +289,26 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.4,
             "mode_options": ["ボーナス", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 4, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    朝イチ　　：596G + 最大4周期
+                    朝イチ以外：996G + 最大6周期
+                    駆け抜け後：596G + 最大4周期
+                    下位後　　：996G + 最大6周期
+                    上位後　　：596G + 最大4周期
+                    """
+            }
         }
     },
     "hanmabaki": {
@@ -298,12 +328,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.1,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 6, 1,99),
             "at_gap": (0, 1500, 200,9999),
             "prev_game": (0, 2000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -326,12 +358,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.6,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 8, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1600, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -354,12 +388,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 8, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -382,12 +418,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["ボーナス", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 5, 1,99),
             "at_gap": (0, 1500, 200,9999),
             "prev_game": (0, 2200, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -410,12 +448,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.0,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 3, 1,99),
             "at_gap": (0, 1500, 200,9999),
             "prev_game": (0, 2000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -438,12 +478,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.5,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 8, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1500, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -466,12 +508,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 10, 1,99),
             "at_gap": (0, 1500, 200,9999),
             "prev_game": (0, 2500, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -494,12 +538,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 3000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -521,13 +567,15 @@ machine_configs = {
         "settings": {
             "exclude_games": 1,
             "coin_moti": 25.3,
-            "mode_options": ["ボーナス", "AT"],
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1000, 50, 9999,32),
             "through": (0, 9, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 3000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -550,12 +598,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.2,
             "mode_options": ["ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 9, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 1000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -578,12 +628,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 35.0,
             "mode_options": ["ボーナス", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 9, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -606,12 +658,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.1,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 9, 1,99),
             "at_gap": (0, 800, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
@@ -634,12 +688,14 @@ machine_configs = {
             "exclude_games": 1,
             "coin_moti": 31.0,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 9, 1,99),
             "at_gap": (0, 1000, 200,9999),
             "prev_game": (0, 1000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -662,12 +718,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.3,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 2000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -690,12 +748,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.6,
             "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 2000, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -718,12 +778,14 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.8,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["prev_type", "custom_condition"]
@@ -796,17 +858,19 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1500, 50, 9999,0),
             "through": (0, 5, 1,99),
             "at_gap": (0, 1500, 200,9999),
             "prev_game": (0, 1100, 200,9999), 
             "prev_coin": (0, 3000, 500,9999),
             "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (0, 15, 1,99),
+            "prev_renchan": (1, 15, 1,99),
             "prev_type_options": ["不問", "下位", "上位"],
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"]
         }
-    }
+    },
 
 
 
@@ -814,9 +878,36 @@ machine_configs = {
 # =========================================================
 # マギアレコード2025年4月7日
 # =========================================================
-# =========================================================
-# 東京喰種2025年2月3日
-# =========================================================
+    "tokyoghoul": {
+        "display_name": "L 東京喰種",
+        "file_key": "tokyoghoul",
+        "links": [
+            {
+                "og_image": "icon/fireforce2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/tokyoghoul"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1200, 50, 9999,0),
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 1200, 100,9999),
+            "prev_game": (0, 1200, 100,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (1, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    },
 # =========================================================
 # ブラックジャック2025年2月3日
 # =========================================================
@@ -832,9 +923,36 @@ machine_configs = {
 # =========================================================
 # 防御力に極振り2024年6月3日
 # =========================================================
-# =========================================================
-# モンキーターン2023年12月4日
-# =========================================================
+    "monkeyturn5": {
+        "display_name": "L モンキーターンV",
+        "file_key": "monkeyturn5",
+        "links": [
+            {
+                "og_image": "icon/fireforce2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+            },
+            {
+                "og_image": "icon/ogp_v4.jpg",
+                "link_url": "/memo/monkeyturn5"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 800, 50, 9999,0),
+            "through": (0, 5, 1,99),
+            "at_gap": (0, 1200, 100,9999),
+            "prev_game": (0, 800, 100,9999), 
+            "prev_coin": (0, 3000, 500,9999),
+            "prev_diff": (-4000, 2000, 200,-9999,9999),
+            "prev_renchan": (1, 15, 1,99),
+            "prev_type_options": ["不問", "下位", "上位"],
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"]
+        }
+    }
 # =========================================================
 # からくり2023年7月3日
 # =========================================================

@@ -465,7 +465,7 @@ def api_default_values():
         "prev_game": defaults["prev_game"],
         "prev_coin": defaults["prev_coin"],
         "prev_diff": defaults["prev_diff"],
-        "prev_renchan": defaults["prev_renchan"],
+
     })
 
 # =====================================================
@@ -549,19 +549,48 @@ def filter_dataframe_v2(df, form, settings):
     mask = pd.Series(True, index=df.index)
 
     # =========================
+    # ロックされていたUI項目
+    # =========================
+    locked_ui_fields = form.get("locked_ui_fields", [])
+
+    # =========================
     # 朝イチ
     # =========================
     time_value = form.get("time")
 
+    # if time_value == "朝イチ":
+    #     mask &= df["朝イチ"].eq(1)
+    # elif time_value == "朝イチ以外":
+    #     mask &= df["朝イチ"].eq(0)
     if time_value == "朝イチ":
         mask &= df["朝イチ"].eq(1)
+
     elif time_value == "朝イチ以外":
         mask &= df["朝イチ"].eq(0)
+
+    elif time_value == "駆け抜け後":
+        mask &= df["朝イチ"].eq(0)
+        mask &= df["前回連荘数"].eq(1)
+
+    elif time_value == "下位後":
+        mask &= df["朝イチ"].eq(0)
+        mask &= df["前回種別"].eq("下位")
+
+    elif time_value == "上位後":
+        mask &= df["朝イチ"].eq(0)
+        mask &= df["前回種別"].eq("上位")
 
     # =========================
     # range共通（安全化）
     # =========================
     def apply_range(column, key):
+
+        # ロックされていた項目はフィルターしない
+        if (
+            f"{key}_min" in locked_ui_fields
+            or f"{key}_max" in locked_ui_fields
+        ):
+            return pd.Series(True, index=df.index)
 
         val = form.get(key)
 
@@ -572,29 +601,75 @@ def filter_dataframe_v2(df, form, settings):
 
         return df[column].between(min_v, max_v)
 
-    mask &= apply_range("スルー回数", "through")
-    mask &= apply_range("AT間ゲーム数", "at_gap")
-    mask &= apply_range("前回当選ゲーム数", "prev_game")
-    mask &= apply_range("前回獲得枚数", "prev_coin")
-    mask &= apply_range("前回差枚数", "prev_diff")
-    mask &= apply_range("前回連荘数", "prev_renchan")
+    # =========================
+    # スルー回数（単体）
+    # =========================
+    through_value = form.get("through")
+
+    if "through" not in locked_ui_fields:
+
+        if through_value not in (None, "", "all", "不問"):
+
+            try:
+                through_value = int(through_value)
+                mask &= df["スルー回数"].eq(through_value)
+            except:
+                pass
 
     # =========================
-    # 文字列条件（安全）
-    # =========================
-    if form.get("prev_type") and form.get("prev_type") != "不問":
-        mask &= df["前回種別"].eq(form["prev_type"])
-
-    if form.get("custom_condition") and form.get("custom_condition") != "不問":
-        mask &= df["機種別条件"].eq(form["custom_condition"])
-
-    # =========================
-    # ゲーム数
+    # 打ち出しG数
     # =========================
     try:
         game = int(form.get("game", 0))
     except:
         game = 0
+
+    # =========================
+    # AT間G数
+    # =========================
+    if "at_gap" not in locked_ui_fields:
+
+        at_gap = form.get("at_gap")
+
+        if at_gap and len(at_gap) == 2:
+
+            min_v, max_v = at_gap
+
+            min_v = int(min_v)
+            max_v = int(max_v)
+
+            mask &= df["AT間ゲーム数"].between(
+                game + min_v,
+                game + max_v
+            )
+
+    # =========================
+    # 数値条件
+    # =========================
+    # mask &= apply_range("AT間ゲーム数", "at_gap")
+    mask &= apply_range("前回当選ゲーム数", "prev_game")
+    mask &= apply_range("前回獲得枚数", "prev_coin")
+    mask &= apply_range("前回差枚数", "prev_diff")
+    # mask &= apply_range("前回連荘数", "prev_renchan")
+
+    # =========================
+    # 文字列条件（安全）
+    # =========================
+    # if "prev_type" not in locked_ui_fields:
+    #     if form.get("prev_type") and form.get("prev_type") != "不問":
+    #         mask &= df["前回種別"].eq(form["prev_type"])
+
+    if "custom_condition" not in locked_ui_fields:
+        if form.get("custom_condition") and form.get("custom_condition") != "不問":
+            mask &= df["機種別条件"].eq(form["custom_condition"])
+
+    # =========================
+    # ゲーム数
+    # =========================
+    # try:
+    #     game = int(form.get("game", 0))
+    # except:
+    #     game = 0
 
     exclude_games = settings.get("exclude_games", 0)
 
@@ -609,6 +684,7 @@ def generate_labels_from_mode_options(mode_options):
         "AT": "AT",
         "ST": "ST",
         "CZ": "CZ",
+        "天国": "天国",
     }
 
     # 🔥order完全削除 → mode_optionsをそのまま使う
@@ -621,8 +697,6 @@ def generate_labels_from_mode_options(mode_options):
             "prev_diff": "未設定",
             "prev_game": "未設定",
             "prev_coin": "未設定",
-            "prev_renchan": "未設定",
-            "prev_type": "未設定",
             "custom_condition": "未設定",
         }
 
@@ -633,33 +707,32 @@ def generate_labels_from_mode_options(mode_options):
         base = display_modes[0]
         return {
             "mode": base,
-            "game": f"打ち出しG数（{base}間）",
-            "through": "スルー回数",
-            "at_gap": f"前回***終了時{base}間G数",
+            "through": "***スルー回数",
+            "game": f"{base}間ゲーム数",
+            "at_gap": f"***間ゲーム数",
             "prev_diff": f"前回{base}終了時差枚数",
             "prev_game": f"前回{base}当選G数",
             "prev_coin": f"前回{base}獲得枚数",
-            "prev_renchan": f"前回{base}連荘数",
-            "prev_type": f"前回{base}種別",
             "custom_condition": "機種別条件",
         }
+            # "game": f"打ち出しG数（{base}間）",
+            # "at_gap": f"前回***終了時{base}間G数",
 
     first = display_modes[0]
     second = display_modes[1]
 
     return {
         "mode": mode_label,
-        "game": f"打ち出しG数（{first}間）",
         "through": f"{first}スルー回数",
-        "at_gap": f"前回{first}終了時{second}間G数",
+        "game": f"{first}間ゲーム数",
+        "at_gap": f"{second}間ゲーム数",
         "prev_diff": f"前回{second}終了時差枚数",
         "prev_game": f"前回{second}当選G数",
         "prev_coin": f"前回{second}獲得枚数",
-        "prev_renchan": f"前回{second}連荘数",
-        "prev_type": f"前回{second}種別",
         "custom_condition": "機種別条件",
     }
-
+        # "game": f"打ち出しG数（{first}間）",
+        # "at_gap": f"前回{first}終了時{second}間G数",
 
 def mode_to_csv_suffix(mode: str) -> str:
     """
@@ -670,6 +743,7 @@ def mode_to_csv_suffix(mode: str) -> str:
         "AT": "at",
         "CZ": "cz",
         "ST": "st",
+        "天国": "at",
     }
     return mapping.get(mode, "rb")
 
@@ -688,9 +762,7 @@ def get_default_values(mode_options):
         "prev_game": (0, 0),
         "prev_coin": (0, 0),
         "prev_diff": (0, 0),
-        "prev_renchan": (0, 0),
 
-        "prev_type": "不問",
         "custom_condition": "不問",
     }
 
@@ -741,6 +813,7 @@ def all_tool():
         display_name = cfg.get("display_name", "")   # ←ここ重要
         settings = cfg.get("settings", {})
         links = cfg.get("links", [])
+        help_texts = settings.get("help_texts", {})
 
     # =========================
     # リンク処理
@@ -776,14 +849,18 @@ def all_tool():
     mode_options = settings.get("mode_options", [])
 
     selected_mode = request.form.get("mode", defaults["mode"])
-    selected_time = request.form.get("time", defaults["time"])
+    # selected_time = request.form.get("time", defaults["time"])
+    time_options = settings.get(
+        "time_options",
+        ["朝イチ", "朝イチ以外"]
+    )
+    selected_time = request.form.get("time", time_options[0])
 
     try:
         input_game = int(request.form.get("game", defaults["game"]))
     except:
         input_game = defaults["game"]
 
-    selected_prev_type = request.form.get("prev_type", "不問")
     selected_custom_condition = request.form.get("custom_condition", "不問")
 
 
@@ -795,7 +872,26 @@ def all_tool():
     prev_game = settings.get("prev_game", (0, 2000, 50))
     prev_coin = settings.get("prev_coin", (0, 3000, 100))
     prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
-    prev_renchan = settings.get("prev_renchan", (0, 10, 1))
+
+    # =========================
+    # 打ち出しゲーム数のリスト化
+    # =========================
+    game = settings.get("game", (0, 1500, 50, 9999))
+
+    game_options = []
+
+    if len(game) >= 5:
+        game_options.append(game[4])
+
+    game_options.extend(
+        range(
+            game[2],
+            game[1] + 1,
+            game[2]
+        )
+    )
+
+    game_options = sorted(set(game_options))
 
     # =========================
     # 最大値初期値
@@ -805,7 +901,6 @@ def all_tool():
     prev_game_default_max = get_setting_max(prev_game)
     prev_coin_default_max = get_setting_max(prev_coin)
     prev_diff_default_max = get_setting_max(prev_diff)
-    prev_renchan_default_max = get_setting_max(prev_renchan)
 
     # =========================
     # min/max（安全変換）
@@ -819,8 +914,15 @@ def all_tool():
         except:
             return int(default)
 
-    selected_through_min = get_int("through_min", 0)
-    selected_through_max = get_int("through_max", 0)
+    selected_through = request.form.get("through", "0")
+
+    if selected_through not in ("all", "不問"):
+        try:
+            selected_through = int(selected_through)
+        except:
+            selected_through = 0
+
+    locked_ui_fields = request.form.getlist("locked_ui_fields")
 
     selected_at_gap_min = get_int("at_gap_min", 0)
     selected_at_gap_max = get_int("at_gap_max", at_gap_default_max)
@@ -841,9 +943,6 @@ def all_tool():
         get_setting_max(prev_diff)
     )
 
-    selected_prev_renchan_min = get_int("prev_renchan_min", 0)
-    selected_prev_renchan_max = get_int("prev_renchan_max", prev_renchan_default_max)
-
     # =========================
     # CSV（未選択でも落ちない）
     # =========================
@@ -852,11 +951,18 @@ def all_tool():
             "index_all.html",
             machine_name=display_name or "",
             selected_machine=None,
-            display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
-
+            display_names=[
+                (
+                    k,
+                    v["display_name"],
+                    v.get("search_words", [])
+                )
+                for k, v in MACHINE_CONFIGS.items()
+            ],
             mode_options=[],
             selected_mode="",
             selected_time="朝イチ",
+            time_options=time_options,
             input_game=0,
 
             through_options=build_range_options(through),
@@ -864,10 +970,8 @@ def all_tool():
             prev_game_options=build_range_options(prev_game),
             prev_coin_options=build_range_options(prev_coin),
             prev_diff_options=build_range_options(prev_diff),
-            prev_renchan_options=build_range_options(prev_renchan),
 
-            selected_through_min=selected_through_min,
-            selected_through_max=selected_through_max,
+            selected_through=selected_through,
 
             selected_at_gap_min=selected_at_gap_min,
             selected_at_gap_max=selected_at_gap_max,
@@ -881,13 +985,8 @@ def all_tool():
             selected_prev_diff_min=selected_prev_diff_min,
             selected_prev_diff_max=selected_prev_diff_max,
 
-            selected_prev_renchan_min=selected_prev_renchan_min,
-            selected_prev_renchan_max=selected_prev_renchan_max,
-
-            selected_prev_type="不問",
             selected_custom_condition="不問",
 
-            prev_type_options=[],
             custom_condition_options=[],
 
             labels=labels,
@@ -896,7 +995,8 @@ def all_tool():
 
             machines=MACHINE_CONFIGS,
             machine_configs=MACHINE_CONFIGS,
-            link_previews=link_previews
+            link_previews=link_previews,
+            help_texts=help_texts
         )
 
     # =========================
@@ -929,18 +1029,25 @@ def all_tool():
             "index_all.html",
             machine_name=display_name,
             selected_machine=selected_machine,
-            display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
+            display_names=[
+                (
+                    k,
+                    v["display_name"],
+                    v.get("search_words", [])
+                )
+                for k, v in MACHINE_CONFIGS.items()
+            ],
             mode_options=mode_options,
+            time_options=time_options,
+            game_options=game_options,
 
             through_options=build_range_options(through),
             at_gap_options=build_range_options(at_gap),
             prev_game_options=build_range_options(prev_game),
             prev_coin_options=build_range_options(prev_coin),
             prev_diff_options=build_range_options(prev_diff),
-            prev_renchan_options=build_range_options(prev_renchan),
 
-            selected_through_min=selected_through_min,
-            selected_through_max=selected_through_max,
+            selected_through=selected_through,
 
             selected_at_gap_min=selected_at_gap_min,
             selected_at_gap_max=selected_at_gap_max,
@@ -954,13 +1061,8 @@ def all_tool():
             selected_prev_diff_min=selected_prev_diff_min,
             selected_prev_diff_max=selected_prev_diff_max,
 
-            selected_prev_renchan_min=selected_prev_renchan_min,
-            selected_prev_renchan_max=selected_prev_renchan_max,
-
-            selected_prev_type=selected_prev_type,
             selected_custom_condition=selected_custom_condition,
 
-            prev_type_options=settings.get("prev_type_options", []),
             custom_condition_options=settings.get("custom_condition_options", []),
 
             labels=labels,
@@ -969,7 +1071,8 @@ def all_tool():
 
             machines=MACHINE_CONFIGS,
             machine_configs=MACHINE_CONFIGS,
-            link_previews=link_previews
+            link_previews=link_previews,
+            help_texts=help_texts
         )
 
     # =========================
@@ -979,15 +1082,13 @@ def all_tool():
         "time": selected_time,
         "game": input_game,
 
-        "through": (selected_through_min, selected_through_max),
+        "through": selected_through,
         "at_gap": (selected_at_gap_min, selected_at_gap_max),
         "prev_game": (selected_prev_game_min, selected_prev_game_max),
         "prev_coin": (selected_prev_coin_min, selected_prev_coin_max),
         "prev_diff": (selected_prev_diff_min, selected_prev_diff_max),
-        "prev_renchan": (selected_prev_renchan_min, selected_prev_renchan_max),
-
-        "prev_type": selected_prev_type,
-        "custom_condition": selected_custom_condition
+        "custom_condition": selected_custom_condition,
+        "locked_ui_fields": locked_ui_fields
     }
 
     # =========================
@@ -1048,22 +1149,29 @@ def all_tool():
 
         machine_name=display_name,
         selected_machine=selected_machine,
-        display_names=[(k, v["display_name"]) for k, v in MACHINE_CONFIGS.items()],
+        display_names=[
+            (
+                k,
+                v["display_name"],
+                v.get("search_words", [])
+            )
+            for k, v in MACHINE_CONFIGS.items()
+        ],
 
         mode_options=mode_options,
         selected_mode=selected_mode,
         selected_time=selected_time,
+        time_options=time_options,
         input_game=input_game,
+        game_options=game_options,
 
         through_options=build_range_options(through),
         at_gap_options=build_range_options(at_gap),
         prev_game_options=build_range_options(prev_game),
         prev_coin_options=build_range_options(prev_coin),
         prev_diff_options=build_range_options(prev_diff),
-        prev_renchan_options=build_range_options(prev_renchan),
 
-        selected_through_min=selected_through_min,
-        selected_through_max=selected_through_max,
+        selected_through=selected_through,
 
         selected_at_gap_min=selected_at_gap_min,
         selected_at_gap_max=selected_at_gap_max,
@@ -1077,13 +1185,8 @@ def all_tool():
         selected_prev_diff_min=selected_prev_diff_min,
         selected_prev_diff_max=selected_prev_diff_max,
 
-        selected_prev_renchan_min=selected_prev_renchan_min,
-        selected_prev_renchan_max=selected_prev_renchan_max,
-
-        selected_prev_type=selected_prev_type,
         selected_custom_condition=selected_custom_condition,
 
-        prev_type_options=settings.get("prev_type_options", []),
         custom_condition_options=settings.get("custom_condition_options", []),
 
         labels=labels,
@@ -1092,7 +1195,8 @@ def all_tool():
 
         machines=MACHINE_CONFIGS,
         machine_configs=MACHINE_CONFIGS,
-        link_previews=link_previews
+        link_previews=link_previews,
+        help_texts=help_texts
     )
 
 # ================================
