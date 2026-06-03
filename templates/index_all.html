@@ -933,17 +933,22 @@ input[type="submit"]:active {
 /* =====================================================
    20260602打ち出しゲーム数にプルダウン追加
 ===================================================== */
+/* =====================================================
+   20260604 AT間G数にプルダウン追加
+===================================================== */
 .game-box {
   position: relative;
   display: flex;
   gap: 2px;
 }
 
-#game {
+#game,
+#at_gap {
   flex: 1;
 }
 
-#game_toggle {
+#game_toggle,
+#at_gap_toggle {
   width: 36px;
   height: 36px;
 
@@ -962,7 +967,8 @@ input[type="submit"]:active {
   padding: 0;
 }
 
-#game_suggest {
+#game_suggest,
+#at_gap_suggest {
   position: absolute;
   top: 37px;
   left: 0;
@@ -979,7 +985,8 @@ input[type="submit"]:active {
   display: none;
 }
 
-#game_suggest div {
+#game_suggest div,
+#at_gap_suggest div {
   height: 38px;
   display: flex;
   align-items: center;
@@ -991,10 +998,23 @@ input[type="submit"]:active {
   cursor: pointer;
 }
 
-#game_suggest div:hover {
+#game_suggest div:hover,
+#at_gap_suggest div:hover {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+
+/* =====================================================
+   20260604 AT間G数にプルダウン追加に伴う修正
+===================================================== */
+#at_gap:disabled,
+#at_gap_toggle:disabled {
+  color: #777;
+  background: var(--bg-card);
+  border-color: var(--border);
+  opacity: 1;
+  cursor: not-allowed;
+}
 
 /* =====================================================
    20260603ロック時のラベルグレーアウト
@@ -1077,7 +1097,7 @@ input[type="submit"]:active {
 
 
 <!-- メインフォーム -->
-<form id="myForm" method="POST" action="/all">
+<form id="myForm" method="POST" action="/all" novalidate>
 
   <!-- 機種名 -->
   <!-- 20260602？ボタン追加 -->
@@ -1193,11 +1213,7 @@ input[type="submit"]:active {
           {{ i }}
         </option>
       {% endfor %}
-
-      <option value="all" {% if selected_through == "all" %}selected{% endif %}>
-        不問
-      </option>
-    </select>
+      </select>
   </div>
 
   <!-- 打ち出しG数 -->
@@ -1227,25 +1243,28 @@ input[type="submit"]:active {
     </div>
   </div>
 
-  <!-- AT間G数（minmaxあり） -->
+  <!-- AT間G数 -->
   <div class="form-row">
-    <label>{{ labels.get("at_gap", "AT間G数") }}</label>
+    <label>{{ labels.get("at_gap", "AT間ゲーム数") }}</label>
 
-    <div class="range auto-range">
+    <div class="game-box">
 
-      <select name="at_gap_min" class="range-min">
-        {% for i in at_gap_options %}
-          <option value="{{ i }}" {% if i == selected_at_gap_min %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
+      <input
+        type="text"
+        id="at_gap"
+        name="at_gap"
+        min="0"
+        value="{{ selected_at_gap }}"
+        required
+        inputmode="numeric"
+        autocomplete="off"
+      >
 
-      <span class="separator">～</span>
+      <button type="button" id="at_gap_toggle">
+        ▼
+      </button>
 
-      <select name="at_gap_max" class="range-max">
-        {% for i in at_gap_options %}
-          <option value="{{ i }}" {% if i == selected_at_gap_max %}selected{% endif %}>{{ i }}</option>
-        {% endfor %}
-      </select>
+      <div id="at_gap_suggest"></div>
 
     </div>
   </div>
@@ -1785,6 +1804,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.querySelector("form");
   const resultArea = document.getElementById("result-area");
+  const labels = {{ labels | tojson }};
 
   if (!form || !resultArea) return;
 
@@ -1796,6 +1816,80 @@ document.addEventListener("DOMContentLoaded", () => {
     lock = true;
 
     e.preventDefault();
+
+    // =========================
+    // 入力値取得
+    // =========================
+    const machineValue =
+      document.getElementById("machine")?.value || "";
+
+    const machineInputValue =
+      document.getElementById("machine_input")?.value || "";
+
+    const gameRaw =
+      document.getElementById("game")?.value || "";
+
+    const atGapEl =
+      document.getElementById("at_gap");
+
+    const atGapRaw =
+      atGapEl?.value || "";
+
+    const atGapLocked =
+      atGapEl?.disabled;
+
+    // =========================
+    // エラー表示
+    // =========================
+    function showInputError(message) {
+      document.getElementById("help-popup-title").textContent =
+        "入力エラー";
+
+      document.getElementById("help-popup-text").textContent =
+        message;
+
+      document.getElementById("help-popup").style.display =
+        "block";
+
+      lock = false;
+    }
+
+    // =========================
+    // 必須チェック
+    // =========================
+    if (!machineValue || !machineInputValue) {
+      showInputError("機種名を選択してください。");
+      return;
+    }
+
+    if (gameRaw === "") {
+      showInputError(`${labels.game}を入力してください。`);
+      return;
+    }
+
+    if (!atGapLocked && atGapRaw === "") {
+      showInputError(`${labels.at_gap}を入力してください。`);
+      return;
+    }
+
+    // =========================
+    // game / at_gap 整合チェック
+    // =========================
+    const gameValue =
+      Number(gameRaw);
+
+    if (!atGapLocked && atGapRaw !== "不問") {
+
+      const atGapValue =
+        Number(atGapRaw);
+
+      if (atGapValue <= gameValue) {
+        showInputError(
+          `${labels.at_gap}は${labels.game}より大きい値、または不問を選択してください。`
+        );
+        return;
+      }
+    }
 
     // ★GAイベント送信
     const machine =
@@ -2030,8 +2124,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const time = form.querySelector("[name='time']");
 
   const through = form.querySelector("[name='through']");
-  const aMin = form.querySelector("[name='at_gap_min']");
-  const aMax = form.querySelector("[name='at_gap_max']");
+  const atGap = form.querySelector("[name='at_gap']");
+  const atGapToggle = document.getElementById("at_gap_toggle");
 
   const prevItems = [
     form.querySelector("[name='prev_game_min']"),
@@ -2051,12 +2145,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // =================================================
     mode.disabled = false;
     through.disabled = false;
-    aMin.disabled = false;
-    aMax.disabled = false;
+    atGap.disabled = false;
 
-    prevItems.forEach(el => {
-      el.disabled = false;
-    });
+    mode.classList.remove("keep-disabled-style");
+    through.classList.remove("keep-disabled-style");
+    atGap.classList.remove("keep-disabled-style");
+
+    if (atGapToggle) {
+      atGapToggle.disabled = false;
+      atGapToggle.classList.remove("keep-disabled-style");
+    }
 
     // =================================================
     // 条件判定
@@ -2072,8 +2170,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (modeSingle) {
       mode.disabled = true;
       through.disabled = true;
-      aMin.disabled = true;
-      aMax.disabled = true;
+      atGap.disabled = true;
+      if (atGapToggle) {
+        atGapToggle.disabled = true;
+      }
     }
 
     // =================================================
@@ -2090,8 +2190,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // through=0 ロック
     // =================================================
     if (throughLock) {
-      aMin.disabled = true;
-      aMax.disabled = true;
+      atGap.value = "不問";
+      atGap.disabled = true;
+
+      if (atGapToggle) {
+        atGapToggle.disabled = true;
+      }
     }
 
     // =================================================
@@ -2106,7 +2210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       through: [through],
 
-      at_gap: [aMin, aMax],
+      at_gap: [atGap, atGapToggle],
 
       prev_game: [
         form.querySelector("[name='prev_game_min']"),
@@ -2204,8 +2308,13 @@ document.addEventListener("DOMContentLoaded", () => {
       hidden.value = el.name;
       form.appendChild(hidden);
 
-      el.disabled = false;
-      el.classList.add("keep-disabled-style");
+      if (
+        el.tagName === "SELECT" ||
+        el.tagName === "INPUT"
+      ) {
+        el.disabled = false;
+        el.classList.add("keep-disabled-style");
+      }
     });
 
   });
@@ -2514,6 +2623,66 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+  // =====================================================
+  // 20260604 AT間G数にプルダウン追加
+  // =====================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+  const atGapInput = document.getElementById("at_gap");
+  const atGapToggle = document.getElementById("at_gap_toggle");
+  const atGapSuggest = document.getElementById("at_gap_suggest");
+
+  if (!atGapInput || !atGapToggle || !atGapSuggest) return;
+
+  const atGapOptions = [
+    "不問",
+    {% for value in at_gap_options %}
+      "{{ value }}",
+    {% endfor %}
+  ];
+
+  atGapToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    atGapSuggest.innerHTML = "";
+
+    atGapOptions.forEach(value => {
+
+      const div = document.createElement("div");
+      div.textContent = value;
+
+      div.onclick = () => {
+        atGapInput.value = value;
+        atGapSuggest.style.display = "none";
+      };
+
+      atGapSuggest.appendChild(div);
+
+    });
+
+    atGapSuggest.style.display =
+      atGapSuggest.style.display === "block"
+        ? "none"
+        : "block";
+
+  });
+
+  document.addEventListener("click", (e) => {
+
+    if (
+      !atGapInput.contains(e.target) &&
+      !atGapSuggest.contains(e.target) &&
+      !atGapToggle.contains(e.target)
+    ) {
+      atGapSuggest.style.display = "none";
+    }
+
+  });
+
+});
+</script>
+
 
 <script>
   // =====================================================
@@ -2583,5 +2752,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+
+<script>
+/* =====================================================
+   🟡 game・at_gap クリック時クリア
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+
+  ["game", "at_gap"].forEach(id => {
+
+    const el = document.getElementById(id);
+
+    if (!el) return;
+
+    el.addEventListener("focus", () => {
+      el.value = "";
+    });
+
+  });
+
+});
+</script>
+
+
+
 </body>
 </html>

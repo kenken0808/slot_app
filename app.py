@@ -629,19 +629,26 @@ def filter_dataframe_v2(df, form, settings):
     # =========================
     if "at_gap" not in locked_ui_fields:
 
-        at_gap = form.get("at_gap")
+        at_gap_raw = form.get("at_gap", "不問")
 
-        if at_gap and len(at_gap) == 2:
+        if at_gap_raw not in (None, "", "不問", "all"):
 
-            min_v, max_v = at_gap
+            try:
+                at_gap_value = int(at_gap_raw)
+            except:
+                at_gap_value = None
 
-            min_v = int(min_v)
-            max_v = int(max_v)
+            if at_gap_value is not None:
 
-            mask &= df["AT間ゲーム数"].between(
-                game + min_v,
-                game + max_v
-            )
+                at_gap_width = settings.get("at_gap_width", 100)
+
+                lower = at_gap_value - game - at_gap_width
+                upper = at_gap_value - game + at_gap_width
+
+                mask &= df["AT間ゲーム数"].between(
+                    lower,
+                    upper
+                )
 
     # =========================
     # 数値条件
@@ -924,8 +931,7 @@ def all_tool():
 
     locked_ui_fields = request.form.getlist("locked_ui_fields")
 
-    selected_at_gap_min = get_int("at_gap_min", 0)
-    selected_at_gap_max = get_int("at_gap_max", at_gap_default_max)
+    selected_at_gap = request.form.get("at_gap", "不問")
 
     selected_prev_game_min = get_int("prev_game_min", 0)
     selected_prev_game_max = get_int("prev_game_max", prev_game_default_max)
@@ -973,8 +979,7 @@ def all_tool():
 
             selected_through=selected_through,
 
-            selected_at_gap_min=selected_at_gap_min,
-            selected_at_gap_max=selected_at_gap_max,
+            selected_at_gap=selected_at_gap,
 
             selected_prev_game_min=selected_prev_game_min,
             selected_prev_game_max=selected_prev_game_max,
@@ -1049,8 +1054,7 @@ def all_tool():
 
             selected_through=selected_through,
 
-            selected_at_gap_min=selected_at_gap_min,
-            selected_at_gap_max=selected_at_gap_max,
+            selected_at_gap=selected_at_gap,
 
             selected_prev_game_min=selected_prev_game_min,
             selected_prev_game_max=selected_prev_game_max,
@@ -1083,7 +1087,7 @@ def all_tool():
         "game": input_game,
 
         "through": selected_through,
-        "at_gap": (selected_at_gap_min, selected_at_gap_max),
+        "at_gap": selected_at_gap,
         "prev_game": (selected_prev_game_min, selected_prev_game_max),
         "prev_coin": (selected_prev_coin_min, selected_prev_coin_max),
         "prev_diff": (selected_prev_diff_min, selected_prev_diff_max),
@@ -1173,8 +1177,7 @@ def all_tool():
 
         selected_through=selected_through,
 
-        selected_at_gap_min=selected_at_gap_min,
-        selected_at_gap_max=selected_at_gap_max,
+        selected_at_gap=selected_at_gap,
 
         selected_prev_game_min=selected_prev_game_min,
         selected_prev_game_max=selected_prev_game_max,
