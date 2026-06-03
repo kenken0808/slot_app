@@ -2156,6 +2156,11 @@ document.addEventListener("DOMContentLoaded", () => {
       atGapToggle.classList.remove("keep-disabled-style");
     }
 
+    prevItems.forEach(el => {
+      el.disabled = false;
+      el.classList.remove("keep-disabled-style");
+    });
+
     // =================================================
     // 条件判定
     // =================================================
