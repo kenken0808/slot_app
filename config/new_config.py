@@ -281,7 +281,7 @@ machine_configs = {
         "links": [
             {
                 "og_image": "icon/kabaneriunato_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/n5fd6c389a0d5"
             },
             {
                 "og_image": "icon/ogp_v4xxx.jpg",
