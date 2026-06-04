@@ -760,7 +760,7 @@ def mode_to_csv_suffix(mode: str) -> str:
 def get_default_values(mode_options):
     return {
         "machine": "",
-        "mode": mode_options[0] if mode_options else "ボーナス",
+        "mode": mode_options[1] if len(mode_options) >= 2 else (mode_options[0] if mode_options else "ボーナス"),
         "time": "朝イチ",
         "game": 0,
 
@@ -855,8 +855,16 @@ def all_tool():
     # =========================
     mode_options = settings.get("mode_options", [])
 
+    defaults = get_default_values(mode_options)
+
+    labels = generate_labels_from_mode_options(mode_options)
+
     selected_mode = request.form.get("mode", defaults["mode"])
     # selected_time = request.form.get("time", defaults["time"])
+
+
+
+
     time_options = settings.get(
         "time_options",
         ["朝イチ", "朝イチ以外"]
@@ -961,7 +969,7 @@ def all_tool():
                 (
                     k,
                     v["display_name"],
-                    v.get("search_words", [])
+                    v.get("search_word", "")
                 )
                 for k, v in MACHINE_CONFIGS.items()
             ],
@@ -1038,7 +1046,7 @@ def all_tool():
                 (
                     k,
                     v["display_name"],
-                    v.get("search_words", [])
+                    v.get("search_word", "")
                 )
                 for k, v in MACHINE_CONFIGS.items()
             ],
@@ -1052,6 +1060,7 @@ def all_tool():
             prev_coin_options=build_range_options(prev_coin),
             prev_diff_options=build_range_options(prev_diff),
 
+            selected_mode=selected_mode,
             selected_through=selected_through,
 
             selected_at_gap=selected_at_gap,
@@ -1157,7 +1166,7 @@ def all_tool():
             (
                 k,
                 v["display_name"],
-                v.get("search_words", [])
+                v.get("search_word", "")
             )
             for k, v in MACHINE_CONFIGS.items()
         ],

@@ -6,56 +6,14 @@ from werkzeug.security import generate_password_hash
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
-    "hokuto": {
-        "display_name": "L 北斗の拳",
-        "file_key": "hokuto",
-        "search_words": ["北斗", "北斗の拳"],
-
-        # =========================
-        # UIリンク情報
-        # =========================
-        "links": [
-            {
-                "og_image": "icon/icon.jpg",
-                "link_url": "https://note.com/kenslodata"
-            },
-            {
-                "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/hokuto"
-            }
-        ],
-
-        # =========================
-        # 計算・条件設定
-        # =========================
-        "settings": {
-            "exclude_games": 40,
-            "coin_moti": 35.0,
-            "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1000, 100, 9999,0),
-
-            "through": (0, 5, 1,9999),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 1300, 100,9999),
-            "prev_coin": (0, 3000, 300,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 10, 1,9999),
-
-            "prev_type_options": ["不問"],
-            "custom_condition_options": ["不問"],
-
-            "locked_fields": ["through", "at_gap", "prev_type", "custom_condition"],
-            "help_texts": {}
-        }
-    },
     "taktopdestiny": {
         "display_name": "L タクトオーパス",
         "file_key": "taktopdestiny",
+        "search_word": "たくとおーぱす",
         "links": [
             {
                 "og_image": "icon/taktopdestiny_v4.jpg",
-                "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
+                "link_url": "https://note.com/kenslodata/n/n105f458ebc79"
             },
             {
                 "og_image": "icon/ogp_v4.jpg",
@@ -66,23 +24,34 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 35.0,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1600, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050),
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["through", "at_gap", "prev_game", "prev_coin", "prev_diff", "prev_renchan", "prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：300G
+                    朝イチ以外：500G
+                    
+                    【AT間天井】
+                    恩恵はAT当選。
+                    不問：999G
+                    """
+            }
         }
     },
 
     "bigdream": {
         "display_name": "L ビッグドリーム",
         "file_key": "bigdream",
+        "search_word": "びっぐどりーむ",
         "links": [
             {
                 "og_image": "icon/bigdream_v2.jpg",
@@ -97,23 +66,32 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.7,
             "mode_options": ["CZ", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1600, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1550, 50, 1550,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1550, 50, 1550),
+            "prev_game": (0, 1550, 50, 1550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ：999G
+                    下位後：1499G
+                    上位後：999G
+                    短縮　：333G or 555G or 999G
+                    """
+            }
         }
     },
 
     "residentevilre3": {
         "display_name": "L バイオハザードRE:3",
         "file_key": "residentevilre3",
+        "search_word": "ばいおはざーどりべれーしょんすりー",
         "links": [
             {
                 "og_image": "icon/residentevilre3_v2.jpg",
@@ -128,17 +106,33 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.8,
             "mode_options": ["CZ", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 7, 1,7),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問　：500pt
+                    上位後：50pt
+                    
+                    【AT間天井】
+                    恩恵はAT当選 + パンデミックチャンス獲得。
+                    朝イチ　　：650G
+                    朝イチ以外：1000G
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    不問：6スルー後7回目
+                    """
+            }
         }
     },
 # =========================================================
@@ -147,13 +141,14 @@ machine_configs = {
     "unicorn2": {
         "display_name": "L ガンダムユニコーン2",
         "file_key": "unicorn2",
+        "search_word": "がんだむゆにこーんつー",
         "links": [
             {
                 "og_image": "icon/unicorn2_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/unicorn2"
             }
         ],
@@ -161,30 +156,49 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["CZ", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 6, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1500, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1450, 50, 1450,0),
+            "through": (0, 7, 1,7),
+            "at_gap": (0, 1450, 50, 1450),
+            "prev_game": (0, 1450, 50, 1450), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    ※実ゲーム数。
+                    朝イチ　　：400G
+                    朝イチ以外：800G
+                    
+                    【AT間天井】
+                    恩恵はボーナス（AT濃厚）当選。
+                    ※液晶ゲーム数。
+                    朝イチ　　：1000G
+                    朝イチ以外：1400G
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵はボーナス（AT濃厚）当選。
+                    不問：6スルー後7回目
+                    """
+            }
         }
     },
 
     "milliongod": {
         "display_name": "L ミリオンゴッド",
         "file_key": "milliongod",
+        "search_word": "みりおんごっど",
         "links": [
             {
                 "og_image": "icon/milliongod_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/milliongod"
             }
         ],
@@ -192,65 +206,43 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.8,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 6, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1600, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1550, 50, 1550,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1550, 50, 1550),
+            "prev_game": (0, 1550, 50, 1550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選 + ループストック獲得。
+                    朝イチ　　：1000G
+                    朝イチ以外：1480G
+                    短縮　　　：510G or 1000G
+                    """
+            }
         }
     },
 # =========================================================
 # 虚構推理
 # =========================================================
 # =========================================================
-# アクダマドライブ_スルー処理どうするか
+# アクダマドライブ
 # =========================================================
-    "akudamadrive": {
-        "display_name": "L アクダマドライブ",
-        "file_key": "akudamadrive",
-        "links": [
-            {
-                "og_image": "icon/akudamadrive_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
-            },
-            {
-                "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/akudamadrive"
-            }
-        ],
-        "settings": {
-            "exclude_games": 40,
-            "coin_moti": 31.0,
-            "mode_options": ["ボーナス"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 6, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
-            "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
-        }
-    },
     "shinuchiyoshimune": {
         "display_name": "L 真打吉宗",
         "file_key": "shinuchiyoshimune",
+        "search_word": "しんうちよしむね",
         "links": [
             {
                 "og_image": "icon/shinuchiyoshimune_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/n25193f7ab63d"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/shinuchiyoshimune"
             }
         ],
@@ -258,30 +250,41 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.0,
             "mode_options": ["CZ", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 7, 1,99),
-            "at_gap": (0, 1400, 200,9999),
-            "prev_game": (0, 1600, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1550, 50, 1550,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1550, 50, 1550),
+            "prev_game": (0, 1550, 50, 1550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：1000G or 6周期
+                    
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ：1000G
+                    下位後：1500G
+                    上位後：700G
+                    """
+            }
         }
     },
     "kabaneriunato": {
         "display_name": "L 甲鉄城のカバネリ海門決戦",
         "file_key": "kabaneriunato",
-        "search_words": ["こうてつじょうのかばねりうなとけっせん"],
+        "search_word": "こうてつじょうのかばねりうなとけっせん",
         "links": [
             {
                 "og_image": "icon/kabaneriunato_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/kabaneriunato"
             }
         ],
@@ -290,23 +293,22 @@ machine_configs = {
             "coin_moti": 31.4,
             "mode_options": ["ボーナス", "ST"],
             "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 4, 1,99),
-            "at_gap": (50, 1000, 50,9999),
-            "prev_game": (0, 1000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "game": (0, 1550, 50, 1550,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1550, 50, 1550),
+            "prev_game": (0, 1550, 50, 1550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
             "locked_fields": ["custom_condition"],
             "help_texts": {
                 "time": """
-                    朝イチ　　：596G + 最大4周期
-                    朝イチ以外：996G + 最大6周期
-                    駆け抜け後：596G + 最大4周期
-                    下位後　　：996G + 最大6周期
-                    上位後　　：596G + 最大4周期
+                    【ST間天井】
+                    恩恵はエピソードボーナス（ST濃厚）当選。
+                    朝イチ　　：596G or 4周期
+                    駆け抜け後：596G or 4周期
+                    下位後　　：996G or 6周期
+                    上位後　　：596G or 4周期
                     """
             }
         }
@@ -314,13 +316,14 @@ machine_configs = {
     "hanmabaki": {
         "display_name": "L 範馬刃牙",
         "file_key": "hanmabaki",
+        "search_word": "はんまばき",
         "links": [
             {
                 "og_image": "icon/hanmabaki_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/nd125e7fe7554"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/hanmabaki"
             }
         ],
@@ -328,29 +331,43 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.1,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 6, 1,99),
-            "at_gap": (0, 1500, 200,9999),
-            "prev_game": (0, 2000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 750, 50, 750,0),
+            "through": (0, 6, 1,6),
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：200G（※）
+                    朝イチ以外：700G
+                    ※朝イチほぼ200Gゾーンで当選。
+                    　超えた場合は通常C濃厚。
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵はAT当選。
+                    不問：6スルー後7回目
+                    """
+            }
         }
     },
     "goblinslayer2": {
         "display_name": "L ゴブリンスレイヤーⅡ",
         "file_key": "goblinslayer2",
+        "search_word": "ごぶりんすれいやーつー",
         "links": [
             {
                 "og_image": "icon/goblinslayer2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/n2cb70daf971e"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/goblinslayer2"
             }
         ],
@@ -358,29 +375,37 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 30.6,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 8, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1600, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1550, 50, 1550,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1550, 50, 1550),
+            "prev_game": (0, 1550, 50, 1550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選 + 宿命バトルストック1〜5個。
+                    朝イチ　　：1000G
+                    朝イチ以外：1500G
+                    短縮　　　：600G or 1000G
+                    """
+            }
         }
     },
     "ghostintheshell": {
         "display_name": "L 攻殻機動隊",
         "file_key": "ghostintheshell",
+        "search_word": "こうかくきどうたい",
         "links": [
             {
                 "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/nf71290e3a05e"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/ghostintheshell"
             }
         ],
@@ -388,29 +413,43 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["CZ", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 8, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ「S.A.M」当選。
+                    朝イチ　　　　：350G
+                    朝イチ以外　　：550G
+                    白の境界失敗後：400G（※）
+                    ※400G到達時はCZ「タチコマの家出」に突入。
+                    
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：699G
+                    朝イチ以外：999G
+                    """
+            }
         }
     },
     "fireforce2": {
         "display_name": "L 炎炎ノ消防隊2",
         "file_key": "fireforce2",
+        "search_word": "えんえんのしょうぼうたいつー",
         "links": [
             {
                 "og_image": "icon/fireforce2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/fireforce2"
             }
         ],
@@ -418,29 +457,46 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["ボーナス", "ST"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1500, 200,9999),
-            "prev_game": (0, 2200, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 5, 1,5),
+            "at_gap": (0, 2100, 50, 2100),
+            "prev_game": (0, 2100, 50, 2100), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：650G
+                    朝イチ以外：850G
+                    
+                    【ST間天井】
+                    恩恵はSPエピソードボーナス（ST濃厚）当選。
+                    朝イチ　　：1500G
+                    朝イチ以外：2000G
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵はSPエピソードボーナス（ST濃厚）当選。
+                    不問：5スルー後6回目
+                    """
+            }
         }
     },
     "tekken6": {
         "display_name": "L 鉄拳6",
         "file_key": "tekken6",
+        "search_word": "てっけんしっくす",
         "links": [
             {
-                "og_image": "icon/fireforce2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/tekken6_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n483bc6255996"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/tekken6"
             }
         ],
@@ -448,29 +504,43 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.0,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 3, 1,99),
-            "at_gap": (0, 1500, 200,9999),
-            "prev_game": (0, 2000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 3, 1,3),
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：500pt
+                    朝イチ以外：900pt
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵は赤7（AT濃厚）当選。
+                    朝イチ：2スルー後3回目
+                    下位後：3スルー後4回目
+                    上位後：2スルー後3回目
+                    """
+            }
         }
     },
     "hokutotensei2": {
         "display_name": "L 北斗の拳 転生の章2",
         "file_key": "hokutotensei2",
+        "search_word": "ほくとのけんてんせいのしょうつー",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/hokutotensei2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/ncb695f0b4fb5"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/hokutotensei2"
             }
         ],
@@ -478,29 +548,36 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.5,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 8, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1500, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1500, 50, 1500,0),
+            "through": (0, 3, 1,3),
+            "at_gap": (0, 1500, 50, 1500),
+            "prev_game": (0, 1500, 50, 1500), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選 + ATレベル3以上。
+                    朝イチ　　：1280あべし
+                    朝イチ以外：1536あべし
+                    """
+            }
         }
     },
     "mushokutensei": {
         "display_name": "L 無職転生",
         "file_key": "mushokutensei",
+        "search_word": "むしょくてんせい",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/mushokutensei_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/ne3d934a762e9"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/mushokutensei"
             }
         ],
@@ -508,29 +585,45 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 33.0,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1000, 50, 1000,0),
             "through": (0, 10, 1,99),
-            "at_gap": (0, 1500, 200,9999),
-            "prev_game": (0, 2500, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    ※天井はステージチェンジ回数。
+                    朝イチ　　　　：13回
+                    朝イチ以外　　：19回
+                    駆け抜け後　　：13回
+                    魔術ボーナス後：13回
+                    
+                    【AT間天井】
+                    恩恵はエピソードボーナス（AT濃厚）当選。
+                    ※天井はステージチェンジ回数。
+                    朝イチ　　：17回
+                    朝イチ以外：40回
+                    """
+            }
         }
     },
     "hihoden": {
         "display_name": "L 秘宝伝",
         "file_key": "hihoden",
+        "search_word": "ひほうでん",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/hihoden_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n20a891c1e4b1"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/hihoden"
             }
         ],
@@ -538,29 +631,37 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 850, 50, 850,0),
             "through": (0, 10, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 3000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　：499G
+                    ビッグ後：799G
+                    バケ後　：649G
+                    """
+            }
         }
     },
     "okidokiduoencore": {
         "display_name": "L 沖ドキ！DUO アンコール",
         "file_key": "okidokiduoencore",
+        "search_word": "おきどきでゅおあんこーる",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/okidokiduoencore_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n726b1b9be413"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/okidokiduoencore"
             }
         ],
@@ -568,29 +669,41 @@ machine_configs = {
             "exclude_games": 1,
             "coin_moti": 25.3,
             "mode_options": ["ボーナス", "天国"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1000, 50, 9999,32),
-            "through": (0, 9, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 3000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 800, 50, 800,0),
+            "through": (0, 9, 1,9),
+            "at_gap": (0, 3000, 50, 9999),
+            "prev_game": (0, 3000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選 + のるカナチャンス獲得。
+                    不問：800G（※）
+                    ※300Gの仮天井が高確率で選択。
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵は天国モード以上へ移行。
+                    不問：9スルー後10回目
+                    """
+            }
         }
     },
     "prismnana": {
         "display_name": "L プリズムナナ",
         "file_key": "prismnana",
+        "search_word": "ぷりずむなな",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/prismnana_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n10d7c2c98ace"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/prismnana"
             }
         ],
@@ -599,28 +712,36 @@ machine_configs = {
             "coin_moti": 31.2,
             "mode_options": ["ST"],
             "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 9, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 1000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 950, 50, 950),
+            "prev_game": (0, 950, 50, 950), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はST当選。
+                    朝イチ　　：555G
+                    朝イチ以外：899G + 7周期
+                    駆け抜け後：555G
+                    """
+            }
         }
     },
     "logh": {
         "display_name": "L 銀河英雄伝説",
         "file_key": "logh",
+        "search_word": "ぎんがえいゆうでんせつ",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/logh_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n33ab406dc7e6"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/logh"
             }
         ],
@@ -628,29 +749,41 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 35.0,
             "mode_options": ["ボーナス", "ST"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 9, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はオープニングボーナス（ST濃厚）当選。
+                    朝イチ　　：800G
+                    朝イチ以外：1000G
+                    
+                    【GSC間天井】
+                    恩恵はエピソードボーナス当選。
+                    不問：2000G
+                    短縮：1000G or 1200G or 1400G or 1600G or 1800G
+                    """
+            }
         }
     },
     "bakemonogatari": {
         "display_name": "L 化物語",
         "file_key": "bakemonogatari",
+        "search_word": "ばけものがたり",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/bakemonogatari_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nc7c8e2a4ea46"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/bakemonogatari"
             }
         ],
@@ -658,29 +791,36 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.1,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 9, 1,99),
-            "at_gap": (0, 800, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選 + 倍倍チャンス獲得。
+                    朝イチ　　：600G
+                    朝イチ以外：1000G
+                    """
+            }
         }
     },
     "burningexpress": {
         "display_name": "L バーニングエクスプレス",
+        "search_word": "ばーにんぐえくすぷれす",
         "file_key": "burningexpress",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/burningexpress_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n2648051423d9"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/burningexpress"
             }
         ],
@@ -688,29 +828,37 @@ machine_configs = {
             "exclude_games": 1,
             "coin_moti": 31.0,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 9, 1,99),
-            "at_gap": (0, 1000, 200,9999),
-            "prev_game": (0, 1000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1000, 50, 1000,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1000, 50, 1000),
+            "prev_game": (0, 1000, 50, 1000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：666G
+                    朝イチ以外：999G
+                    短縮　　　：111G or 222G or 333G or 444G or 555G
+                    """
+            }
         }
     },
     "neoplanet": {
         "display_name": "L ネオプラネット",
         "file_key": "neoplanet",
+        "search_word": "ねおぷらねっと",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/neoplanet_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nfbb1961157e5"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/neoplanet"
             }
         ],
@@ -718,29 +866,36 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.3,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 800, 50, 800,0),
             "through": (0, 10, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 2000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：500G
+                    朝イチ以外：777G
+                    """
+            }
         }
     },
     "zettaishogeki4": {
         "display_name": "L 絶対衝激Ⅳ",
         "file_key": "zettaishogeki4",
+        "search_word": "ぜったいしょうげきふぉー",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/zettaishogeki4_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n1a880ae74aff"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/zettaishogeki4"
             }
         ],
@@ -748,29 +903,36 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.6,
             "mode_options": ["ボーナス", "AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1000, 50, 1000,0),
             "through": (0, 10, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 2000, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はプラトニックボーナスブラック当選。
+                    朝イチ　　：5周期
+                    朝イチ以外：9周期
+                    """
+            }
         }
     },
     "railgun2": {
         "display_name": "L とある科学の超電磁砲2",
         "file_key": "railgun2",
+        "search_word": "とあるかがくのれーるがんつー",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/railgun2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n471a3dc95649"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/railgun2"
             }
         ],
@@ -778,17 +940,27 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 31.8,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
             "through": (0, 10, 1,99),
-            "at_gap": (0, 2000, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問"],
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["prev_type", "custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：499G
+
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：699G
+                    朝イチ以外：999G
+                    """
+            }
         }
     },
 # =========================================================
@@ -844,13 +1016,14 @@ machine_configs = {
     "izabantyo": {
         "display_name": "L いざ！番長",
         "file_key": "izabantyo",
+        "search_word": "いざばんちょう",
         "links": [
             {
-                "og_image": "icon/fireforce2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/izabantyo_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n84de40377ba4"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/izabantyo"
             }
         ],
@@ -858,17 +1031,23 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1500, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1500, 200,9999),
-            "prev_game": (0, 1100, 200,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：600G
+                    朝イチ以外：999G
+                    """
+            }
         }
     },
 
@@ -881,13 +1060,14 @@ machine_configs = {
     "tokyoghoul": {
         "display_name": "L 東京喰種",
         "file_key": "tokyoghoul",
+        "search_word": "とうきょうぐーるー",
         "links": [
             {
-                "og_image": "icon/fireforce2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/tokyoghoul_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n3c3178154117"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/tokyoghoul"
             }
         ],
@@ -896,16 +1076,26 @@ machine_configs = {
             "coin_moti": 31.0,
             "mode_options": ["CZ", "AT"],
             "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 1200, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1200, 100,9999),
-            "prev_game": (0, 1200, 100,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "game": (0, 600, 50, 600,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1200, 50, 1200),
+            "prev_game": (0, 1200, 50, 1200), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ or AT当選。
+                    朝イチ　　：200G
+                    朝イチ以外：600G
+                    
+                    【AT間天井】
+                    恩恵はAT当選。
+                    不問：1200G
+                    """
+            }
         }
     },
 # =========================================================
@@ -926,13 +1116,14 @@ machine_configs = {
     "monkeyturn5": {
         "display_name": "L モンキーターンV",
         "file_key": "monkeyturn5",
+        "search_word": "もんきーたーんふぁいぶ",
         "links": [
             {
-                "og_image": "icon/fireforce2_v1.jpg",
-                "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
+                "og_image": "icon/monkeyturn5_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/na2bf9d6045a8"
             },
             {
-                "og_image": "icon/ogp_v4.jpg",
+                "og_image": "icon/ogp_v4xxx.jpg",
                 "link_url": "/memo/monkeyturn5"
             }
         ],
@@ -940,17 +1131,68 @@ machine_configs = {
             "exclude_games": 40,
             "coin_moti": 32.0,
             "mode_options": ["AT"],
-            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
-            "game": (0, 800, 50, 9999,0),
-            "through": (0, 5, 1,99),
-            "at_gap": (0, 1200, 100,9999),
-            "prev_game": (0, 800, 100,9999), 
-            "prev_coin": (0, 3000, 500,9999),
-            "prev_diff": (-4000, 2000, 200,-9999,9999),
-            "prev_renchan": (1, 15, 1,99),
-            "prev_type_options": ["不問", "下位", "上位"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 850, 50, 850,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 850, 50, 850),
+            "prev_game": (0, 850, 50, 850), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"]
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ：495G or 4周期
+                    下位後：795G or 6周期
+                    上位後：495G or 4周期
+                    """
+            }
+        }
+    },
+    "hokuto": {
+        "display_name": "L 北斗の拳",
+        "file_key": "hokuto",
+        "search_word": "ほくとのけん",
+        # =========================
+        # UIリンク情報
+        # =========================
+        "links": [
+            {
+                "og_image": "icon/hokuto_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n990e9f85b768"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/hokuto"
+            }
+        ],
+        # =========================
+        # 計算・条件設定
+        # =========================
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 35.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1350, 50,1350,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1350, 50,1350),
+            "prev_game": (0, 1350, 50,1350),
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：800G
+                    朝イチ以外：1268G
+                    短縮　　　：300G or 777G or 800G
+                    """
+            }
         }
     }
 # =========================================================
