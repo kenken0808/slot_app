@@ -401,7 +401,7 @@ machine_configs = {
         "search_word": "こうかくきどうたい",
         "links": [
             {
-                "og_image": "icon/ghostintheshell_v1.jpg",
+                "og_image": "icon/ghostintheshell_v3.jpg",
                 "link_url": "https://note.com/kenslodata/n/nf71290e3a05e"
             },
             {
@@ -725,7 +725,7 @@ machine_configs = {
                     【ST間天井】
                     恩恵はST当選。
                     朝イチ　　：555G
-                    朝イチ以外：899G + 7周期
+                    朝イチ以外：899G or 7周期
                     駆け抜け後：555G
                     """
             }
@@ -963,35 +963,313 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# ヴァルヴレイヴ25000
-# =========================================================
+    "valvrave2": {
+        "display_name": "L 革命機ヴァルヴレイヴ2",
+        "file_key": "valvrave2",
+        "search_word": "かくめいきヴァルヴレイヴつー",
+        "links": [
+            {
+                "og_image": "icon/valvrave2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/valvrave2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.7,
+            "mode_options": ["CZ", "ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1500, 50, 1500,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1500, 50, 1500),
+            "prev_game": (0, 1500, 50, 1500), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：999G or 3周期
+                    朝イチ以外：999G or 6周期
 
-# =========================================================
-# 鬼武者15000
-# =========================================================
-# =========================================================
-# 主役は銭形10000
-# =========================================================
+                    【AT間天井】
+                    恩恵は決戦ボーナス or 革命ボーナス or 革命RUSH当選。
+                    朝イチ　　：1000G
+                    朝イチ以外：1500G
+                    """
+            }
+        }
+    },
 # =========================================================
 # バベル3000
 # =========================================================
-
-# =========================================================
-# フランキス10000
-# =========================================================
-# =========================================================
-# アズールレーン6000
-# =========================================================
-# =========================================================
-# 転生したら剣5000
-# =========================================================
-# =========================================================
-# 咲5000
-# =========================================================
+    "zenigata5": {
+        "display_name": "L 主役は銭形5",
+        "file_key": "zenigata5",
+        "search_word": "しゅやくはぜにがたふぁいぶ",
+        "links": [
+            {
+                "og_image": "icon/zenigata5_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n14c453aae356"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/zenigata5"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.2,
+            "mode_options": ["ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1300, 50, 1300,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1300, 50, 1300),
+            "prev_game": (0, 1300, 50, 1300), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はボーナス（ST濃厚）当選 + 50%で不二子デカタイム獲得。
+                    朝イチ　　：850G
+                    朝イチ以外：1250G
+                    """
+            }
+        }
+    },
+    "onimusha3": {
+        "display_name": "L 新鬼武者3",
+        "file_key": "onimusha3",
+        "search_word": "しんおにむしゃすりー",
+        "links": [
+            {
+                "og_image": "icon/onimusha3_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n592917017aae"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/onimusha3"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ：1000G + 4周期
+                    下位後：1000G + 6周期
+                    上位後：1周期
+                    """
+            }
+        }
+    },
 # =========================================================
 # なめ猫
 # =========================================================
+    "sakitopbattle": {
+        "display_name": "L 咲-Saki-頂上決戦",
+        "file_key": "sakitopbattle",
+        "search_word": "さきちょうじょうけっせん",
+        "links": [
+            {
+                "og_image": "icon/sakitopbattle_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/sakitopbattle"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.1,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 6, 1,6),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：8周期
+                    
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：600G
+                    朝イチ以外：1000G
+                    駆け抜け後：800G
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    不問：6スルー後7回目
+                    """
+            }
+        }
+    },
+    "reincarnatedasasword": {
+        "display_name": "L 転生したら剣でした",
+        "file_key": "reincarnatedasasword",
+        "search_word": "てんせいしたらけんでした",
+        "links": [
+            {
+                "og_image": "icon/reincarnatedasasword_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n9f437b3ce766"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/reincarnatedasasword"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.3,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はフランボーナス（通常時）、X転剣ボーナス（AT中）当選。
+                    ※ボーナス間天井はAT当選でリセットされない。
+                    朝イチ　　：980G
+                    朝イチ以外：1280G
+                    短縮　　　：200G or 500G or 980G
+                    
+                    【AT間天井】
+                    恩恵は成功濃厚のCZ当選。
+                    朝イチ　　：600G
+                    朝イチ以外：970G
+                    """
+            }
+        }
+    },
+    "azurlanetheanimetion": {
+        "display_name": "L アズールレーン THE ANIMETION",
+        "file_key": "azurlanetheanimetion",
+        "search_word": "あずーるれーんじあにめーしょん",
+        "links": [
+            {
+                "og_image": "icon/azurlanetheanimetion_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/azurlanetheanimetion"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 25.8,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 400, 50, 400,0),
+            "through": (0, 9, 1,9),
+            "at_gap": (0, 2050, 50, 2050),
+            "prev_game": (0, 2050, 50, 2050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はアズールレーンボーナス-海戦-当選。
+                    不問：350G
+                    
+                    【AT間天井】
+                    恩恵はアズールレーンRUSH突入濃厚のアズールレーンボーナス-海戦-当選。
+                    不問：2000G
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵はアズールレーンRUSH当選。
+                    朝イチ　　：9スルー後10回目
+                    朝イチ以外：6スルー後7回目
+                    """
+            }
+        }
+    },
+    "darlinginthefranxx": {
+        "display_name": "L ダーリン・イン・ザ・フランキス",
+        "file_key": "darlinginthefranxx",
+        "search_word": "だーりんいんざふらんきす",
+        "links": [
+            {
+                "og_image": "icon/darlinginthefranxx_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/darlinginthefranxx"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.8,
+            "mode_options": ["ボーナス", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 750, 50, 750,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 2000, 50, 9999),
+            "prev_game": (0, 2000, 50, 9999), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：390G
+                    朝イチ以外：666G
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵は連チャンまでボーナスがダーリン・イン・ザ・ボーナス以上当選。
+                    ※REGまたはST駆け抜けをスルーとする。
+                    不問：4スルー後5回目以降
+                    """
+            }
+        }
+    },
+
+
+
+
 
 # =========================================================
 # ハイビリターン3000
