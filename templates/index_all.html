@@ -1115,8 +1115,8 @@ input[type="submit"]:active {
       <button
         type="button"
         class="help-btn"
-        data-help-title="サンプル"
-        data-help-text="検索したい機種名を入力してください。候補から選択すると、その機種の条件に切り替わります。"
+        data-help-title="機種名"
+        data-help-text="機種名を入力またはリストから選択してください。<br>歯車からリストの並び替えが出来ます。"
       >
         ?
       </button>
@@ -1169,8 +1169,17 @@ input[type="submit"]:active {
 
   <!-- モード -->
   <div class="form-row">
-    <label for="mode">{{ labels.get("mode", "ボーナス／AT") }}</label>
-
+    <label for="mode">
+      打ち切り条件
+      <button
+        type="button"
+        class="help-btn"
+        data-help-title="打ち切り条件"
+        data-help-text="選択した条件まで打ち切った期待値を算出します。<br>（例）<br>・「CZ」を選択した場合、CZまで打ち切った期待値。<br>・「AT」を選択した場合、ATまで打ち切った期待値。<br>・「○ゾーン狙い」を選択した場合、特定ゾーンまで打ち切った期待値。"
+      >
+        ?
+      </button>
+    </label>
     <select name="mode" id="mode" required autocomplete="off">
       {% for opt in mode_options %}
         <option value="{{ opt }}" {% if opt == selected_mode %}selected{% endif %}>
@@ -1184,13 +1193,13 @@ input[type="submit"]:active {
   <div class="form-row">
 
     <label for="time">
-      条件
+      天井条件
 
       {% if help_texts.get("time") %}
       <button
         type="button"
         class="help-btn"
-        data-help-title="天井情報①"
+        data-help-title="天井条件"
         data-help-text="{{ help_texts.get('time') }}"
       >
         ?
@@ -1220,7 +1229,7 @@ input[type="submit"]:active {
       <button
         type="button"
         class="help-btn"
-        data-help-title="天井情報②"
+        data-help-title="スルー回数"
         data-help-text="{{ help_texts.get('through') }}"
       >
         ?
@@ -2615,7 +2624,7 @@ document.querySelectorAll(".help-btn").forEach(btn => {
     document.getElementById("help-popup-title").textContent =
       btn.dataset.helpTitle;
 
-    document.getElementById("help-popup-text").textContent =
+    document.getElementById("help-popup-text").innerHTML =
       btn.dataset.helpText.trim();
 
     document.getElementById("help-popup").style.display = "block";
