@@ -6,6 +6,81 @@ from werkzeug.security import generate_password_hash
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "birdiewing": {
+        "display_name": "L BIRDIE WING",
+        "file_key": "birdiewing",
+        "search_word": "ばーでぃーういんぐ",
+        "links": [
+            {
+                "og_image": "icon/birdiewing_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/naddb7a7181b3"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/birdiewing"
+            }
+        ],
+        "settings": {
+            "exclude_games": 70,
+            "coin_moti": 31.5,
+            "mode_options": ["ボーナス", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1250, 50, 1250,0),
+            "through": (0, 4, 1, 4),
+            "at_gap": (0, 1250, 50, 1250),
+            "prev_game": (0, 1250, 50, 1250),
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はバーディーボーナス（ST濃厚）当選。
+                    ※天井周期の次周期から前兆
+                    朝イチ　　：7周期
+                    朝イチ以外：10周期
+                    """
+            }
+        }
+    },
+    "sengokuotome5": {
+        "display_name": "L 戦国乙女5 業火を穿つ宿焔の双刃",
+        "file_key": "sengokuotome5",
+        "search_word": "せんごくおとめふぁいぶ",
+        "links": [
+            {
+                "og_image": "icon/sengokuotome5_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nc155c9bc2dd7"
+            },
+            {
+                "og_image": "icon/ogp_v4xxx.jpg",
+                "link_url": "/memo/sengokuotome5"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1100, 50, 1100,0),
+            "through": (0, 10, 1, 99),
+            "at_gap": (0, 1100, 50, 1100),
+            "prev_game": (0, 1100, 50, 1100),
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：650G or 4周期
+                    朝イチ以外：999G or 6周期
+                    """
+            }
+        }
+    },
     "taktopdestiny": {
         "display_name": "L タクトオーパス",
         "file_key": "taktopdestiny",
@@ -47,7 +122,6 @@ machine_configs = {
             }
         }
     },
-
     "bigdream": {
         "display_name": "L ビッグドリーム",
         "file_key": "bigdream",
