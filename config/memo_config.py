@@ -39,7 +39,7 @@ memo_configs = {
                         ]
                     }
                 ],
-                "images": ["1.jpg"]
+                "images": ["4.jpg"]
             },
             {
                 "title": "モード当選率",
