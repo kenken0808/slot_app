@@ -213,6 +213,14 @@
       font-weight: bold;
     }
 
+    /* =========================
+       表画像
+    ========================= */
+.memo-table-image {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
 
   </style>
 </head>
@@ -275,7 +283,25 @@
                 >
 
                   {% for cell in row %}
-                    <div>{{ cell | safe }}</div>
+
+                    <div>
+
+                      {% if table.image_columns and loop.index0 in table.image_columns %}
+
+                        <img
+                          src="/static/memo/{{ machine }}/{{ cell }}"
+                          class="memo-table-image"
+                          alt=""
+                        >
+
+                      {% else %}
+
+                        {{ cell | safe }}
+
+                      {% endif %}
+
+                    </div>
+
                   {% endfor %}
 
                 </div>
