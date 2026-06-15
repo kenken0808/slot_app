@@ -84,7 +84,7 @@ memo_configs = {
                     "周期テーブルや設定を示唆。",
                 "tables": [
                     {
-                        "widths": ["130px", "1fr"],
+                        "widths": ["150px", "1fr"],
                         "headers": ["画面", "示唆"],
                         "rows": [
                             ["11.jpg", "デフォルト"],
@@ -106,7 +106,7 @@ memo_configs = {
                     "",
                 "tables": [
                     {
-                        "widths": ["130px", "1fr"],
+                        "widths": ["150px", "1fr"],
                         "headers": ["ストラップ", "示唆"],
                         "rows": [
                             ["21.jpg", "周期の規定ゲーム数が最大200G"],
