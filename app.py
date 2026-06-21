@@ -1134,10 +1134,27 @@ def all_tool():
             avg_reg_coins = filtered_df["REG枚数"].mean()
             avg_at_coins = filtered_df["AT枚数"].mean()
 
+            # hatsu_atari = max(avg_reg_games - input_game, 0)
+
+            # avg_diff = avg_at_coins + avg_reg_coins - (
+            #     hatsu_atari * 50 / settings.get("coin_moti", 1)
+            # )
+            # avg_in = (hatsu_atari + avg_at_games) * 3
+
+
             hatsu_atari = max(avg_reg_games - input_game, 0)
 
-            avg_diff = avg_at_coins + avg_reg_coins - (
-                hatsu_atari * 50 / settings.get("coin_moti", 1)
+            try:
+                lend_medals = float(request.form.get("lend_medals", 50))
+            except:
+                lend_medals = 50
+            try:
+                exchange_medals = float(request.form.get("exchange_medals", 50))
+            except:
+                exchange_medals = 50
+            avg_diff = (
+                (avg_at_coins + avg_reg_coins) / exchange_medals * 50
+                - (hatsu_atari * 50 / settings.get("coin_moti", 1)) / lend_medals * 50
             )
 
             avg_in = (hatsu_atari + avg_at_games) * 3

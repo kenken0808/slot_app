@@ -1076,8 +1076,8 @@ input[type="submit"]:active {
 
   <label>入力制限</label>
   <select id="range-mode-select">
-    <option value="auto">自動</option>
     <option value="manual">手動</option>
+    <option value="auto">自動</option>
   </select>
 
   <div class="settings-divider"></div>
@@ -1087,6 +1087,40 @@ input[type="submit"]:active {
     <option value="default">導入順</option>
     <option value="kana">五十音順</option>
   </select>
+
+  <div class="settings-divider"></div>
+
+  <!-- 20260621換金ギャップ -->
+  <label>換金ギャップ</label>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; align-items:center;">
+    <select id="lend-medals-select">
+
+      {% for i in range(40, 61) %}
+        <option
+          value="{{ i }}"
+          {% if i == 50 %}selected{% endif %}
+        >
+          {{ i }}枚貸し
+        </option>
+      {% endfor %}
+
+    </select>
+
+    <select id="exchange-medals-select">
+
+      {% for i in range(40, 61) %}
+        <option
+          value="{{ i }}"
+          {% if i == 50 %}selected{% endif %}
+        >
+          {{ i }}枚交換
+        </option>
+      {% endfor %}
+
+    </select>
+  </div>
+
 
   <button id="settings-save" type="button">
     保存
@@ -1389,6 +1423,10 @@ input[type="submit"]:active {
     </div>
 
   </div>
+
+  <!-- 20260621換金ギャップ -->
+  <input type="hidden" id="lend_medals" name="lend_medals" value="50">
+  <input type="hidden" id="exchange_medals" name="exchange_medals" value="50">
 
   <!-- ボタン -->
   <div class="form-buttons">
@@ -2473,7 +2511,9 @@ function onLockChange({
   // =====================================================
   // 20260531色変更
   // =====================================================
-
+  // =====================================================
+  // 20260621換金ギャップ
+  // =====================================================
   const settingsBtn = document.getElementById("settings-btn");
   const settingsPanel = document.getElementById("settings-panel");
   const settingsSave = document.getElementById("settings-save");
@@ -2483,6 +2523,21 @@ function onLockChange({
   const accentSelect = document.getElementById("accent-select");
   const rangeModeSelect = document.getElementById("range-mode-select");
   const machineSortSelect = document.getElementById("machine-sort-select");
+
+  const lendMedalsSelect = document.getElementById("lend-medals-select");
+  const exchangeMedalsSelect = document.getElementById("exchange-medals-select");
+  const lendMedalsHidden = document.getElementById("lend_medals");
+  const exchangeMedalsHidden = document.getElementById("exchange_medals");
+
+  function syncMedalsHidden() {
+    if (lendMedalsHidden && lendMedalsSelect) {
+      lendMedalsHidden.value = lendMedalsSelect.value;
+    }
+
+    if (exchangeMedalsHidden && exchangeMedalsSelect) {
+      exchangeMedalsHidden.value = exchangeMedalsSelect.value;
+    }
+  }
 
   function applyBgTheme(bg) {
     document.documentElement.style.setProperty("--bg-main", bg);
@@ -2514,6 +2569,12 @@ function onLockChange({
   const savedMachineSort =
     localStorage.getItem("machine_sort") || "default";
 
+  const savedLendMedals =
+    localStorage.getItem("lend_medals") || "50";
+
+  const savedExchangeMedals =
+    localStorage.getItem("exchange_medals") || "50";
+
   if (savedBg) {
     bgSelect.value = savedBg;
     applyBgTheme(savedBg);
@@ -2532,9 +2593,20 @@ function onLockChange({
   if (savedRangeMode && rangeModeSelect) {
     rangeModeSelect.value = savedRangeMode;
   }
+
   if (machineSortSelect) {
     machineSortSelect.value = savedMachineSort;
   }
+
+  if (lendMedalsSelect) {
+    lendMedalsSelect.value = savedLendMedals;
+  }
+
+  if (exchangeMedalsSelect) {
+    exchangeMedalsSelect.value = savedExchangeMedals;
+  }
+
+  syncMedalsHidden();
 
   // 歯車クリックで開閉
   settingsBtn.addEventListener("click", () => {
@@ -2609,8 +2681,25 @@ function onLockChange({
     });
   }
 
+  // 換金ギャップ：貸し枚数変更
+  if (lendMedalsSelect) {
+    lendMedalsSelect.addEventListener("change", () => {
+      localStorage.setItem("lend_medals", lendMedalsSelect.value);
+      syncMedalsHidden();
+    });
+  }
+
+  // 換金ギャップ：交換枚数変更
+  if (exchangeMedalsSelect) {
+    exchangeMedalsSelect.addEventListener("change", () => {
+      localStorage.setItem("exchange_medals", exchangeMedalsSelect.value);
+      syncMedalsHidden();
+    });
+  }
+
   // 保存ボタン
   settingsSave.addEventListener("click", () => {
+    syncMedalsHidden();
     settingsPanel.style.display = "none";
   });
 </script>
