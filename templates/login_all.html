@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="けんけんスロット分析ツール">
+  <meta property="og:description" content="実践データから機械割や期待値を自動計算できる分析ツールです。">
+  <meta property="og:url" content="{{ og_url }}">
+  <meta property="og:image" content="{{ og_image }}">
+
+  <!-- paidが出ないため -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <meta property="og:site_name" content="けんけんスロット分析ツール">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="けんけんスロット分析ツール">
+  <meta name="twitter:description" content="けんけんスロット分析ツール">
+  <meta name="twitter:image" content="{{ tw_image }}">  <!-- ★ ここだけ別URL -->
+
+  <!-- スマホの安全領域対応（user-scalable削除で拡大制御の問題回避） -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ログイン | けんけんスロット分析ツール</title>
+
+  <!-- Googleフォント読み込み -->
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================
+       カラートークン定義
+    ========================= */
+    :root{
+      --card-bg:#fff; --text:#1f2937; --muted:#6b7280;
+      --brand:#60a5fa; --danger:#ef4444; --success:#34d399; --ring:#6366f1;
+    }
+
+    /* 全要素の幅計算をborder-boxに統一（はみ出し防止） */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* =========================
+       ページ全体設定
+    ========================= */
+    html,body{
+      overflow-x: clip; /* 横スクロールバーを出さず右切れ感を軽減 */
+      max-width: 100vw;
+      background:
+        radial-gradient(1200px 600px at 80% -100px, rgba(96,165,250,.15), transparent) no-repeat,
+        radial-gradient(900px 500px at -200px 20%, rgba(52,211,153,.18), transparent) no-repeat,
+        #f8fafc;
+    }
+    body{
+      font-family:'M PLUS Rounded 1c',sans-serif;
+      color:var(--text);
+      min-height:100svh; /* 画面全高をカバー */
+      display:grid;
+      place-items:center; /* 中央寄せ */
+      padding:24px 16px;  /* 横余白で右切れ防止 */
+    }
+
+    /* =========================
+       カードコンテナ
+    ========================= */
+    .card{
+      width:100%;
+      max-width:480px; /* 最大幅480px */
+      background:var(--card-bg);
+      border-radius:16px;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      margin-inline:auto;
+    }
+    /* 背景装飾（左上） */
+    .card::before{
+      content:""; position:absolute; inset:-40% auto auto -40%;
+      width:240px; height:240px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(96,165,250,.25), transparent);
+      filter:blur(2px);
+      pointer-events:none;
+    }
+    /* 背景装飾（右下） */
+    .card::after{
+      content:""; position:absolute; inset:auto -30% -30% auto;
+      width:200px; height:200px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(52,211,153,.25), transparent);
+      filter:blur(1px);
+      pointer-events:none;
+    }
+
+    /* =========================
+       ヘッダー部分
+    ========================= */
+    .header{display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:8px;}
+    .header img{height:32px;}
+    .title{font-size:20px; font-weight:800; letter-spacing:.02em;}
+    .subtitle{margin:4px 0 0; text-align:center; color:var(--muted); font-size:13px;}
+
+    /* =========================
+       フォーム部分
+    ========================= */
+    form{margin-top:18px; display:grid; gap:12px;}
+    .label{font-weight:700; font-size:14px; margin-bottom:2px;}
+    .pin-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+    .pin-input{
+      width:56px; height:60px; text-align:center; font-size:26px; background:#fff;
+      border:1px solid #cbd5e1; border-radius:12px; outline:none;
+      transition:border-color .15s, box-shadow .15s, transform .1s;
+    }
+    .pin-input:focus{
+      border-color:var(--ring);
+      box-shadow:0 0 0 4px rgba(99,102,241,.15);
+      transform:translateY(-1px);
+    }
+    .hint{text-align:center; color:var(--muted); font-size:12px; margin-top:2px;}
+
+    /* =========================
+       ボタン行（横並び固定）
+    ========================= */
+    .actions{
+      display:flex;
+      gap:8px;             /* ボタン間隔 */
+      margin-top:10px;
+      flex-wrap: nowrap;   /* 常に横並び（スマホでも上下にならない） */
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 16px; border-radius:10px; border:none; cursor:pointer;
+      font-weight:800; letter-spacing:.02em; transition:transform .03s, box-shadow .15s, background .15s;
+      text-decoration:none; /* aタグでもボタン風に */
+    }
+    .btn:active{transform:translateY(1px);}
+    .btn--primary{background:var(--brand); color:#fff; box-shadow:0 6px 16px rgba(96,165,250,.35);}
+    .btn--primary:disabled{opacity:.6; cursor:not-allowed; box-shadow:none;}
+    .btn--ghost{background:#eef2ff; color:#1e293b; box-shadow:inset 0 0 0 1px #c7d2fe;}
+    .btn--ghost:hover{background:#e0e7ff;}
+
+    /* サイズ調整 */
+    .btn--large { flex: 2 1 auto; min-width: 140px; } /* 実行ボタン（大きめ） */
+    .btn--small { flex: 1 1 auto; min-width: 100px; } /* 無料ページへ（小さめ） */
+
+    /* =========================
+       フラッシュメッセージ
+    ========================= */
+    .flash{
+      margin-top:8px; padding:10px 12px; font-size:14px;
+      display:flex; align-items:center; gap:8px;
+      border-radius:10px;
+    }
+    .flash--error{background:#fef2f2; border:1px solid #fecaca; color:#991b1b;}
+    .flash--info{background:#eff6ff; border:1px solid #bfdbfe; color:#1e3a8a;}
+
+    /* =========================
+       フッター
+    ========================= */
+    .foot{margin-top:14px; text-align:center; font-size:12px; color:var(--muted);}
+
+    /* =========================
+       小画面用レスポンシブ調整
+    ========================= */
+    @media (max-width: 360px) {
+      .title { font-size: 18px; }
+      .pin-input{ width:48px; height:52px; font-size:22px; }
+      .btn{ padding:10px 14px; }
+      body{ padding:24px 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card" role="main" aria-labelledby="loginTitle">
+    <!-- ヘッダー -->
+    <div class="header">
+      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+      <div class="title" id="loginTitle">ログイン</div>
+      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+    </div>
+    <p class="subtitle">
+      有料ページに入るには<br>
+      6桁のPINを入力してください。
+    </p>
+
+    <!-- flashメッセージ -->
+    {% with msgs = get_flashed_messages() %}
+      {% if msgs %}
+        <div class="flash flash--error" role="status" aria-live="polite">
+          {{ msgs|join(' / ') }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- フォーム（4桁PIN） -->
+    <form method="POST" action="">
+      <label class="label" for="pin1">PIN（6桁の数字）</label>
+
+      <div class="pin-row" id="pinRow">
+        <input class="pin-input" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" />
+        <input class="pin-input" id="pin2" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin3" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin4" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin5" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <input class="pin-input" id="pin6" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+      </div>
+
+      <!-- Flask用のhiddenフィールド（4桁結合） -->
+      <input type="hidden" name="password" id="pinFull" value="" />
+      <div class="hint">
+        ※ 数字以外は入力できません。<br>
+        削除キーで1つ前に戻れます。
+      </div>
+
+      <!-- ボタン：左が無料ページへ（小）、右が実行（大） -->
+      <div class="actions">
+        <button type="submit" class="btn btn--primary btn--large" id="submitBtn" disabled>実行</button>
+      </div>
+    </form>
+
+    <div class="foot">
+      誤入力が続くと一時ロックされます。<br>
+      時間をおいてお試しください。
+    </div>
+
+  </main>
+
+  <script>
+    // =========================
+    // PIN入力の管理
+    // =========================
+    const inputs = Array.from(document.querySelectorAll('.pin-input'));
+    const pinFull = document.getElementById('pinFull');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 各入力イベント設定
+    inputs.forEach((el, idx) => {
+      el.addEventListener('input', (e) => {
+        // 数字以外を削除＆1文字制限
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0,1);
+        // 入力があれば次の欄へ
+        if (e.target.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+        updateHiddenAndButton();
+      });
+      // バックスペースで前に戻る
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus();
+      });
+      el.addEventListener('focus', (e) => e.target.select());
+    });
+
+    // hiddenフィールド更新＆実行ボタン有効化
+    function updateHiddenAndButton(){
+      const pin = inputs.map(i => i.value || '').join('');
+      pinFull.value = pin;
+      submitBtn.disabled = (pin.length !== 6);
+    }
+
+    // 4桁まとめてペースト対応
+    document.getElementById('pinRow').addEventListener('paste', (e) => {
+      const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+      const digits = text.replace(/\D/g, '').slice(0,6).split('');
+      inputs.forEach((el, i) => el.value = digits[i] || '');
+      updateHiddenAndButton();
+      inputs[(digits.length >= 6 ? 5 : digits.length)].focus();
+      e.preventDefault();
+    });
+
+    // 初期フォーカス設定
+    window.addEventListener('DOMContentLoaded', () => {
+      inputs[0].focus();
+      updateHiddenAndButton();
+    });
+  </script>
+</body>
+</html>

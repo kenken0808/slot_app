@@ -1587,6 +1587,7 @@ def apply_free_custom_label_override(
     new_settings["labels"] = labels
     return new_settings
 
+
 # =========================================================
 # ツールごとのパスワード（ハッシュ化）
 # =========================================================
@@ -1659,10 +1660,16 @@ TOOL_PASSWORDS = {
     }
 }
 
+# =====================================================================
+# 20260623新ツール用パスワード
+# =====================================================================
+NEW_TOOL_PASSWORD = "123456"
+
 __all__ = [
     "machine_configs",
     "machine_settings",
     "FREE_CUSTOM_LABEL",
     "apply_free_custom_label_override",
-    "TOOL_PASSWORDS"
+    "TOOL_PASSWORDS",
+    "NEW_TOOL_PASSWORD"
 ]

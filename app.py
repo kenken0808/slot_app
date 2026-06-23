@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, abort
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, abort, jsonify
 import pandas as pd
 from werkzeug.security import check_password_hash
 from config.old_config import (
@@ -19,6 +19,7 @@ from datetime import timedelta
 import time as _time
 from config import new_config
 from config import memo_config
+from config.new_config import NEW_TOOL_PASSWORD
 
 
 # =====================================================================
@@ -45,6 +46,15 @@ def _access_key(machine_key: str, plan_type: str) -> str:
 
 def is_authorized(machine_key: str, plan_type: str) -> bool:
     return session.get("tool_access", {}).get(_access_key(machine_key, plan_type), False)
+
+
+# =====================================================================
+# 20260623新ツール用パスワード
+# =====================================================================
+def is_all_authorized() -> bool:
+    return session.get("all_access", False)
+
+
 
 def _tries_key(key: str) -> str:
     return f"tries:{key}"
@@ -140,6 +150,40 @@ def tool_login(machine_key, plan_type):
                                og_url=request.url,
                                og_image=og_image,
                                tw_image=tw_image)
+
+
+# =====================================================================
+# 20260623新ツール用パスワード
+# =====================================================================
+@app.route("/all/login", methods=["GET", "POST"])
+def all_login():
+    key = "all"
+
+    unlock_at = is_locked(key)
+    if unlock_at:
+        remain = int(unlock_at - time.time())
+        flash(f"一時的にロック中です。あと {remain} 秒後に再試行できます。")
+        return render_template("login_all.html")
+
+    if request.method == "GET":
+        return render_template("login_all.html")
+
+    input_pw = (request.form.get("password") or "").strip()
+
+    if not re.fullmatch(r"\d{6}", input_pw):
+        flash("6桁の数字を入力してください。")
+        record_fail(key)
+        return render_template("login_all.html")
+
+    if input_pw == NEW_TOOL_PASSWORD:
+        session["all_access"] = True
+        record_success(key)
+        return redirect(url_for("all_tool"))
+
+    record_fail(key)
+    flash("パスワードが違います。")
+    return render_template("login_all.html")
+
 
 # =====================================================================
 # OGP / Twitter Card 取得（LRU+TTL）
@@ -794,6 +838,13 @@ def memo(machine):
 
 @app.route("/all", methods=["GET", "POST"])
 def all_tool():
+    # =====================================================================
+    # 20260623新ツール用パスワード
+    # =====================================================================
+    if not is_all_authorized():
+        return redirect(url_for("all_login"))
+
+
     MACHINE_CONFIGS = new_config.machine_configs
 
     # =========================
