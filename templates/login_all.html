@@ -105,9 +105,9 @@
     ========================= */
     form{margin-top:18px; display:grid; gap:12px;}
     .label{font-weight:700; font-size:14px; margin-bottom:2px;}
-    .pin-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+    .pin-row{display:flex; gap:4px; justify-content:center; flex-wrap:nowrap;}
     .pin-input{
-      width:56px; height:60px; text-align:center; font-size:26px; background:#fff;
+      width:42px; height:50px; text-align:center; font-size:22px; background:#fff;
       border:1px solid #cbd5e1; border-radius:12px; outline:none;
       transition:border-color .15s, box-shadow .15s, transform .1s;
     }
@@ -180,8 +180,7 @@
       <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
     </div>
     <p class="subtitle">
-      有料ページに入るには<br>
-      6桁のPINを入力してください。
+      パスワードを入力してください。
     </p>
 
     <!-- flashメッセージ -->
@@ -195,7 +194,7 @@
 
     <!-- フォーム（4桁PIN） -->
     <form method="POST" action="">
-      <label class="label" for="pin1">PIN（6桁の数字）</label>
+      <label class="label" for="pin1">パスワード</label>
 
       <div class="pin-row" id="pinRow">
         <input class="pin-input" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" />
@@ -208,10 +207,6 @@
 
       <!-- Flask用のhiddenフィールド（4桁結合） -->
       <input type="hidden" name="password" id="pinFull" value="" />
-      <div class="hint">
-        ※ 数字以外は入力できません。<br>
-        削除キーで1つ前に戻れます。
-      </div>
 
       <!-- ボタン：左が無料ページへ（小）、右が実行（大） -->
       <div class="actions">
