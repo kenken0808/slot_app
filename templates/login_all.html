@@ -66,28 +66,44 @@
     ========================= */
     .card{
       width:100%;
-      max-width:480px; /* 最大幅480px */
+      max-width:480px;
       background:var(--card-bg);
       border-radius:16px;
       box-shadow:0 12px 30px rgba(0,0,0,.08);
       padding:24px;
       position:relative;
       overflow:hidden;
+      isolation:isolate;
       margin-inline:auto;
     }
     /* 背景装飾（左上） */
     .card::before{
-      content:""; position:absolute; inset:-40% auto auto -40%;
-      width:240px; height:240px; border-radius:50%;
-      background:radial-gradient(closest-side, rgba(96,165,250,.25), transparent);
+      content:"";
+      position:absolute;
+      top:8px;
+      left:8px;
+
+      width:180px;
+      height:180px;
+      border-radius:50%;
+
+      background:radial-gradient(closest-side, rgba(96,165,250,.22), transparent);
       filter:blur(2px);
       pointer-events:none;
     }
+
     /* 背景装飾（右下） */
     .card::after{
-      content:""; position:absolute; inset:auto -30% -30% auto;
-      width:200px; height:200px; border-radius:50%;
-      background:radial-gradient(closest-side, rgba(52,211,153,.25), transparent);
+      content:"";
+      position:absolute;
+      right:8px;
+      bottom:8px;
+
+      width:160px;
+      height:160px;
+      border-radius:50%;
+
+      background:radial-gradient(closest-side, rgba(52,211,153,.22), transparent);
       filter:blur(1px);
       pointer-events:none;
     }
