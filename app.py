@@ -868,9 +868,14 @@ def all_tool():
     if selected_machine in MACHINE_CONFIGS:
         cfg = MACHINE_CONFIGS[selected_machine]
 
-        display_name = cfg.get("display_name", "")   # ←ここ重要
+        display_name = cfg.get("display_name", "")
         settings = cfg.get("settings", {})
-        links = cfg.get("links", [])
+
+        machine_links = cfg.get("links") or []
+        common_links = getattr(new_config, "COMMON_LINKS", []) or []
+
+        links = machine_links + common_links
+
         help_texts = settings.get("help_texts", {})
 
     # =========================
@@ -887,7 +892,11 @@ def all_tool():
 
         if preview:
             preview["og_image_local"] = item.get("og_image")
-            preview["display_title"] = preview.get("title") or f"{display_name}｜攻略メモ"
+            preview["display_title"] = (
+                item.get("title")
+                or preview.get("title")
+                or f"{display_name}｜攻略メモ"
+            )
             link_previews.append(preview)
 
     # =========================
@@ -1165,6 +1174,19 @@ def all_tool():
     # =========================
     # 計算
     # =========================
+    # =========================
+    # 計算
+    # =========================
+    try:
+        lend_medals = float(request.form.get("lend_medals", 50))
+    except:
+        lend_medals = 50
+
+    try:
+        exchange_medals = float(request.form.get("exchange_medals", 50))
+    except:
+        exchange_medals = 50
+
     result = None
     error_msg = None
 
@@ -1197,14 +1219,6 @@ def all_tool():
 
             hatsu_atari = max(avg_reg_games - input_game, 0)
 
-            try:
-                lend_medals = float(request.form.get("lend_medals", 50))
-            except:
-                lend_medals = 50
-            try:
-                exchange_medals = float(request.form.get("exchange_medals", 50))
-            except:
-                exchange_medals = 50
             avg_diff = (
                 (avg_at_coins + avg_reg_coins) / exchange_medals * 50
                 - (hatsu_atari * 50 / settings.get("coin_moti", 1)) / lend_medals * 50

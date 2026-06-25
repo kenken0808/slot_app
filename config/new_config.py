@@ -3,6 +3,22 @@ from typing import Dict, Any
 from werkzeug.security import generate_password_hash
 
 # =========================================================
+# 共通リンク
+# =========================================================
+COMMON_LINKS = [
+    {
+        "title": "沖ドキ！グラフ生成",
+        "og_image": "icon/okidoki_ap1.jpg",
+        "link_url": "/okidoki/tools"
+    },
+    {
+        "title": "東京リベンジャーズおもちゃ",
+        "og_image": "icon/toreve_ap1.jpg",
+        "link_url": "/toreve/tools"
+    },
+]
+
+# =========================================================
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
@@ -14,10 +30,6 @@ machine_configs = {
             {
                 "og_image": "icon/birdiewing_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/naddb7a7181b3"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/birdiewing"
             }
         ],
         "settings": {
@@ -52,10 +64,6 @@ machine_configs = {
             {
                 "og_image": "icon/sengokuotome5_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nc155c9bc2dd7"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/sengokuotome5"
             }
         ],
         "settings": {
@@ -89,10 +97,6 @@ machine_configs = {
             {
                 "og_image": "icon/taktopdestiny_v4.jpg",
                 "link_url": "https://note.com/kenslodata/n/n105f458ebc79"
-            },
-            {
-                "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/taktopdestiny"
             }
         ],
         "settings": {
@@ -130,10 +134,6 @@ machine_configs = {
             {
                 "og_image": "icon/bigdream_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/na9b062ac77f5"
-            },
-            {
-                "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/bigdream"
             }
         ],
         "settings": {
@@ -170,10 +170,6 @@ machine_configs = {
             {
                 "og_image": "icon/residentevilre3_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/n0d5efbc741df"
-            },
-            {
-                "og_image": "icon/ogp_v4.jpg",
-                "link_url": "/memo/residentevilre3"
             }
         ],
         "settings": {
@@ -220,10 +216,6 @@ machine_configs = {
             {
                 "og_image": "icon/unicorn2_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfece014bf08a"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/unicorn2"
             }
         ],
         "settings": {
@@ -270,10 +262,6 @@ machine_configs = {
             {
                 "og_image": "icon/milliongod_v2.jpg",
                 "link_url": "https://note.com/kenslodata/n/n4c8095f6f816"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/milliongod"
             }
         ],
         "settings": {
@@ -314,10 +302,6 @@ machine_configs = {
             {
                 "og_image": "icon/shinuchiyoshimune_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n25193f7ab63d"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/shinuchiyoshimune"
             }
         ],
         "settings": {
@@ -356,10 +340,6 @@ machine_configs = {
             {
                 "og_image": "icon/kabaneriunato_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n5fd6c389a0d5"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/kabaneriunato"
             }
         ],
         "settings": {
@@ -395,10 +375,6 @@ machine_configs = {
             {
                 "og_image": "icon/hanmabaki_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nd125e7fe7554"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/hanmabaki"
             }
         ],
         "settings": {
@@ -439,10 +415,6 @@ machine_configs = {
             {
                 "og_image": "icon/goblinslayer2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n2cb70daf971e"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/goblinslayer2"
             }
         ],
         "settings": {
@@ -477,10 +449,6 @@ machine_configs = {
             {
                 "og_image": "icon/ghostintheshell_v3.jpg",
                 "link_url": "https://note.com/kenslodata/n/nf71290e3a05e"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/ghostintheshell"
             }
         ],
         "settings": {
@@ -521,10 +489,6 @@ machine_configs = {
             {
                 "og_image": "icon/fireforce2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n6e8cc7770e25"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/fireforce2"
             }
         ],
         "settings": {
@@ -568,10 +532,6 @@ machine_configs = {
             {
                 "og_image": "icon/tekken6_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n483bc6255996"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/tekken6"
             }
         ],
         "settings": {
@@ -612,10 +572,6 @@ machine_configs = {
             {
                 "og_image": "icon/hokutotensei2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/ncb695f0b4fb5"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/hokutotensei2"
             }
         ],
         "settings": {
@@ -649,10 +605,6 @@ machine_configs = {
             {
                 "og_image": "icon/mushokutensei_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/ne3d934a762e9"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/mushokutensei"
             }
         ],
         "settings": {
@@ -695,10 +647,6 @@ machine_configs = {
             {
                 "og_image": "icon/hihoden_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n20a891c1e4b1"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/hihoden"
             }
         ],
         "settings": {
@@ -733,10 +681,6 @@ machine_configs = {
             {
                 "og_image": "icon/okidokiduoencore_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n726b1b9be413"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/okidokiduoencore"
             }
         ],
         "settings": {
@@ -775,10 +719,6 @@ machine_configs = {
             {
                 "og_image": "icon/prismnana_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n10d7c2c98ace"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/prismnana"
             }
         ],
         "settings": {
@@ -813,10 +753,6 @@ machine_configs = {
             {
                 "og_image": "icon/logh_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n33ab406dc7e6"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/logh"
             }
         ],
         "settings": {
@@ -855,10 +791,6 @@ machine_configs = {
             {
                 "og_image": "icon/bakemonogatari_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nc7c8e2a4ea46"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/bakemonogatari"
             }
         ],
         "settings": {
@@ -892,10 +824,6 @@ machine_configs = {
             {
                 "og_image": "icon/burningexpress_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n2648051423d9"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/burningexpress"
             }
         ],
         "settings": {
@@ -930,10 +858,6 @@ machine_configs = {
             {
                 "og_image": "icon/neoplanet_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nfbb1961157e5"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/neoplanet"
             }
         ],
         "settings": {
@@ -967,10 +891,6 @@ machine_configs = {
             {
                 "og_image": "icon/zettaishogeki4_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n1a880ae74aff"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/zettaishogeki4"
             }
         ],
         "settings": {
@@ -1004,10 +924,6 @@ machine_configs = {
             {
                 "og_image": "icon/railgun2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n471a3dc95649"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/railgun2"
             }
         ],
         "settings": {
@@ -1045,10 +961,6 @@ machine_configs = {
             {
                 "og_image": "icon/valvrave2_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nf540daedf4b3"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/valvrave2"
             }
         ],
         "settings": {
@@ -1090,10 +1002,6 @@ machine_configs = {
             {
                 "og_image": "icon/zenigata5_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n14c453aae356"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/zenigata5"
             }
         ],
         "settings": {
@@ -1127,10 +1035,6 @@ machine_configs = {
             {
                 "og_image": "icon/onimusha3_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n592917017aae"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/onimusha3"
             }
         ],
         "settings": {
@@ -1168,10 +1072,6 @@ machine_configs = {
             {
                 "og_image": "icon/sakitopbattle_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/nda1d15f56223"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/sakitopbattle"
             }
         ],
         "settings": {
@@ -1215,10 +1115,6 @@ machine_configs = {
             {
                 "og_image": "icon/reincarnatedasasword_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n9f437b3ce766"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/reincarnatedasasword"
             }
         ],
         "settings": {
@@ -1259,10 +1155,6 @@ machine_configs = {
             {
                 "og_image": "icon/azurlanetheanimetion_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n38b6be48a9da"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/azurlanetheanimetion"
             }
         ],
         "settings": {
@@ -1305,10 +1197,6 @@ machine_configs = {
             {
                 "og_image": "icon/darlinginthefranxx_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n6139b4291e69"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/darlinginthefranxx"
             }
         ],
         "settings": {
@@ -1373,10 +1261,6 @@ machine_configs = {
             {
                 "og_image": "icon/izabantyo_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n84de40377ba4"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/izabantyo"
             }
         ],
         "settings": {
@@ -1417,10 +1301,6 @@ machine_configs = {
             {
                 "og_image": "icon/tokyoghoul_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n3c3178154117"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/tokyoghoul"
             }
         ],
         "settings": {
@@ -1473,10 +1353,6 @@ machine_configs = {
             {
                 "og_image": "icon/monkeyturn5_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/na2bf9d6045a8"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/monkeyturn5"
             }
         ],
         "settings": {
@@ -1514,10 +1390,6 @@ machine_configs = {
             {
                 "og_image": "icon/hokuto_v1.jpg",
                 "link_url": "https://note.com/kenslodata/n/n990e9f85b768"
-            },
-            {
-                "og_image": "icon/ogp_v4xxx.jpg",
-                "link_url": "/memo/hokuto"
             }
         ],
         # =========================
