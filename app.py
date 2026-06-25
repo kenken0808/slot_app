@@ -1060,7 +1060,8 @@ def all_tool():
             machines=MACHINE_CONFIGS,
             machine_configs=MACHINE_CONFIGS,
             link_previews=link_previews,
-            help_texts=help_texts
+            help_texts=help_texts,
+            calc_conditions=calc_conditions
         )
 
     # =========================
@@ -1136,7 +1137,8 @@ def all_tool():
             machines=MACHINE_CONFIGS,
             machine_configs=MACHINE_CONFIGS,
             link_previews=link_previews,
-            help_texts=help_texts
+            help_texts=help_texts,
+            calc_conditions=calc_conditions
         )
 
     # =========================
@@ -1223,6 +1225,92 @@ def all_tool():
             }
 
     # =========================
+    # 算出条件
+    # =========================
+    calc_conditions = [
+        ("機種名", display_name),
+        ("打ち切り条件", selected_mode),
+        ("天井条件", selected_time),
+    ]
+
+    if "through" not in locked_ui_fields:
+        calc_conditions.append(
+            (labels["through"], selected_through)
+        )
+
+    calc_conditions.append(
+        (labels["game"], f"{input_game}G")
+    )
+
+
+    # =========================
+    # 前回系：初期値から変更された場合のみ表示
+    # =========================
+
+    at_gap_changed = (
+        selected_at_gap not in ("不問", "", None)
+    )
+
+    if (
+        at_gap_changed
+        and "at_gap" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["at_gap"], f"{selected_at_gap}G")
+        )
+
+    prev_game_changed = (
+        selected_prev_game_min != get_setting_min(prev_game)
+        or selected_prev_game_max != get_setting_max(prev_game)
+    )
+
+    prev_coin_changed = (
+        selected_prev_coin_min != get_setting_min(prev_coin)
+        or selected_prev_coin_max != get_setting_max(prev_coin)
+    )
+
+    prev_diff_changed = (
+        selected_prev_diff_min != get_setting_min(prev_diff)
+        or selected_prev_diff_max != get_setting_max(prev_diff)
+    )
+
+    if (
+        prev_game_changed
+        and "prev_game_min" not in locked_ui_fields
+        and "prev_game_max" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["prev_game"], f"{selected_prev_game_min}～{selected_prev_game_max}G")
+        )
+
+    if (
+        prev_coin_changed
+        and "prev_coin_min" not in locked_ui_fields
+        and "prev_coin_max" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["prev_coin"], f"{selected_prev_coin_min}～{selected_prev_coin_max}枚")
+        )
+
+    if (
+        prev_diff_changed
+        and "prev_diff_min" not in locked_ui_fields
+        and "prev_diff_max" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["prev_diff"], f"{selected_prev_diff_min}～{selected_prev_diff_max}枚")
+        )
+
+    if "custom_condition" not in locked_ui_fields:
+        calc_conditions.append(
+            (labels["custom_condition"], selected_custom_condition)
+        )
+
+    calc_conditions.append(
+        ("換金ギャップ", f"{int(lend_medals)}枚貸し／{int(exchange_medals)}枚交換")
+    )
+
+    # =========================
     # render（★全変数必ず存在）
     # =========================
     return render_template(
@@ -1276,7 +1364,8 @@ def all_tool():
         machines=MACHINE_CONFIGS,
         machine_configs=MACHINE_CONFIGS,
         link_previews=link_previews,
-        help_texts=help_texts
+        help_texts=help_texts,
+        calc_conditions=calc_conditions
     )
 
 # ================================
