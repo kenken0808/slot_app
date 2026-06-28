@@ -22,6 +22,39 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "darkhaibi": {
+        "display_name": "L ダークハイビ",
+        "file_key": "darkhaibi",
+        "search_word": "だーくはいび",
+        "links": [
+            {
+                "og_image": "icon/darkhaibi_v1.jpg",
+                "link_url": ""
+            }
+        ],
+        "settings": {
+            "exclude_games": 1,
+            "coin_moti": 30.0,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 4000, 50, 4000),
+            "prev_game": (0, 4000, 50, 4000),
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    ※999Gを超えた場合（ペナルティ時は天井が1G伸びる）は「ダーク準備」滞在が濃厚。
+                    不問：999G
+                    """
+            }
+        }
+    },
     "birdiewing": {
         "display_name": "L BIRDIE WING",
         "file_key": "birdiewing",
@@ -288,12 +321,78 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# 虚構推理
-# =========================================================
-# =========================================================
-# アクダマドライブ
-# =========================================================
+    "inspectre": {
+        "display_name": "L 虚構推理",
+        "file_key": "inspectre",
+        "search_word": "きょこうすいり",
+        "links": [
+            {
+                "og_image": "icon/inspectre_v1.jpg",
+                "link_url": ""
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 4, 1,4),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【虚構真偽間天井】
+                    恩恵はボーナス当選 + 雪女ストック1個以上。
+                    朝イチ　　：300G or 700G
+                    朝イチ以外：1000G
+                    """
+            }
+        }
+    },
+    "akudamadrive": {
+        "display_name": "L アクダマドライブ",
+        "file_key": "akudamadrive",
+        "search_word": "あくだまどらいぶ",
+        "links": [
+            {
+                "og_image": "icon/akudamadrive_v1.jpg",
+                "link_url": ""
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1000, 50, 1000,0),
+            "through": (0, 6, 1,6),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_game": (0, 3000, 50, 3000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    不問：967G
+                    745G以上ハマりかつAT非突入：589G
+                    上位後：589G
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    恩恵はエピソードボーナス当選。
+                    不問：6スルー後7回目
+                    """
+            }
+        }
+    },
     "shinuchiyoshimune": {
         "display_name": "L 真打吉宗",
         "file_key": "shinuchiyoshimune",
@@ -1286,7 +1385,39 @@ machine_configs = {
             }
         }
     },
-
+    "toloveru87": {
+        "display_name": "L ToLOVEるダークネス トランスver.8.7",
+        "file_key": "toloveru87",
+        "search_word": "とらぶるだーくねすとらんすばーじょんはってんなな",
+        "links": [
+            {
+                "og_image": "icon/toloveru87_v1.jpg",
+                "link_url": ""
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.0,
+            "mode_options": ["ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はST当選。
+                    朝イチ　　：650G
+                    朝イチ以外：999G
+                    """
+            }
+        }
+    },
 
 
 
