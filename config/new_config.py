@@ -238,9 +238,44 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# アニマルドッチ
-# =========================================================
+    "animalslotdocchi": {
+        "display_name": "L アニマルスロット ドッチ",
+        "file_key": "animalslotdocchi",
+        "search_word": "あにまるすろっとどっち",
+        "links": [
+            {
+                "og_image": "icon/animalslotdocchi_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nf7013991582d"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["ボーナス", "JB"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,10),
+            "at_gap": (0, 2600, 50, 2600),
+            "prev_game": (0, 2600, 50, 2600), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はビッグボーナス当選。
+                    朝イチ　：499G
+                    ビッグ後：999G
+                    バケ後　：499G
+                    
+                    【ジャングルボーナス間天井】
+                    恩恵はビッグボーナス当選 + 金チケット3枚 + ジャングルボーナス獲得。
+                    不問：2500G
+                    """
+            }
+        }
+    },
     "unicorn2": {
         "display_name": "L ガンダムユニコーン2",
         "file_key": "unicorn2",
@@ -1090,9 +1125,39 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# バベル3000
-# =========================================================
+    "babel": {
+        "display_name": "L バベル",
+        "file_key": "babel",
+        "search_word": "ばべる",
+        "links": [
+            {
+                "og_image": "icon/babel_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n9edc151b54fc"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.9,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1300, 50, 1300,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_game": (0, 3000, 50, 3000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：900G
+                    朝イチ以外：1280G
+                    """
+            }
+        }
+    },
     "zenigata5": {
         "display_name": "L 主役は銭形5",
         "file_key": "zenigata5",
@@ -1160,9 +1225,38 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# なめ猫
-# =========================================================
+    "nameneko": {
+        "display_name": "S なめ猫 液晶ないけどなめんじゃねぇ",
+        "file_key": "nameneko",
+        "search_word": "なめねこえきしょうないけどなめんじゃねぇ",
+        "links": [
+            {
+                "og_image": "icon/nameneko_v1.jpg",
+                "link_url": ""
+            }
+        ],
+        "settings": {
+            "exclude_games": 10,
+            "coin_moti": 36.0,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 650, 50, 650,0),
+            "through": (0, 10, 1,10),
+            "at_gap": (0, 2000, 50, 2000),
+            "prev_game": (0, 2000, 50, 2000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    不問：600G
+                    """
+            }
+        }
+    },
     "sakitopbattle": {
         "display_name": "L 咲-Saki-頂上決戦",
         "file_key": "sakitopbattle",
@@ -1339,19 +1433,8 @@ machine_configs = {
 # わたしの幸せな結婚5000
 # =========================================================
 
-# =========================================================
-# 絶対衝撃
-# =========================================================
 
-# =========================================================
-# ULTRAMAN4000
-# =========================================================
-# =========================================================
-# ギルティクラウン7000
-# =========================================================
-# =========================================================
-# デビルメイクライ10000
-# =========================================================
+
     "izabantyo": {
         "display_name": "L いざ！番長",
         "file_key": "izabantyo",
@@ -1418,12 +1501,44 @@ machine_configs = {
             }
         }
     },
-
-
-
-# =========================================================
-# マギアレコード2025年4月7日
-# =========================================================
+    "magiarecord": {
+        "display_name": "L マギアレコード",
+        "file_key": "magiarecord",
+        "search_word": "まぎあれこーど",
+        "links": [
+            {
+                "og_image": "icon/magiarecord_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nf73890fb871e"
+            }
+        ],
+        "settings": {
+            "exclude_games": 60,
+            "coin_moti": 32.6,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 800, 50, 800,0),
+            "through": (0, 10, 1,10),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_game": (0, 3000, 50, 3000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：600～699pt
+                    朝イチ以外：950pt
+                    """,
+                "through": """
+                    【ボーナススルー天井】
+                    ボーナス8スルー以降、穢れ蓄積のptが増えるため、ほぼ10回目以内にAT当選。
+                    ※正確にはスルー天井ではなく穢れ。
+                    """
+            }
+        }
+    },
     "tokyoghoul": {
         "display_name": "L 東京喰種",
         "file_key": "tokyoghoul",
@@ -1461,21 +1576,109 @@ machine_configs = {
             }
         }
     },
-# =========================================================
-# ブラックジャック2025年2月3日
-# =========================================================
-# =========================================================
-# かぐや様2024年9月2日
-# =========================================================
-# =========================================================
-# ゴッドイーター2024年7月22日
-# =========================================================
-# =========================================================
-# ブラック2024年7月1日
-# =========================================================
-# =========================================================
-# 防御力に極振り2024年6月3日
-# =========================================================
+    "kaguyasama": {
+        "display_name": "L かぐや様は告らせたい",
+        "file_key": "kaguyasama",
+        "search_word": "かぐやさまはこくらせたい",
+        "links": [
+            {
+                "og_image": "icon/kaguyasama_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n463f3b370c53"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["CZ", "ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 750, 50, 750,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1200, 50, 1200),
+            "prev_game": (0, 1200, 50, 1200), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はビッグボーナス以上当選。
+                    朝イチ　：800G
+                    ビッグ後：1100G
+                    バケ後　：900G
+                    """
+            }
+        }
+    },
+    "godeater": {
+        "display_name": "L ゴッドイーター リザレクション",
+        "file_key": "godeater",
+        "search_word": "ごっどいーたーりざれくしょん",
+        "links": [
+            {
+                "og_image": "icon/godeater_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/ncbba8cff88be"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_game": (0, 1050, 50, 1050), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はST当選。
+                    朝イチ　　：600G
+                    駆け抜け後：600G
+                    下位後　　：1000G
+                    上位後　　：600G
+                    逆鱗ハンニバル敗北後：100G
+                    """
+            }
+        }
+    },
+    "okidokiblack": {
+        "display_name": "S 沖ドキ！BLACK",
+        "file_key": "okidokiblack",
+        "search_word": "おきどきぶらっく",
+        "links": [
+            {
+                "og_image": "icon/okidokiblack_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nc1436b4eb624"
+            }
+        ],
+        "settings": {
+            "exclude_games": 1,
+            "coin_moti": 30.0,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1,10),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_game": (0, 3000, 50, 3000), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    ※非有利区間から通常A or 通常Bに移行した際は、25%で399Gに短縮。
+                    不問：999G
+                    """
+            }
+        }
+    },
     "monkeyturn5": {
         "display_name": "L モンキーターンV",
         "file_key": "monkeyturn5",
@@ -1506,6 +1709,44 @@ machine_configs = {
                     朝イチ：495G or 4周期
                     下位後：795G or 6周期
                     上位後：495G or 4周期
+                    """
+            }
+        }
+    },
+    "karakuricircus": {
+        "display_name": "L からくりサーカス",
+        "file_key": "karakuricircus",
+        "search_word": "からくりさーかす",
+        "links": [
+            {
+                "og_image": "icon/karakuricircus_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n798e9145b0d0"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.9,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1150, 50, 1150,0),
+            "through": (0, 4, 1,4),
+            "at_gap": (0, 2550, 50, 2550),
+            "prev_game": (0, 2550, 50, 2550), 
+            "prev_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ以上当選。
+                    不問：1200G
+                    前回液晶1100G以上：300G
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵はAT当選 + 勝利確定激情ジャッジ1回獲得。
+                    ※CZ「幕間チャンス」はスルー回数に含まれない。
                     """
             }
         }
@@ -1550,12 +1791,6 @@ machine_configs = {
             }
         }
     }
-# =========================================================
-# からくり2023年7月3日
-# =========================================================
-# =========================================================
-# 北斗の拳2023年4月3日
-# =========================================================
 # =========================================================
 # GOLD2022年12月19日
 # =========================================================

@@ -736,6 +736,7 @@ def generate_labels_from_mode_options(mode_options):
         "ST": "ST",
         "CZ": "CZ",
         "天国": "天国",
+        "JB": "JB",
     }
 
     # 🔥order完全削除 → mode_optionsをそのまま使う
@@ -795,6 +796,7 @@ def mode_to_csv_suffix(mode: str) -> str:
         "CZ": "cz",
         "ST": "st",
         "天国": "at",
+        "JB": "at",
     }
     return mapping.get(mode, "rb")
 
