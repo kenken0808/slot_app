@@ -717,10 +717,12 @@ def filter_dataframe_v2(df, form, settings):
     # =========================
     # ゲーム数
     # =========================
-    # try:
-    #     game = int(form.get("game", 0))
-    # except:
-    #     game = 0
+    game_value = form.get("game", "不問")
+
+    try:
+        game = 0 if game_value in ("不問", "", None) else int(game_value)
+    except:
+        game = 0
 
     exclude_games = settings.get("exclude_games", 0)
 
@@ -1041,7 +1043,7 @@ def all_tool():
             time_options=time_options,
             input_game=0,
 
-            through_options=build_range_options(through),
+            through_options=["不問"] + build_range_options(through),
             at_gap_options=build_range_options(at_gap),
             prev_game_options=build_range_options(prev_game),
             prev_coin_options=build_range_options(prev_coin),
@@ -1117,7 +1119,7 @@ def all_tool():
             time_options=time_options,
             game_options=game_options,
 
-            through_options=build_range_options(through),
+            through_options=["不問"] + build_range_options(through),
             at_gap_options=build_range_options(at_gap),
             prev_game_options=build_range_options(prev_game),
             prev_coin_options=build_range_options(prev_coin),
@@ -1152,6 +1154,7 @@ def all_tool():
             calc_conditions=calc_conditions
         )
 
+    
     # =========================
     # form
     # =========================
@@ -1243,38 +1246,39 @@ def all_tool():
     # =========================
     # 算出条件
     # =========================
+    def with_unit(value, unit):
+        if value in ("不問", "", None):
+            return "不問"
+        return f"{value}{unit}"
+
+    def should_show_label(label):
+        return not str(label).startswith("***")
+
     calc_conditions = [
         ("機種名", display_name),
         ("打ち切り条件", selected_mode),
         ("天井条件", selected_time),
     ]
 
-    if "through" not in locked_ui_fields:
+    # 基本条件：ロック問わず表示
+    # ただしラベル先頭が *** の場合は非表示
+    if should_show_label(labels["through"]):
         calc_conditions.append(
-            (labels["through"], selected_through)
+            (labels["through"], with_unit(selected_through, "回"))
         )
 
     calc_conditions.append(
-        (labels["game"], f"{input_game}G")
+        (labels["game"], with_unit(input_game, "G"))
     )
 
-
-    # =========================
-    # 前回系：初期値から変更された場合のみ表示
-    # =========================
-
-    at_gap_changed = (
-        selected_at_gap not in ("不問", "", None)
-    )
-
-    if (
-        at_gap_changed
-        and "at_gap" not in locked_ui_fields
-    ):
+    if should_show_label(labels["at_gap"]):
         calc_conditions.append(
-            (labels["at_gap"], f"{selected_at_gap}G")
+            (labels["at_gap"], with_unit(selected_at_gap, "G"))
         )
 
+    # =========================
+    # 詳細条件：変更時のみ表示
+    # =========================
     prev_game_changed = (
         selected_prev_game_min != get_setting_min(prev_game)
         or selected_prev_game_max != get_setting_max(prev_game)
@@ -1317,7 +1321,10 @@ def all_tool():
             (labels["prev_diff"], f"{selected_prev_diff_min}～{selected_prev_diff_max}枚")
         )
 
-    if "custom_condition" not in locked_ui_fields:
+    if (
+        selected_custom_condition not in ("不問", "", None)
+        and "custom_condition" not in locked_ui_fields
+    ):
         calc_conditions.append(
             (labels["custom_condition"], selected_custom_condition)
         )
@@ -1350,7 +1357,7 @@ def all_tool():
         input_game=input_game,
         game_options=game_options,
 
-        through_options=build_range_options(through),
+        through_options=["不問"] + build_range_options(through),
         at_gap_options=build_range_options(at_gap),
         prev_game_options=build_range_options(prev_game),
         prev_coin_options=build_range_options(prev_coin),

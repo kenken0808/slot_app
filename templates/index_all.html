@@ -2792,11 +2792,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
 
+  const gameInput = document.getElementById("game");
+
   const atGapInput = document.getElementById("at_gap");
   const atGapToggle = document.getElementById("at_gap_toggle");
   const atGapSuggest = document.getElementById("at_gap_suggest");
 
-  if (!atGapInput || !atGapToggle || !atGapSuggest) return;
+  if (!gameInput || !atGapInput || !atGapToggle || !atGapSuggest) return;
 
   const atGapOptions = [
     "不問",
@@ -2805,8 +2807,23 @@ document.addEventListener("DOMContentLoaded", () => {
     {% endfor %}
   ];
 
-  atGapToggle.addEventListener("click", (e) => {
-    e.preventDefault();
+  function isSelectableAtGap(value) {
+
+    if (value === "不問") {
+      return true;
+    }
+
+    const gameValue = Number(gameInput.value);
+    const atGapValue = Number(value);
+
+    if (Number.isNaN(gameValue) || Number.isNaN(atGapValue)) {
+      return false;
+    }
+
+    return atGapValue > gameValue;
+  }
+
+  function openAtGapSuggest() {
 
     atGapSuggest.innerHTML = "";
 
@@ -2815,10 +2832,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       div.textContent = value;
 
-      div.onclick = () => {
-        atGapInput.value = value;
-        atGapSuggest.style.display = "none";
-      };
+      const selectable = isSelectableAtGap(value);
+
+      if (!selectable) {
+        div.style.color = "#777";
+        div.style.background = "var(--bg-card)";
+        div.style.cursor = "not-allowed";
+        div.style.opacity = "0.6";
+      } else {
+        div.onclick = () => {
+          atGapInput.value = value;
+          atGapSuggest.style.display = "none";
+        };
+      }
 
       atGapSuggest.appendChild(div);
 
@@ -2828,6 +2854,21 @@ document.addEventListener("DOMContentLoaded", () => {
       atGapSuggest.style.display === "block"
         ? "none"
         : "block";
+  }
+
+  atGapToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    openAtGapSuggest();
+  });
+
+  gameInput.addEventListener("change", () => {
+
+    if (
+      atGapInput.value !== "不問" &&
+      !isSelectableAtGap(atGapInput.value)
+    ) {
+      atGapInput.value = "不問";
+    }
 
   });
 
