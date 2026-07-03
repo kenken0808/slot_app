@@ -506,8 +506,10 @@ def api_default_values():
 
         "through": defaults["through"],
         "at_gap": defaults["at_gap"],
-        "prev_game": defaults["prev_game"],
-        "prev_coin": defaults["prev_coin"],
+        "prev_rb_game": defaults["prev_rb_game"],
+        "prev_rb_coin": defaults["prev_rb_coin"],
+        "prev_at_game": defaults["prev_at_game"],
+        "prev_at_coin": defaults["prev_at_coin"],
         "prev_diff": defaults["prev_diff"],
 
     })
@@ -698,8 +700,10 @@ def filter_dataframe_v2(df, form, settings):
     # 数値条件
     # =========================
     # mask &= apply_range("AT間ゲーム数", "at_gap")
-    mask &= apply_range("前回当選ゲーム数", "prev_game")
-    mask &= apply_range("前回獲得枚数", "prev_coin")
+    mask &= apply_range("前回REG当選ゲーム数", "prev_rb_game")
+    mask &= apply_range("前回REG獲得枚数", "prev_rb_coin")
+    mask &= apply_range("前回AT当選ゲーム数", "prev_at_game")
+    mask &= apply_range("前回AT獲得枚数", "prev_at_coin")
     mask &= apply_range("前回差枚数", "prev_diff")
     # mask &= apply_range("前回連荘数", "prev_renchan")
 
@@ -749,8 +753,10 @@ def generate_labels_from_mode_options(mode_options):
             "mode": "未設定",
             "at_gap": "未設定",
             "prev_diff": "未設定",
-            "prev_game": "未設定",
-            "prev_coin": "未設定",
+            "prev_rb_game": "未設定",
+            "prev_rb_coin": "未設定",
+            "prev_at_game": "未設定",
+            "prev_at_coin": "未設定",
             "custom_condition": "未設定",
         }
 
@@ -765,8 +771,10 @@ def generate_labels_from_mode_options(mode_options):
             "game": f"{base}間ゲーム数",
             "at_gap": f"***間ゲーム数",
             "prev_diff": f"前回{base}終了時差枚数",
-            "prev_game": f"前回{base}当選G数",
-            "prev_coin": f"前回{base}獲得枚数",
+            "prev_rb_game": f"前回***当選G数",
+            "prev_rb_coin": f"前回***獲得枚数",
+            "prev_at_game": f"前回{base}当選G数",
+            "prev_at_coin": f"前回{base}獲得枚数",
             "custom_condition": "機種別条件",
         }
             # "game": f"打ち出しG数（{base}間）",
@@ -781,8 +789,10 @@ def generate_labels_from_mode_options(mode_options):
         "game": f"{first}間ゲーム数",
         "at_gap": f"{second}間ゲーム数",
         "prev_diff": f"前回{second}終了時差枚数",
-        "prev_game": f"前回{second}当選G数",
-        "prev_coin": f"前回{second}獲得枚数",
+        "prev_rb_game": f"前回{first}当選G数",
+        "prev_rb_coin": f"前回{first}獲得枚数",
+        "prev_at_game": f"前回{second}当選G数",
+        "prev_at_coin": f"前回{second}獲得枚数",
         "custom_condition": "機種別条件",
     }
         # "game": f"打ち出しG数（{first}間）",
@@ -814,8 +824,10 @@ def get_default_values(mode_options):
 
         "through": (0, 0),
         "at_gap": (0, 0),
-        "prev_game": (0, 0),
-        "prev_coin": (0, 0),
+        "prev_rb_game": (0, 0),
+        "prev_rb_coin": (0, 0),
+        "prev_at_game": (0, 0),
+        "prev_at_coin": (0, 0),
         "prev_diff": (0, 0),
 
         "custom_condition": "不問",
@@ -948,8 +960,10 @@ def all_tool():
     # =========================
     through = settings.get("through", (0, 5, 1))
     at_gap = settings.get("at_gap", (0, 1000, 50))
-    prev_game = settings.get("prev_game", (0, 2000, 50))
-    prev_coin = settings.get("prev_coin", (0, 3000, 100))
+    prev_rb_game = settings.get("prev_rb_game", (0, 2000, 50))
+    prev_rb_coin = settings.get("prev_rb_coin", (0, 3000, 100))
+    prev_at_game = settings.get("prev_at_game", (0, 2000, 50))
+    prev_at_coin = settings.get("prev_at_coin", (0, 3000, 100))
     prev_diff = settings.get("prev_diff", (-3000, 3000, 100))
 
     # =========================
@@ -977,8 +991,10 @@ def all_tool():
     # =========================
     through_default_max = get_setting_max(through)
     at_gap_default_max = get_setting_max(at_gap)
-    prev_game_default_max = get_setting_max(prev_game)
-    prev_coin_default_max = get_setting_max(prev_coin)
+    prev_rb_game_default_max = get_setting_max(prev_rb_game)
+    prev_rb_coin_default_max = get_setting_max(prev_rb_coin)
+    prev_at_game_default_max = get_setting_max(prev_at_game)
+    prev_at_coin_default_max = get_setting_max(prev_at_coin)
     prev_diff_default_max = get_setting_max(prev_diff)
 
     # =========================
@@ -1005,11 +1021,15 @@ def all_tool():
 
     selected_at_gap = request.form.get("at_gap", "不問")
 
-    selected_prev_game_min = get_int("prev_game_min", 0)
-    selected_prev_game_max = get_int("prev_game_max", prev_game_default_max)
+    selected_prev_rb_game_min = get_int("prev_rb_game_min", 0)
+    selected_prev_rb_game_max = get_int("prev_rb_game_max", prev_rb_game_default_max)
+    selected_prev_at_game_min = get_int("prev_at_game_min", 0)
+    selected_prev_at_game_max = get_int("prev_at_game_max", prev_at_game_default_max)
 
-    selected_prev_coin_min = get_int("prev_coin_min", 0)
-    selected_prev_coin_max = get_int("prev_coin_max", prev_coin_default_max)
+    selected_prev_rb_coin_min = get_int("prev_rb_coin_min", 0)
+    selected_prev_rb_coin_max = get_int("prev_rb_coin_max", prev_rb_coin_default_max)
+    selected_prev_at_coin_min = get_int("prev_at_coin_min", 0)
+    selected_prev_at_coin_max = get_int("prev_at_coin_max", prev_at_coin_default_max)
 
     selected_prev_diff_min = get_int(
         "prev_diff_min",
@@ -1045,19 +1065,25 @@ def all_tool():
 
             through_options=["不問"] + build_range_options(through),
             at_gap_options=build_range_options(at_gap),
-            prev_game_options=build_range_options(prev_game),
-            prev_coin_options=build_range_options(prev_coin),
+            prev_rb_game_options=build_range_options(prev_rb_game),
+            prev_rb_coin_options=build_range_options(prev_rb_coin),
+            prev_at_game_options=build_range_options(prev_at_game),
+            prev_at_coin_options=build_range_options(prev_at_coin),
             prev_diff_options=build_range_options(prev_diff),
 
             selected_through=selected_through,
 
             selected_at_gap=selected_at_gap,
 
-            selected_prev_game_min=selected_prev_game_min,
-            selected_prev_game_max=selected_prev_game_max,
+            selected_prev_rb_game_min=selected_prev_rb_game_min,
+            selected_prev_rb_game_max=selected_prev_rb_game_max,
+            selected_prev_at_game_min=selected_prev_at_game_min,
+            selected_prev_at_game_max=selected_prev_at_game_max,
 
-            selected_prev_coin_min=selected_prev_coin_min,
-            selected_prev_coin_max=selected_prev_coin_max,
+            selected_prev_rb_coin_min=selected_prev_rb_coin_min,
+            selected_prev_rb_coin_max=selected_prev_rb_coin_max,
+            selected_prev_at_coin_min=selected_prev_at_coin_min,
+            selected_prev_at_coin_max=selected_prev_at_coin_max,
 
             selected_prev_diff_min=selected_prev_diff_min,
             selected_prev_diff_max=selected_prev_diff_max,
@@ -1089,8 +1115,10 @@ def all_tool():
             "朝イチ": "int8",
             "スルー回数": "int16",
             "AT間ゲーム数": "int32",
-            "前回当選ゲーム数": "int32",
-            "前回獲得枚数": "int32",
+            "前回AT当選ゲーム数": "int32",
+            "前回AT獲得枚数": "int32",
+            "前回REG当選ゲーム数": "int32",
+            "前回REG獲得枚数": "int32",
             "前回差枚数": "int32",
             "前回連荘数": "int16",
             "当該REGゲーム数": "int32",
@@ -1121,8 +1149,10 @@ def all_tool():
 
             through_options=["不問"] + build_range_options(through),
             at_gap_options=build_range_options(at_gap),
-            prev_game_options=build_range_options(prev_game),
-            prev_coin_options=build_range_options(prev_coin),
+            prev_rb_game_options=build_range_options(prev_rb_game),
+            prev_rb_coin_options=build_range_options(prev_rb_coin),
+            prev_at_game_options=build_range_options(prev_at_game),
+            prev_at_coin_options=build_range_options(prev_at_coin),
             prev_diff_options=build_range_options(prev_diff),
 
             selected_mode=selected_mode,
@@ -1130,11 +1160,15 @@ def all_tool():
 
             selected_at_gap=selected_at_gap,
 
-            selected_prev_game_min=selected_prev_game_min,
-            selected_prev_game_max=selected_prev_game_max,
+            selected_prev_rb_game_min=selected_prev_rb_game_min,
+            selected_prev_rb_game_max=selected_prev_rb_game_max,
+            selected_prev_at_game_min=selected_prev_at_game_min,
+            selected_prev_at_game_max=selected_prev_at_game_max,
 
-            selected_prev_coin_min=selected_prev_coin_min,
-            selected_prev_coin_max=selected_prev_coin_max,
+            selected_prev_rb_coin_min=selected_prev_rb_coin_min,
+            selected_prev_rb_coin_max=selected_prev_rb_coin_max,
+            selected_prev_at_coin_min=selected_prev_at_coin_min,
+            selected_prev_at_coin_max=selected_prev_at_coin_max,
 
             selected_prev_diff_min=selected_prev_diff_min,
             selected_prev_diff_max=selected_prev_diff_max,
@@ -1164,8 +1198,10 @@ def all_tool():
 
         "through": selected_through,
         "at_gap": selected_at_gap,
-        "prev_game": (selected_prev_game_min, selected_prev_game_max),
-        "prev_coin": (selected_prev_coin_min, selected_prev_coin_max),
+        "prev_rb_game": (selected_prev_rb_game_min, selected_prev_rb_game_max),
+        "prev_rb_coin": (selected_prev_rb_coin_min, selected_prev_rb_coin_max),
+        "prev_at_game": (selected_prev_at_game_min, selected_prev_at_game_max),
+        "prev_at_coin": (selected_prev_at_coin_min, selected_prev_at_coin_max),
         "prev_diff": (selected_prev_diff_min, selected_prev_diff_max),
         "custom_condition": selected_custom_condition,
         "locked_ui_fields": locked_ui_fields
@@ -1279,14 +1315,24 @@ def all_tool():
     # =========================
     # 詳細条件：変更時のみ表示
     # =========================
-    prev_game_changed = (
-        selected_prev_game_min != get_setting_min(prev_game)
-        or selected_prev_game_max != get_setting_max(prev_game)
+    prev_rb_game_changed = (
+        selected_prev_rb_game_min != get_setting_min(prev_rb_game)
+        or selected_prev_rb_game_max != get_setting_max(prev_rb_game)
     )
 
-    prev_coin_changed = (
-        selected_prev_coin_min != get_setting_min(prev_coin)
-        or selected_prev_coin_max != get_setting_max(prev_coin)
+    prev_rb_coin_changed = (
+        selected_prev_rb_coin_min != get_setting_min(prev_rb_coin)
+        or selected_prev_rb_coin_max != get_setting_max(prev_rb_coin)
+    )
+
+    prev_at_game_changed = (
+        selected_prev_at_game_min != get_setting_min(prev_at_game)
+        or selected_prev_at_game_max != get_setting_max(prev_at_game)
+    )
+
+    prev_at_coin_changed = (
+        selected_prev_at_coin_min != get_setting_min(prev_at_coin)
+        or selected_prev_at_coin_max != get_setting_max(prev_at_coin)
     )
 
     prev_diff_changed = (
@@ -1295,21 +1341,39 @@ def all_tool():
     )
 
     if (
-        prev_game_changed
-        and "prev_game_min" not in locked_ui_fields
-        and "prev_game_max" not in locked_ui_fields
+        prev_rb_game_changed
+        and "prev_rb_game_min" not in locked_ui_fields
+        and "prev_rb_game_max" not in locked_ui_fields
     ):
         calc_conditions.append(
-            (labels["prev_game"], f"{selected_prev_game_min}～{selected_prev_game_max}G")
+            (labels["prev_rb_game"], f"{selected_prev_rb_game_min}～{selected_prev_rb_game_max}G")
         )
 
     if (
-        prev_coin_changed
-        and "prev_coin_min" not in locked_ui_fields
-        and "prev_coin_max" not in locked_ui_fields
+        prev_rb_coin_changed
+        and "prev_rb_coin_min" not in locked_ui_fields
+        and "prev_rb_coin_max" not in locked_ui_fields
     ):
         calc_conditions.append(
-            (labels["prev_coin"], f"{selected_prev_coin_min}～{selected_prev_coin_max}枚")
+            (labels["prev_rb_coin"], f"{selected_prev_rb_coin_min}～{selected_prev_rb_coin_max}枚")
+        )
+
+    if (
+        prev_at_game_changed
+        and "prev_at_game_min" not in locked_ui_fields
+        and "prev_at_game_max" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["prev_at_game"], f"{selected_prev_at_game_min}～{selected_prev_at_game_max}G")
+        )
+
+    if (
+        prev_at_coin_changed
+        and "prev_at_coin_min" not in locked_ui_fields
+        and "prev_at_coin_max" not in locked_ui_fields
+    ):
+        calc_conditions.append(
+            (labels["prev_at_coin"], f"{selected_prev_at_coin_min}～{selected_prev_at_coin_max}枚")
         )
 
     if (
@@ -1359,19 +1423,27 @@ def all_tool():
 
         through_options=["不問"] + build_range_options(through),
         at_gap_options=build_range_options(at_gap),
-        prev_game_options=build_range_options(prev_game),
-        prev_coin_options=build_range_options(prev_coin),
+        prev_rb_game_options=build_range_options(prev_rb_game),
+        prev_rb_coin_options=build_range_options(prev_rb_coin),
+        prev_at_game_options=build_range_options(prev_at_game),
+        prev_at_coin_options=build_range_options(prev_at_coin),
         prev_diff_options=build_range_options(prev_diff),
 
         selected_through=selected_through,
 
         selected_at_gap=selected_at_gap,
 
-        selected_prev_game_min=selected_prev_game_min,
-        selected_prev_game_max=selected_prev_game_max,
+        selected_prev_rb_game_min=selected_prev_rb_game_min,
+        selected_prev_rb_game_max=selected_prev_rb_game_max,
 
-        selected_prev_coin_min=selected_prev_coin_min,
-        selected_prev_coin_max=selected_prev_coin_max,
+        selected_prev_rb_coin_min=selected_prev_rb_coin_min,
+        selected_prev_rb_coin_max=selected_prev_rb_coin_max,
+
+        selected_prev_at_game_min=selected_prev_at_game_min,
+        selected_prev_at_game_max=selected_prev_at_game_max,
+
+        selected_prev_at_coin_min=selected_prev_at_coin_min,
+        selected_prev_at_coin_max=selected_prev_at_coin_max,
 
         selected_prev_diff_min=selected_prev_diff_min,
         selected_prev_diff_max=selected_prev_diff_max,

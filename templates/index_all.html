@@ -1366,23 +1366,69 @@ input[type="submit"]:active {
 
   <div id="advanced-area">
 
-    <!-- 前回当選G数 -->
+    <!-- 前回REG当選G数 -->
     <div class="form-row cz-gap">
-      <label>{{ labels.get("prev_game", "前回当選G数") }}</label>
+      <label>{{ labels.get("prev_rb_game", "前回REG当選G数") }}</label>
 
       <div class="range auto-range">
 
-        <select name="prev_game_min" class="range-min">
-          {% for i in prev_game_options %}
-            <option value="{{ i }}" {% if i == selected_prev_game_min %}selected{% endif %}>{{ i }}</option>
+        <select name="prev_rb_game_min" class="range-min">
+          {% for i in prev_rb_game_options %}
+            <option value="{{ i }}" {% if i == selected_prev_rb_game_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select name="prev_game_max" class="range-max">
-          {% for i in prev_game_options %}
-            <option value="{{ i }}" {% if i == selected_prev_game_max %}selected{% endif %}>{{ i }}</option>
+        <select name="prev_rb_game_max" class="range-max">
+          {% for i in prev_rb_game_options %}
+            <option value="{{ i }}" {% if i == selected_prev_rb_game_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+      </div>
+    </div>
+
+    <!-- 前回REG獲得枚数 -->
+    <div class="form-row">
+      <label>{{ labels.get("prev_rb_coin", "前回REG獲得枚数") }}</label>
+
+      <div class="range auto-range">
+
+        <select name="prev_rb_coin_min" class="range-min">
+          {% for i in prev_rb_coin_options %}
+            <option value="{{ i }}" {% if i == selected_prev_rb_coin_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+        <span class="separator">～</span>
+
+        <select name="prev_rb_coin_max" class="range-max">
+          {% for i in prev_rb_coin_options %}
+            <option value="{{ i }}" {% if i == selected_prev_rb_coin_max %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+      </div>
+    </div>
+
+    <!-- 前回当選G数 -->
+    <div class="form-row cz-gap">
+      <label>{{ labels.get("prev_at_game", "前回当選G数") }}</label>
+
+      <div class="range auto-range">
+
+        <select name="prev_at_game_min" class="range-min">
+          {% for i in prev_at_game_options %}
+            <option value="{{ i }}" {% if i == selected_prev_at_game_min %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+        <span class="separator">～</span>
+
+        <select name="prev_at_game_max" class="range-max">
+          {% for i in prev_at_game_options %}
+            <option value="{{ i }}" {% if i == selected_prev_at_game_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
@@ -1391,21 +1437,21 @@ input[type="submit"]:active {
 
     <!-- 前回獲得枚数 -->
     <div class="form-row">
-      <label>{{ labels.get("prev_coin", "前回獲得枚数") }}</label>
+      <label>{{ labels.get("prev_at_coin", "前回獲得枚数") }}</label>
 
       <div class="range auto-range">
 
-        <select name="prev_coin_min" class="range-min">
-          {% for i in prev_coin_options %}
-            <option value="{{ i }}" {% if i == selected_prev_coin_min %}selected{% endif %}>{{ i }}</option>
+        <select name="prev_at_coin_min" class="range-min">
+          {% for i in prev_at_coin_options %}
+            <option value="{{ i }}" {% if i == selected_prev_at_coin_min %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
         <span class="separator">～</span>
 
-        <select name="prev_coin_max" class="range-max">
-          {% for i in prev_coin_options %}
-            <option value="{{ i }}" {% if i == selected_prev_coin_max %}selected{% endif %}>{{ i }}</option>
+        <select name="prev_at_coin_max" class="range-max">
+          {% for i in prev_at_coin_options %}
+            <option value="{{ i }}" {% if i == selected_prev_at_coin_max %}selected{% endif %}>{{ i }}</option>
           {% endfor %}
         </select>
 
@@ -1759,8 +1805,10 @@ window.applySettings = function (machineName) {
 
   setRange("through", settings.through);
   setRange("at_gap", settings.at_gap);
-  setRange("prev_game", settings.prev_game);
-  setRange("prev_coin", settings.prev_coin);
+  setRange("prev_rb_game", settings.prev_rb_game);
+  setRange("prev_rb_coin", settings.prev_rb_coin);
+  setRange("prev_at_game", settings.prev_at_game);
+  setRange("prev_at_coin", settings.prev_at_coin);
   setRange("prev_diff", settings.prev_diff);
 
   form.querySelector("[name='mode']").value =
@@ -2156,8 +2204,10 @@ function runAll(form, mode) {
   const targets = [
     "through",
     "at_gap",
-    "prev_game",
-    "prev_coin",
+    "prev_rb_game",
+    "prev_rb_coin",
+    "prev_at_game",
+    "prev_at_coin",
     "prev_diff"
   ];
 
@@ -2184,8 +2234,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const targets = [
     "through",
     "at_gap",
-    "prev_game",
-    "prev_coin",
+    "prev_rb_game",
+    "prev_rb_coin",
+    "prev_at_game",
+    "prev_at_coin",
     "prev_diff"
   ];
 
@@ -2222,12 +2274,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const atGapToggle = document.getElementById("at_gap_toggle");
 
   const prevItems = [
-    form.querySelector("[name='prev_game_min']"),
-    form.querySelector("[name='prev_game_max']"),
-    form.querySelector("[name='prev_coin_min']"),
-    form.querySelector("[name='prev_coin_max']"),
+    form.querySelector("[name='prev_at_game_min']"),
+    form.querySelector("[name='prev_at_game_max']"),
+    form.querySelector("[name='prev_at_coin_min']"),
+    form.querySelector("[name='prev_at_coin_max']"),
     form.querySelector("[name='prev_diff_min']"),
     form.querySelector("[name='prev_diff_max']")
+  ].filter(Boolean);
+
+  const prevRbItems = [
+    form.querySelector("[name='prev_rb_game_min']"),
+    form.querySelector("[name='prev_rb_game_max']"),
+    form.querySelector("[name='prev_rb_coin_min']"),
+    form.querySelector("[name='prev_rb_coin_max']")
   ].filter(Boolean);
 
   function updateLock() {
@@ -2255,6 +2314,11 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.remove("keep-disabled-style");
     });
 
+    prevRbItems.forEach(el => {
+      el.disabled = false;
+      el.classList.remove("keep-disabled-style");
+    });
+
     // =================================================
     // 条件判定
     // =================================================
@@ -2270,6 +2334,9 @@ document.addEventListener("DOMContentLoaded", () => {
       mode.disabled = true;
       through.disabled = true;
       atGap.disabled = true;
+      prevRbItems.forEach(el => {
+        el.disabled = true;
+      });
       if (atGapToggle) {
         atGapToggle.disabled = true;
       }
@@ -2291,7 +2358,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (throughLock) {
       atGap.value = "不問";
       atGap.disabled = true;
-
+      prevRbItems.forEach(el => {
+        el.disabled = true;
+      });
       if (atGapToggle) {
         atGapToggle.disabled = true;
       }
@@ -2311,14 +2380,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       at_gap: [atGap, atGapToggle],
 
-      prev_game: [
-        form.querySelector("[name='prev_game_min']"),
-        form.querySelector("[name='prev_game_max']")
+      prev_rb_game: [
+        form.querySelector("[name='prev_rb_game_min']"),
+        form.querySelector("[name='prev_rb_game_max']")
       ],
 
-      prev_coin: [
-        form.querySelector("[name='prev_coin_min']"),
-        form.querySelector("[name='prev_coin_max']")
+      prev_rb_coin: [
+        form.querySelector("[name='prev_rb_coin_min']"),
+        form.querySelector("[name='prev_rb_coin_max']")
+      ],
+
+      prev_at_game: [
+        form.querySelector("[name='prev_at_game_min']"),
+        form.querySelector("[name='prev_at_game_max']")
+      ],
+
+      prev_at_coin: [
+        form.querySelector("[name='prev_at_coin_min']"),
+        form.querySelector("[name='prev_at_coin_max']")
       ],
 
       prev_diff: [
@@ -2502,9 +2581,8 @@ function onLockChange({
   // 朝イチ
   // =================================================
   if (isMorning) {
-
-    resetRange("prev_game", settings.prev_game);
-    resetRange("prev_coin", settings.prev_coin);
+    resetRange("prev_at_game", settings.prev_at_game);
+    resetRange("prev_at_coin", settings.prev_at_coin);
     resetRange("prev_diff", settings.prev_diff);
   }
 
@@ -2513,6 +2591,8 @@ function onLockChange({
   // =================================================
   if (throughLock) {
     resetRange("at_gap", settings.at_gap);
+    resetRange("prev_rb_game", settings.prev_rb_game);
+    resetRange("prev_rb_coin", settings.prev_rb_coin);
   }
 }
 
