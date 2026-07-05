@@ -41,7 +41,11 @@ machine_configs = {
             "through": (0, 10, 1, 10),
             "at_gap": (0, 4000, 50, 4000),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 150),
+                "BIG": (200, 400),
+            },
             "prev_at_game": (0, 4000, 50, 4000),
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -76,12 +80,14 @@ machine_configs = {
             "through": (0, 4, 1, 4),
             "at_gap": (0, 1250, 50, 1250),
             "prev_rb_game": (0, 1250, 50, 1250),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1250, 50, 1250),
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -112,12 +118,14 @@ machine_configs = {
             "through": (0, 10, 1, 99),
             "at_gap": (0, 1100, 50, 1100),
             "prev_rb_game": (0, 1100, 50, 1100),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1100, 50, 1100),
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -147,12 +155,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050),
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -186,12 +196,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1550, 50, 1550),
             "prev_rb_game": (0, 1550, 50, 1550),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1550, 50, 1550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -224,12 +236,14 @@ machine_configs = {
             "through": (0, 7, 1,7),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -269,7 +283,11 @@ machine_configs = {
             "through": (0, 10, 1,10),
             "at_gap": (0, 2600, 50, 2600),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 80),
+                "REG": (100, 400),
+            },
             "prev_at_game": (0, 2600, 50, 2600), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -309,12 +327,14 @@ machine_configs = {
             "through": (0, 7, 1,7),
             "at_gap": (0, 1450, 50, 1450),
             "prev_rb_game": (0, 1450, 50, 1450),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1450, 50, 1450), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -357,12 +377,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1550, 50, 1550),
             "prev_rb_game": (0, 1550, 50, 1550),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1550, 50, 1550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -393,12 +415,14 @@ machine_configs = {
             "through": (0, 4, 1,4),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【虚構真偽間天井】
@@ -428,12 +452,14 @@ machine_configs = {
             "through": (0, 6, 1,6),
             "at_gap": (0, 3000, 50, 3000),
             "prev_rb_game": (0, 1000, 50, 1000),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 3000, 50, 3000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -469,12 +495,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1550, 50, 1550),
             "prev_rb_game": (0, 1550, 50, 1550),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1550, 50, 1550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -509,12 +537,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1550, 50, 1550),
             "prev_rb_game": (0, 1550, 50, 1550),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1550, 50, 1550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -546,12 +576,14 @@ machine_configs = {
             "through": (0, 6, 1,6),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 750, 50, 750),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -588,12 +620,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1550, 50, 1550),
             "prev_rb_game": (0, 1550, 50, 1550),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1550, 50, 1550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -624,12 +658,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -666,12 +702,14 @@ machine_configs = {
             "through": (0, 5, 1,5),
             "at_gap": (0, 2100, 50, 2100),
             "prev_rb_game": (0, 950, 50, 950),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2100, 50, 2100), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -711,12 +749,14 @@ machine_configs = {
             "through": (0, 3, 1,3),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 950, 50, 950),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -753,12 +793,14 @@ machine_configs = {
             "through": (0, 3, 1,3),
             "at_gap": (0, 1500, 50, 1500),
             "prev_rb_game": (0, 1500, 50, 1500),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1500, 50, 1500), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -788,7 +830,11 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 1000, 50, 1000),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "魔術ボーナス": (0, 50),
+                "無職転生ボーナス": (60, 150),
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -832,7 +878,11 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 850, 50, 850),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 100),
+                "BIG": (150, 400),
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -868,7 +918,11 @@ machine_configs = {
             "through": (0, 9, 1,9),
             "at_gap": (0, 3000, 50, 9999),
             "prev_rb_game": (0, 800, 50, 800),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 150),
+                "BIG": (150, 400),
+            },
             "prev_at_game": (0, 3000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -908,12 +962,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 950, 50, 950),
             "prev_rb_game": (0, 950, 50, 950),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 950, 50, 950), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -944,12 +1000,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -984,12 +1042,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -1019,7 +1079,12 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1000, 50, 1000),
             "prev_rb_game": (0, 1000, 50, 1000),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 100),
+                "BIG（500枚未満）": (0, 500),
+                "BIG（500枚以上）": (501, 3000),
+            },
             "prev_at_game": (0, 1000, 50, 1000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1055,7 +1120,12 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 800, 50, 800),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 150),
+                "BIG": (151, 400),
+                "SBB": (401, 700),
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1090,12 +1160,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 1000, 50, 1000),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -1125,12 +1197,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -1164,12 +1238,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1500, 50, 1500),
             "prev_rb_game": (0, 1500, 50, 1500),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1500, 50, 1500), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -1177,7 +1253,7 @@ machine_configs = {
                     朝イチ　　：999G or 3周期
                     朝イチ以外：999G or 6周期
 
-                    【AT間天井】
+                    【ボーナス間天井】
                     恩恵は決戦ボーナス or 革命ボーナス or 革命RUSH当選。
                     朝イチ　　：1000G
                     朝イチ以外：1500G
@@ -1204,7 +1280,11 @@ machine_configs = {
             "through": (0, 10, 1, 10),
             "at_gap": (0, 3000, 50, 3000),
             "prev_rb_game": (0, 1300, 50, 1300),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 200),
+                "REG": (300, 500),
+            },
             "prev_at_game": (0, 3000, 50, 3000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1239,12 +1319,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1300, 50, 1300),
             "prev_rb_game": (0, 1300, 50, 1300),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1300, 50, 1300), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -1274,12 +1356,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -1310,12 +1394,14 @@ machine_configs = {
             "through": (0, 10, 1,10),
             "at_gap": (0, 2000, 50, 2000),
             "prev_rb_game": (0, 650, 50, 650),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2000, 50, 2000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -1344,12 +1430,14 @@ machine_configs = {
             "through": (0, 6, 1,6),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -1389,12 +1477,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -1431,12 +1521,14 @@ machine_configs = {
             "through": (0, 9, 1,9),
             "at_gap": (0, 2050, 50, 2050),
             "prev_rb_game": (0, 400, 50, 400),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2050, 50, 2050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -1475,7 +1567,11 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 2000, 50, 9999),
             "prev_rb_game": (0, 750, 50, 750),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 60),
+                "DITB": (80, 150),
+            },
             "prev_at_game": (0, 2000, 50, 9999), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1530,12 +1626,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -1565,12 +1663,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -1600,7 +1700,11 @@ machine_configs = {
             "through": (0, 10, 1,10),
             "at_gap": (0, 3000, 50, 3000),
             "prev_rb_game": (0, 800, 50, 800),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 60),
+                "BIG": (80, 200),
+            },
             "prev_at_game": (0, 3000, 50, 3000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1640,12 +1744,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1200, 50, 1200),
             "prev_rb_game": (0, 600, 50, 600),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1200, 50, 1200), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -1679,12 +1785,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1200, 50, 1200),
             "prev_rb_game": (0, 750, 50, 750),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1200, 50, 1200), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ボーナス間天井】
@@ -1715,12 +1823,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1050, 50, 1050),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1050, 50, 1050), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【ST間天井】
@@ -1753,7 +1863,11 @@ machine_configs = {
             "through": (0, 10, 1,10),
             "at_gap": (0, 3000, 50, 3000),
             "prev_rb_game": (0, 1050, 50, 1050),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 150),
+                "REG": (160, 300),
+            },
             "prev_at_game": (0, 3000, 50, 3000), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
@@ -1788,12 +1902,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 850, 50, 850),
             "prev_rb_game": (0, 850, 50, 850),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 850, 50, 850), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】
@@ -1824,12 +1940,14 @@ machine_configs = {
             "through": (0, 4, 1,4),
             "at_gap": (0, 2550, 50, 2550),
             "prev_rb_game": (0, 1150, 50, 1150),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 2550, 50, 2550), 
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【CZ間天井】
@@ -1870,12 +1988,14 @@ machine_configs = {
             "through": (0, 10, 1,99),
             "at_gap": (0, 1350, 50,1350),
             "prev_rb_game": (0, 1350, 50, 1350),
-            "prev_rb_coin": (0, 3000, 100,9999),
+            "prev_rb_coin": {
+                "不問": None,
+            },
             "prev_at_game": (0, 1350, 50,1350),
             "prev_at_coin": (0, 3000, 100,9999),
             "prev_diff": (-4000, 2400, 100,-9999,2400),
             "custom_condition_options": ["不問"],
-            "locked_fields": ["custom_condition"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
             "help_texts": {
                 "time": """
                     【AT間天井】

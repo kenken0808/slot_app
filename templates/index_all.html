@@ -1393,23 +1393,13 @@ input[type="submit"]:active {
     <div class="form-row">
       <label>{{ labels.get("prev_rb_coin", "前回REG獲得枚数") }}</label>
 
-      <div class="range auto-range">
-
-        <select name="prev_rb_coin_min" class="range-min">
-          {% for i in prev_rb_coin_options %}
-            <option value="{{ i }}" {% if i == selected_prev_rb_coin_min %}selected{% endif %}>{{ i }}</option>
-          {% endfor %}
-        </select>
-
-        <span class="separator">～</span>
-
-        <select name="prev_rb_coin_max" class="range-max">
-          {% for i in prev_rb_coin_options %}
-            <option value="{{ i }}" {% if i == selected_prev_rb_coin_max %}selected{% endif %}>{{ i }}</option>
-          {% endfor %}
-        </select>
-
-      </div>
+      <select name="prev_rb_coin">
+        {% for opt in prev_rb_coin_options %}
+          <option value="{{ opt }}" {% if opt == selected_prev_rb_coin %}selected{% endif %}>
+            {{ opt }}
+          </option>
+        {% endfor %}
+      </select>
     </div>
 
     <!-- 前回当選G数 -->
@@ -2205,7 +2195,6 @@ function runAll(form, mode) {
     "through",
     "at_gap",
     "prev_rb_game",
-    "prev_rb_coin",
     "prev_at_game",
     "prev_at_coin",
     "prev_diff"
@@ -2235,7 +2224,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "through",
     "at_gap",
     "prev_rb_game",
-    "prev_rb_coin",
     "prev_at_game",
     "prev_at_coin",
     "prev_diff"
@@ -2285,8 +2273,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevRbItems = [
     form.querySelector("[name='prev_rb_game_min']"),
     form.querySelector("[name='prev_rb_game_max']"),
-    form.querySelector("[name='prev_rb_coin_min']"),
-    form.querySelector("[name='prev_rb_coin_max']")
+    form.querySelector("[name='prev_rb_coin']")
   ].filter(Boolean);
 
   function updateLock() {
@@ -2386,8 +2373,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
 
       prev_rb_coin: [
-        form.querySelector("[name='prev_rb_coin_min']"),
-        form.querySelector("[name='prev_rb_coin_max']")
+        form.querySelector("[name='prev_rb_coin']")
       ],
 
       prev_at_game: [
@@ -2592,7 +2578,7 @@ function onLockChange({
   if (throughLock) {
     resetRange("at_gap", settings.at_gap);
     resetRange("prev_rb_game", settings.prev_rb_game);
-    resetRange("prev_rb_coin", settings.prev_rb_coin);
+    resetSingle("prev_rb_coin", "不問");
   }
 }
 
