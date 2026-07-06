@@ -29,7 +29,7 @@ machine_configs = {
         "links": [
             {
                 "og_image": "icon/darkhaibi_v1.jpg",
-                "link_url": ""
+                "link_url": "https://note.com/kenslodata/n/nfc91a834446b"
             }
         ],
         "settings": {
@@ -403,7 +403,7 @@ machine_configs = {
         "links": [
             {
                 "og_image": "icon/inspectre_v1.jpg",
-                "link_url": ""
+                "link_url": "https://note.com/kenslodata/n/n44929a730341"
             }
         ],
         "settings": {
@@ -1651,7 +1651,7 @@ machine_configs = {
         "links": [
             {
                 "og_image": "icon/toloveru87_v1.jpg",
-                "link_url": ""
+                "link_url": "https://note.com/kenslodata/n/n96c1ab04aab9"
             }
         ],
         "settings": {
