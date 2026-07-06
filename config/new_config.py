@@ -11,11 +11,6 @@ COMMON_LINKS = [
         "og_image": "icon/okidoki_ap1.jpg",
         "link_url": "/okidoki/tools"
     },
-    {
-        "title": "東京リベンジャーズおもちゃ",
-        "og_image": "icon/toreve_ap1.jpg",
-        "link_url": "/toreve/tools"
-    },
 ]
 
 # =========================================================
