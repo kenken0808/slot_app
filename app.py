@@ -1483,6 +1483,17 @@ def okidoki_tools():
     abort(404)
 
 # ================================
+# 🔹 北斗転生2ツール（/hokutotensei2/tools）
+# ================================
+@app.route("/hokutotensei2/tools")
+def hokutotensei2_tools():
+    base = os.path.join(app.root_path, "static", "tools", "hokutotensei2")
+    index_path = os.path.join(base, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+    abort(404)
+
+# ================================
 # 🔹 ツール一覧ページ（/list）
 # ================================
 @app.route("/list")

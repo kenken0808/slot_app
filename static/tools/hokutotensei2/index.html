@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シャッターツール</title>
+
+<style>
+body {
+    margin: 0;
+    background: #222;
+    font-family: Arial, sans-serif;
+}
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+}
+
+.bg-img {
+    width: 100%;
+    display: block;
+}
+
+.tool {
+    position: absolute;
+    left: 6%;
+    top: 26.5%;
+    width: 88%;
+    height: auto;
+    padding: 12px;
+    box-sizing: border-box;
+    background: rgba(20,20,20,.82);
+    border: 2px solid #d00000;
+    border-radius: 15px;
+}
+
+.mode-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.mode-btn {
+    height: 48px;
+    padding: 0;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid #666;
+    background: #555;
+    color: #ddd;
+    opacity: .45;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.mode-btn.active {
+    background: #b71c1c;
+    color: #fff;
+    border-color: #ffcc66;
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(255,204,102,.5);
+}
+
+input {
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 2px solid #d00000;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.result {
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    border: 2px solid #d00000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.result-main {
+    color: #111;
+    font-size: 24px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <img class="bg-img" src="/static/tools/hokutotensei2/img/hokutotensei2.jpg" alt="">
+
+    <div class="tool">
+
+        <div class="mode-buttons">
+            <button class="mode-btn active" data-mode="朝イチ">朝イチ</button>
+            <button class="mode-btn" data-mode="朝イチ以外">朝イチ以外</button>
+        </div>
+
+        <input type="number" id="gameCount" placeholder="あべし数">
+
+        <div class="result" id="result">
+            ここに結果が表示
+        </div>
+
+    </div>
+</div>
+
+<script>
+let selectedMode = "朝イチ";
+
+document.querySelectorAll(".mode-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        selectedMode = button.dataset.mode;
+
+        showResult();
+    });
+});
+
+document.getElementById("gameCount").addEventListener("input", showResult);
+
+function judgeResult(mode, game) {
+    const conditions896 = {
+        "朝イチ": [
+            [1, 48],
+            [129, 176],
+            [257, 304],
+            [385, 432],
+            [449, 496]
+        ],
+        "朝イチ以外": [
+            [33, 48],
+            [161, 176],
+            [289, 304],
+            [417, 432],
+            [481, 496]
+        ]
+    };
+
+    const conditions1280 = {
+        "朝イチ": [
+            [577, 624]
+        ],
+        "朝イチ以外": [
+            [609, 624]
+        ]
+    };
+
+    for (const range of conditions896[mode]) {
+        if (game >= range[0] && game <= range[1]) {
+            return "896あべし以内";
+        }
+    }
+
+    for (const range of conditions1280[mode]) {
+        if (game >= range[0] && game <= range[1]) {
+            return "1280あべし以内";
+        }
+    }
+
+    return "示唆無し";
+}
+
+function showResult() {
+    const gameCount = document.getElementById("gameCount").value;
+    const resultBox = document.getElementById("result");
+
+    if (gameCount === "") {
+        resultBox.innerHTML = "ここに結果が表示";
+        return;
+    }
+
+    const game = Number(gameCount);
+    const resultText = judgeResult(selectedMode, game);
+
+    resultBox.innerHTML =
+        `<div class="result-main">${resultText}</div>`;
+}
+</script>
+
+</body>
+</html>
