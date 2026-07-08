@@ -2,23 +2,30 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>シャッターツール</title>
 
 <style>
+html,
 body {
     margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background: #222;
     font-family: Arial, sans-serif;
 }
 
 .wrapper {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
     width: 100%;
     max-width: 430px;
     aspect-ratio: 1242 / 1660;
-    margin: 0 auto;
+
     overflow: hidden;
 
     background-image: url("/static/tools/hokutotensei2/img/hokutotensei2.jpg");
@@ -27,16 +34,11 @@ body {
     background-size: 100% 100%;
 }
 
-.bg-img {
-    display: none;
-}
-
 .tool {
     position: absolute;
     left: 6%;
     top: 25.5%;
     width: 88%;
-    height: auto;
     padding: 8px;
     box-sizing: border-box;
     background: rgba(20,20,20,.82);
@@ -87,6 +89,7 @@ input {
     border: 2px solid #d00000;
     text-align: center;
     margin-bottom: 10px;
+    touch-action: manipulation;
 }
 
 .result {
@@ -120,7 +123,7 @@ input {
             <button class="mode-btn" data-mode="朝イチ以外">朝イチ以外</button>
         </div>
 
-        <input type="number" id="gameCount" placeholder="あべし数">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="gameCount" placeholder="あべし数">
 
         <div class="result" id="result">
             ここに結果が表示
@@ -144,7 +147,20 @@ document.querySelectorAll(".mode-btn").forEach(button => {
     });
 });
 
-document.getElementById("gameCount").addEventListener("input", showResult);
+const gameInput = document.getElementById("gameCount");
+
+gameInput.addEventListener("focus", () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 50);
+});
+
+gameInput.addEventListener("input", () => {
+    gameInput.value = gameInput.value.replace(/[^0-9]/g, "");
+    showResult();
+});
 
 function judgeResult(mode, game) {
     const conditions896 = {
@@ -189,7 +205,7 @@ function judgeResult(mode, game) {
 }
 
 function showResult() {
-    const gameCount = document.getElementById("gameCount").value;
+    const gameCount = gameInput.value;
     const resultBox = document.getElementById("result");
 
     if (gameCount === "") {
@@ -200,8 +216,7 @@ function showResult() {
     const game = Number(gameCount);
     const resultText = judgeResult(selectedMode, game);
 
-    resultBox.innerHTML =
-        `<div class="result-main">${resultText}</div>`;
+    resultBox.innerHTML = `<div class="result-main">${resultText}</div>`;
 }
 </script>
 
