@@ -17,6 +17,249 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "lotis": {
+        "display_name": "L ローティス",
+        "file_key": "lotis",
+        "search_word": "ろーてぃす",
+        "links": [
+            {
+                "og_image": "icon/lotis_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nd13fc8745998"
+            }
+        ],
+        "settings": {
+            "exclude_games": 30,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_rb_game": (0, 950, 50, 950),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 100),
+                "BIG": (101, 300),
+                "SBB": (301, 700),
+            },
+            "prev_at_game": (0, 3000, 50, 3000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    不問：900G
+                    """
+            }
+        }
+    },
+    "ultramanfs": {
+        "display_name": "L ULTRAMAN 最終決戦",
+        "file_key": "ultramanfs",
+        "search_word": "うるとらまんさいしゅうけっせん",
+        "links": [
+            {
+                "og_image": "icon/ultramanfs_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n52735e5335d7"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.8,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 750, 50, 750,0),
+            "through": (0, 5, 1, 5),
+            "at_gap": (0, 1600, 50, 1600),
+            "prev_rb_game": (0, 750, 50, 750),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1600, 50, 1600),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：500G
+                    朝イチ以外：700G
+                    
+                    【AT間天井】
+                    朝イチ　　：1000G
+                    朝イチ以外：1500G
+                    """
+            }
+        }
+    },
+    "nangokusp": {
+        "display_name": "L 南国育ち SPECIAL",
+        "file_key": "nangokusp",
+        "search_word": "なんごくそだちすぺしゃる",
+        "links": [
+            {
+                "og_image": "icon/nangokusp_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n986b7b03cc88"
+            }
+        ],
+        "settings": {
+            "exclude_games": 10,
+            "coin_moti": 33.0,
+            "mode_options": ["ボーナス", "飛翔"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 850, 50, 850,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_rb_game": (0, 850, 50, 850),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 150),
+                "BIG": (151, 300),
+            },
+            "prev_at_game": (0, 3000, 50, 3000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：500G
+                    朝イチ以外：799G
+                    飛翔後　　：500G
+                    """
+            }
+        }
+    },
+    "yabachiba": {
+        "display_name": "L ヤバチバ",
+        "file_key": "yabachiba",
+        "search_word": "やばちば",
+        "links": [
+            {
+                "og_image": "icon/yabachiba_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n46b21991ace0"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス", "天国"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1000, 50, 1000,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 1000, 50, 1000),
+            "prev_rb_game": (0, 1000, 50, 1000),
+            "prev_rb_coin": {
+                "不問": None,
+                "REG": (0, 70),
+                "BIG": (71, 150),
+            },
+            "prev_at_game": (0, 1000, 50, 1000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：30チェリー
+                    朝イチ以外：40チェリー or 999G
+                    """
+            }
+        }
+    },
+    "sencolle6": {
+        "display_name": "L 戦国コレクション6",
+        "file_key": "sencolle6",
+        "search_word": "せんごくこれくしょんしっくす",
+        "links": [
+            {
+                "og_image": "icon/sencolle6_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n2f7d7ec1dab2"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 33.7,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 99),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：3周期
+                    朝イチ以外：6周期 or 999G
+                    上位CZ後：天国
+                    """
+            }
+        }
+    },
+    "karakuricircus2": {
+        "display_name": "L からくりサーカス2",
+        "file_key": "karakuricircus2",
+        "search_word": "からくりさーかすつー",
+        "links": [
+            {
+                "og_image": "icon/karakuricircus2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nd097e8746a1d"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.8,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 4, 1, 4),
+            "at_gap": (0, 2550, 50, 2550),
+            "prev_rb_game": (0, 950, 50, 950),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 4000, 50, 4000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["prev_rb_coin", "custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：液晶500G
+                    朝イチ以外：液晶1200G or 実ゲーム数890G
+                    
+                    【AT間天井】
+                    恩恵はAT当選 + 成功濃厚の激情ジャッジ獲得。
+                    不問：実ゲーム数2500G
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵はAT当選 + 成功濃厚の激情ジャッジ獲得。
+                    不問：4スルー後5回目
+                    """
+            }
+        }
+    },
     "darkhaibi": {
         "display_name": "L ダークハイビ",
         "file_key": "darkhaibi",
