@@ -184,58 +184,153 @@
       .btn{ padding:10px 14px; }
       body{ padding:24px 12px; }
     }
+
+
+    /* =========================
+       20260712 お知らせを追加
+    ========================= */
+
+    /* =========================
+       カード全体の並び
+    ========================= */
+    .page-stack{
+      width:100%;
+      max-width:480px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin-inline:auto;
+    }
+
+    /* =========================
+       お知らせカード
+    ========================= */
+    .notice-card{
+      width:100%;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+
+    .notice-title{
+      padding:14px 18px;
+      background:#eef2ff;
+      border-bottom:1px solid #e2e8f0;
+      color:#1f2937;
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .notice-list{
+      max-height:220px;
+      overflow-y:auto;
+    }
+
+    .notice-item{
+      padding:14px 18px;
+      border-bottom:1px solid #edf2f7;
+    }
+
+    .notice-item:last-child{
+      border-bottom:none;
+    }
+
+    .notice-date{
+      margin-bottom:4px;
+      color:#2563eb;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .notice-text{
+      color:#374151;
+      font-size:14px;
+      line-height:1.6;
+    }
+
   </style>
 </head>
 
 <body>
-  <main class="card" role="main" aria-labelledby="loginTitle">
-    <!-- ヘッダー -->
-    <div class="header">
-      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
-      <div class="title" id="loginTitle">ログイン</div>
-      <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
-    </div>
-    <p class="subtitle">
-      パスワードを入力してください。
-    </p>
+  <div class="page-stack">
 
-    <!-- flashメッセージ -->
-    {% with msgs = get_flashed_messages() %}
-      {% if msgs %}
-        <div class="flash flash--error" role="status" aria-live="polite">
-          {{ msgs|join(' / ') }}
+    <!-- ログインカード -->
+    <main class="card" role="main" aria-labelledby="loginTitle">
+      <!-- ヘッダー -->
+      <div class="header">
+        <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+        <div class="title" id="loginTitle">ログイン</div>
+        <img src="{{ url_for('static', filename='icon.jpg') }}" alt="" />
+      </div>
+
+      <p class="subtitle">
+        パスワードを入力してください。
+      </p>
+
+      <!-- flashメッセージ -->
+      {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+          <div class="flash flash--error" role="status" aria-live="polite">
+            {{ msgs|join(' / ') }}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <!-- フォーム -->
+      <form method="POST" action="">
+        <label class="label" for="pin1">パスワード</label>
+
+        <div class="pin-row" id="pinRow">
+          <input class="pin-input" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" />
+          <input class="pin-input" id="pin2" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+          <input class="pin-input" id="pin3" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+          <input class="pin-input" id="pin4" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+          <input class="pin-input" id="pin5" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+          <input class="pin-input" id="pin6" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
         </div>
-      {% endif %}
-    {% endwith %}
 
-    <!-- フォーム（4桁PIN） -->
-    <form method="POST" action="">
-      <label class="label" for="pin1">パスワード</label>
+        <input type="hidden" name="password" id="pinFull" value="" />
 
-      <div class="pin-row" id="pinRow">
-        <input class="pin-input" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" />
-        <input class="pin-input" id="pin2" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
-        <input class="pin-input" id="pin3" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
-        <input class="pin-input" id="pin4" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
-        <input class="pin-input" id="pin5" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
-        <input class="pin-input" id="pin6" inputmode="numeric" pattern="[0-9]*" maxlength="1" />
+        <div class="actions">
+          <button type="submit" class="btn btn--primary btn--large" id="submitBtn" disabled>
+            実行
+          </button>
+        </div>
+      </form>
+
+      <div class="foot">
+        誤入力が続くと一時ロックされます。<br>
+        時間をおいてお試しください。
+      </div>
+    </main>
+
+    <!-- 20260712 お知らせを追加 -->
+    <!-- お知らせカード -->
+    <section class="notice-card" aria-labelledby="noticeTitle">
+      <div class="notice-title" id="noticeTitle">
+        🔔 お知らせ
       </div>
 
-      <!-- Flask用のhiddenフィールド（4桁結合） -->
-      <input type="hidden" name="password" id="pinFull" value="" />
+      <div class="notice-list">
+        <div class="notice-item">
+          <div class="notice-date">2026/07/12</div>
+          <div class="notice-text">パスワードを変更しました。</div>
+        </div>
 
-      <!-- ボタン：左が無料ページへ（小）、右が実行（大） -->
-      <div class="actions">
-        <button type="submit" class="btn btn--primary btn--large" id="submitBtn" disabled>実行</button>
+        <div class="notice-item">
+          <div class="notice-date">2026/07/11</div>
+          <div class="notice-text">新台6機種を追加しました。</div>
+        </div>
+
+        <div class="notice-item">
+          <div class="notice-date">2026/07/07</div>
+          <div class="notice-text">メンバーシップを開始しました。</div>
+        </div>
       </div>
-    </form>
+    </section>
 
-    <div class="foot">
-      誤入力が続くと一時ロックされます。<br>
-      時間をおいてお試しください。
-    </div>
-
-  </main>
+  </div>
 
   <script>
     // =========================
