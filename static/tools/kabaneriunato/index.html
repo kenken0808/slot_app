@@ -8,23 +8,15 @@
 <style>
 * { box-sizing: border-box; }
 
-html,
-body {
+html, body {
     margin: 0;
     min-height: 100%;
     background: #101217;
     color: #fff;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans JP",
-        sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
 }
 
-body {
-    padding: 6px;
-}
+body { padding: 8px; }
 
 .page {
     width: 100%;
@@ -32,92 +24,70 @@ body {
     margin: 0 auto;
 }
 
-/* =========================
-   ツール本体
-========================= */
-
 .tracker {
     --accent: #dc3c4f;
     --accent-soft: rgba(220, 60, 79, 0.18);
     --accent-dark: #7c1f2c;
 
-    margin-bottom: 8px;
-    padding: 8px;
-
-    background:
-        linear-gradient(
-            160deg,
-            rgba(34, 38, 47, 0.98),
-            rgba(19, 22, 28, 0.98)
-        );
-
+    margin-bottom: 14px;
+    padding: 12px;
+    background: linear-gradient(160deg, rgba(34,38,47,.98), rgba(19,22,28,.98));
     border: 2px solid var(--accent);
-    border-radius: 14px;
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 .tracker.green {
     --accent: #16b886;
-    --accent-soft: rgba(22, 184, 134, 0.18);
+    --accent-soft: rgba(22,184,134,.18);
     --accent-dark: #0c6f52;
 }
 
-/* =========================
-   ポイント・＋－
-========================= */
-
 .tracker-header {
     display: grid;
-    grid-template-columns: 1fr 100px;
-    gap: 6px;
-    margin-bottom: 5px;
+    grid-template-columns: 1fr 120px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .point-panel {
     min-width: 0;
-    padding: 5px 8px;
-
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 9px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 13px;
 }
 
 .tracker-name {
-    margin: 0;
+    margin-bottom: 2px;
     color: var(--accent);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
-    line-height: 1.1;
 }
 
 .point-line {
     display: flex;
     align-items: baseline;
-    gap: 3px;
-    margin-top: 1px;
+    gap: 5px;
 }
 
 .point-value {
-    font-size: 30px;
+    font-size: 42px;
     font-weight: 900;
     line-height: 1;
 }
 
 .point-unit {
     color: #a9b0bc;
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 800;
 }
 
 .remaining {
-    margin-top: 2px;
+    margin-top: 6px;
     color: #d6dae2;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 800;
-    line-height: 1.1;
 }
 
 button {
@@ -130,23 +100,18 @@ button {
 .operation-mode {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4px;
+    gap: 7px;
 }
 
 .operation-btn {
-    min-height: 34px;
-    padding: 0;
-
+    min-height: 44px;
     border: 1px solid #7c5a35;
-    border-radius: 8px;
-
+    border-radius: 11px;
     background: #4a3420;
     color: #d6b58a;
-
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 900;
-
-    opacity: 0.5;
+    opacity: .5;
 }
 
 .operation-btn.active {
@@ -154,21 +119,14 @@ button {
     color: #fff;
     border-color: #ffb45c;
     opacity: 1;
-
-    box-shadow:
-        0 0 8px rgba(255, 180, 92, 0.28);
+    box-shadow: 0 0 10px rgba(255,180,92,.28);
 }
-
-/* =========================
-   ゲージ
-========================= */
 
 .gauge {
     width: 100%;
-    height: 7px;
+    height: 12px;
     overflow: hidden;
-    margin-bottom: 1px;
-
+    margin-bottom: 4px;
     background: #0b0d11;
     border: 1px solid #333944;
     border-radius: 999px;
@@ -177,55 +135,36 @@ button {
 .gauge-bar {
     width: 0%;
     height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--accent-dark),
-            var(--accent)
-        );
-
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
     border-radius: inherit;
-    transition: width 0.18s ease;
+    transition: width .18s ease;
 }
 
 .gauge-scale {
     display: flex;
     justify-content: space-between;
-
-    margin-bottom: 5px;
-
+    margin-bottom: 10px;
     color: #7e8590;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 800;
-    line-height: 1;
 }
-
-/* =========================
-   通常・高確
-========================= */
 
 .state-switch {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 5px;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .state-btn {
-    min-height: 31px;
-    padding: 0;
-
+    min-height: 42px;
     border: 1px solid #606672;
-    border-radius: 8px;
-
+    border-radius: 11px;
     background: #353a45;
     color: #b4bac4;
-
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 900;
-
-    opacity: 0.48;
+    opacity: .48;
 }
 
 .state-btn.active {
@@ -233,43 +172,32 @@ button {
     color: #fff;
     border-color: var(--accent);
     opacity: 1;
-
-    box-shadow:
-        0 0 7px var(--accent-soft);
+    box-shadow: 0 0 10px var(--accent-soft);
 }
 
-/* =========================
-   演出ボタン
-========================= */
-
 .section-title {
-    margin: 0 0 3px;
-
+    margin-bottom: 7px;
     color: #dce0e7;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 900;
-    line-height: 1;
 }
 
 .effect-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 4px;
-    margin-bottom: 5px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .effect-btn {
     min-width: 0;
-    height: 43px;
-    padding: 2px 1px;
-
+    height: 66px;
+    padding: 5px 2px;
     border: 1px solid var(--accent);
-    border-radius: 7px;
-
+    border-radius: 10px;
     background: var(--accent-soft);
     color: #fff;
-
-    transition: 0.15s;
+    transition: .15s;
 }
 
 .minus-mode .effect-btn {
@@ -277,26 +205,23 @@ button {
     border-color: #5a616d;
 }
 
-.effect-btn:active {
-    transform: scale(0.97);
-}
+.effect-btn:active { transform: scale(.97); }
 
 .effect-name,
 .effect-point {
     display: block;
     white-space: nowrap;
-    line-height: 1.1;
 }
 
 .effect-name {
-    margin-bottom: 2px;
-    font-size: 9px;
+    margin-bottom: 5px;
+    font-size: 12px;
     font-weight: 900;
 }
 
 .effect-point {
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 8px;
+    color: rgba(255,255,255,.82);
+    font-size: 11px;
     font-weight: 800;
 }
 
@@ -304,28 +229,20 @@ button {
     color: #ffabb1;
 }
 
-/* =========================
-   示唆・リセット
-========================= */
-
 .hint-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 5px;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .hint-btn {
-    height: 31px;
-    padding: 0;
-
+    height: 42px;
     border: 1px solid #c47a31;
-    border-radius: 8px;
-
+    border-radius: 11px;
     background: #4a301c;
     color: #ffd28a;
-
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 900;
 }
 
@@ -333,233 +250,110 @@ button {
     background: #9e5b1e;
     color: #fff;
     border-color: #ffc46f;
-
-    box-shadow:
-        0 0 7px rgba(255, 196, 111, 0.25);
+    box-shadow: 0 0 9px rgba(255,196,111,.25);
 }
 
 .reset-btn {
     width: 100%;
-    height: 31px;
-    padding: 0;
-
+    height: 42px;
     border: 1px solid var(--accent);
-    border-radius: 8px;
-
+    border-radius: 11px;
     background: var(--accent-dark);
     color: #fff;
-
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 900;
 }
 
-/* =========================
-   タイトル
-========================= */
+@media (max-width: 380px) {
+    body { padding: 8px; }
+    .tracker { padding: 9px; }
+    .tracker-header { grid-template-columns: 1fr 108px; }
+    .effect-grid { gap: 4px; }
+    .effect-name, .effect-point { font-size: 10px; }
+}
+
+
 
 .page-title {
     display: grid;
-    grid-template-columns: 70px minmax(0, 1fr) 70px;
+    grid-template-columns: 84px minmax(0, 1fr) 84px;
     align-items: center;
-    gap: 3px;
-
+    gap: 6px;
     width: 100%;
-    height: 76px;
-
-    margin: 0;
+    height: 92px;
+    margin: 0 0 4px;
     padding: 0;
 }
 
 .title-icon {
-    width: 70px;
-    height: 70px;
-
+    width: 84px;
+    height: 84px;
     display: block;
     object-fit: contain;
 }
 
 .title-logo-wrap {
     position: relative;
-
     width: 100%;
-    height: 90px;
-
+    height: 92px;
     overflow: hidden;
 }
 
 .title-logo {
     position: absolute;
-
     left: calc(50% - 5px);
     top: calc(50% + 8px);
-
-    width: 100%;
+    width: 118%;
     max-width: none;
     height: auto;
-
     display: block;
-
-    transform:
-        translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .page-title + .tracker {
     margin-top: 0;
 }
 
-/* =========================
-   スマホ
-========================= */
-
 @media (max-width: 420px) {
-    body {
-        padding: 3px;
-    }
-
     .page-title {
-        grid-template-columns: 56px minmax(0, 1fr) 56px;
-        gap: 2px;
-        height: 60px;
-        margin: 0;
+        grid-template-columns: 70px minmax(0, 1fr) 70px;
+        gap: 4px;
+        height: 78px;
+        margin-bottom: 2px;
     }
 
     .title-icon {
-        width: 56px;
-        height: 56px;
+        width: 70px;
+        height: 70px;
     }
 
     .title-logo-wrap {
-        height: 60px;
+        height: 78px;
     }
 
     .title-logo {
-        width: 132%;
-    }
-
-    .tracker {
-        margin-bottom: 5px;
-        padding: 6px;
-        border-radius: 11px;
-    }
-
-    .tracker-header {
-        grid-template-columns: 1fr 88px;
-        gap: 4px;
-        margin-bottom: 4px;
-    }
-
-    .point-panel {
-        padding: 4px 6px;
-    }
-
-    .tracker-name {
-        font-size: 10px;
-    }
-
-    .point-value {
-        font-size: 25px;
-    }
-
-    .point-unit {
-        font-size: 11px;
-    }
-
-    .remaining {
-        font-size: 9px;
-    }
-
-    .operation-btn {
-        min-height: 30px;
-        font-size: 14px;
-    }
-
-    .gauge {
-        height: 6px;
-    }
-
-    .gauge-scale {
-        margin-bottom: 4px;
-        font-size: 7px;
-    }
-
-    .state-switch {
-        gap: 4px;
-        margin-bottom: 4px;
-    }
-
-    .state-btn {
-        min-height: 28px;
-        font-size: 11px;
-    }
-
-    .section-title {
-        margin-bottom: 2px;
-        font-size: 9px;
-    }
-
-    .effect-grid {
-        gap: 3px;
-        margin-bottom: 4px;
-    }
-
-    .effect-btn {
-        height: 38px;
-    }
-
-    .effect-name {
-        margin-bottom: 1px;
-        font-size: 8px;
-    }
-
-    .effect-point {
-        font-size: 7px;
-    }
-
-    .hint-buttons {
-        gap: 4px;
-        margin-bottom: 4px;
-    }
-
-    .hint-btn {
-        height: 28px;
-        font-size: 9px;
-    }
-
-    .reset-btn {
-        height: 28px;
-        font-size: 10px;
+        width: 125%;
     }
 }
 
 @media (max-width: 350px) {
     .page-title {
-        grid-template-columns: 50px minmax(0, 1fr) 50px;
-        height: 54px;
+        grid-template-columns: 60px minmax(0, 1fr) 60px;
+        height: 68px;
+        margin-bottom: 0;
     }
 
     .title-icon {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
     }
 
     .title-logo-wrap {
-        height: 54px;
+        height: 68px;
     }
 
     .title-logo {
-        width: 138%;
-    }
-
-    .tracker-header {
-        grid-template-columns: 1fr 80px;
-    }
-
-    .effect-name {
-        font-size: 7px;
-    }
-
-    .effect-point {
-        font-size: 7px;
+        width: 132%;
     }
 }
 
