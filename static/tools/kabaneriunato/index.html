@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<title>カバネリptツール</title>
+<style>
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #101217;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+}
+
+body { padding: 8px; }
+
+.page {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.tracker {
+    --accent: #dc3c4f;
+    --accent-soft: rgba(220, 60, 79, 0.18);
+    --accent-dark: #7c1f2c;
+
+    margin-bottom: 14px;
+    padding: 12px;
+    background: linear-gradient(160deg, rgba(34,38,47,.98), rgba(19,22,28,.98));
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.tracker.green {
+    --accent: #16b886;
+    --accent-soft: rgba(22,184,134,.18);
+    --accent-dark: #0c6f52;
+}
+
+.tracker-header {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.point-panel {
+    min-width: 0;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 13px;
+}
+
+.tracker-name {
+    margin-bottom: 2px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.point-line {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.point-value {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.point-unit {
+    color: #a9b0bc;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.remaining {
+    margin-top: 6px;
+    color: #d6dae2;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+button {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.operation-mode {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+}
+
+.operation-btn {
+    min-height: 44px;
+    border: 1px solid #7c5a35;
+    border-radius: 11px;
+    background: #4a3420;
+    color: #d6b58a;
+    font-size: 18px;
+    font-weight: 900;
+    opacity: .5;
+}
+
+.operation-btn.active {
+    background: #a85a18;
+    color: #fff;
+    border-color: #ffb45c;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255,180,92,.28);
+}
+
+.gauge {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    background: #0b0d11;
+    border: 1px solid #333944;
+    border-radius: 999px;
+}
+
+.gauge-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    border-radius: inherit;
+    transition: width .18s ease;
+}
+
+.gauge-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #7e8590;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.state-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.state-btn {
+    min-height: 42px;
+    border: 1px solid #606672;
+    border-radius: 11px;
+    background: #353a45;
+    color: #b4bac4;
+    font-size: 15px;
+    font-weight: 900;
+    opacity: .48;
+}
+
+.state-btn.active {
+    background: var(--accent-dark);
+    color: #fff;
+    border-color: var(--accent);
+    opacity: 1;
+    box-shadow: 0 0 10px var(--accent-soft);
+}
+
+.section-title {
+    margin-bottom: 7px;
+    color: #dce0e7;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.effect-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.effect-btn {
+    min-width: 0;
+    height: 66px;
+    padding: 5px 2px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: #fff;
+    transition: .15s;
+}
+
+.minus-mode .effect-btn {
+    background: #292e37;
+    border-color: #5a616d;
+}
+
+.effect-btn:active { transform: scale(.97); }
+
+.effect-name,
+.effect-point {
+    display: block;
+    white-space: nowrap;
+}
+
+.effect-name {
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.effect-point {
+    color: rgba(255,255,255,.82);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.minus-mode .effect-point {
+    color: #ffabb1;
+}
+
+.hint-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.hint-btn {
+    height: 42px;
+    border: 1px solid #c47a31;
+    border-radius: 11px;
+    background: #4a301c;
+    color: #ffd28a;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.hint-btn.active {
+    background: #9e5b1e;
+    color: #fff;
+    border-color: #ffc46f;
+    box-shadow: 0 0 9px rgba(255,196,111,.25);
+}
+
+.reset-btn {
+    width: 100%;
+    height: 42px;
+    border: 1px solid var(--accent);
+    border-radius: 11px;
+    background: var(--accent-dark);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+@media (max-width: 380px) {
+    body { padding: 8px; }
+    .tracker { padding: 9px; }
+    .tracker-header { grid-template-columns: 1fr 108px; }
+    .effect-grid { gap: 4px; }
+    .effect-name, .effect-point { font-size: 10px; }
+}
+
+
+
+.page-title {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr) 84px;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    height: 92px;
+    margin: 0 0 4px;
+    padding: 0;
+}
+
+.title-icon {
+    width: 84px;
+    height: 84px;
+    display: block;
+    object-fit: contain;
+}
+
+.title-logo-wrap {
+    position: relative;
+    width: 100%;
+    height: 92px;
+    overflow: hidden;
+}
+
+.title-logo {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 8px);
+    width: 118%;
+    max-width: none;
+    height: auto;
+    display: block;
+    transform: translate(-50%, -50%);
+}
+
+.page-title + .tracker {
+    margin-top: 0;
+}
+
+@media (max-width: 420px) {
+    .page-title {
+        grid-template-columns: 70px minmax(0, 1fr) 70px;
+        gap: 4px;
+        height: 78px;
+        margin-bottom: 2px;
+    }
+
+    .title-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .title-logo-wrap {
+        height: 78px;
+    }
+
+    .title-logo {
+        width: 125%;
+    }
+}
+
+@media (max-width: 350px) {
+    .page-title {
+        grid-template-columns: 60px minmax(0, 1fr) 60px;
+        height: 68px;
+        margin-bottom: 0;
+    }
+
+    .title-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .title-logo-wrap {
+        height: 68px;
+    }
+
+    .title-logo {
+        width: 132%;
+    }
+}
+
+</style>
+</head>
+
+<!-- Google Analytics（</head>直後） -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-HXM85ZV043');
+</script>
+
+<body>
+<div class="page">
+<div class="page-title">
+<img alt="ゾンビアイコン" class="title-icon" src="/static/tools/kabaneriunato/img/kabaneriunato_zombie.jpg">
+<div class="title-logo-wrap">
+<img alt="カバネリptツール" class="title-logo" src="/static/tools/kabaneriunato/img/kabaneriunato_logo.jpg">
+</div>
+<img alt="ゾンビアイコン" class="title-icon" src="/static/tools/kabaneriunato/img/kabaneriunato_zombie.jpg">
+</div>
+<section class="tracker red">
+<div class="tracker-header">
+<div class="point-panel">
+<div class="tracker-name">無名pt</div>
+<div class="point-line">
+<span class="point-value">0</span>
+<span class="point-unit">pt</span>
+</div>
+<div class="remaining">最大まで残り150pt</div>
+</div>
+<div class="operation-mode">
+<button class="operation-btn active" data-operation="plus" type="button">＋</button>
+<button class="operation-btn" data-operation="minus" type="button">－</button>
+</div>
+</div>
+<div class="gauge"><div class="gauge-bar"></div></div>
+<div class="gauge-scale"><span>0</span><span>150pt</span></div>
+<div class="state-switch">
+<button class="state-btn active" data-state="通常" type="button">通常</button>
+<button class="state-btn" data-state="高確" type="button">高確</button>
+</div>
+<div class="section-title">演出を選択</div>
+<div class="effect-grid">
+<button class="effect-btn" data-effect="単" type="button">
+<span class="effect-name">単</span>
+<span class="effect-point">＋1pt</span>
+</button>
+<button class="effect-btn" data-effect="単不明" type="button">
+<span class="effect-name">単-不明</span>
+<span class="effect-point">＋1pt</span>
+</button>
+<button class="effect-btn" data-effect="単発光" type="button">
+<span class="effect-name">単-発光</span>
+<span class="effect-point">＋15pt</span>
+</button>
+<button class="effect-btn" data-effect="複合" type="button">
+<span class="effect-name">複合</span>
+<span class="effect-point">＋15pt</span>
+</button>
+<button class="effect-btn" data-effect="オール" type="button">
+<span class="effect-name">オール</span>
+<span class="effect-point">＋30pt</span>
+</button>
+</div>
+<div class="hint-buttons">
+<button class="hint-btn" data-hint="60" type="button">残り60pt示唆</button>
+<button class="hint-btn" data-hint="15" type="button">残り15pt示唆</button>
+</div>
+<button class="reset-btn" type="button">突入・リセット</button>
+</section>
+<section class="tracker green">
+<div class="tracker-header">
+<div class="point-panel">
+<div class="tracker-name">生駒pt</div>
+<div class="point-line">
+<span class="point-value">0</span>
+<span class="point-unit">pt</span>
+</div>
+<div class="remaining">最大まで残り150pt</div>
+</div>
+<div class="operation-mode">
+<button class="operation-btn active" data-operation="plus" type="button">＋</button>
+<button class="operation-btn" data-operation="minus" type="button">－</button>
+</div>
+</div>
+<div class="gauge"><div class="gauge-bar"></div></div>
+<div class="gauge-scale"><span>0</span><span>150pt</span></div>
+<div class="state-switch">
+<button class="state-btn active" data-state="通常" type="button">通常</button>
+<button class="state-btn" data-state="高確" type="button">高確</button>
+</div>
+<div class="section-title">演出を選択</div>
+<div class="effect-grid">
+<button class="effect-btn" data-effect="単" type="button">
+<span class="effect-name">単</span>
+<span class="effect-point">＋1pt</span>
+</button>
+<button class="effect-btn" data-effect="単不明" type="button">
+<span class="effect-name">単-不明</span>
+<span class="effect-point">＋1pt</span>
+</button>
+<button class="effect-btn" data-effect="単発光" type="button">
+<span class="effect-name">単-発光</span>
+<span class="effect-point">＋15pt</span>
+</button>
+<button class="effect-btn" data-effect="複合" type="button">
+<span class="effect-name">複合</span>
+<span class="effect-point">＋15pt</span>
+</button>
+<button class="effect-btn" data-effect="オール" type="button">
+<span class="effect-name">オール</span>
+<span class="effect-point">＋30pt</span>
+</button>
+</div>
+<div class="hint-buttons">
+<button class="hint-btn" data-hint="60" type="button">残り60pt示唆</button>
+<button class="hint-btn" data-hint="15" type="button">残り15pt示唆</button>
+</div>
+<button class="reset-btn" type="button">突入・リセット</button>
+</section>
+</div>
+<script>
+const MAX_POINT = 150;
+
+const pointTable = {
+    "通常": {
+        "単": 1,
+        "単不明": 1,
+        "単発光": 15,
+        "複合": 15,
+        "オール": 30
+    },
+    "高確": {
+        "単": 15,
+        "単不明": 15,
+        "単発光": 15,
+        "複合": 30,
+        "オール": 60
+    }
+};
+
+document.querySelectorAll(".tracker").forEach(setupTracker);
+
+function setupTracker(tracker) {
+    let currentPoint = 0;
+    let selectedState = "通常";
+    let operationMode = "plus";
+
+    const pointValue = tracker.querySelector(".point-value");
+    const remaining = tracker.querySelector(".remaining");
+    const gaugeBar = tracker.querySelector(".gauge-bar");
+    const stateButtons = tracker.querySelectorAll(".state-btn");
+    const operationButtons = tracker.querySelectorAll(".operation-btn");
+    const effectButtons = tracker.querySelectorAll(".effect-btn");
+    const hintButtons = tracker.querySelectorAll(".hint-btn");
+    const resetButton = tracker.querySelector(".reset-btn");
+
+    stateButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            stateButtons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            selectedState = button.dataset.state;
+            updateEffectLabels();
+        });
+    });
+
+    operationButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            operationButtons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            operationMode = button.dataset.operation;
+            tracker.classList.toggle("minus-mode", operationMode === "minus");
+
+            updateEffectLabels();
+        });
+    });
+
+    effectButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const effectName = button.dataset.effect;
+            const point = pointTable[selectedState][effectName];
+
+            if (operationMode === "plus") {
+                currentPoint = Math.min(MAX_POINT, currentPoint + point);
+            } else {
+                currentPoint = Math.max(0, currentPoint - point);
+            }
+
+            hintButtons.forEach(btn => btn.classList.remove("active"));
+            updateDisplay();
+        });
+    });
+
+    hintButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const hint = Number(button.dataset.hint);
+
+            currentPoint = MAX_POINT - hint;
+
+            hintButtons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            updateDisplay();
+        });
+    });
+
+    resetButton.addEventListener("click", () => {
+        currentPoint = 0;
+        operationMode = "plus";
+        selectedState = "通常";
+
+        operationButtons.forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.operation === "plus");
+        });
+
+        stateButtons.forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.state === "通常");
+        });
+
+        hintButtons.forEach(btn => btn.classList.remove("active"));
+
+        tracker.classList.remove("minus-mode");
+
+        updateEffectLabels();
+        updateDisplay();
+    });
+
+    function updateDisplay() {
+        pointValue.textContent = currentPoint;
+
+        const remainingPoint = MAX_POINT - currentPoint;
+
+        remaining.textContent =
+            currentPoint >= MAX_POINT
+                ? "最大ポイント到達"
+                : `最大まで残り${remainingPoint}pt`;
+
+        gaugeBar.style.width =
+            `${Math.min(100, currentPoint / MAX_POINT * 100)}%`;
+    }
+
+    function updateEffectLabels() {
+        effectButtons.forEach(button => {
+            const effectName = button.dataset.effect;
+            const point = pointTable[selectedState][effectName];
+            const sign = operationMode === "plus" ? "＋" : "－";
+
+            button.querySelector(".effect-point").textContent =
+                `${sign}${point}pt`;
+        });
+    }
+
+    updateEffectLabels();
+    updateDisplay();
+}
+</script>
+</body>
+</html>

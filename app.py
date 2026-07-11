@@ -1496,6 +1496,19 @@ def hokutotensei2_tools():
     abort(404)
 
 # ================================
+# 🔹 カバネリポイントツール（/kabaneriunato/tools）
+# ================================
+@app.route("/kabaneriunato/tools")
+def kabaneriunato_tools():
+    base = os.path.join(app.root_path, "static", "tools", "kabaneriunato")
+    index_path = os.path.join(base, "index.html")
+
+    if os.path.exists(index_path):
+        return send_from_directory(base, "index.html")
+
+    abort(404)
+
+# ================================
 # 🔹 ツール一覧ページ（/list）
 # ================================
 @app.route("/list")
