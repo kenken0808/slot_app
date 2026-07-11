@@ -48,11 +48,18 @@ body { padding: 8px; }
     grid-template-columns: 1fr 120px;
     gap: 10px;
     margin-bottom: 10px;
+
+    align-items: stretch;
 }
 
 .point-panel {
     min-width: 0;
     padding: 10px 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     background: rgba(255,255,255,.05);
     border: 1px solid rgba(255,255,255,.08);
     border-radius: 13px;
@@ -97,21 +104,37 @@ button {
     cursor: pointer;
 }
 
-.operation-mode {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
+.operation-mode{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+
+    gap:6px;
+
+    height:100%;
 }
 
 .operation-btn {
-    min-height: 44px;
-    border: 1px solid #7c5a35;
-    border-radius: 11px;
-    background: #4a3420;
-    color: #d6b58a;
-    font-size: 18px;
-    font-weight: 900;
-    opacity: .5;
+    height:100%;
+    min-height:0;
+
+    padding:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:1px solid #7c5a35;
+    border-radius:11px;
+
+    background:#4a3420;
+    color:#d6b58a;
+
+    font-size:16px;
+    font-weight:900;
+
+    opacity:.5;
 }
 
 .operation-btn.active {
@@ -157,14 +180,25 @@ button {
 }
 
 .state-btn {
-    min-height: 42px;
-    border: 1px solid #606672;
-    border-radius: 11px;
-    background: #353a45;
-    color: #b4bac4;
-    font-size: 15px;
-    font-weight: 900;
-    opacity: .48;
+    height:100%;
+    min-height:0;
+
+    padding:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:1px solid #606672;
+    border-radius:11px;
+
+    background:#353a45;
+    color:#b4bac4;
+
+    font-size:16px;
+    font-weight:900;
+
+    opacity:.48;
 }
 
 .state-btn.active {
@@ -229,11 +263,11 @@ button {
     color: #ffabb1;
 }
 
-.hint-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
+.hint-buttons{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-bottom:0px;
 }
 
 .hint-btn {
@@ -392,13 +426,6 @@ button {
     margin-bottom:0;
 }
 
-.memo-item{
-    margin-bottom:6px;
-    color:#e4e7ec;
-    font-size:15px;
-    line-height:1.6;
-}
-
 </style>
 </head>
 
@@ -433,15 +460,13 @@ button {
 <div class="operation-mode">
 <button class="operation-btn active" data-operation="plus" type="button">＋</button>
 <button class="operation-btn" data-operation="minus" type="button">－</button>
+<button class="state-btn active" data-state="通常" type="button">通常</button>
+<button class="state-btn" data-state="高確" type="button">高確</button>
 </div>
 </div>
 <div class="gauge"><div class="gauge-bar"></div></div>
 <div class="gauge-scale"><span>0</span><span>150pt</span></div>
-<div class="state-switch">
-<button class="state-btn active" data-state="通常" type="button">通常</button>
-<button class="state-btn" data-state="高確" type="button">高確</button>
-</div>
-<div class="section-title">演出を選択</div>
+
 <div class="effect-grid">
 <button class="effect-btn" data-effect="単" type="button">
 <span class="effect-name">単</span>
@@ -467,8 +492,8 @@ button {
 <div class="hint-buttons">
 <button class="hint-btn" data-hint="60" type="button">残り60pt示唆</button>
 <button class="hint-btn" data-hint="15" type="button">残り15pt示唆</button>
+<button class="reset-btn" type="button">CZ突入</button>
 </div>
-<button class="reset-btn" type="button">突入・リセット</button>
 </section>
 <section class="tracker green">
 <div class="tracker-header">
@@ -483,15 +508,13 @@ button {
 <div class="operation-mode">
 <button class="operation-btn active" data-operation="plus" type="button">＋</button>
 <button class="operation-btn" data-operation="minus" type="button">－</button>
+<button class="state-btn active" data-state="通常" type="button">通常</button>
+<button class="state-btn" data-state="高確" type="button">高確</button>
 </div>
 </div>
 <div class="gauge"><div class="gauge-bar"></div></div>
 <div class="gauge-scale"><span>0</span><span>150pt</span></div>
-<div class="state-switch">
-<button class="state-btn active" data-state="通常" type="button">通常</button>
-<button class="state-btn" data-state="高確" type="button">高確</button>
-</div>
-<div class="section-title">演出を選択</div>
+
 <div class="effect-grid">
 <button class="effect-btn" data-effect="単" type="button">
 <span class="effect-name">単</span>
@@ -517,8 +540,8 @@ button {
 <div class="hint-buttons">
 <button class="hint-btn" data-hint="60" type="button">残り60pt示唆</button>
 <button class="hint-btn" data-hint="15" type="button">残り15pt示唆</button>
+<button class="reset-btn" type="button">CZ突入</button>
 </div>
-<button class="reset-btn" type="button">突入・リセット</button>
 </section>
 
 <div class="memo-box">
