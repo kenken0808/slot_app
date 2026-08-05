@@ -29,7 +29,7 @@ machine_configs = {
         ],
         "settings": {
             "exclude_games": 40,
-            "coin_moti": 32.0,
+            "coin_moti": 35.4,
             "mode_options": ["CZ", "AT"],
             "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
             "game": (0, 850, 50, 850,0),
