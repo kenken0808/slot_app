@@ -17,6 +17,133 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "yajikita": {
+        "display_name": "L やじきた道中記参る！",
+        "file_key": "yajikita",
+        "search_word": "やじきたどうちゅうきまいる",
+        "links": [
+            {
+                "og_image": "icon/yajikita_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n08a1f5cd2546"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 850, 50, 850,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 2600, 50, 2600),
+            "prev_rb_game": (0, 850, 50, 850),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 2600, 50, 2600),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：999まいる
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    不問：6スルー後7回目
+                    """
+            }
+        }
+    },
+    "streetfighter6": {
+        "display_name": "L ストリートファイター6",
+        "file_key": "streetfighter6",
+        "search_word": "すとりーとふぁいたーしっくす",
+        "links": [
+            {
+                "og_image": "icon/streetfighter6_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nd76a393c851f"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["ST", "ボナ"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 850, 50, 850,0),
+            "through": (0, 3, 1, 3),
+            "at_gap": (0, 2050, 50, 2050),
+            "prev_rb_game": (0, 850, 50, 850),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 2050, 50, 2050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はST当選。
+                    ※液晶ゲーム数
+                    朝イチ　　：900G
+                    朝イチ以外：1000G
+                    """,
+                "through": """
+                    【STスルー天井】
+                    恩恵は勝利濃厚のST当選。
+                    不問：3スルー後4回目
+                    """
+            }
+        }
+    },
+    "index2": {
+        "display_name": "L とある魔術の禁書目録2",
+        "file_key": "index2",
+        "search_word": "とあるまじゅつのいんでっくすつーきんしょもくろく",
+        "links": [
+            {
+                "og_image": "icon/index2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n801a1e5083ad"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.8,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 800, 50, 800,0),
+            "through": (0, 7, 1, 7),
+            "at_gap": (0, 1250, 50, 1250),
+            "prev_rb_game": (0, 800, 50, 800),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1250, 50, 1250),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    ※液晶ゲーム数（右下）
+                    朝イチ　　：200G
+                    朝イチ以外：800G
+                    
+                    【AT間天井】
+                    ※実ゲーム数（左上）
+                    朝イチ　　：777G
+                    朝イチ以外：1200G
+                    """
+            }
+        }
+    },
     "lotis": {
         "display_name": "L ローティス",
         "file_key": "lotis",
@@ -2355,7 +2482,7 @@ TOOL_PASSWORDS = {
 # =====================================================================
 # 20260623新ツール用パスワード
 # =====================================================================
-NEW_TOOL_PASSWORD = "865922"
+NEW_TOOL_PASSWORD = "611992"
 
 __all__ = [
     "machine_configs",
