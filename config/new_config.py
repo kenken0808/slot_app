@@ -17,6 +17,85 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "supabinko": {
+        "display_name": "L すーぱぁびん娘",
+        "file_key": "supabinko",
+        "search_word": "すーぱぁびんこ",
+        "links": [
+            {
+                "og_image": "icon/supabinko_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nfcc135bc8f67"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1250, 50, 1250,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1250, 50, 1250),
+            "prev_rb_game": (0, 1250, 50, 1250),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1250, 50, 1250),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：7周期
+                    朝イチ以外：10周期
+                    
+                    【AT間天井】
+                    恩恵はAT当選 + 夢娘チャンス獲得。
+                    朝イチ　　：900G
+                    朝イチ以外：1200G
+                    """
+            }
+        }
+    },
+    "isekaihoromeshi": {
+        "display_name": "L とんでもスキルで異世界放浪メシ！",
+        "file_key": "isekaihoromeshi",
+        "search_word": "とんでもすきるでいせかいほうろうめし",
+        "links": [
+            {
+                "og_image": "icon/isekaihoromeshi_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/nfb18b245d688"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ST間天井】
+                    恩恵はST当選。
+                    朝イチ　　：650G
+                    朝イチ以外：1200G
+                    """
+            }
+        }
+    },
     "yajikita": {
         "display_name": "L やじきた道中記参る！",
         "file_key": "yajikita",
