@@ -1509,6 +1509,37 @@ def kabaneriunato_tools():
     abort(404)
 
 # ================================
+# 🔹 グラブル クリティカル計算ツール
+# ================================
+@app.route("/granbluefantasy/critical")
+def granbluefantasy_critical():
+    base = os.path.join(app.root_path, "granbluefantasy", "critical")
+
+    index_path = os.path.join(base, "critical.html")
+
+    if os.path.exists(index_path):
+        return send_from_directory(base, "critical.html")
+
+    abort(404)
+
+
+@app.route("/granbluefantasy/critical/<path:filename>")
+def granbluefantasy_critical_files(filename):
+    base = os.path.join(app.root_path, "granbluefantasy", "critical")
+    return send_from_directory(base, filename)
+
+
+@app.route("/granbluefantasy/images/critical/<path:filename>")
+def granbluefantasy_critical_images(filename):
+    base = os.path.join(
+        app.root_path,
+        "granbluefantasy",
+        "images",
+        "critical"
+    )
+    return send_from_directory(base, filename)
+
+# ================================
 # 🔹 ツール一覧ページ（/list）
 # ================================
 @app.route("/list")

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>水属性 クリティカル計算</title>
+<link rel="stylesheet" href="critical.css">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-HXM85ZV043');
+</script>
+</head>
+<body>
+<main class="tool">
+  <header>
+    <h1>水属性 クリティカル計算</h1>
+    <p>本数・加護を選ぶだけで自動計算</p>
+  </header>
+
+  <section class="panel">
+    <h2>武器</h2>
+    <div id="weapon-list" class="weapon-list"></div>
+  </section>
+
+  <section class="panel">
+    <h2>加護・補正</h2>
+
+    <div class="summon-row">
+      <img src="../images/critical/main.png" alt="">
+      <span class="label">メイン<small id="main-rate">170%</small></span>
+      <div class="choices main-choices">
+        <button data-group="main" data-value="0">なし</button>
+        <button data-group="main" data-value="120">4凸</button>
+        <button data-group="main" data-value="140">5凸</button>
+        <button data-group="main" data-value="150">超3</button>
+        <button data-group="main" data-value="160">超4</button>
+        <button class="active" data-group="main" data-value="170">超5</button>
+      </div>
+    </div>
+
+    <div class="summon-row">
+      <img src="../images/critical/friend.png" alt="">
+      <span class="label">フレ<small id="friend-rate">170%</small></span>
+      <div class="choices friend-choices">
+        <button data-group="friend" data-value="0">なし</button>
+        <button class="active" data-group="friend" data-value="170">超5</button>
+      </div>
+    </div>
+
+    <div class="boost-row">
+      <img src="../images/critical/boost.png" alt="">
+      <span class="label">ブースト</span>
+      <div class="counter">
+        <button data-id="boost" data-d="-1">−</button>
+        <b id="boost-count">0</b>
+        <button data-id="boost" data-d="1">＋</button>
+      </div>
+      <small>×20%</small>
+    </div>
+
+    <div class="bonus-grid">
+      <button class="bonus" id="gab">
+        <img src="../images/critical/gabriel.png" alt="">
+        <span>ガブ</span><small>+20%</small>
+      </button>
+      <button class="bonus" id="uruki">
+        <img src="../images/critical/uruki.png" alt="">
+        <span>ウルキ</span><small>+10%</small>
+      </button>
+      <button class="bonus" id="kusabi">
+        <img src="../images/critical/kusabi.png" alt="">
+        <span>蒼空の楔</span><small>+30%</small>
+      </button>
+    </div>
+  </section>
+
+  <section class="result">
+    <span>クリティカル率</span>
+    <strong id="rate">0%</strong>
+  </section>
+</main>
+<script src="critical.js"></script>
+</body>
+</html>
