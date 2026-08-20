@@ -1,8 +1,8 @@
 const weapons=[
-{id:"wam",name:"ワム槍",rate:20,boosted:false,img:"../images/critical/wamuspear.png"},
-{id:"olu",name:"オルオベ・冬ノ霜柱",rate:6.5,boosted:true,img:"../images/critical/oluobe.png"},
-{id:"mare",name:"マレ斧",rate:3,boosted:true,img:"../images/critical/mareaxe.png"},
-{id:"levi",name:"リヴァ槍",rate:11,boosted:true,img:"../images/critical/leviathan_spear.png"}
+{id:"wam",name:"ワム槍",rate:20,boosted:false,img:"/granbluefantasy/images/critical/wamuspear.png"},
+{id:"olu",name:"オルオベ・冬ノ霜柱",rate:6.5,boosted:true,img:"/granbluefantasy/images/critical/oluobe.png"},
+{id:"mare",name:"マレ斧",rate:3,boosted:true,img:"/granbluefantasy/images/critical/mareaxe.png"},
+{id:"levi",name:"リヴァ槍",rate:11,boosted:true,img:"/granbluefantasy/images/critical/leviathan_spear.png"}
 ];
 const counts={wam:0,olu:0,mare:0,levi:0,boost:0};
 let mainBonus=170,friendBonus=170;
