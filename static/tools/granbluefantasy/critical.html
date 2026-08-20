@@ -2,17 +2,265 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>水属性 クリティカル計算</title>
-<link rel="stylesheet" href="/static/tools/granbluefantasy/critical.css">
+<style>
+*{box-sizing:border-box}
+:root{--blue:#287db3;--dark:#165477;--line:#d5e2ea;--pale:#edf7fd;--img-w:140px;--img-h:84px}
+body{margin:0;padding:10px;background:#eef8fd;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;color:#20313d}
+.tool{width:100%;max-width:520px;margin:auto}
+header{padding:4px 2px 9px}
+h1{margin:0;font-size:22px;color:var(--dark)}
+header p{margin:3px 0 0;font-size:11px;color:#718591}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:9px;box-shadow:0 3px 10px rgba(25,86,122,.07)}
+h2{font-size:15px;margin:0 0 8px;border-left:4px solid var(--blue);padding-left:7px;color:#42677c}
 
-<!-- Google Analytics -->
+/* 共通画像サイズ */
+.item-image{width:var(--img-w);height:var(--img-h);object-fit:cover;display:block;border:1px solid #d6e0e6;border-radius:5px}
+
+/* 武器：縦並び。名称・%は元の横配置。操作は横並び */
+.weapon-list{display:flex;flex-direction:column;gap:7px}
+.weapon-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(0,1fr) auto;
+ gap:10px;
+ align-items:center;
+ padding:7px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+.name{display:block;font-size:12px;font-weight:700;line-height:1.2}
+.pct{display:block;margin-top:3px;font-size:10px;color:#7e8e98}
+.controls,.counter{display:flex;align-items:center;gap:7px}
+.controls button,.counter button{
+ width:35px;height:35px;padding:0;border:1px solid #b9cbd6;border-radius:7px;
+ background:#fff;color:#245f83;font-size:20px;font-weight:700
+}
+.controls strong,.counter strong{min-width:22px;text-align:center;font-size:14px}
+
+/* メイン・フレンド：元の画像＋名称＋％配置、ボタンだけ右 */
+.support-list{display:flex;flex-direction:column;gap:8px}
+.support-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(72px,1fr) 150px;
+ gap:10px;
+ align-items:center;
+ padding:8px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+.choices{display:grid;gap:5px}
+.choices.six{grid-template-columns:repeat(3,1fr)}
+.choices.two{grid-template-columns:repeat(2,1fr)}
+.choices button{
+ height:30px;padding:0 3px;border:1px solid #c7d5de;border-radius:6px;
+ background:#f9fbfc;color:#405b69;font-size:10px;font-weight:700
+}
+.choices button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ブースト：武器と同じ */
+.boost-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(0,1fr) auto;
+ gap:10px;
+ align-items:center;
+ padding:8px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+
+/* 下3つ：横並び */
+.bottom-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
+.bonus{
+ padding:6px 3px;border:1px solid #cedbe3;border-radius:9px;background:#fff;
+ color:#20313d;text-align:center;min-width:0
+}
+.bonus .item-image{width:100%;height:auto;aspect-ratio:5/3}
+.bonus .name{margin-top:5px;font-size:10px;white-space:nowrap}
+.bonus .pct{font-size:9px}
+.bonus.active{background:var(--pale);border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+
+.result{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:linear-gradient(135deg,#17699d,#2f91c9);border-radius:11px;color:#fff}
+.result span{font-size:13px;font-weight:700}
+.result strong{font-size:34px}
+
+@media(max-width:430px){
+ :root{--img-w:112px;--img-h:67.2px}
+ .weapon-card,.boost-card{gap:6px}
+ .support-card{grid-template-columns:var(--img-w) minmax(68px,1fr) 138px;gap:6px}
+ .choices{gap:3px}
+ .choices button{height:31px;font-size:9px}
+ .controls,.counter{gap:4px}
+ .controls button,.counter button{width:31px;height:31px}
+}
+
+.support-card > div:nth-child(2) .name{white-space:nowrap;font-size:11px}
+
+/* メイン・フレンド：ボタンを枠内に収める */
+.support-card{
+  grid-template-columns:var(--img-w) minmax(64px,1fr) 126px !important;
+}
+.support-card .choices{
+  width:126px;
+  max-width:126px;
+  min-width:0;
+}
+.support-card .choices.six{
+  grid-template-columns:repeat(3,40px) !important;
+  justify-content:end;
+}
+.support-card .choices.two{
+  grid-template-columns:repeat(2,60px) !important;
+  justify-content:end;
+}
+.support-card .choices button{
+  width:100%;
+  min-width:0;
+  height:28px;
+  padding:0;
+  font-size:9px;
+}
+@media(max-width:430px){
+  .support-card{
+    grid-template-columns:var(--img-w) minmax(54px,1fr) 112px !important;
+  }
+  .support-card .choices{
+    width:112px;
+    max-width:112px;
+  }
+  .support-card .choices.six{
+    grid-template-columns:repeat(3,35px) !important;
+  }
+  .support-card .choices.two{
+    grid-template-columns:repeat(2,53px) !important;
+  }
+  .support-card .choices button{
+    height:27px;
+    font-size:8px;
+  }
+}
+
+/* メイン・フレンド：右側の残り領域をボタンでいっぱいに使う */
+.support-card{
+  grid-template-columns:var(--img-w) minmax(62px,90px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.support-card > .choices{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin:0 !important;
+  align-self:stretch !important;
+}
+.support-card > .choices.six{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-template-rows:repeat(2,1fr) !important;
+  justify-content:stretch !important;
+}
+.support-card > .choices.two{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows:1fr !important;
+  justify-content:stretch !important;
+}
+.support-card > .choices button{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:0 4px !important;
+  font-size:10px !important;
+}
+@media(max-width:430px){
+  .support-card{
+    grid-template-columns:var(--img-w) minmax(55px,72px) minmax(0,1fr) !important;
+  }
+  .support-card > .choices button{
+    font-size:9px !important;
+  }
+}
+
+/* 武器：右側の残り領域を「－ / 本数 / ＋」で3等分 */
+.weapon-card{
+  grid-template-columns:var(--img-w) minmax(72px,95px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.weapon-card > .controls{
+  width:100% !important;
+  min-width:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:5px !important;
+  align-items:stretch !important;
+}
+.weapon-card > .controls button,
+.weapon-card > .controls strong{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+}
+.weapon-card > .controls strong{
+  font-size:14px !important;
+}
+@media(max-width:430px){
+  .weapon-card{
+    grid-template-columns:var(--img-w) minmax(58px,75px) minmax(0,1fr) !important;
+  }
+  .weapon-card > .controls{
+    gap:4px !important;
+  }
+}
+
+/* ブースト：武器と同じく右側を「－ / 本数 / ＋」で3等分 */
+.boost-card{
+  grid-template-columns:var(--img-w) minmax(72px,95px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.boost-card > .counter{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:5px !important;
+  align-items:stretch !important;
+}
+.boost-card > .counter button,
+.boost-card > .counter strong{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+}
+.boost-card > .counter strong{
+  font-size:14px !important;
+}
+@media(max-width:430px){
+  .boost-card{
+    grid-template-columns:var(--img-w) minmax(58px,75px) minmax(0,1fr) !important;
+  }
+  .boost-card > .counter{
+    gap:4px !important;
+  }
+}
+</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
+window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-HXM85ZV043');
+gtag('js',new Date());
+gtag('config','G-HXM85ZV043');
 </script>
 </head>
 <body>
@@ -30,53 +278,71 @@ gtag('config', 'G-HXM85ZV043');
 <section class="panel">
 <h2>加護・補正</h2>
 
-<div class="summon-row">
-<img src="/static/tools/granbluefantasy/img/main.png" alt="メイン">
-<span class="label">メイン<small id="main-rate">170%</small></span>
-<div class="choices">
-<button data-group="main" data-value="0">なし</button>
-<button data-group="main" data-value="120">4凸</button>
-<button data-group="main" data-value="140">5凸</button>
-<button data-group="main" data-value="150">超3</button>
-<button data-group="main" data-value="160">超4</button>
-<button class="active" data-group="main" data-value="170">超5</button>
-</div>
+<div class="support-list">
+
+<div class="support-card">
+ <img class="item-image" src="/static/tools/granbluefantasy/img/main.png" alt="メイン">
+ <div>
+  <span class="name">メイン</span>
+  <span class="pct" id="main-rate">170%</span>
+ </div>
+ <div class="choices six">
+  <button data-group="main" data-value="0">なし</button>
+  <button data-group="main" data-value="120">4凸</button>
+  <button data-group="main" data-value="140">5凸</button>
+  <button data-group="main" data-value="150">超3</button>
+  <button data-group="main" data-value="160">超4</button>
+  <button class="active" data-group="main" data-value="170">超5</button>
+ </div>
 </div>
 
-<div class="summon-row">
-<img src="/static/tools/granbluefantasy/img/friend.png" alt="フレンド">
-<span class="label">フレ<small id="friend-rate">170%</small></span>
-<div class="choices friend">
-<button data-group="friend" data-value="0">なし</button>
-<button class="active" data-group="friend" data-value="170">超5</button>
-</div>
-</div>
-
-<div class="boost-row">
-<img src="/static/tools/granbluefantasy/img/boost.png" alt="ブースト">
-<span class="label">ブースト</span>
-<div class="counter">
-<button data-id="boost" data-d="-1">−</button>
-<b id="boost-count">0</b>
-<button data-id="boost" data-d="1">＋</button>
-</div>
-<small>×20%</small>
+<div class="support-card">
+ <img class="item-image" src="/static/tools/granbluefantasy/img/friend.png" alt="フレンド">
+ <div>
+  <span class="name">フレンド</span>
+  <span class="pct" id="friend-rate">170%</span>
+ </div>
+ <div class="choices two">
+  <button data-group="friend" data-value="0">なし</button>
+  <button class="active" data-group="friend" data-value="170">超5</button>
+ </div>
 </div>
 
-<div class="bonus-grid">
+<div class="boost-card">
+ <img class="item-image" src="/static/tools/granbluefantasy/img/boost.png" alt="ブースト">
+ <div>
+  <span class="name">ブースト</span>
+  <span class="pct" id="boost-rate">0%</span>
+ </div>
+ <div class="counter">
+  <button data-id="boost" data-d="-1">−</button>
+  <strong id="boost-count">0</strong>
+  <button data-id="boost" data-d="1">＋</button>
+ </div>
+</div>
+
+</div>
+
+<div class="bottom-grid">
 <button class="bonus" id="gab">
-<img src="/static/tools/granbluefantasy/img/gabriel.png" alt="ガブリエル">
-<span>ガブ</span><small>+20%</small>
+ <img class="item-image" src="/static/tools/granbluefantasy/img/gabriel.png" alt="ガブリエル">
+ <span class="name">ガブリエル</span>
+ <span class="pct">+20%</span>
 </button>
+
 <button class="bonus" id="uruki">
-<img src="/static/tools/granbluefantasy/img/uruki.png" alt="ウルキ">
-<span>ウルキ</span><small>+10%</small>
+ <img class="item-image" src="/static/tools/granbluefantasy/img/uruki.png" alt="ウルキ">
+ <span class="name">ウルキ</span>
+ <span class="pct">+10%</span>
 </button>
+
 <button class="bonus" id="kusabi">
-<img src="/static/tools/granbluefantasy/img/kusabi.png" alt="蒼空の楔">
-<span>蒼空の楔</span><small>+30%</small>
+ <img class="item-image" src="/static/tools/granbluefantasy/img/kusabi.png" alt="蒼空の楔">
+ <span class="name">蒼空の楔</span>
+ <span class="pct">+30%</span>
 </button>
 </div>
+
 </section>
 
 <section class="result">
@@ -84,6 +350,88 @@ gtag('config', 'G-HXM85ZV043');
 <strong id="rate">0%</strong>
 </section>
 </main>
-<script src="/static/tools/granbluefantasy/critical.js"></script>
+
+<script>
+const weapons=[
+{id:"wam",name:"ワム槍",rate:20,boosted:false,img:"/static/tools/granbluefantasy/img/wamuspear.png"},
+{id:"olu",name:"オルオベ<br>冬ノ霜柱",rate:6.5,boosted:true,img:"/static/tools/granbluefantasy/img/oluobe.png"},
+{id:"mare",name:"マレ斧",rate:3,boosted:true,img:"/static/tools/granbluefantasy/img/mareaxe.png"},
+{id:"levi",name:"リヴァ槍",rate:11,boosted:true,img:"/static/tools/granbluefantasy/img/leviathan_spear.png"}];
+
+const counts={wam:0,olu:0,mare:0,levi:0,boost:0};
+let mainBonus=170,friendBonus=170;
+
+document.getElementById("weapon-list").innerHTML=weapons.map(w=>`
+<div class="weapon-card">
+ <img class="item-image" src="${w.img}" alt="${w.name.replace(/<br>/g,"・")}">
+ <div>
+  <span class="name">${w.name}</span>
+  <span class="pct">${w.rate}%${w.boosted?"":"・加護対象外"}</span>
+ </div>
+ <div class="controls">
+  <button type="button" data-id="${w.id}" data-d="-1">−</button>
+  <strong id="${w.id}-count">0</strong>
+  <button type="button" data-id="${w.id}" data-d="1">＋</button>
+ </div>
+</div>`).join("");
+
+const fmt=n=>Number(n.toFixed(2)).toString();
+
+function calc(){
+ let fixed=0,base=0;
+ weapons.forEach(w=>{
+  const v=w.rate*counts[w.id];
+  w.boosted ? base+=v : fixed+=v;
+ });
+ const mult=
+  mainBonus+
+  friendBonus+
+  counts.boost*20+
+  (document.getElementById("gab").classList.contains("active")?20:0)+
+  (document.getElementById("uruki").classList.contains("active")?10:0)+
+  (document.getElementById("kusabi").classList.contains("active")?30:0);
+
+ document.getElementById("rate").textContent=fmt(fixed+base*(1+mult/100))+"%";
+}
+
+document.addEventListener("click",e=>{
+ const c=e.target.closest("[data-id]");
+ if(c){
+  const id=c.dataset.id;
+  counts[id]=Math.max(0,counts[id]+Number(c.dataset.d));
+  document.getElementById(id+"-count").textContent=counts[id];
+  if(id==="boost"){
+   document.getElementById("boost-rate").textContent=(counts.boost*20)+"%";
+  }
+  calc();
+  return;
+ }
+
+ const ch=e.target.closest("[data-group]");
+ if(ch){
+  const g=ch.dataset.group;
+  document.querySelectorAll(`[data-group="${g}"]`).forEach(x=>x.classList.remove("active"));
+  ch.classList.add("active");
+
+  if(g==="main"){
+   mainBonus=Number(ch.dataset.value);
+   document.getElementById("main-rate").textContent=mainBonus+"%";
+  }else{
+   friendBonus=Number(ch.dataset.value);
+   document.getElementById("friend-rate").textContent=friendBonus+"%";
+  }
+  calc();
+  return;
+ }
+
+ const b=e.target.closest(".bonus");
+ if(b){
+  b.classList.toggle("active");
+  calc();
+ }
+});
+
+calc();
+</script>
 </body>
 </html>

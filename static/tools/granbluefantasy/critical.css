@@ -1,33 +1,250 @@
+
 *{box-sizing:border-box}
-:root{--blue:#287db3;--pale:#edf7fd;--line:#d7e4ec;--text:#20313d}
-body{margin:0;padding:7px;background:linear-gradient(180deg,#eef8fd,#f7fafc);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
-.tool{width:100%;max-width:480px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:baseline;gap:5px;padding:2px 3px 5px}
-h1{font-size:18px;margin:0;color:#165477}
-header p{font-size:9px;color:#748895;margin:0;white-space:nowrap}
-.panel{background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 8px;margin-bottom:5px;box-shadow:0 2px 7px rgba(25,86,122,.06)}
-h2{font-size:12px;margin:0 0 3px;border-left:3px solid var(--blue);padding-left:5px;color:#496b7e}
-.weapon-list{display:grid;grid-template-columns:1fr 1fr;gap:2px 7px}
-.weapon{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:5px;align-items:center;min-height:39px}
-.weapon img,.summon-row img,.boost-row img{width:52px;height:29px;object-fit:cover;border-radius:4px;border:1px solid #d6e0e6;background:#eef2f4}
-.name{font-size:9px;font-weight:700;line-height:1.1}.note{font-size:7px;color:#82909a}
-.counter{display:flex;align-items:center;gap:2px}
-.counter button{width:22px;height:22px;padding:0;border:1px solid #bccdd7;border-radius:5px;background:#fff;color:#245e80;font-size:14px;font-weight:700}
-.counter b{min-width:12px;text-align:center;font-size:10px}
-.summon-row{display:grid;grid-template-columns:52px 35px 1fr;gap:5px;align-items:center;padding:2px 0}
-.label{font-size:9px;font-weight:700}
-.summon-row .label{display:flex;flex-direction:column;line-height:1}
-.summon-row .label small{font-size:7px;color:#9aa9b2;font-weight:500;margin-top:3px}
-.choices{display:flex;gap:2px}
-.choices button{flex:1;min-width:0;height:23px;padding:0 1px;border:1px solid #c9d6de;border-radius:4px;background:#f9fbfc;color:#405b69;font-size:8px;font-weight:700}
+:root{--blue:#287db3;--dark:#165477;--line:#d5e2ea;--pale:#edf7fd;--img-w:140px;--img-h:84px}
+body{margin:0;padding:10px;background:#eef8fd;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;color:#20313d}
+.tool{width:100%;max-width:520px;margin:auto}
+header{padding:4px 2px 9px}
+h1{margin:0;font-size:22px;color:var(--dark)}
+header p{margin:3px 0 0;font-size:11px;color:#718591}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:9px;box-shadow:0 3px 10px rgba(25,86,122,.07)}
+h2{font-size:15px;margin:0 0 8px;border-left:4px solid var(--blue);padding-left:7px;color:#42677c}
+
+/* 共通画像サイズ */
+.item-image{width:var(--img-w);height:var(--img-h);object-fit:cover;display:block;border:1px solid #d6e0e6;border-radius:5px}
+
+/* 武器：縦並び。名称・%は元の横配置。操作は横並び */
+.weapon-list{display:flex;flex-direction:column;gap:7px}
+.weapon-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(0,1fr) auto;
+ gap:10px;
+ align-items:center;
+ padding:7px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+.name{display:block;font-size:12px;font-weight:700;line-height:1.2}
+.pct{display:block;margin-top:3px;font-size:10px;color:#7e8e98}
+.controls,.counter{display:flex;align-items:center;gap:7px}
+.controls button,.counter button{
+ width:35px;height:35px;padding:0;border:1px solid #b9cbd6;border-radius:7px;
+ background:#fff;color:#245f83;font-size:20px;font-weight:700
+}
+.controls strong,.counter strong{min-width:22px;text-align:center;font-size:14px}
+
+/* メイン・フレンド：元の画像＋名称＋％配置、ボタンだけ右 */
+.support-list{display:flex;flex-direction:column;gap:8px}
+.support-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(72px,1fr) 150px;
+ gap:10px;
+ align-items:center;
+ padding:8px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+.choices{display:grid;gap:5px}
+.choices.six{grid-template-columns:repeat(3,1fr)}
+.choices.two{grid-template-columns:repeat(2,1fr)}
+.choices button{
+ height:30px;padding:0 3px;border:1px solid #c7d5de;border-radius:6px;
+ background:#f9fbfc;color:#405b69;font-size:10px;font-weight:700
+}
 .choices button.active{background:var(--blue);border-color:var(--blue);color:#fff}
-.boost-row{display:grid;grid-template-columns:52px 48px auto 34px;gap:5px;align-items:center;padding:2px 0}
-.boost-row small{font-size:8px;color:#778b97}
-.bonus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:3px}
-.bonus{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:4px;align-items:center;padding:3px;border:1px solid #cedbe3;border-radius:6px;background:#fff;text-align:left}
-.bonus img{grid-row:1/3;width:42px;height:24px;object-fit:cover;border-radius:4px;border:1px solid #d6e0e6}
-.bonus span{font-size:8px;font-weight:700}.bonus small{font-size:7px;color:#7e8e98}
+
+/* ブースト：武器と同じ */
+.boost-card{
+ display:grid;
+ grid-template-columns:var(--img-w) minmax(0,1fr) auto;
+ gap:10px;
+ align-items:center;
+ padding:8px;
+ border:1px solid #cedbe3;
+ border-radius:9px;
+ background:#fff
+}
+
+/* 下3つ：横並び */
+.bottom-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
+.bonus{
+ padding:6px 3px;border:1px solid #cedbe3;border-radius:9px;background:#fff;
+ color:#20313d;text-align:center;min-width:0
+}
+.bonus .item-image{width:100%;height:auto;aspect-ratio:5/3}
+.bonus .name{margin-top:5px;font-size:10px;white-space:nowrap}
+.bonus .pct{font-size:9px}
 .bonus.active{background:var(--pale);border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
-.result{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;background:linear-gradient(135deg,#17699d,#2f91c9);border-radius:9px;color:#fff;box-shadow:0 3px 10px rgba(23,105,157,.18)}
-.result span{font-size:10px}.result strong{font-size:29px;line-height:1}
-@media(max-width:390px){.weapon-list{grid-template-columns:1fr}header p{display:none}}
+
+.result{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:linear-gradient(135deg,#17699d,#2f91c9);border-radius:11px;color:#fff}
+.result span{font-size:13px;font-weight:700}
+.result strong{font-size:34px}
+
+@media(max-width:430px){
+ :root{--img-w:112px;--img-h:67.2px}
+ .weapon-card,.boost-card{gap:6px}
+ .support-card{grid-template-columns:var(--img-w) minmax(68px,1fr) 138px;gap:6px}
+ .choices{gap:3px}
+ .choices button{height:31px;font-size:9px}
+ .controls,.counter{gap:4px}
+ .controls button,.counter button{width:31px;height:31px}
+}
+
+.support-card > div:nth-child(2) .name{white-space:nowrap;font-size:11px}
+
+/* メイン・フレンド：ボタンを枠内に収める */
+.support-card{
+  grid-template-columns:var(--img-w) minmax(64px,1fr) 126px !important;
+}
+.support-card .choices{
+  width:126px;
+  max-width:126px;
+  min-width:0;
+}
+.support-card .choices.six{
+  grid-template-columns:repeat(3,40px) !important;
+  justify-content:end;
+}
+.support-card .choices.two{
+  grid-template-columns:repeat(2,60px) !important;
+  justify-content:end;
+}
+.support-card .choices button{
+  width:100%;
+  min-width:0;
+  height:28px;
+  padding:0;
+  font-size:9px;
+}
+@media(max-width:430px){
+  .support-card{
+    grid-template-columns:var(--img-w) minmax(54px,1fr) 112px !important;
+  }
+  .support-card .choices{
+    width:112px;
+    max-width:112px;
+  }
+  .support-card .choices.six{
+    grid-template-columns:repeat(3,35px) !important;
+  }
+  .support-card .choices.two{
+    grid-template-columns:repeat(2,53px) !important;
+  }
+  .support-card .choices button{
+    height:27px;
+    font-size:8px;
+  }
+}
+
+/* メイン・フレンド：右側の残り領域をボタンでいっぱいに使う */
+.support-card{
+  grid-template-columns:var(--img-w) minmax(62px,90px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.support-card > .choices{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin:0 !important;
+  align-self:stretch !important;
+}
+.support-card > .choices.six{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-template-rows:repeat(2,1fr) !important;
+  justify-content:stretch !important;
+}
+.support-card > .choices.two{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows:1fr !important;
+  justify-content:stretch !important;
+}
+.support-card > .choices button{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:0 4px !important;
+  font-size:10px !important;
+}
+@media(max-width:430px){
+  .support-card{
+    grid-template-columns:var(--img-w) minmax(55px,72px) minmax(0,1fr) !important;
+  }
+  .support-card > .choices button{
+    font-size:9px !important;
+  }
+}
+
+/* 武器：右側の残り領域を「－ / 本数 / ＋」で3等分 */
+.weapon-card{
+  grid-template-columns:var(--img-w) minmax(72px,95px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.weapon-card > .controls{
+  width:100% !important;
+  min-width:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:5px !important;
+  align-items:stretch !important;
+}
+.weapon-card > .controls button,
+.weapon-card > .controls strong{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+}
+.weapon-card > .controls strong{
+  font-size:14px !important;
+}
+@media(max-width:430px){
+  .weapon-card{
+    grid-template-columns:var(--img-w) minmax(58px,75px) minmax(0,1fr) !important;
+  }
+  .weapon-card > .controls{
+    gap:4px !important;
+  }
+}
+
+/* ブースト：武器と同じく右側を「－ / 本数 / ＋」で3等分 */
+.boost-card{
+  grid-template-columns:var(--img-w) minmax(72px,95px) minmax(0,1fr) !important;
+  align-items:stretch !important;
+}
+.boost-card > .counter{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:5px !important;
+  align-items:stretch !important;
+}
+.boost-card > .counter button,
+.boost-card > .counter strong{
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+}
+.boost-card > .counter strong{
+  font-size:14px !important;
+}
+@media(max-width:430px){
+  .boost-card{
+    grid-template-columns:var(--img-w) minmax(58px,75px) minmax(0,1fr) !important;
+  }
+  .boost-card > .counter{
+    gap:4px !important;
+  }
+}
