@@ -296,6 +296,176 @@ header{
 .input-scroll .panel:last-child{
   margin-bottom:2px;
 }
+
+/* クリティカル率の横：正方形リセットボタン */
+.result-right{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.reset-button{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.75);
+  border-radius:7px;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  font-size:23px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+}
+.reset-button:active{
+  background:rgba(255,255,255,.28);
+}
+
+/* リセットボタン：クリティカル欄の外に独立表示 */
+.reset-button{
+  flex:0 0 auto;
+  order:1;
+  width:100% !important;
+  height:34px !important;
+  min-width:0 !important;
+  margin:-2px 0 9px 0 !important;
+  padding:0 12px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #e7b6b6 !important;
+  border-radius:8px !important;
+  background:#fbeaea !important;
+  color:#a34b4b !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  cursor:pointer;
+}
+.reset-button:active{
+  background:#f5dada !important;
+}
+.input-scroll{
+  order:2;
+}
+
+/* クリティカル率＋外側の正方形リセットを横並び */
+.result-row{
+  flex:0 0 auto;
+  order:1;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 48px;
+  gap:8px;
+  margin-bottom:9px;
+  align-items:stretch;
+}
+.result-row .result{
+  order:initial !important;
+  margin:0 !important;
+  width:100%;
+}
+.result-row .reset-button{
+  order:initial !important;
+  width:48px !important;
+  height:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  min-height:48px !important;
+  max-height:48px !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:center !important;
+  justify-self:end !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #e5b0b0 !important;
+  border-radius:8px !important;
+  background:#f9e3e3 !important;
+  color:#a84c4c !important;
+  font-size:25px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+}
+.result-row .reset-button:active{
+  background:#f3d2d2 !important;
+}
+.input-scroll{order:2}
+
+/* クリティカル欄とリセットボタンの高さを完全に統一 */
+.result-row{
+  grid-template-columns:minmax(0,1fr) 56px !important;
+  align-items:stretch !important;
+}
+.result-row .result{
+  height:56px !important;
+  min-height:56px !important;
+  max-height:56px !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+}
+.result-row .reset-button{
+  width:56px !important;
+  height:56px !important;
+  min-width:56px !important;
+  max-width:56px !important;
+  min-height:56px !important;
+  max-height:56px !important;
+  align-self:stretch !important;
+}
+
+/* リセットボタン：薄い青 */
+.result-row .reset-button{
+  background:#e8f4fb !important;
+  border-color:#b8d9ec !important;
+  color:#287db3 !important;
+}
+.result-row .reset-button:active{
+  background:#d8ecf8 !important;
+}
+
+/* リセットボタン：背景と区別できる青みグレー */
+.result-row .reset-button{
+  background:#dce8ee !important;
+  border-color:#9fb9c6 !important;
+  color:#315f75 !important;
+}
+.result-row .reset-button:active{
+  background:#cbdde6 !important;
+}
+
+/* リセットボタン：元の薄い赤 */
+.result-row .reset-button{
+  background:#f9e3e3 !important;
+  border-color:#e5b0b0 !important;
+  color:#a84c4c !important;
+}
+.result-row .reset-button:active{
+  background:#f3d2d2 !important;
+}
+
+/* リセットボタン：薄い水色＋黒枠 */
+.result-row .reset-button{
+  background:#e8f4fb !important;
+  border-color:#222 !important;
+  color:#287db3 !important;
+}
+.result-row .reset-button:active{
+  background:#d8ecf8 !important;
+}
+
+/* リセットボタン：薄い水色＋青灰色の枠 */
+.result-row .reset-button{
+  background:#e8f4fb !important;
+  border:1px solid #8eb8cf !important;
+  color:#287db3 !important;
+}
+.result-row .reset-button:active{
+  background:#d8ecf8 !important;
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
@@ -312,10 +482,13 @@ gtag('config','G-HXM85ZV043');
 <p>本数・加護を選ぶだけで自動計算</p>
 </header>
 
+<div class="result-row">
 <section class="result">
 <span>クリティカル率</span>
 <strong id="rate">0%</strong>
 </section>
+<button type="button" id="reset-button" class="reset-button" aria-label="リセット">↻</button>
+</div>
 <div class="input-scroll">
 <section class="panel">
 <h2>武器</h2>
@@ -476,6 +649,35 @@ document.addEventListener("click",e=>{
 });
 
 calc();
+
+document.getElementById("reset-button").addEventListener("click", () => {
+  Object.keys(counts).forEach(id => {
+    counts[id] = 0;
+    const countEl = document.getElementById(id + "-count");
+    if(countEl) countEl.textContent = "0";
+  });
+
+  mainBonus = 0;
+  friendBonus = 0;
+
+  document.getElementById("main-rate").textContent = "0%";
+  document.getElementById("friend-rate").textContent = "0%";
+  document.getElementById("boost-rate").textContent = "0%";
+
+  document.querySelectorAll('[data-group="main"]').forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.value === "0");
+  });
+
+  document.querySelectorAll('[data-group="friend"]').forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.value === "0");
+  });
+
+  document.getElementById("gab").classList.remove("active");
+  document.getElementById("uruki").classList.remove("active");
+  document.getElementById("kusabi").classList.remove("active");
+
+  calc();
+});
 </script>
 </body>
 </html>

@@ -79,3 +79,32 @@ document.addEventListener("click",e=>{
 });
 
 calc();
+
+document.getElementById("reset-button").addEventListener("click", () => {
+  Object.keys(counts).forEach(id => {
+    counts[id] = 0;
+    const countEl = document.getElementById(id + "-count");
+    if(countEl) countEl.textContent = "0";
+  });
+
+  mainBonus = 0;
+  friendBonus = 0;
+
+  document.getElementById("main-rate").textContent = "0%";
+  document.getElementById("friend-rate").textContent = "0%";
+  document.getElementById("boost-rate").textContent = "0%";
+
+  document.querySelectorAll('[data-group="main"]').forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.value === "0");
+  });
+
+  document.querySelectorAll('[data-group="friend"]').forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.value === "0");
+  });
+
+  document.getElementById("gab").classList.remove("active");
+  document.getElementById("uruki").classList.remove("active");
+  document.getElementById("kusabi").classList.remove("active");
+
+  calc();
+});
