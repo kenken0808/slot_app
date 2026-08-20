@@ -6,14 +6,14 @@ const weapons=[
 {id:"levi",name:"リヴァ槍",rate:11,boosted:true,img:"/static/tools/granbluefantasy/img/leviathan_spear.png"}];
 
 const counts={wam:0,olu:0,mare:0,levi:0,boost:0};
-let mainBonus=170,friendBonus=170;
+let mainBonus=0,friendBonus=0;
 
 document.getElementById("weapon-list").innerHTML=weapons.map(w=>`
 <div class="weapon-card">
  <img class="item-image" src="${w.img}" alt="${w.name.replace(/<br>/g,"・")}">
  <div>
   <span class="name">${w.name}</span>
-  <span class="pct">${w.rate}%${w.boosted?"":"・加護対象外"}</span>
+  <span class="pct">${w.rate}%${w.boosted?"":"<br>加護対象外"}</span>
  </div>
  <div class="controls">
   <button type="button" data-id="${w.id}" data-d="-1">−</button>

@@ -254,6 +254,48 @@ h2{font-size:15px;margin:0 0 8px;border-left:4px solid var(--blue);padding-left:
     gap:4px !important;
   }
 }
+
+/* 画面全体を固定し、結果を常時表示。入力欄のみスクロール */
+html,body{
+  height:100%;
+  overflow:hidden;
+}
+body{
+  padding:10px;
+}
+.tool{
+  height:calc(100dvh - 20px);
+  max-height:calc(100dvh - 20px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+header{
+  flex:0 0 auto;
+}
+
+/* 上部固定のクリティカル表示 */
+.result{
+  flex:0 0 auto;
+  order:1;
+  margin-bottom:9px;
+  position:relative;
+  z-index:10;
+}
+
+/* 武器・加護補正だけスクロール */
+.input-scroll{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-right:2px;
+  order:2;
+}
+.input-scroll .panel:last-child{
+  margin-bottom:2px;
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM85ZV043"></script>
 <script>
@@ -270,6 +312,11 @@ gtag('config','G-HXM85ZV043');
 <p>本数・加護を選ぶだけで自動計算</p>
 </header>
 
+<section class="result">
+<span>クリティカル率</span>
+<strong id="rate">0%</strong>
+</section>
+<div class="input-scroll">
 <section class="panel">
 <h2>武器</h2>
 <div id="weapon-list" class="weapon-list"></div>
@@ -284,15 +331,15 @@ gtag('config','G-HXM85ZV043');
  <img class="item-image" src="/static/tools/granbluefantasy/img/main.png" alt="メイン">
  <div>
   <span class="name">メイン</span>
-  <span class="pct" id="main-rate">170%</span>
+  <span class="pct" id="main-rate">0%</span>
  </div>
  <div class="choices six">
-  <button data-group="main" data-value="0">なし</button>
+  <button class="active" data-group="main" data-value="0">なし</button>
   <button data-group="main" data-value="120">4凸</button>
   <button data-group="main" data-value="140">5凸</button>
   <button data-group="main" data-value="150">超3</button>
   <button data-group="main" data-value="160">超4</button>
-  <button class="active" data-group="main" data-value="170">超5</button>
+  <button data-group="main" data-value="170">超5</button>
  </div>
 </div>
 
@@ -300,11 +347,11 @@ gtag('config','G-HXM85ZV043');
  <img class="item-image" src="/static/tools/granbluefantasy/img/friend.png" alt="フレンド">
  <div>
   <span class="name">フレンド</span>
-  <span class="pct" id="friend-rate">170%</span>
+  <span class="pct" id="friend-rate">0%</span>
  </div>
  <div class="choices two">
-  <button data-group="friend" data-value="0">なし</button>
-  <button class="active" data-group="friend" data-value="170">超5</button>
+  <button class="active" data-group="friend" data-value="0">なし</button>
+  <button data-group="friend" data-value="170">超5</button>
  </div>
 </div>
 
@@ -344,11 +391,8 @@ gtag('config','G-HXM85ZV043');
 </div>
 
 </section>
+</div>
 
-<section class="result">
-<span>クリティカル率</span>
-<strong id="rate">0%</strong>
-</section>
 </main>
 
 <script>
@@ -359,14 +403,14 @@ const weapons=[
 {id:"levi",name:"リヴァ槍",rate:11,boosted:true,img:"/static/tools/granbluefantasy/img/leviathan_spear.png"}];
 
 const counts={wam:0,olu:0,mare:0,levi:0,boost:0};
-let mainBonus=170,friendBonus=170;
+let mainBonus=0,friendBonus=0;
 
 document.getElementById("weapon-list").innerHTML=weapons.map(w=>`
 <div class="weapon-card">
  <img class="item-image" src="${w.img}" alt="${w.name.replace(/<br>/g,"・")}">
  <div>
   <span class="name">${w.name}</span>
-  <span class="pct">${w.rate}%${w.boosted?"":"・加護対象外"}</span>
+  <span class="pct">${w.rate}%${w.boosted?"":"<br>加護対象外"}</span>
  </div>
  <div class="controls">
   <button type="button" data-id="${w.id}" data-d="-1">−</button>

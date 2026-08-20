@@ -248,3 +248,45 @@ h2{font-size:15px;margin:0 0 8px;border-left:4px solid var(--blue);padding-left:
     gap:4px !important;
   }
 }
+
+/* 画面全体を固定し、結果を常時表示。入力欄のみスクロール */
+html,body{
+  height:100%;
+  overflow:hidden;
+}
+body{
+  padding:10px;
+}
+.tool{
+  height:calc(100dvh - 20px);
+  max-height:calc(100dvh - 20px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+header{
+  flex:0 0 auto;
+}
+
+/* 上部固定のクリティカル表示 */
+.result{
+  flex:0 0 auto;
+  order:1;
+  margin-bottom:9px;
+  position:relative;
+  z-index:10;
+}
+
+/* 武器・加護補正だけスクロール */
+.input-scroll{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-right:2px;
+  order:2;
+}
+.input-scroll .panel:last-child{
+  margin-bottom:2px;
+}
