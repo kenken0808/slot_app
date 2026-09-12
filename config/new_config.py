@@ -17,6 +17,176 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "mieruko": {
+        "display_name": "L 見える子ちゃん",
+        "file_key": "mieruko",
+        "search_word": "みえるこちゃん",
+        "links": [
+            {
+                "og_image": "icon/mieruko_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n53ca418c328c"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.8,
+            "mode_options": ["ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_rb_game": (0, 3000, 50, 3000),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 3000, 50, 3000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：600G
+                    朝イチ以外：900G
+                    """
+            }
+        }
+    },
+    "mogumogu": {
+        "display_name": "L モグモグ風林火山 大海戦の巻",
+        "file_key": "mogumogu",
+        "search_word": "もぐもぐふうりんかざんだいかいせんのまき",
+        "links": [
+            {
+                "og_image": "icon/mogumogu_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n4fc807715c60"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 7, 1, 7),
+            "at_gap": (0, 3000, 50, 3000),
+            "prev_rb_game": (0, 3000, 50, 3000),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 3000, 50, 3000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：299G or 3周期
+                    朝イチ以外：699G or 6周期
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    朝イチ　　：3スルー後4回目
+                    朝イチ以外：7スルー後8回目
+                    """
+            }
+        }
+    },
+    "rentgirlfriend": {
+        "display_name": "L 彼女、お借りします",
+        "file_key": "rentgirlfriend",
+        "search_word": "かのじょおかりします",
+        "links": [
+            {
+                "og_image": "icon/rentgirlfriend_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n9bdf323841e3"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　：600G
+                    ビッグ後：1000G
+                    バケ後　：800G
+                    """
+            }
+        }
+    },
+    "rascal": {
+        "display_name": "L 青春ブタ野郎はバニーガール先輩の夢を見ない",
+        "file_key": "rascal",
+        "search_word": "せいしゅんぶたやろうはばにーがーるせんぱいのゆめをみないあおぶた",
+        "links": [
+            {
+                "og_image": "icon/rascal_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n8dab5486b1a3"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.5,
+            "mode_options": ["CZ", "ST"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 600, 50, 600,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 850, 50, 850),
+            "prev_rb_game": (0, 600, 50, 600),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 850, 50, 850),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：560G
+
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：699G
+                    駆け抜け後：699G
+                    下位後　　：899G
+                    上位後　　：699G
+
+                    【思春期pt天井】
+                    恩恵はCZ当選。
+                    不問：1000pt
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    不問：6スルー後7回目
+                    """
+            }
+        }
+    },
     "supabinko": {
         "display_name": "L すーぱぁびん娘",
         "file_key": "supabinko",
