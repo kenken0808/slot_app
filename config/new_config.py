@@ -17,6 +17,90 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "magicalrevolution": {
+        "display_name": "L 転生王女と天才令嬢の魔法革命",
+        "file_key": "magicalrevolution",
+        "search_word": "てんせいおうじょとてんさいれいじょうのまほうかくめい",
+        "links": [
+            {
+                "og_image": "icon/magicalrevolution_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n07ad47ed9205"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["CZ", "ボーナス"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後"],
+            "game": (0, 450, 50, 450,0),
+            "through": (0, 4, 1, 4),
+            "at_gap": (0, 550, 50, 550),
+            "prev_rb_game": (0, 450, 50, 450),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 550, 50, 550),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：410G
+                    朝イチ以外：510G
+
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ　　：310G
+                    朝イチ以外：410G
+                    """
+            }
+        }
+    },
+    "paripikoumei": {
+        "display_name": "L パリピ孔明",
+        "file_key": "paripikoumei",
+        "search_word": "ぱりぴこうめい",
+        "links": [
+            {
+                "og_image": "icon/paripikoumei_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n091ad4be891e"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["ボーナス", "連荘"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 4, 1, 4),
+            "at_gap": (0, 2500, 50, 2500),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 2500, 50, 2500),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：428G
+                    朝イチ以外：1009G
+                    駆け抜け後：428G
+
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：ステチェン20周期
+                    """
+            }
+        }
+    },
     "beastking": {
         "display_name": "L 獣王",
         "file_key": "beastking",
