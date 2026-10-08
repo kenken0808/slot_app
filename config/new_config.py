@@ -72,7 +72,7 @@ machine_configs = {
         "settings": {
             "exclude_games": 40,
             "coin_moti": 31.0,
-            "mode_options": ["ボーナス", "連荘"],
+            "mode_options": ["ST", "連荘"],
             "time_options": ["朝イチ", "朝イチ以外"],
             "game": (0, 1050, 50, 1050,0),
             "through": (0, 4, 1, 4),
