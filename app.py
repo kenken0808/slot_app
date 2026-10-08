@@ -618,6 +618,10 @@ def filter_dataframe_v2(df, form, settings):
         mask &= df["朝イチ"].eq(0)
         mask &= df["前回連荘数"].eq(1)
 
+    elif time_value == "駆け抜け後以外":
+        mask &= df["朝イチ"].eq(0)
+        mask &= df["前回連荘数"].ne(1)
+
     elif time_value == "下位後":
         mask &= df["朝イチ"].eq(0)
         mask &= df["前回種別"].eq("下位")
