@@ -17,6 +17,92 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "beastking": {
+        "display_name": "L 獣王",
+        "file_key": "beastking",
+        "search_word": "じゅうおう",
+        "links": [
+            {
+                "og_image": "icon/beastking_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n8fec68d46c8c"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.8,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：599G
+                    朝イチ以外：999G
+                    """
+            }
+        }
+    },
+    "sunbreak": {
+        "display_name": "L モンスターハンターライズ：サンブレイク",
+        "file_key": "sunbreak",
+        "search_word": "もんすたーはんたーらいずさんぶれいくもんはん",
+        "links": [
+            {
+                "og_image": "icon/sunbreak_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n8b4c9b25b623"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.0,
+            "mode_options": ["AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "下位後", "上位後"],
+            "game": (0, 1100, 50, 1100,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1100, 50, 1100),
+            "prev_rb_game": (0, 1100, 50, 1100),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1100, 50, 1100),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    不問：999G
+
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：333G
+
+                    【オトモ潜水艇天井】
+                    恩恵はCZ当選。
+                    不問：5周期
+                    """,
+                "through": """
+                    【CZスルー天井】
+                    恩恵は成功濃厚のCZ当選。
+                    不問：6スルー後7回目
+                    """
+            }
+        }
+    },
     "mieruko": {
         "display_name": "L 見える子ちゃん",
         "file_key": "mieruko",
