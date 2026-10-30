@@ -17,6 +17,42 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "gushingovermagicalgirls": {
+        "display_name": "L 魔法少女にあこがれて",
+        "file_key": "gushingovermagicalgirls",
+        "search_word": "まほうしょうじょにあこがれて",
+        "links": [
+            {
+                "og_image": "icon/gushingovermagicalgirls_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n37739d9fdce1"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.4,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：799G
+                    朝イチ以外：999G
+            }
+        }
+    },
     "magicalrevolution": {
         "display_name": "L 転生王女と天才令嬢の魔法革命",
         "file_key": "magicalrevolution",
