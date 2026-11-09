@@ -17,6 +17,134 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "ragdoll": {
+        "display_name": "L ラグナドール",
+        "file_key": "ragdoll",
+        "search_word": "らぐなどーる",
+        "links": [
+            {
+                "og_image": "icon/ragdoll_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n94e0dbac859d"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.0,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "駆け抜け後以外", "下位後", "上位後"],
+            "game": (0, 550, 50, 550,0),
+            "through": (0, 5, 1, 5),
+            "at_gap": (0, 1050, 50, 1050),
+            "prev_rb_game": (0, 550, 50, 550),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1050, 50, 1050),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    不問：500G
+
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ　　：500G
+                    朝イチ以外：999G
+                    """
+            }
+        }
+    },
+    "saintseiyazodiac": {
+        "display_name": "L 聖闘士星矢 黄金十二宮",
+        "file_key": "saintseiyazodiac",
+        "search_word": "せいんとせいやおうごんじゅうにきゅう",
+        "links": [
+            {
+                "og_image": "icon/saintseiyazodiac_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n7768b3f4a047"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 31.3,
+            "mode_options": ["CZ", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "駆け抜け後以外", "下位後", "上位後"],
+            "game": (0, 700, 50, 700,0),
+            "through": (0, 6, 1, 6),
+            "at_gap": (0, 1200, 50, 1200),
+            "prev_rb_game": (0, 700, 50, 700),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 1200, 50, 1200),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【CZ間天井】
+                    恩恵はCZ当選。
+                    朝イチ：300G or 3周期
+                    下位後：600G or 6周期
+                    上位後：300G or 3周期
+
+                    【AT間天井】
+                    恩恵はAT当選。
+                    朝イチ：900G
+                    下位後：1200G
+                    上位後：900G
+                    """
+            }
+        }
+    },
+    "godzillavsevangelion2": {
+        "display_name": "L ゴジラ対エヴァンゲリオン2",
+        "file_key": "godzillavsevangelion2",
+        "search_word": "ごじらたいえゔぁんげりおんつーごじらばーさすごじえゔぁ",
+        "links": [
+            {
+                "og_image": "icon/godzillavsevangelion2_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/n2d85044af495"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 30.0,
+            "mode_options": ["ボーナス", "AT"],
+            "time_options": ["朝イチ", "朝イチ以外", "駆け抜け後", "駆け抜け後以外", "下位後", "上位後"],
+            "game": (0, 950, 50, 950,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 2300, 50, 2300),
+            "prev_rb_game": (0, 950, 50, 950),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 2300, 50, 2300),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵はボーナス当選。
+                    朝イチ　　：400G
+                    朝イチ以外：850G
+
+                    【AT間天井】
+                    恩恵はAT当選。
+                    ※AT間天井は天井G数到達後に引いたボーナスがAT濃厚。
+                    朝イチ　　：750G
+                    朝イチ以外：500G or 1000G or 1500G
+                    """
+            }
+        }
+    },
     "gushingovermagicalgirls": {
         "display_name": "L 魔法少女にあこがれて",
         "file_key": "gushingovermagicalgirls",
@@ -2938,7 +3066,7 @@ TOOL_PASSWORDS = {
 # =====================================================================
 # 20260623新ツール用パスワード
 # =====================================================================
-NEW_TOOL_PASSWORD = "811567"
+NEW_TOOL_PASSWORD = "221288"
 
 __all__ = [
     "machine_configs",
