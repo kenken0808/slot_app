@@ -1099,14 +1099,6 @@ input[type="submit"]:active {
 
   <div class="settings-divider"></div>
 
-  <label>入力制限</label>
-  <select id="range-mode-select">
-    <option value="manual">手動</option>
-    <option value="auto">自動</option>
-  </select>
-
-  <div class="settings-divider"></div>
-
   <label>機種名ソート</label>
   <select id="machine-sort-select">
     <option value="default">導入順</option>
@@ -1383,7 +1375,7 @@ input[type="submit"]:active {
     <div class="form-row cz-gap">
       <label>{{ labels.get("prev_rb_game", "前回REG当選G数") }}</label>
 
-      <div class="range auto-range">
+      <div class="range">
 
         <select name="prev_rb_game_min" class="range-min">
           {% for i in prev_rb_game_options %}
@@ -1419,7 +1411,7 @@ input[type="submit"]:active {
     <div class="form-row cz-gap">
       <label>{{ labels.get("prev_at_game", "前回当選G数") }}</label>
 
-      <div class="range auto-range">
+      <div class="range">
 
         <select name="prev_at_game_min" class="range-min">
           {% for i in prev_at_game_options %}
@@ -1442,7 +1434,7 @@ input[type="submit"]:active {
     <div class="form-row">
       <label>{{ labels.get("prev_at_coin", "前回獲得枚数") }}</label>
 
-      <div class="range auto-range">
+      <div class="range">
 
         <select name="prev_at_coin_min" class="range-min">
           {% for i in prev_at_coin_options %}
@@ -1465,7 +1457,7 @@ input[type="submit"]:active {
     <div class="form-row">
       <label>{{ labels.get("prev_diff", "前回差枚数") }}</label>
 
-      <div class="range auto-range">
+      <div class="range">
 
         <select name="prev_diff_min" class="range-min">
           {% for i in prev_diff_options %}
@@ -2613,7 +2605,6 @@ function onLockChange({
   const bgSelect = document.getElementById("bg-select");
   const textSelect = document.getElementById("text-select");
   const accentSelect = document.getElementById("accent-select");
-  const rangeModeSelect = document.getElementById("range-mode-select");
   const machineSortSelect = document.getElementById("machine-sort-select");
 
   const lendMedalsSelect = document.getElementById("lend-medals-select");
@@ -2657,7 +2648,6 @@ function onLockChange({
   const savedBg = localStorage.getItem("theme_bg");
   const savedText = localStorage.getItem("theme_text");
   const savedAccent = localStorage.getItem("theme_accent");
-  const savedRangeMode = localStorage.getItem("range_mode");
   const savedMachineSort =
     localStorage.getItem("machine_sort") || "default";
 
@@ -2680,10 +2670,6 @@ function onLockChange({
   if (savedAccent) {
     accentSelect.value = savedAccent;
     applyAccentTheme(savedAccent);
-  }
-
-  if (savedRangeMode && rangeModeSelect) {
-    rangeModeSelect.value = savedRangeMode;
   }
 
   if (machineSortSelect) {
@@ -2758,13 +2744,6 @@ function onLockChange({
     localStorage.setItem("theme_accent", accent);
     applyAccentTheme(accent);
   });
-
-  // 範囲入力設定変更
-  if (rangeModeSelect) {
-    rangeModeSelect.addEventListener("change", () => {
-      localStorage.setItem("range_mode", rangeModeSelect.value);
-    });
-  }
 
   // 機種一覧並び順変更
   if (machineSortSelect) {
@@ -2966,74 +2945,79 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-
 <script>
   // =====================================================
-  // 20260603最小最大値の管理
+  // 最小値・最大値の範囲制限（手動入力専用）
   // =====================================================
-/* =====================================================
-   🟡 AUTO RANGE
-===================================================== */
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
-  document.querySelectorAll(".auto-range").forEach(range => {
+    document.querySelectorAll(".range").forEach(range => {
 
-    const min = range.querySelector(".range-min");
-    const max = range.querySelector(".range-max");
+      const min = range.querySelector(".range-min");
+      const max = range.querySelector(".range-max");
 
-    if (!min || !max) return;
+      if (!min || !max) return;
 
-    const values =
-      Array.from(min.options).map(o => Number(o.value));
+      // 選択肢を数値の昇順で取得
+      const values = Array.from(min.options)
+        .map(opt => Number(opt.value))
+        .sort((a, b) => a - b);
 
-    // =========================
-    // 端の値を選べないようにする
-    // =========================
-    Array.from(min.options).forEach(opt => {
-      if (Number(opt.value) === values[values.length - 1]) {
-        opt.disabled = true;
-      }
-    });
+      // 最小値・最大値の整合性チェック
+      function updateRange() {
 
-    Array.from(max.options).forEach(opt => {
-      if (Number(opt.value) === values[0]) {
-        opt.disabled = true;
-      }
-    });
+        const minValue = Number(min.value);
+        const maxValue = Number(max.value);
 
-    min.addEventListener("change", () => {
+        // 最大値は最小値より大きい値のみ選択可能
+        Array.from(max.options).forEach(opt => {
+          opt.disabled = Number(opt.value) <= minValue;
+        });
 
-      const rangeMode =
-        localStorage.getItem("range_mode") || "auto";
+        // 最小値は最大値より小さい値のみ選択可能
+        Array.from(min.options).forEach(opt => {
+          opt.disabled = Number(opt.value) >= maxValue;
+        });
 
-      if (rangeMode !== "auto") return;
-
-      const idx = values.indexOf(Number(min.value));
-
-      if (idx >= 0 && idx < values.length - 1) {
-        max.value = values[idx + 1];
       }
 
-    });
+      // 最小値変更時
+      min.addEventListener("change", () => {
 
-    max.addEventListener("change", () => {
+        if (Number(min.value) >= Number(max.value)) {
+          const next = values.find(v => v > Number(min.value));
 
-      const rangeMode =
-        localStorage.getItem("range_mode") || "auto";
+          if (next !== undefined) {
+            max.value = String(next);
+          }
+        }
 
-      if (rangeMode !== "auto") return;
+        updateRange();
 
-      const idx = values.indexOf(Number(max.value));
+      });
 
-      if (idx > 0) {
-        min.value = values[idx - 1];
-      }
+      // 最大値変更時
+      max.addEventListener("change", () => {
+
+        if (Number(max.value) <= Number(min.value)) {
+          const previous = [...values].reverse()
+            .find(v => v < Number(max.value));
+
+          if (previous !== undefined) {
+            min.value = String(previous);
+          }
+        }
+
+        updateRange();
+
+      });
+
+      // 初期表示時にも適用
+      updateRange();
 
     });
 
   });
-
-});
 </script>
 
 <script>
