@@ -968,6 +968,17 @@ def all_tool():
     except:
         input_game = defaults["game"]
 
+    # =========================
+    # 閉店時間
+    # =========================
+    try:
+        closing_hours = int(request.form.get("closing_hours", 0))
+    except:
+        closing_hours = 0
+
+    if closing_hours not in (0, 1, 2, 3):
+        closing_hours = 0
+
     selected_custom_condition = request.form.get("custom_condition", "不問")
 
 
@@ -1159,6 +1170,7 @@ def all_tool():
             mode_options=mode_options,
             time_options=time_options,
             game_options=game_options,
+            closing_hours=closing_hours,
 
             through_options=["不問"] + build_range_options(through),
             at_gap_options=build_range_options(at_gap),
@@ -1257,6 +1269,76 @@ def all_tool():
 
             count = len(filtered_df)
 
+            # =========================
+            # 閉店時間考慮
+            # =========================
+            if closing_hours > 0:
+
+                limit_g = closing_hours * 800
+
+                # 元データを変更しない
+                filtered_df = filtered_df.copy()
+
+                # 当選までの残りゲーム数
+                remaining_reg = (
+                    filtered_df["REGゲーム数"] - input_game
+                ).clip(lower=0)
+
+                # 閉店までに消化できる通常ゲーム数
+                normal_g = remaining_reg.clip(upper=limit_g)
+
+                # =========================
+                # 実質初当たり確率
+                # =========================
+
+                # 閉店までに初当たりを引けたか判定
+                hit_mask = remaining_reg <= limit_g
+
+                # 閉店までの当選件数
+                hit_count = int(hit_mask.sum())
+
+                # 実際に消化した通常ゲーム数の合計
+                total_normal_games = normal_g.sum()
+
+                # 非当選も含めた実質初当たり確率
+                if hit_count > 0:
+                    display_hatsu_atari = total_normal_games / hit_count
+                else:
+                    display_hatsu_atari = None
+
+                # =========================
+                # ATゲーム数・獲得枚数補正
+                # =========================
+
+                # ATを消化できるゲーム数
+                available_at = (
+                    limit_g - normal_g
+                ).clip(lower=0)
+
+                # 実際に消化できるATゲーム数
+                at_g = filtered_df["ATゲーム数"].clip(
+                    lower=0
+                )
+
+                consumed_at = at_g.clip(
+                    upper=available_at
+                )
+
+                # AT枚数を比率で補正
+                ratio = (
+                    consumed_at / at_g.where(at_g > 0, 1)
+                ).clip(lower=0, upper=1)
+
+                filtered_df["AT枚数"] *= ratio
+                filtered_df["ATゲーム数"] = consumed_at
+
+                # 投資計算用
+                avg_normal_games = normal_g.mean()
+
+            else:
+                avg_normal_games = None
+                display_hatsu_atari = None
+
             avg_reg_games = filtered_df["REGゲーム数"].mean()
             avg_at_games = filtered_df["ATゲーム数"].mean()
             avg_reg_coins = filtered_df["REG枚数"].mean()
@@ -1272,12 +1354,23 @@ def all_tool():
 
             hatsu_atari = max(avg_reg_games - input_game, 0)
 
-            avg_diff = (
-                (avg_at_coins + avg_reg_coins) / exchange_medals * 50
-                - (hatsu_atari * 50 / settings.get("coin_moti", 1)) / lend_medals * 50
+            # 閉店時間を考慮しない場合は従来の初当たり
+            if closing_hours == 0:
+                display_hatsu_atari = hatsu_atari
+
+            # 閉店考慮時は実際に消化した通常ゲーム数で投資計算
+            investment_g = (
+                avg_normal_games
+                if closing_hours > 0
+                else hatsu_atari
             )
 
-            avg_in = (hatsu_atari + avg_at_games) * 3
+            avg_diff = (
+                (avg_at_coins + avg_reg_coins) / exchange_medals * 50
+                - (investment_g * 50 / settings.get("coin_moti", 1)) / lend_medals * 50
+            )
+
+            avg_in = (investment_g + avg_at_games) * 3
             avg_out = avg_diff + avg_in
 
             payout_rate = (avg_out / avg_in) * 100 if avg_in else 0
@@ -1285,7 +1378,11 @@ def all_tool():
 
             result = {
                 "件数　　　": f"{count:,}件",
-                "初当たり　": f"1/{hatsu_atari:,.1f}",
+                "初当たり　": (
+                    f"1/{display_hatsu_atari:,.1f}"
+                    if display_hatsu_atari is not None
+                    else "当選なし"
+                ),
                 "獲得枚数　": f"{avg_at_coins:,.1f}枚",
                 "機械割　　": f"{payout_rate:,.1f}%",
                 "期待値　　": f"{expected_value:,.0f}円"
@@ -1307,6 +1404,12 @@ def all_tool():
         ("打ち切り条件", selected_mode),
         ("天井条件", selected_time),
     ]
+    calc_conditions.append(
+        (
+            "閉店時間",
+            f"{closing_hours}時間" if closing_hours > 0 else "考慮しない"
+        )
+    )
 
     # 基本条件：ロック問わず表示
     # ただしラベル先頭が *** の場合は非表示
@@ -1426,6 +1529,7 @@ def all_tool():
         time_options=time_options,
         input_game=input_game,
         game_options=game_options,
+        closing_hours=closing_hours,
 
         through_options=["不問"] + build_range_options(through),
         at_gap_options=build_range_options(at_gap),

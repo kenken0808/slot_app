@@ -1280,6 +1280,19 @@ input[type="submit"]:active {
     </select>
   </div>
 
+
+    <!-- 閉店時間 -->
+    <div class="form-row">
+      <label for="closing_hours">閉店時間</label>
+
+      <select name="closing_hours" id="closing_hours">
+        <option value="0" {% if closing_hours == 0 %}selected{% endif %}>考慮しない</option>
+        <option value="3" {% if closing_hours == 3 %}selected{% endif %}>3時間</option>
+        <option value="2" {% if closing_hours == 2 %}selected{% endif %}>2時間</option>
+        <option value="1" {% if closing_hours == 1 %}selected{% endif %}>1時間</option>
+      </select>
+    </div>
+
   <!-- スルー回数 -->
   <div class="form-row">
     <label>
