@@ -17,6 +17,46 @@ COMMON_LINKS = [
 # 機種マスタ（UI・設定・リンクすべて統合）
 # =========================================================
 machine_configs = {
+    "garointhedarkness": {
+        "display_name": "L 牙狼 闇を照らす者",
+        "file_key": "garointhedarkness",
+        "search_word": "がろやみをてらすもの",
+        "links": [
+            {
+                "og_image": "icon/garointhedarkness_v1.jpg",
+                "link_url": "https://note.com/kenslodata/n/ndd212753fc87"
+            }
+        ],
+        "settings": {
+            "exclude_games": 40,
+            "coin_moti": 32.9,
+            "mode_options": ["ボーナス", "SGB"],
+            "time_options": ["朝イチ", "朝イチ以外", "下位後", "上位後"],
+            "game": (0, 1050, 50, 1050,0),
+            "through": (0, 10, 1, 10),
+            "at_gap": (0, 4000, 50, 4000),
+            "prev_rb_game": (0, 1050, 50, 1050),
+            "prev_rb_coin": {
+                "不問": None,
+            },
+            "prev_at_game": (0, 4000, 50, 4000),
+            "prev_at_coin": (0, 3000, 100,9999),
+            "prev_diff": (-4000, 2400, 100,-9999,2400),
+            "custom_condition_options": ["不問"],
+            "locked_fields": ["custom_condition"],
+            "help_texts": {
+                "time": """
+                    【ボーナス間天井】
+                    恩恵は成功濃厚のCZ当選。
+                    ※天井G数到達時は、すぐに前兆を経由し、確定CZへ突入。
+                    その他のモード天井は、規定G数到達後にレア役を引くと、前兆を経由し、確定CZへ突入。
+                    朝イチ　　：777G
+                    朝イチ以外：999G
+                    ＳＧＢ後　：555G
+                    """
+            }
+        }
+    },
     "ragdoll": {
         "display_name": "L ラグナドール",
         "file_key": "ragdoll",

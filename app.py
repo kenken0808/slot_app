@@ -757,6 +757,7 @@ def generate_labels_from_mode_options(mode_options):
         "JB": "JB",
         "飛翔": "飛翔",
         "連荘": "連荘",
+        "SGB": "SGB",
     }
 
     # 🔥order完全削除 → mode_optionsをそのまま使う
@@ -825,6 +826,7 @@ def mode_to_csv_suffix(mode: str) -> str:
         "JB": "at",
         "飛翔": "at",
         "連荘": "at",
+        "SGB": "at",
     }
     return mapping.get(mode, "rb")
 
